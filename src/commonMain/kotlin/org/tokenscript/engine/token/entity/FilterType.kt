@@ -1,0 +1,8 @@
+package org.tokenscript.engine.token.entity
+
+/**
+ * Created by JB on 21/05/2020.
+ */
+enum class FilterType {
+    AND, OR, NOT, GREATER_THAN_OR_EQUAL, LESS_THAN_OR_EQUAL_TO, GREATER_THAN, LESS_THAN, EQUAL, VALUE, ATTRIBUTE, START_BRACE, END_BRACE
+}

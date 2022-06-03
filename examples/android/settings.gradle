@@ -1,0 +1,26 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        maven {
+            url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
+        }
+    }
+}
+rootProject.name = "TSEPoCAndroid"
+include ':app'
+
+include ':tokenscript-engine'
+project(':tokenscript-engine').projectDir = new File(settingsDir, '../../')
