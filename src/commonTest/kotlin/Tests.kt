@@ -4,6 +4,7 @@ import kotlinx.coroutines.test.runTest
 import nl.adaptivity.xmlutil.dom.*
 import nl.adaptivity.xmlutil.serialization.ElementSerializer
 import nl.adaptivity.xmlutil.serialization.XML
+import org.tokenscript.engine.TSEngine
 import org.tokenscript.engine.TestHttp
 import org.tokenscript.engine.token.entity.ContractInfo
 import org.tokenscript.engine.repo.TSRepo
@@ -118,5 +119,17 @@ class Tests {
                 assertEquals(40 + 2, address.length)
             }
         }
+    }
+
+    @Test
+    fun testDefinitionStorageReadAndWrite() = runTest {
+        val engine = TSEngine()
+        val testText = "Testing write"
+
+        engine.defStorageProvider.writeDefinition("0x0000", testText)
+
+        val res: String? = engine.defStorageProvider.readDefinition("0x0000")
+
+        assertEquals(res, testText)
     }
 }

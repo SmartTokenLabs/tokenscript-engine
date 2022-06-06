@@ -178,7 +178,14 @@ kotlin {
             }
             //dependsOn(jvmCommon)
         }
-        val androidTest by getting
+        val androidTest by getting {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+                implementation("androidx.test.ext:junit:1.1.3")
+                implementation("androidx.test.ext:junit-ktx:1.1.3")
+                implementation("androidx.test.espresso:espresso-core:3.4.0")
+            }
+        }
 
         val jvmCommon by sourceSets.creating {
             jvmMain.dependsOn(this)
@@ -230,6 +237,7 @@ android {
     defaultConfig {
         minSdkVersion(24)
         targetSdkVersion(32)
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

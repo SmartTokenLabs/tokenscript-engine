@@ -1,5 +1,6 @@
 package org.tokenscript.engine.api
 
+import DefaultDefinitionStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -7,10 +8,16 @@ import org.tokenscript.engine.OpenSeaTokenData
 import org.tokenscript.engine.TSToken
 import org.tokenscript.engine.TestHttp
 import org.tokenscript.engine.repo.TSRepo
+import org.tokenscript.engine.storage.DefinitionStorageInterface
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
 open class EngineApiBase {
+
+    open val defStorageProvider: DefinitionStorageInterface
+        get() {
+            return DefaultDefinitionStorage()
+        }
 
     private val tokens: HashMap<String, TSToken> = HashMap();
 
