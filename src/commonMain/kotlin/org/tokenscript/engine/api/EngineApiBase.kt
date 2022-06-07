@@ -12,12 +12,10 @@ import org.tokenscript.engine.storage.DefinitionStorageInterface
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
-open class EngineApiBase {
+open class EngineApiBase(val basePath: String) {
 
-    open val defStorageProvider: DefinitionStorageInterface
-        get() {
-            return DefaultDefinitionStorage()
-        }
+    var defStorageProvider: DefinitionStorageInterface = DefaultDefinitionStorage(basePath)
+    var repo: TSRepo = TSRepo(this.defStorageProvider)
 
     private val tokens: HashMap<String, TSToken> = HashMap();
 
@@ -26,10 +24,7 @@ open class EngineApiBase {
         if (tokens.containsKey(tsId))
             return tokens.get(tsId)!!
 
-        val token: TSToken? = loadTokenScript(tsId)
-
-        if (token == null)
-            throw Exception("Could not load tokenscript")
+        val token: TSToken = loadTokenScript(tsId)
 
         tokens.put(tsId, token)
 
@@ -46,12 +41,9 @@ open class EngineApiBase {
         }
     }
 
-    private suspend fun loadTokenScript(tsId: String): TSToken? {
-        val tokenDef = TSRepo.getTokenDefinition(tsId);
+    private suspend fun loadTokenScript(tsId: String): TSToken {
+        val tokenDef = repo.getTokenDefinition(tsId);
 
-        if (tokenDef != null)
-            return TSToken(tokenDef)
-
-        return null
+        return TSToken(tokenDef)
     }
 }

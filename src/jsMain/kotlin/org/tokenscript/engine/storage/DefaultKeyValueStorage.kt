@@ -2,7 +2,7 @@ package org.tokenscript.engine.storage
 
 import kotlinx.browser.localStorage
 
-actual open class DefaultKeyValueStorage {
+actual open class DefaultKeyValueStorage actual constructor(val basePath: String, val extension: String) {
 
     actual fun readValue(path: String): String? {
         return localStorage.getItem(path)

@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.tokenscript.engine.TSEngine;
 
 import static org.junit.Assert.*;
 
@@ -22,5 +23,24 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("org.tokenscript.tsepocandroid", appContext.getPackageName());
+    }
+
+    private TSEngine getTokenscriptEngine() {
+
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        return new TSEngine(context);
+    }
+
+    @Test
+    public void testDefinitionStorageReadAndWrite() {
+        TSEngine engine = getTokenscriptEngine();
+        String testText = "Testing write";
+
+        engine.getDefStorageProvider().writeDefinition("0x0000", testText);
+
+        String res = engine.getDefStorageProvider().readDefinition("0x0000");
+
+        assertEquals(res, testText);
     }
 }

@@ -7,7 +7,7 @@ import org.tokenscript.engine.api.EngineApiBase
 
 @OptIn(ExperimentalJsExport::class)
 @JsExport
-actual class TSEngine: EngineApiBase() {
+actual class TSEngine actual constructor(basePath: String) : EngineApiBase(basePath) {
 
     @OptIn(DelicateCoroutinesApi::class)
     fun getTokenScriptAsync(tsId: String) = GlobalScope.promise {

@@ -18,7 +18,7 @@ class AndroidTests {
     }
 
     @Test
-    fun testDefinitionStorageReadAndWrite() = runTest {
+    fun testDefinitionStorageReadAndWrite() {
         val engine = getTokenscriptEngine()
         val testText = "Testing write"
 

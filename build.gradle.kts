@@ -140,6 +140,8 @@ kotlin {
             }
         }
 
+        val jvmCommon by sourceSets.creating
+
         val jvmMain by getting {
             dependencies {
                 api(kotlin("stdlib-jdk8"))
@@ -147,7 +149,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 //implementation("com.github.sweexordious:rlp-kotlin:master-SNAPSHOT")
             }
-            //dependsOn(jvmCommon)
+            dependsOn(jvmCommon)
         }
         val jvmTest by getting {
             dependencies {
@@ -176,7 +178,7 @@ kotlin {
 
                 implementation("javax.xml.crypto:jsr105-api:1.0.1")
             }
-            //dependsOn(jvmCommon)
+            dependsOn(jvmCommon)
         }
         val androidTest by getting {
             dependencies {
@@ -185,11 +187,6 @@ kotlin {
                 implementation("androidx.test.ext:junit-ktx:1.1.3")
                 implementation("androidx.test.espresso:espresso-core:3.4.0")
             }
-        }
-
-        val jvmCommon by sourceSets.creating {
-            jvmMain.dependsOn(this)
-            androidMain.dependsOn(this)
         }
 
         /*val iosArm64Main by getting

@@ -1,60 +1,61 @@
 package org.tokenscript.engine.repo
 
-import io.ktor.client.*
-import io.ktor.client.request.*
 import io.ktor.utils.io.core.*
 import org.tokenscript.engine.token.entity.ParseResult
 import org.tokenscript.engine.token.tools.TokenDefinition
 import org.tokenscript.engine.repo.sources.ScriptURI
 import org.tokenscript.engine.repo.sources.TSSourceInterface
 import org.tokenscript.engine.repo.sources.TokenscriptOrg
+import org.tokenscript.engine.storage.DefinitionStorageInterface
 
-object TSRepo: ParseResult {
+class TSRepo(val storage: DefinitionStorageInterface? = null): ParseResult {
 
-    val sources: List<TSSourceInterface> = listOf(TokenscriptOrg, ScriptURI);
+    val sources: List<TSSourceInterface> = listOf(TokenscriptOrg, ScriptURI)
 
-    val tokens: HashMap<String, TokenDefinition> = HashMap()
+    suspend fun getTokenDefinition(tsId: String): TokenDefinition {
 
-    suspend fun getTokenDefinition(tsId: String): TokenDefinition? {
-
-        if (tokens.containsKey(tsId))
-            return tokens.get(tsId)
-
-
-        val tsFile = downloadTokenFile(tsId)
-
-        if (tsFile == null)
-            return null
-
-        val tokenDefinition = TokenDefinition(tsFile.toByteArray(), result = this)
-
-        tokens.put(tsId, tokenDefinition)
-
-        return tokenDefinition
-    }
-
-    suspend fun downloadTokenFile(tsId: String) : String? {
-
-        val httpClient = HttpClient()
-
-        try {
-            return httpClient.get(TokenDefinition.TOKENSCRIPT_REPO_SERVER + TokenDefinition.TOKENSCRIPT_CURRENT_SCHEMA + "/" + tsId) {
-                //this.header("Accept", "application/tokenscript+xml")
+        if (storage != null) {
+            try {
+                return loadFromStorage(tsId)
+            } catch (e: Exception) {
+                println(e.message)
             }
-        } catch (e: Exception){
-            println(e.message)
         }
 
-        return null
+        try {
+            return resolveTokenscript(tsId)
+        } catch (e: Exception){
+            println(e.message)
+            throw e
+        }
     }
 
-    fun resolveFile(){
+    fun loadFromStorage(tsId: String): TokenDefinition {
+
+        val tsFile: String = storage?.readDefinition(tsId) ?: throw Exception("Definition is not available in storage")
+
+        return TokenDefinition(tsFile.toByteArray(), result = this)
+    }
+
+    suspend fun resolveTokenscript(tsId: String): TokenDefinition {
 
         for (source in sources){
 
+            try {
+                val tsFile = source.getTokenscriptXml(tsId)
+
+                val token = TokenDefinition(tsFile.toByteArray(), result = this)
+
+                storage?.writeDefinition(tsId, tsFile)
+
+                return token
+            } catch (e: Exception){
+                println("Failed to resolve using " + source::class)
+            }
 
         }
 
+        throw Exception("Could not resolve token definition");
     }
 
     override fun parseMessage(parseResult: ParseResult.ParseResultId?) {

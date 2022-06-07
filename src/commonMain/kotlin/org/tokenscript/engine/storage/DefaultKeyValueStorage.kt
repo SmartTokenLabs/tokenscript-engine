@@ -5,7 +5,7 @@ package org.tokenscript.engine.storage
  * It provides localStorage backend in the browser and file backend in all other platforms
  */
 
-expect open class DefaultKeyValueStorage() {
+expect open class DefaultKeyValueStorage(basePath: String, extension: String) {
 
     fun readValue(path: String): String?
 

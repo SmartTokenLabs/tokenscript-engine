@@ -12,6 +12,7 @@ import kotlin.test.*
 
 class Tests {
 
+    val testBasePath: String = "testdata"
     /*@Test
     fun testRpcCall() = runTest {
 
@@ -88,7 +89,7 @@ class Tests {
     @Test
     fun TokenFetchTest() = runTest {
 
-        val tsFile = TSRepo.downloadTokenFile("0xd0d0b327f63a523eed41751e6344dc574b874e02")
+        val tsFile = TSRepo().resolveTokenscript("0xd0d0b327f63a523eed41751e6344dc574b874e02")
 
         assertNotNull(tsFile)
     }
@@ -97,7 +98,7 @@ class Tests {
     @Test
     fun TokenRepoTest() = runTest {
 
-        val token = TSRepo.getTokenDefinition("0xd0d0b327f63a523eed41751e6344dc574b874e02")
+        val token = TSRepo().getTokenDefinition("0xd0d0b327f63a523eed41751e6344dc574b874e02")
 
         assertNotNull(token)
 
@@ -123,7 +124,7 @@ class Tests {
 
     @Test
     fun testDefinitionStorageReadAndWrite() = runTest {
-        val engine = TSEngine()
+        val engine = TSEngine(testBasePath)
         val testText = "Testing write"
 
         engine.defStorageProvider.writeDefinition("0x0000", testText)
