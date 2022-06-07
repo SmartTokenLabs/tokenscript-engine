@@ -208,15 +208,15 @@ kotlin {
             iosArm64Test.dependsOn(this)
         }*/
 
-        /*val mokoWeb3 by sourceSets.creating {
-            dependsOn(commonMain)
+        val mokoWeb3 by sourceSets.creating {
+            //dependsOn(commonMain)
             dependencies {
                 implementation("dev.icerock.moko:web3:0.18.0")
             }
-            iosMain.dependsOn(this)
+            //iosMain.dependsOn(this)
             androidMain.dependsOn(this)
             jvmMain.dependsOn(this)
-        }*/
+        }
     }
 
     publishing {

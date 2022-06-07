@@ -1,11 +1,13 @@
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonObject
 import nl.adaptivity.xmlutil.dom.*
 import nl.adaptivity.xmlutil.serialization.ElementSerializer
 import nl.adaptivity.xmlutil.serialization.XML
 import org.tokenscript.engine.TSEngine
 import org.tokenscript.engine.TestHttp
+import org.tokenscript.engine.adaptors.EthRPC
 import org.tokenscript.engine.token.entity.ContractInfo
 import org.tokenscript.engine.repo.TSRepo
 import kotlin.test.*
@@ -132,5 +134,13 @@ class Tests {
         val res: String? = engine.defStorageProvider.readDefinition("0x0000")
 
         assertEquals(res, testText)
+    }
+
+    @Test
+    fun testRPCCall() = runTest {
+
+        val res = EthRPC().rpcCall("0xf19c56362cfdf66f7080e4a58bf199064e57e07c", "name", emptyList())
+
+        println(res)
     }
 }

@@ -5,7 +5,7 @@ class TestApp {
     public async init(){
         console.log("App running...");
 
-        let tsEngine = new tse.org.tokenscript.engine.TSEngine();
+        let tsEngine = new tse.org.tokenscript.engine.TSEngine("");
         console.log(tsEngine);
 
         // Promise style
