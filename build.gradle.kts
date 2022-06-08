@@ -14,8 +14,9 @@ val coroutinesVersion = "1.6.1-native-mt"
 val klockVersion = "2.4.13"
 val kryptoVersion = "2.4.12"
 
-val xmlVersion = "0.84.3-SNAPSHOT"
-val mokoweb3Version = "0.18.1-STL" // Version only available from mavenLocal at the moment
+// Version only available from mavenLocal at the moment
+val xmlVersion = "0.84.3-STL" // 0.84.3-SNAPSHOT also works here now, but it doesn't contain iOS build artifacts
+val mokoweb3Version = "0.18.1-STL"
 
 repositories {
     google()

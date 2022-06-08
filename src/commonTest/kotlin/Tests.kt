@@ -15,19 +15,8 @@ import kotlin.test.*
 class Tests {
 
     val testBasePath: String = "testdata"
-    /*@Test
-    fun testRpcCall() = runTest {
 
-        println("Testing RPC Call")
-
-        val res: JsonObject = EthRPC().rpcCall("0xf19c56362cfdf66f7080e4a58bf199064e57e07c", "tokenURI", listOf(Pair("uint256", "1")));
-
-        println(res.toString());
-
-        assertTrue(res.toString().isNotEmpty())
-    }*/
-
-    @OptIn(ExperimentalCoroutinesApi::class)
+    /*@OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun testHttpCall() = runTest {
 
@@ -38,7 +27,7 @@ class Tests {
         println(res)
 
         assertTrue(res.toString().isNotEmpty())
-    }
+    }*/
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test

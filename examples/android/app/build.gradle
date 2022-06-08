@@ -51,8 +51,8 @@ dependencies {
     }
 
     // The xmlutil library needs to be excluded from transitive dependency resolution and added here due to an issue with gradle build attribute matching.
-    implementation("io.github.pdvrieze.xmlutil:core-android:0.84.3@jar")
-    implementation("io.github.pdvrieze.xmlutil:serialization-android:0.84.3@jar")
+    implementation("io.github.pdvrieze.xmlutil:core-android:0.84.3-STL@jar")
+    implementation("io.github.pdvrieze.xmlutil:serialization-android:0.84.3-STL@jar")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.1")
 
