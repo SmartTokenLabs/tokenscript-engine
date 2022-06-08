@@ -12,14 +12,14 @@ import org.tokenscript.engine.storage.DefinitionStorageInterface
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
-open class EngineApiBase(val basePath: String) {
+open class EngineApiBase(val basePath: String): EngineApiInterface {
 
     var defStorageProvider: DefinitionStorageInterface = DefaultDefinitionStorage(basePath)
     var repo: TSRepo = TSRepo(this.defStorageProvider)
 
     private val tokens: HashMap<String, TSToken> = HashMap();
 
-    suspend fun getTokenScript(tsId: String) : TSToken {
+    override suspend fun getTokenScript(tsId: String) : TSToken {
 
         if (tokens.containsKey(tsId))
             return tokens.get(tsId)!!
@@ -31,7 +31,7 @@ open class EngineApiBase(val basePath: String) {
         return token;
     }
 
-    fun getTokenScript(tsId: String, onSuccess: (tokenApi: TSToken) -> Unit, onError: (error: String) -> Unit){
+    override fun getTokenScript(tsId: String, onSuccess: (tokenApi: TSToken) -> Unit, onError: (error: String) -> Unit){
         try {
             CoroutineScope(Dispatchers.Default).launch {
                 onSuccess(getTokenScript(tsId));

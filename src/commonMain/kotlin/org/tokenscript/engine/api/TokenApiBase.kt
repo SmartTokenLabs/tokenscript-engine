@@ -6,13 +6,13 @@ import org.tokenscript.engine.TSToken
 import org.tokenscript.engine.TestHttp
 import org.tokenscript.engine.token.tools.TokenDefinition
 
-open class TokenApiBase(val tokenMeta:TokenDefinition) {
+open class TokenApiBase(val tokenMeta:TokenDefinition): TokenApiInterface {
 
-    suspend fun testHttp(): OpenSeaTokenData {
+    override suspend fun testHttp(): OpenSeaTokenData {
         return TestHttp.getJsonDataClass()
     }
 
-    fun testHttp(onSuccess: (data: OpenSeaTokenData) -> Unit, onError: (error: String) -> Unit){
+    override fun testHttp(onSuccess: (data: OpenSeaTokenData) -> Unit, onError: (error: String) -> Unit){
         try {
             CoroutineScope(Dispatchers.Default).launch {
                 onSuccess(testHttp());
