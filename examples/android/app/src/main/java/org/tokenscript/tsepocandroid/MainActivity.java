@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         dataText = findViewById(R.id.data_text);
         dataImage = findViewById(R.id.data_image);
 
-        TSEngine engine = new TSEngine();
+        TSEngine engine = new TSEngine(MainActivity.this);
 
         // Test callback function version
         /*engine.getTokenScript("0xd0d0b327f63a523eed41751e6344dc574b874e02", (TSToken tokenApi) -> {

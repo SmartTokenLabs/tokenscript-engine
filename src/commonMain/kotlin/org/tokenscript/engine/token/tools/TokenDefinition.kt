@@ -1070,7 +1070,7 @@ class TokenDefinition {
 
     companion object {
         const val TOKENSCRIPT_CURRENT_SCHEMA = "2020/06"
-        const val TOKENSCRIPT_REPO_SERVER = "http://localhost:8080/"
+        const val TOKENSCRIPT_REPO_SERVER = "https://repo.tokenscript.org/"
         const val TOKENSCRIPT_NAMESPACE = "http://tokenscript.org/" + TOKENSCRIPT_CURRENT_SCHEMA + "/tokenscript"
         private const val ATTESTATION = "http://attestation.id/ns/tbml"
         private const val TOKENSCRIPT_BASE_URL = "http://tokenscript.org/"
