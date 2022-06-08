@@ -1,4 +1,4 @@
-package org.tokenscript.engine.adaptors
+package org.tokenscript.engine.ethereum
 
 import kotlinx.serialization.json.*
 import dev.icerock.moko.web3.*
@@ -6,9 +6,9 @@ import dev.icerock.moko.web3.contract.SmartContract
 import io.ktor.client.*
 import kotlinx.serialization.encodeToString
 
-actual class EthRPC actual constructor() {
+class EthRPC {
 
- actual suspend fun rpcCall(contract:String, function:String, params:List<Pair<String, String>>): String {
+ suspend fun rpcCall(contract:String, function:String, params:List<Pair<String, String>>): String {
 
      val json = Json { prettyPrint = true };
 

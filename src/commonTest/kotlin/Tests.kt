@@ -7,7 +7,7 @@ import nl.adaptivity.xmlutil.serialization.ElementSerializer
 import nl.adaptivity.xmlutil.serialization.XML
 import org.tokenscript.engine.TSEngine
 import org.tokenscript.engine.TestHttp
-import org.tokenscript.engine.adaptors.EthRPC
+import org.tokenscript.engine.ethereum.EthRPC
 import org.tokenscript.engine.token.entity.ContractInfo
 import org.tokenscript.engine.repo.TSRepo
 import kotlin.test.*

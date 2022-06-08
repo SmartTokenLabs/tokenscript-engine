@@ -4,10 +4,6 @@ pluginManagement {
         jcenter()
         gradlePluginPortal()
         mavenCentral()
-        mavenLocal()
-        maven {
-            url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
-        }
     }
     resolutionStrategy {
         eachPlugin {
@@ -16,9 +12,6 @@ pluginManagement {
             }
         }
     }
-    //includeBuild("../schema-gen/")
 }
 rootProject.name = "tokenscript-engine"
 
-//includeBuild("../schema-gen/")
-//project(":schema-gen").projectDir = File(settingsDir, "../schema-gen/")

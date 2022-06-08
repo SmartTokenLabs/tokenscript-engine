@@ -10,10 +10,12 @@ version = "1.0-SNAPSHOT"
 
 val serializationVersion = "1.3.3"
 val ktorVersion = "1.6.8";
-val coroutinesVersion = "1.6.1"
+val coroutinesVersion = "1.6.1-native-mt"
 val klockVersion = "2.4.13"
 val kryptoVersion = "2.4.12"
-val xmlVersion = "0.84.3"
+
+val xmlVersion = "0.84.3-SNAPSHOT"
+val mokoweb3Version = "0.18.1-STL" // Version only available from mavenLocal at the moment
 
 repositories {
     google()
@@ -23,6 +25,9 @@ repositories {
     }
     maven {
         url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
+    }
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
     mavenLocal()
 }
@@ -67,14 +72,6 @@ kotlin {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
-    /*jvm("android"){
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-        attributes {
-            attribute(org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.attribute, org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType.androidJvm)
-        }
-    }*/
     /*iosArm64 {
         binaries {
             framework {
@@ -100,7 +97,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-json:$ktorVersion")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
                 //implementation("com.soywiz.korlibs.kbignum:kbignum:2.4.12")
                 implementation("com.ionspin.kotlin:bignum:0.3.4")
@@ -116,6 +113,8 @@ kotlin {
                 //implementation("org.jetbrains.kotlinx:kotlinx-io:0.1.16")
 
                 implementation("io.fluidsonic.locale:fluid-locale:0.11.0")
+
+                implementation("dev.icerock.moko:web3:$mokoweb3Version")
             }
         }
         val commonTest by getting {
@@ -124,7 +123,7 @@ kotlin {
                 //implementation("org.jetbrains.kotlin:kotlin-test-annotations-common")
                 //implementation("org.jetbrains.kotlin:kotlin-test-common")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
 
@@ -132,6 +131,9 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
+
+                //implementation(npm("web3", "1.7.3", generateExternals = false))
+                //implementation(npm("eth-json-rpc", "0.3.4", generateExternals = false))
             }
         }
         val jsTest by getting {
@@ -202,21 +204,12 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
         }
+
         val iosTest by sourceSets.creating {
             dependsOn(commonTest)
             iosX64Test.dependsOn(this)
             iosArm64Test.dependsOn(this)
         }*/
-
-        val mokoWeb3 by sourceSets.creating {
-            //dependsOn(commonMain)
-            dependencies {
-                implementation("dev.icerock.moko:web3:0.18.0")
-            }
-            //iosMain.dependsOn(this)
-            androidMain.dependsOn(this)
-            jvmMain.dependsOn(this)
-        }
     }
 
     publishing {
