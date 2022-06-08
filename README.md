@@ -83,4 +83,8 @@ The version of xmlutil used in the engine must be kept in sync with this depende
 
 ### iOS
 
+
 Simply open the `/examples/ios` directory in XCode. Build and run the app.
+If you got `The operation couldn’t be completed. Unable to locate a Java Runtime`, checkout [this](https://www.marcogomiero.com/posts/2021/kmp-no-java-runtime-error-xcode/).
+
+
