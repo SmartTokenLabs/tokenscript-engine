@@ -3,7 +3,7 @@
 
 The TokenScript engine is a Kotlin multiplatform library that can be used to integrate TokenScript functionality into user-agents, including Wallets and DApps.
 
-The goal of the library is to support Javascript, Android and iOS targets to enable TokenScript evolution without code duplication and minimal changes to the user-agents.
+The goal of the library is to support JavaScript, Android and iOS targets to enable TokenScript evolution without code duplication and minimal changes to the user-agents.
 
 ## Development
 
@@ -53,16 +53,16 @@ This will serve the following purposes:
 
 The example application are located in the example directory of this repo and are all configured to consume this library as a local dependency.
 
-### Javascript
+### JavaScript
 
-1. In a terminal, navigate to the /example/javascript directory.
+1. In a terminal, navigate to the `/examples/javascript` directory.
 2. Install NPM if you do not already have it installed.
-3. Run "npm i" to install dependencies (first time only).
-4. Run "npm run serve" to build and serve the example.
+3. Run `npm i` to install dependencies (first time only).
+4. Run `npm run serve` to build and serve the example.
 
 ### Android
 
-Simply open the /example/android directory in Android Studio, allow gradle to import and run the app.
+Simply open the `/examples/android` directory in Android Studio, allow gradle to import and run the app.
 
 Note: There is an issue resolving the transitive dependency for XMLutil library due to mismatching build attributes. 
 For this reason it is required to import the library separately, using this gradle config in the example application:
@@ -83,5 +83,8 @@ The version of xmlutil used in the engine must be kept in sync with this depende
 
 ### iOS
 
-Simply open the /example/ios directory in XCode. Build and run the app.
+
+Simply open the `/examples/ios` directory in XCode. Build and run the app.
 If you got `The operation couldn’t be completed. Unable to locate a Java Runtime`, checkout [this](https://www.marcogomiero.com/posts/2021/kmp-no-java-runtime-error-xcode/).
+
+

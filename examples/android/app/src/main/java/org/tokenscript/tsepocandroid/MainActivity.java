@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
 import org.tokenscript.engine.*;
 
 import kotlin.Result;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         TSEngine engine = new TSEngine(MainActivity.this);
 
         // Test callback function version
-        /*engine.getTokenScript("0xd0d0b327f63a523eed41751e6344dc574b874e02", (TSToken tokenApi) -> {
+        engine.getTokenScript("0xd0d0b327f63a523eed41751e6344dc574b874e02", (TSToken tokenApi) -> {
 
             tokenApi.testHttp((OpenSeaTokenData data) -> {
 
@@ -53,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
         }, (String error) -> {
             Log.e("ANDROID_APP", "Fetch failed: " + error);
             return null;
-        });*/
+        });
 
         // Test continuation/suspend function version
-        engine.getTokenScript("0xd0d0b327f63a523eed41751e6344dc574b874e02", new Continuation(){
+        // TODO: For some reason this doesn't work when the tokenscript definition is fetched from storage.
+        //       No error or exception, the resumeWith function is just never called. Weird, investigate further.
+        /*engine.getTokenScript("0xd0d0b327f63a523eed41751e6344dc574b874e02", new Continuation(){
 
             @Override
             public void resumeWith(@NonNull Object o) {
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public CoroutineContext getContext() {
                 return EmptyCoroutineContext.INSTANCE;
             }
-        });
+        });*/
     }
 
     private final Continuation<OpenSeaTokenData> dataContinuation = new Continuation() {

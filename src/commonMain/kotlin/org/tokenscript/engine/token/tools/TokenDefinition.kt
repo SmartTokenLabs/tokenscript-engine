@@ -245,8 +245,6 @@ class TokenDefinition {
 
         xml = xmlParser.decodeFromString(ElementSerializer, xmlAsset.decodeToString())
 
-        println(xml.getChildNodes().getLength())
-
         this.locale = locale
 
         /*
@@ -445,9 +443,9 @@ class TokenDefinition {
 
             //val n: Element = check.item(i) as Element
 
-            println("Attributes: " + xml.getAttributes().getLength())
+            //println("Attributes: " + xml.getAttributes().getLength())
 
-            println("TS NS: " + xml.getNamespaceURI())
+            //println("TS NS: " + xml.getNamespaceURI())
 
             //if (xml.getAttributes().getLength() > 0)
                 //for (j in 0 until xml.getAttributes().getLength()) {
