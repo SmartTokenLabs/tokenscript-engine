@@ -42,7 +42,12 @@ open class EngineApiBase(val basePath: String): EngineApiInterface {
     }
 
     private suspend fun loadTokenScript(tsId: String): TSToken {
+
+        println("Loading token API")
+
         val tokenDef = repo.getTokenDefinition(tsId);
+
+        println(tokenDef)
 
         return TSToken(tokenDef)
     }

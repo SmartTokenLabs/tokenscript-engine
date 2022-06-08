@@ -9,6 +9,8 @@ import org.tokenscript.engine.token.tools.TokenDefinition
 open class TokenApiBase(val tokenMeta:TokenDefinition): TokenApiInterface {
 
     override suspend fun testHttp(): OpenSeaTokenData {
+        println("Performing test HTTP call")
+
         return TestHttp.getJsonDataClass()
     }
 

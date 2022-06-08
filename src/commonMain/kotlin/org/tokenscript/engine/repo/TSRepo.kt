@@ -15,12 +15,15 @@ class TSRepo(val storage: DefinitionStorageInterface? = null): ParseResult {
     suspend fun getTokenDefinition(tsId: String): TokenDefinition {
 
         if (storage != null) {
+            println("Storage available, checking for definition")
             try {
                 return loadFromStorage(tsId)
             } catch (e: Exception) {
                 println(e.message)
             }
         }
+
+        println("Loading from definition sources")
 
         try {
             return resolveTokenscript(tsId)
@@ -34,7 +37,13 @@ class TSRepo(val storage: DefinitionStorageInterface? = null): ParseResult {
 
         val tsFile: String = storage?.readDefinition(tsId) ?: throw Exception("Definition is not available in storage")
 
-        return TokenDefinition(tsFile.toByteArray(), result = this)
+        println("Definition loaded from storage")
+
+        val token =  TokenDefinition(tsFile.toByteArray(), result = this)
+
+        println("Successfully parsed XML")
+
+        return token
     }
 
     suspend fun resolveTokenscript(tsId: String): TokenDefinition {
@@ -44,9 +53,15 @@ class TSRepo(val storage: DefinitionStorageInterface? = null): ParseResult {
             try {
                 val tsFile = source.getTokenscriptXml(tsId)
 
+                println("Successfully downloaded XML definition")
+
                 val token = TokenDefinition(tsFile.toByteArray(), result = this)
 
+                println("Successfully parsed XML")
+
                 storage?.writeDefinition(tsId, tsFile)
+
+                println("XML written to storage")
 
                 return token
             } catch (e: Exception){
