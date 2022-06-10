@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform") version "1.6.21"
@@ -14,9 +16,9 @@ val coroutinesVersion = "1.6.1-native-mt"
 val klockVersion = "2.4.13"
 val kryptoVersion = "2.4.12"
 
-// Version only available from mavenLocal at the moment
-val xmlVersion = "0.84.3-STL" // 0.84.3-SNAPSHOT also works here now, but it doesn't contain iOS build artifacts
-val mokoweb3Version = "0.18.1-STL"
+// Downstream STL versions of these libraries include bug fixes and extra features
+val xmlVersion = "0.84.3-STL" // Fixes XML entity deserialization - 0.84.3-SNAPSHOT also works here now, but it doesn't contain iOS build artifacts
+val mokoweb3Version = "0.18.1-STL" // Adds Javascript support
 
 repositories {
     google()
@@ -30,7 +32,27 @@ repositories {
     maven {
         url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
-    mavenLocal()
+
+    // Uncomment this if you want to include local builds of xmlutil or moko-web3 libraries
+    //mavenLocal()
+
+    val prop = gradleLocalProperties(project.rootDir)
+
+    maven {
+        url = uri("https://maven.pkg.github.com/TokenScript/moko-web3")
+        credentials {
+            username = prop.getProperty("gpr.user") ?: System.getenv("REGISTRY_USER")
+            password = prop.getProperty("gpr.key") ?: System.getenv("REGISTRY_TOKEN")
+        }
+    }
+
+    maven {
+        url = uri("https://maven.pkg.github.com/TokenScript/xmlutil")
+        credentials {
+            username = prop.getProperty("gpr.user") ?: System.getenv("REGISTRY_USER")
+            password = prop.getProperty("gpr.key") ?: System.getenv("REGISTRY_TOKEN")
+        }
+    }
 }
 
 kotlin.sourceSets.all {
@@ -73,7 +95,7 @@ kotlin {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
-    /*iosArm64 {
+    iosArm64 {
         binaries {
             framework {
                 baseName = "library"
@@ -86,7 +108,7 @@ kotlin {
                 baseName = "library"
             }
         }
-    }*/
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -192,7 +214,7 @@ kotlin {
             }
         }
 
-        /*val iosArm64Main by getting
+        val iosArm64Main by getting
         val iosArm64Test by getting
         val iosX64Main by getting
         val iosX64Test by getting
@@ -210,7 +232,7 @@ kotlin {
             dependsOn(commonTest)
             iosX64Test.dependsOn(this)
             iosArm64Test.dependsOn(this)
-        }*/
+        }
     }
 
     publishing {
