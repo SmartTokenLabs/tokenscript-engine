@@ -13,7 +13,7 @@ actual open class DefaultKeyValueStorage actual constructor(private val basePath
     }
 
     actual fun writeValue(path: String, value: String){
-        return (value as NSString).writeToFile(basePath + "/" + path + "." + extension, true, NSUTF8StringEncoding, null)
+        (value as NSString).writeToFile(basePath + "/" + path + "." + extension, true, NSUTF8StringEncoding, null)
     }
 
     actual fun removeValue(path: String){
