@@ -16,43 +16,42 @@ class ViewModel: ObservableObject {
     @Published var image: String? = nil;
     
     init(){
-        /*org.tokenscript.engine.TestHttp.shared.getJsonData() { result, error in
-            if (error != nil){
-                print(error!);
-                return;
-            }
-            
-            print(result!);
-        };*/
         
         loadTokenScriptData();
     }
     
     func loadTokenScriptData(){
         
+        let engine = TSEngine(basePath: "");
         
-        let tokenApi: TSTokenApi? = TSTokenManagementApi.shared.getTokenScript(tsId: "0xf19c56362cfdf66f7080e4a58bf199064e57e07c.1");
+        engine.getTokenScript(tsId: "0xd0d0b327f63a523eed41751e6344dc574b874e02") {
+            tokenApi, error in
                 
-        if (tokenApi == nil){
-            return;
+                if (error != nil){
+                    print(error!);
+                    return;
+                }
+            
+            tokenApi?.testHttp(){
+                data, error in
+                
+                    if (error != nil){
+                        print(error!);
+                        return;
+                    }
+                
+                    print(data!);
+                    
+                    let name = data!.name;
+                    let imageUrl = data!.imageUrl;
+                    
+                    DispatchQueue.main.async {
+                        self.text = name;
+                        self.image = imageUrl;
+                    }
+            }
         }
         
-        tokenApi?.testHttpJsonObject(onSuccess: {(data: org.tokenscript.engine.OpenSeaTokenData) -> Void in
-            
-            print(data);
-            
-            let name = data.name;
-            let imageUrl = data.imageUrl;
-            
-            DispatchQueue.main.async {
-                self.text = name;
-                self.image = imageUrl;
-            }
-            
-        }, onError: {(error: String) -> Void in
-            
-            print(error);
-        });
     }
     
     func updateData(data: String){
