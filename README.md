@@ -13,14 +13,31 @@ The project is a Kotlin gradle project that can be built with Intellij IDE.
 
 To build simply clone the repo and open in Intellij.
 
-### Local dependencies
+### Modified library dependencies
 
-Some libraries required patches in order to work correctly, or target all the necessary platforms. 
-Until these patches are merged upstream, local versions are required to successfully build the project and run tests against all targets. 
-The best way to do this at the moment is by publishing these build to the mavenLocal repository. 
+Some libraries require patches in order to work correctly, or target all the necessary platforms. 
+Until these patches are merged upstream, updated versions are required to successfully build the project and run tests against all targets.
+The easiest way to do this is by accessing our own versions of the packages via Github package registry.
+
+#### Install via GH package registry
+
+1. Generate a personal access token that has read access to github packages.
+2. In the root of this project, create a local.properties file if it doesn't already exist.
+3. Add the following property values, substituting the "${}" parts with your own details:
+   ```
+   gpr.user=${GITHUB_USERNAME}
+   gpr.key=${PERSONAL_ACCESS_TOKEN}
+   ```
+
+#### Install via mavenLocal
+
+An alternative way is by publishing these builds to the mavenLocal repository. 
+
+You must enable mavelLocal dependency resolution by uncommenting `mavenLocal()` in the repositories section of [build.gradle.kt](https://github.com/TokenScript/tokenscript-engine/blob/master/build.gradle.kts)
+
 The following sections outline how to publish these libraries.
 
-#### Moko web3 library (For RPC)
+##### Moko web3 library (For RPC)
 
 1. Pull the TokenScript version of the [moko-web3](https://github.com/TokenScript/moko-web3/) library
 2. From a terminal in the project root, run the following gradle command:  
@@ -29,7 +46,7 @@ The following sections outline how to publish these libraries.
 The version number used can be changed using [libs.versions.toml](https://github.com/TokenScript/moko-web3/blob/master/gradle/libs.versions.toml) file.
 
 
-#### XMLutil library
+##### XMLutil library
 
 1. Pull the TokenScript version of the [xmlutil](https://github.com/TokenScript/xmlutil) library
 2. From a terminal in the project root, run the following gradle command:  
