@@ -22,7 +22,9 @@ class ViewModel: ObservableObject {
     
     func loadTokenScriptData(){
         
-        let engine = TSEngine(basePath: "");
+        let base = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        
+        let engine = TSEngine(basePath: base.absoluteString);
         
         engine.getTokenScript(tsId: "0xd0d0b327f63a523eed41751e6344dc574b874e02") {
             tokenApi, error in
