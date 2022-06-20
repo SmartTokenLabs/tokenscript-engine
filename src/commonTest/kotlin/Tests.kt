@@ -1,7 +1,7 @@
 
+import com.soywiz.kbignum.BigInt
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.JsonObject
 import nl.adaptivity.xmlutil.dom.*
 import nl.adaptivity.xmlutil.serialization.ElementSerializer
 import nl.adaptivity.xmlutil.serialization.XML
@@ -10,6 +10,7 @@ import org.tokenscript.engine.TestHttp
 import org.tokenscript.engine.ethereum.EthRPC
 import org.tokenscript.engine.token.entity.ContractInfo
 import org.tokenscript.engine.repo.TSRepo
+import org.tokenscript.engine.repo.sources.ScriptURI
 import kotlin.test.*
 
 class Tests {
@@ -128,8 +129,36 @@ class Tests {
     @Test
     fun testRPCCall() = runTest {
 
-        val res = EthRPC().rpcCall("0xf19c56362cfdf66f7080e4a58bf199064e57e07c", "name", emptyList())
+        val res = EthRPC().rpcCall("0xf19c56362cfdf66f7080e4a58bf199064e57e07c", "name", emptyList()){
+            result -> result[0] as String
+        }
 
         println(res)
+
+        assertEquals("STLTestNFTs", res)
+    }
+
+
+    @Test
+    fun testRPCCallWithParams() = runTest {
+
+        val res = EthRPC().rpcCall("0xf19c56362cfdf66f7080e4a58bf199064e57e07c", "tokenURI", listOf(
+            Pair("uint256", BigInt(1))
+        )
+        ) { result ->
+            result[0] as String
+        }
+
+        println(res)
+
+        assertEquals("https://ipfs.moralis.io:2053/ipfs/QmTjbbr6joJoVz4aUUV7b69msgRNRwZsidG9rMqr7y7Emw", res)
+    }
+
+    @Test
+    fun testScriptUriRepoSource() = runTest {
+
+        val token = ScriptURI.getTokenscriptXml("0x324ef903ee321bc0ccf9afbe4f5d0773930239e3")
+
+        assertNotNull(token)
     }
 }

@@ -85,6 +85,11 @@ kotlin {
             commonWebpackConfig {
                 cssSupport.enabled = false
             }
+            testTask {
+                useMocha {
+                    timeout = "20s"
+                }
+            }
         }
         binaries.library();
     }
@@ -122,7 +127,9 @@ kotlin {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
-                //implementation("com.soywiz.korlibs.kbignum:kbignum:2.4.12")
+                // Required for moko web3
+                implementation("com.soywiz.korlibs.kbignum:kbignum:2.2.0")
+
                 implementation("com.ionspin.kotlin:bignum:0.3.4")
 
                 implementation("io.github.pdvrieze.xmlutil:core:$xmlVersion")
