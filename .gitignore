@@ -2,7 +2,3 @@
 /.gradle/
 /build/
 /.idea/
-local.properties
-kotlin-js-store/yarn.lock
-/externals
-/testdata

@@ -1,6 +1,8 @@
 
 # Tokenscript Engine
 
+## Note: The multiplatorm library is a work in progress and is not completed. Please contact us if you are interested in contributing.
+
 The TokenScript engine is a Kotlin multiplatform library that can be used to integrate TokenScript functionality into user-agents, including Wallets and DApps.
 
 The goal of the library is to support JavaScript, Android and iOS targets to enable TokenScript evolution without code duplication and minimal changes to the user-agents.
