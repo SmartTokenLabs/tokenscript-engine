@@ -1,0 +1,12 @@
+
+:host {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin: 20px;
+}
+
+.security-status {
+	padding: 10px 10px;
+	border-radius: 10px;
+}

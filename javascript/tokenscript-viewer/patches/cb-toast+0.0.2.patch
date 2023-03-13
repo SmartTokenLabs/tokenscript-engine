@@ -1,0 +1,13 @@
+diff --git a/node_modules/cb-toast/dist/types/components/cb-toastcontent/cb-toastcontent.d.ts b/node_modules/cb-toast/dist/types/components/cb-toastcontent/cb-toastcontent.d.ts
+index 38da7a5..015da27 100644
+--- a/node_modules/cb-toast/dist/types/components/cb-toastcontent/cb-toastcontent.d.ts
++++ b/node_modules/cb-toast/dist/types/components/cb-toastcontent/cb-toastcontent.d.ts
+@@ -1,7 +1,7 @@
+ export declare class CbToastcontent {
+   el: HTMLElement;
+   title: string;
+-  description: string;
++  description: string|JSX.Element;
+   type: string;
+   toastType: Array<object>;
+   typeBgColor: string;

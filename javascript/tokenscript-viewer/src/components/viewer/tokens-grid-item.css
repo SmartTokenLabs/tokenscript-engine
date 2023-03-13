@@ -1,0 +1,33 @@
+
+.tokens-grid-item {
+	padding: 10px;
+	margin: 10px;
+	border: 1px solid #939393;
+	border-radius: 5px;
+	width: 250px;
+}
+
+.tokens-grid-item img {
+	max-width: 250px;
+}
+
+.tokens-grid-item h5 {
+	margin: 10px 0;
+}
+
+.tokens-grid-item span {
+	overflow: hidden;
+	max-width: 100%;
+	display: inline-block;
+	text-overflow: ellipsis ellipsis;
+}
+
+.actions {
+	text-align: center;
+}
+
+.actions > button {
+	display: block;
+	width: 100%;
+	margin: 8px 0;
+}
