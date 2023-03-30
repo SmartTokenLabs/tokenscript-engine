@@ -1,0 +1,74 @@
+name: "tokenscript-viewer CI"
+
+on:
+  push:
+    paths:
+      - javascript/tokenscript-viewer/**
+  pull_request:
+    paths:
+      - javascript/tokenscript-viewer/**
+
+env:
+  AWS_REGION: us-west-1
+  PROJ_PATH: javascript/tokenscript-viewer
+  PROD_URL: https://viewer.tokenscript.org/
+  STAGE_URL: https://viewer-staging.tokenscript.org/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ${{ env.PROJ_PATH }}/package-lock.json
+      - run: |
+          echo -n "Node version: "
+          node -v
+          echo -n "Npm version: "
+          npm -v
+      - name: build
+        run: |
+          cd "${PROJ_PATH}"
+          npm ci
+          npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: tokenscript-viewer
+          path: ${{ env.PROJ_PATH }}/www/
+
+  deploy:
+    environment:
+      name: tokenscript-viewer-${{ (github.ref_name == 'master' && 'prod') || 'stage' }}
+      url: ${{ github.ref_name == 'master' && env.PROD_URL || env.STAGE_URL }}
+    if: github.event_name == 'push' && contains(fromJson('["master", "staging"]'), github.ref_name)
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: tokenscript-viewer
+          path: ${{ env.PROJ_PATH }}/www/
+      - name: inject env based on branch
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "master" ]; then
+            echo "S3_BUCKET=tokenscript-viewer-prod" >> $GITHUB_ENV
+            echo "CLOUDFRONT_ID=EC2ARN1D499I1" >> $GITHUB_ENV
+          else
+            echo "S3_BUCKET=tokenscript-viewer-stage" >> $GITHUB_ENV
+            echo "CLOUDFRONT_ID=E1TQIT6IOKM354" >> $GITHUB_ENV
+          fi
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: deploy
+        run: |
+          aws s3 sync "${PROJ_PATH}/www/" "s3://${S3_BUCKET}/" --cache-control 'max-age=31536000' --quiet \
+          && find "${PROJ_PATH}/www/" -type f -name 'index.html' -printf '%P\0' | xargs -r -0 -I'{}' aws s3 cp "s3://${S3_BUCKET}/{}" "s3://${S3_BUCKET}/{}" --cache-control 'max-age=600,s-maxage=2592000' \
+          && aws cloudfront create-invalidation --distribution-id "${CLOUDFRONT_ID}" --paths "/*"
