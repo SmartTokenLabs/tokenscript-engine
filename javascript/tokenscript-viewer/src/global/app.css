@@ -19,3 +19,58 @@ body {
 * {
 	box-sizing: border-box;
 }
+
+input[type=text], select {
+	height: 36px;
+	padding: 0 5px;
+	border: 1px #b0b0b0 solid;
+	border-radius: 5px;
+}
+
+select {
+	background: #fff;
+}
+
+select:hover {
+	background: linear-gradient(0deg, #CECECE, #CECECE), #DDDDDD;
+}
+
+.btn {
+	border-radius: 5px;
+	height: 36px;
+	min-width: 112px;
+	background: #EEEEEE;
+	border: none;
+	cursor: pointer;
+}
+
+.btn-primary {
+	color: #fff;
+	background: linear-gradient(234.79deg, #001AFF 37.73%, #4F95FF 118.69%), #8A9CB8;
+}
+
+.btn-primary:hover {
+	background: linear-gradient(214.82deg, #001AFF -21.14%, #4F95FF 89.22%);
+}
+
+.btn-primary:disabled {
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), linear-gradient(234.79deg, #001AFF 37.73%, #4F95FF 118.69%) !important;
+}
+
+/* TODO: Secondary button hover & disable states are not dinstinct enough */
+.btn-secondary {
+	border: 2px solid;
+	background: #fff;
+	color: #001AFF;
+	border-color: #001AFF;
+}
+
+.btn-secondary:hover {
+	border-color: #4F95FF;
+	color: #4F95FF !important;
+}
+
+.btn-secondary:disabled {
+	border-color: #4F95FF !important;
+	color: #4F95FF !important;
+}

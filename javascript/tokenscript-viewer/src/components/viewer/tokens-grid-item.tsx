@@ -1,14 +1,13 @@
 import {Component, h, JSX, Prop, State} from "@stencil/core";
-import {ITokenContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
-import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "./tokens-grid";
 
 @Component({
 	tag: 'tokens-grid-item',
 	styleUrl: 'tokens-grid-item.css',
-	shadow: true,
+	shadow: false,
+	scoped: false
 })
 export class TokensGridItem {
 
@@ -41,7 +40,7 @@ export class TokensGridItem {
 			const enabled = await card.isEnabledOrReason(context);
 
 			cardButtons.push((
-				<button onClick={() => this.showCard(card, this.token, index)}
+				<button class={"btn btn-primary"} onClick={() => this.showCard(card, this.token, index)}
 						disabled={enabled !== true}
 						title={enabled !== true ? enabled : label}>
 					{label}

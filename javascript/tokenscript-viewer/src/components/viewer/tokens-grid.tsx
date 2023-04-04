@@ -9,7 +9,7 @@ export type TokenGridContext = (INFTTokenDetail | IToken) & { contextId: string;
 @Component({
 	tag: 'tokens-grid',
 	styleUrl: 'tokens-grid.css',
-	shadow: true,
+	shadow: false,
 })
 export class TokensGrid {
 

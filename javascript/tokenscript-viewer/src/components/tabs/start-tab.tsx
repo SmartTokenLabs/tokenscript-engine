@@ -83,7 +83,7 @@ export class StartTab {
 						<option value="5">Goerli Testnet</option>
 						<option value="8217" selected>Klaytn Mainnet</option>
 					</select>
-					<button id="ts-resolve-btn" type="button" onClick={() => {
+					<button id="ts-resolve-btn" type="button" class="btn btn-primary" onClick={() => {
 						const tsId = (document.getElementById('ts-chain') as HTMLSelectElement).value + "-" +
 										(document.getElementById('ts-id') as HTMLInputElement).value;
 						this.app.openTokenScriptTab("resolve", tsId);
@@ -93,7 +93,7 @@ export class StartTab {
 					<h3>Load from URL</h3>
 					<label htmlFor="ts-url">URL: </label>
 					<input id="ts-url" type="text" style={{marginRight: "15px"}} />
-					<button id="ts-load-url-btn" type="button" onClick={() => {
+					<button id="ts-load-url-btn" type="button" class="btn btn-primary" onClick={() => {
 						const url = (document.getElementById('ts-url') as HTMLSelectElement).value;
 						this.app.openTokenScriptTab("url", url);
 					}}>Load</button>
@@ -111,7 +111,7 @@ export class StartTab {
 						<option value="DAI">DAI</option>
 						<option value="ENS">ENS</option>
 					</select>
-					<button id="ts-load-predefined-btn" type="button" onClick={() => {
+					<button id="ts-load-predefined-btn" type="button" class="btn btn-primary" onClick={() => {
 						const tsId = (document.getElementById('ts-predefined') as HTMLSelectElement).value;
 						this.app.openTokenScriptTab("resolve", tsId);
 					}}>Load</button>

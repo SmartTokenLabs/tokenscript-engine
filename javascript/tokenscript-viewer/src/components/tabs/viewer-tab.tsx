@@ -12,6 +12,7 @@ import "cb-toast";
 	tag: 'viewer-tab',
 	styleUrl: 'viewer-tab.css',
 	shadow: false,
+	scoped: false
 })
 export class ViewerTab {
 
@@ -176,7 +177,7 @@ export class ViewerTab {
 								sandbox="allow-scripts allow-modals allow-forms">
 						</iframe>
 						<div class="action-bar" style={{display: "none"}}>
-							<button class="action-btn"></button>
+							<button class="action-btn btn btn-primary"></button>
 						</div>
 					</div>
 					<table class="attribute-table"></table>

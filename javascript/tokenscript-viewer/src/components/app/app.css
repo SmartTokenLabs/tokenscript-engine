@@ -10,7 +10,7 @@
 }
 
 header {
-  background: #5851ff;
+  background: #000;
   color: white;
   height: 56px;
   display: flex;
@@ -19,8 +19,8 @@ header {
 }
 
 .header-icon {
-	width: 38px;
-	height: auto;
+	height: 35px;
+	width: auto;
 	padding-left: 10px;
 }
 
@@ -43,7 +43,7 @@ main {
 
 #tab-header {
 	display: flex;
-	border-bottom: 1px solid teal;
+	border-bottom: 1px solid #000;
 }
 
 #tab-content {

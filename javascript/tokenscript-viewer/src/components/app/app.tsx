@@ -240,8 +240,7 @@ export class AppRoot {
 		return (
 			<div class="app-container">
 				<header>
-					<img class="header-icon" alt="TokenScript icon" src="assets/icon/icon.png"/>
-					<h1>TokenScript Viewer</h1>
+					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
 				</header>
 
 				<main>
