@@ -1,0 +1,34 @@
+
+:host {
+	background: none;
+	border: none;
+}
+
+.attribute-widget {
+	position: relative;
+	display: inline-block;
+	min-width: 50px;
+	min-height: 50px;
+}
+
+.attribute-container {
+	position: relative;
+}
+
+.btn-close-attributes {
+	width: 25px;
+	height: 25px;
+	font-size: 16px;
+	line-height: 16px;
+	margin: 10px;
+}
+
+table {
+	background: #fff;
+	text-align: left;
+	border: #000 solid 1px;
+}
+
+.attribute-table td, .attribute-table th {
+	padding: 8px;
+}

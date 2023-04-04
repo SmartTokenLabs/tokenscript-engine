@@ -6,3 +6,21 @@
 .start-section {
 	padding: 15px 0;
 }
+
+.start-sub-section {
+	margin-bottom: 15px;
+}
+
+input::file-selector-button {
+	border-radius: 5px;
+	height: 36px;
+	min-width: 112px;
+	border: none;
+	cursor: pointer;
+	color: #fff;
+	background: linear-gradient(234.79deg, #001AFF 37.73%, #4F95FF 118.69%), #8A9CB8;
+}
+
+input::file-selector-button:hover {
+	background: linear-gradient(214.82deg, #001AFF -21.14%, #4F95FF 89.22%);
+}

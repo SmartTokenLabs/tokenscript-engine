@@ -170,20 +170,22 @@ export class ViewerTab {
 						this.tokenScript.getViewController().unloadTokenCard();
 					}}>X</button>
 					<div class="card-container">
-						<div class="view-loader" style={{display: "none"}}>
-							<loading-spinner/>
+						<div style={{position: "relative"}}>
+							<div class="view-loader" style={{display: "none"}}>
+								<loading-spinner/>
+							</div>
+							<iframe class="tokenscript-frame"
+									sandbox="allow-scripts allow-modals allow-forms">
+							</iframe>
 						</div>
-						<iframe class="tokenscript-frame"
-								sandbox="allow-scripts allow-modals allow-forms">
-						</iframe>
 						<div class="action-bar" style={{display: "none"}}>
 							<button class="action-btn btn btn-primary"></button>
 						</div>
 					</div>
-					<table class="attribute-table"></table>
+					<attribute-table></attribute-table>
 				</div>
 				<security-status tokenScript={this.tokenScript}/>
-				<div id={'tn-' + this.uuid} class="overlay-tn"></div>
+				<div id={'tn-' + this.uuid} class="overlay-tn light-tn"></div>
 				<cb-toast class="toast"></cb-toast>
 			</div>
 		);

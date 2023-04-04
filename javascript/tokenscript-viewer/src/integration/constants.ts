@@ -36,6 +36,20 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.BAOBAB]: "baobab",
 };
 
+export const CHAIN_NAME_MAP: ChainMapInterface = {
+	[ChainID.ETHEREUM]: "Ethereum Mainnet",
+	[ChainID.GOERLI]: "Goerli (Ethereum Testnet)",
+	[ChainID.POLYGON]: "Polygon",
+	[ChainID.MUMBAI]: "Mumbai (Polygon Testnet)",
+	[ChainID.ARBITRUM]: "Arbitrum",
+	[ChainID.OPTIMISM]: "Optimism",
+	[ChainID.BSC]: "Binance Smart Chain",
+	[ChainID.AVALANCH]: "Avalanche",
+	[ChainID.FANTOM]: "Fantom",
+	[ChainID.KLAYTN]: "Cypress (Klaytn Mainnet)",
+	[ChainID.BAOBAB]: "Baobab (Klaytn Testnet)",
+};
+
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
 		rpc: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
@@ -85,6 +99,10 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.KLAYTN]: {
 		rpc: 'https://public-node-api.klaytnapi.com/v1/cypress',
 		explorer: 'https://scope.klaytn.com/tx/'
+	},
+	[ChainID.BAOBAB]: {
+		rpc: 'https://public-node-api.klaytnapi.com/v1/baobab',
+		explorer: 'https://baobab.scope.klaytn.com/tx/'
 	}
 	//43113: 'https://api.avax-test.network/ext/bc/C/rpc', // Fuji testnet
 	/*25: {

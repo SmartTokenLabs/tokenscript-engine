@@ -21,11 +21,11 @@ export class SecurityStatus {
 	private getStatusColor(){
 		switch (this.securityInfo.status){
 			case TSSecurityStatus.VALID:
-				return "green";
+				return "#3bd23b";
 			case TSSecurityStatus.WARNING:
-				return "orange";
+				return "#ff871d";
 			case TSSecurityStatus.INVALID:
-				return "red";
+				return "#ff4f4f";
 		}
 	}
 

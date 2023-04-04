@@ -46,7 +46,8 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 					onChain: true,
 					collectionID: ref,
 					contract: token.collectionId,
-					chain: CHAIN_MAP[token.chainId]
+					chain: CHAIN_MAP[token.chainId],
+					// fungible: token.tokenType === "erc20"
 				});
 			}
 
@@ -74,18 +75,27 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 
 					const nftTokenDetails: INFTTokenDetail[] = [];
 
-					for (let tokenMeta of tokensMeta){
+					//if (tokenData.tokenType !== "erc20") {
 
-						nftTokenDetails.push({
-							collectionDetails: tokenData,
-							tokenId: tokenMeta.tokenId,
-							name: tokenMeta.title,
-							description: tokenMeta.description,
-							image: tokenMeta.image,
-							data: tokenMeta
-						});
-					}
+						for (let tokenMeta of tokensMeta) {
 
+							nftTokenDetails.push({
+								collectionDetails: tokenData,
+								tokenId: tokenMeta.tokenId,
+								name: tokenMeta.title,
+								description: tokenMeta.description,
+								image: tokenMeta.image,
+								data: tokenMeta
+							});
+						}
+
+					//}
+
+					//tokenData.nftDetails = nftTokenDetails;
+
+					//const collectionData = this.negotiator.getTokenStore().getCurrentIssuers(true)[refId];
+
+					//tokenData.image = collectionData.image;
 					tokenData.symbol = tokensMeta[0]?.symbol;
 					tokenData.nftDetails = nftTokenDetails;
 					tokenData.balance = nftTokenDetails.length;

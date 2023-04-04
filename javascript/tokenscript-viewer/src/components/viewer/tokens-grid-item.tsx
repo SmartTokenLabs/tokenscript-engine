@@ -57,7 +57,7 @@ export class TokensGridItem {
 				<token-icon src={this.token.image} imageTitle={this.token.name}/>
 				<h5>{this.token.name}</h5>
 				{
-					"tokenId" in this.token ?
+					"tokenId" in this.token && this.token.tokenId ?
 						<span title={this.token.tokenId.toString()}>#{this.token.tokenId}</span>
 						: ''
 				}

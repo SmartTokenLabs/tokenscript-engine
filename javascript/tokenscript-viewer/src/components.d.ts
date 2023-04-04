@@ -18,6 +18,8 @@ export namespace Components {
         "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, emulator?: string) => Promise<void>;
         "showTab": (id: string) => Promise<void>;
     }
+    interface AttributeTable {
+    }
     interface DebugViewerTab {
         "app": AppRoot;
         "tabId": string;
@@ -65,6 +67,12 @@ declare global {
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
+    };
+    interface HTMLAttributeTableElement extends Components.AttributeTable, HTMLStencilElement {
+    }
+    var HTMLAttributeTableElement: {
+        prototype: HTMLAttributeTableElement;
+        new (): HTMLAttributeTableElement;
     };
     interface HTMLDebugViewerTabElement extends Components.DebugViewerTab, HTMLStencilElement {
     }
@@ -122,6 +130,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "app-root": HTMLAppRootElement;
+        "attribute-table": HTMLAttributeTableElement;
         "debug-viewer-tab": HTMLDebugViewerTabElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "security-status": HTMLSecurityStatusElement;
@@ -135,6 +144,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AppRoot {
+    }
+    interface AttributeTable {
     }
     interface DebugViewerTab {
         "app"?: AppRoot;
@@ -178,6 +189,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "app-root": AppRoot;
+        "attribute-table": AttributeTable;
         "debug-viewer-tab": DebugViewerTab;
         "loading-spinner": LoadingSpinner;
         "security-status": SecurityStatus;
@@ -194,6 +206,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
