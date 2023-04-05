@@ -8,15 +8,14 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource } from "./components/app/app";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
+import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
+import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { JSX } from "@stencil/core";
 import { TokenGridContext } from "./components/viewer/tokens-grid";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export namespace Components {
     interface AppRoot {
-        "closeTab": (id: string) => Promise<void>;
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
-        "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, emulator?: string) => Promise<void>;
-        "showTab": (id: string) => Promise<void>;
     }
     interface AttributeTable {
     }
@@ -33,14 +32,20 @@ export namespace Components {
         "tokenScript": TokenScript1;
     }
     interface StartTab {
-        "app": AppRoot;
         "tabId": string;
+        "tabView": TabbedViewer;
     }
     interface TabHeaderItem {
-        "app": AppRoot;
         "closable": boolean;
         "tabId": string;
         "tabTitle": string;
+        "tabView": TabbedViewer;
+    }
+    interface TabbedViewer {
+        "app": AppRoot;
+        "closeTab": (id: string) => Promise<void>;
+        "openTokenScriptTab": (source: TokenScriptSource1, tsId?: string, emulator?: string) => Promise<void>;
+        "showTab": (id: string) => Promise<void>;
     }
     interface TokenIcon {
         "imageTitle": string;
@@ -104,6 +109,12 @@ declare global {
         prototype: HTMLTabHeaderItemElement;
         new (): HTMLTabHeaderItemElement;
     };
+    interface HTMLTabbedViewerElement extends Components.TabbedViewer, HTMLStencilElement {
+    }
+    var HTMLTabbedViewerElement: {
+        prototype: HTMLTabbedViewerElement;
+        new (): HTMLTabbedViewerElement;
+    };
     interface HTMLTokenIconElement extends Components.TokenIcon, HTMLStencilElement {
     }
     var HTMLTokenIconElement: {
@@ -136,6 +147,7 @@ declare global {
         "security-status": HTMLSecurityStatusElement;
         "start-tab": HTMLStartTabElement;
         "tab-header-item": HTMLTabHeaderItemElement;
+        "tabbed-viewer": HTMLTabbedViewerElement;
         "token-icon": HTMLTokenIconElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
@@ -160,14 +172,17 @@ declare namespace LocalJSX {
         "tokenScript"?: TokenScript1;
     }
     interface StartTab {
-        "app"?: AppRoot;
         "tabId"?: string;
+        "tabView"?: TabbedViewer;
     }
     interface TabHeaderItem {
-        "app"?: AppRoot;
         "closable"?: boolean;
         "tabId"?: string;
         "tabTitle"?: string;
+        "tabView"?: TabbedViewer;
+    }
+    interface TabbedViewer {
+        "app"?: AppRoot;
     }
     interface TokenIcon {
         "imageTitle"?: string;
@@ -195,6 +210,7 @@ declare namespace LocalJSX {
         "security-status": SecurityStatus;
         "start-tab": StartTab;
         "tab-header-item": TabHeaderItem;
+        "tabbed-viewer": TabbedViewer;
         "token-icon": TokenIcon;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
@@ -212,6 +228,7 @@ declare module "@stencil/core" {
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;
+            "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;

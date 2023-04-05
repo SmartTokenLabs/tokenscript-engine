@@ -41,24 +41,6 @@ main {
 	flex-grow: 1;
 }
 
-#tab-header {
-	display: flex;
-	border-bottom: 1px solid #000;
-}
-
-#tab-content {
-	position: relative;
-	flex-grow: 1;
-}
-
-#tab-content > * {
-	display: none;
-}
-
-#tab-content > .active {
-	display: block !important;
-}
-
 #ts-loader {
 	display: none;
 	position: absolute;

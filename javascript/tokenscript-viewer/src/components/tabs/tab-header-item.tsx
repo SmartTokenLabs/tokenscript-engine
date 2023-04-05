@@ -1,6 +1,5 @@
-import {Component, h, Prop, Element} from "@stencil/core";
-import {Components} from "../../components";
-import AppRoot = Components.AppRoot;
+import {Component, h, Prop} from "@stencil/core";
+import {TabbedViewer} from "../viewers/tabbed/tabbed-viewer";
 
 @Component({
 	tag: 'tab-header-item',
@@ -9,16 +8,16 @@ import AppRoot = Components.AppRoot;
 })
 export class StartTab {
 
-	@Prop() app: AppRoot;
+	@Prop() tabView: TabbedViewer;
 	@Prop() tabId: string;
 	@Prop() tabTitle: string;
 	@Prop() closable = true;
 
 	render() {
 		return (
-			<div class="tab-button" onClick={() => this.app.showTab(this.tabId) } title={this.tabTitle}>
+			<div class="tab-button" onClick={() => this.tabView.showTab(this.tabId) } title={this.tabTitle}>
 				<span>{this.tabTitle}</span>
-				{this.closable === true ? <button onClick={() => this.app.closeTab(this.tabId) }>X</button> : ''}
+				{this.closable === true ? <button onClick={() => this.tabView.closeTab(this.tabId) }>X</button> : ''}
 			</div>
 		);
 	}
