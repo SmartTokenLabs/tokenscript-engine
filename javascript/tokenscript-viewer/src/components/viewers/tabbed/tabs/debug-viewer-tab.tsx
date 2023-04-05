@@ -1,10 +1,10 @@
 import {Component, Element, h, Prop, State, Watch} from "@stencil/core";
-import {Components} from "../../components";
-import {TokenScript} from "../../../../engine-js/src/TokenScript";
-import {Card} from "../../../../engine-js/src/tokenScript/Card";
-import {ViewBinding} from "../../integration/viewBinding";
-import {IToken} from "../../../../engine-js/src/tokens/IToken";
-import {INFTTokenDetail} from "../../../../engine-js/src/tokens/INFTTokenDetail";
+import {Components} from "../../../../components";
+import {TokenScript} from "../../../../../../engine-js/src/TokenScript";
+import {Card} from "../../../../../../engine-js/src/tokenScript/Card";
+import {ViewBinding} from "../../../../integration/viewBinding";
+import {IToken} from "../../../../../../engine-js/src/tokens/IToken";
+import {INFTTokenDetail} from "../../../../../../engine-js/src/tokens/INFTTokenDetail";
 import AppRoot = Components.AppRoot;
 
 

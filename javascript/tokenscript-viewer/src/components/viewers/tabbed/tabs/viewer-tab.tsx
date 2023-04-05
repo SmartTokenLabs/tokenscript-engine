@@ -1,11 +1,11 @@
 import {Component, Element, h, JSX, Prop, Watch} from "@stencil/core";
-import {Components} from "../../components";
-import {TokenScript} from "../../../../engine-js/src/TokenScript";
-import {ViewBinding} from "../../integration/viewBinding";
+import {Components} from "../../../../components";
+import {TokenScript} from "../../../../../../engine-js/src/TokenScript";
+import {ViewBinding} from "../../../../integration/viewBinding";
 import AppRoot = Components.AppRoot;
 import {Client} from "@tokenscript/token-negotiator";
 import "@tokenscript/token-negotiator/dist/theme/style.css";
-import {TokenNegotiatorDiscovery} from "../../integration/discoveryAdapter";
+import {TokenNegotiatorDiscovery} from "../../../../integration/discoveryAdapter";
 import "cb-toast";
 
 @Component({

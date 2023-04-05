@@ -1,5 +1,5 @@
 import {Component, h, Prop} from "@stencil/core";
-import {TabbedViewer} from "../viewers/tabbed/tabbed-viewer";
+import {TabbedViewer} from "../../../viewers/tabbed/tabbed-viewer";
 
 @Component({
 	tag: 'tab-header-item',

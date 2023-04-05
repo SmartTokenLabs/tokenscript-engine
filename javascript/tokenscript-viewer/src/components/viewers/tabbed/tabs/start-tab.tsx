@@ -1,6 +1,6 @@
 import {Component, h, Prop} from "@stencil/core";
-import {CHAIN_NAME_MAP} from "../../integration/constants";
-import {TabbedViewer} from "../viewers/tabbed/tabbed-viewer";
+import {CHAIN_NAME_MAP} from "../../../../integration/constants";
+import {TabbedViewer} from "../../../viewers/tabbed/tabbed-viewer";
 
 
 @Component({

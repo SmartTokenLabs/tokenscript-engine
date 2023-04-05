@@ -116,7 +116,7 @@ export class AppRoot {
 		});
 	}
 
-	componentDidLoad(){
+	componentWillLoad(){
 
 		const queryStr = document.location.search.substring(1);
 		const query = new URLSearchParams(queryStr);
@@ -124,6 +124,7 @@ export class AppRoot {
 		switch (query.get("viewType")){
 			case "integration":
 				this.viewerType = "integration";
+				break;
 			// Fall-through to default
 			case "tabbed":
 			default:
@@ -140,7 +141,7 @@ export class AppRoot {
 
 				<main>
 					{this.viewerType === "tabbed" ? <tabbed-viewer app={this}></tabbed-viewer> : ''}
-					{this.viewerType === "integration" ? <h3>Hello integration view</h3> : ''}
+					{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
 				</main>
 
 				<div id="ts-loader">

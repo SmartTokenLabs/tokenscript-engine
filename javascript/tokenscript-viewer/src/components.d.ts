@@ -7,9 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource } from "./components/app/app";
+import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
-import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { JSX } from "@stencil/core";
 import { TokenGridContext } from "./components/viewer/tokens-grid";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
@@ -23,6 +23,9 @@ export namespace Components {
         "app": AppRoot;
         "tabId": string;
         "tokenScript": TokenScript;
+    }
+    interface IntegrationViewer {
+        "app": AppRoot;
     }
     interface LoadingSpinner {
         "color": string;
@@ -85,6 +88,12 @@ declare global {
         prototype: HTMLDebugViewerTabElement;
         new (): HTMLDebugViewerTabElement;
     };
+    interface HTMLIntegrationViewerElement extends Components.IntegrationViewer, HTMLStencilElement {
+    }
+    var HTMLIntegrationViewerElement: {
+        prototype: HTMLIntegrationViewerElement;
+        new (): HTMLIntegrationViewerElement;
+    };
     interface HTMLLoadingSpinnerElement extends Components.LoadingSpinner, HTMLStencilElement {
     }
     var HTMLLoadingSpinnerElement: {
@@ -143,6 +152,7 @@ declare global {
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
         "debug-viewer-tab": HTMLDebugViewerTabElement;
+        "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "security-status": HTMLSecurityStatusElement;
         "start-tab": HTMLStartTabElement;
@@ -163,6 +173,9 @@ declare namespace LocalJSX {
         "app"?: AppRoot;
         "tabId"?: string;
         "tokenScript"?: TokenScript;
+    }
+    interface IntegrationViewer {
+        "app"?: AppRoot;
     }
     interface LoadingSpinner {
         "color"?: string;
@@ -206,6 +219,7 @@ declare namespace LocalJSX {
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
         "debug-viewer-tab": DebugViewerTab;
+        "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
         "security-status": SecurityStatus;
         "start-tab": StartTab;
@@ -224,6 +238,7 @@ declare module "@stencil/core" {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
+            "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
