@@ -78,7 +78,7 @@ export class ViewerTab {
 		// TODO: Wallet connect event is extremely unreliable - fix it
 		this.negotiator.on("connected-wallet", (event) => {
 
-			const providerType = event?.data?.providerType;
+			const providerType = event?.providerType;
 
 			//console.log("TN IPC " + (this.uuid) + ": Connected/disconnect wallet", providerType);
 
