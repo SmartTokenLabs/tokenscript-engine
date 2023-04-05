@@ -27,11 +27,11 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 			for (let token of initialTokenDetails){
 
 				// TODO: Remove once negotiator/discovery API has erc20 support
-				if (token.tokenType === "erc20"){
+				/*if (token.tokenType === "erc20"){
 					token.name = token.id;
 					result.push(token);
 					continue;
-				}
+				}*/
 
 				const ref = (token.blockChain + "-" + token.chainId + "-" + token.collectionId).toLowerCase();
 
@@ -47,15 +47,15 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 					collectionID: ref,
 					contract: token.collectionId,
 					chain: CHAIN_MAP[token.chainId],
-					// fungible: token.tokenType === "erc20"
+					fungible: token.tokenType === "erc20"
 				});
 			}
 
 			// TODO: Remove once negotiator/discovery API has erc20 support
-			if (!issuers.length) {
+			/*if (!issuers.length) {
 				resolve(result);
 				return;
-			}
+			}*/
 
 			this.negotiator.on('tokens-selected', (tokens) => {
 
@@ -69,13 +69,14 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 
 					const tokenData = idMap[refId];
 
-					// TODO: Fill in contract level metadata - needs to be added to negotiator
-
 					const tokensMeta = tokens.selectedTokens[refId].tokens;
+
+					if (!tokensMeta.length)
+						continue;
 
 					const nftTokenDetails: INFTTokenDetail[] = [];
 
-					//if (tokenData.tokenType !== "erc20") {
+					if (tokenData.tokenType !== "erc20") {
 
 						for (let tokenMeta of tokensMeta) {
 
@@ -89,16 +90,21 @@ export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
 							});
 						}
 
-					//}
+						tokenData.nftDetails = nftTokenDetails;
+						tokenData.balance = nftTokenDetails.length;
 
-					//tokenData.nftDetails = nftTokenDetails;
+					} else if (tokensMeta.length > 0) {
+						tokenData.name = tokensMeta[0].title;
+						tokenData.balance = tokensMeta[0].data?.balance;
+						tokenData.decimals = tokensMeta[0].data?.decimals;
+					} else {
+						continue;
+					}
 
-					//const collectionData = this.negotiator.getTokenStore().getCurrentIssuers(true)[refId];
+					const collectionData = this.negotiator.getTokenStore().getCurrentIssuers(true)[refId];
 
-					//tokenData.image = collectionData.image;
-					tokenData.symbol = tokensMeta[0]?.symbol;
-					tokenData.nftDetails = nftTokenDetails;
-					tokenData.balance = nftTokenDetails.length;
+					tokenData.image = collectionData.image;
+					tokenData.symbol = tokensMeta[0]?.symbol ? tokensMeta[0]?.symbol : tokensMeta[0]?.data?.symbol;
 
 					result.push(tokenData);
 				}
