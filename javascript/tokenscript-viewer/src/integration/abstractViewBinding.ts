@@ -5,8 +5,7 @@ import {TokenScript} from "../../../engine-js/src/TokenScript";
 import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
 import {JSX, h} from "@stencil/core";
 
-// TODO: Merge with viewer-tab.tsx
-export class ViewBinding implements IViewBinding {
+export abstract class AbstractViewBinding implements IViewBinding {
 
 	currentCard?: Card;
 
@@ -15,10 +14,9 @@ export class ViewBinding implements IViewBinding {
 	actionBtn: HTMLButtonElement;
 	loader: HTMLDivElement;
 
-	private tokenScript: TokenScript
+	protected tokenScript: TokenScript
 
-	constructor(private view: HTMLElement,
-				private showToast?: (type: 'success'|'info'|'warning'|'error', title: string, description:string|JSX.Element) => void) {
+	constructor(protected view: HTMLElement) {
 
 		this.iframe = view.querySelector(".tokenscript-frame") as HTMLIFrameElement;
 		this.loader = view.querySelector(".view-loader") as HTMLDivElement;
@@ -29,11 +27,11 @@ export class ViewBinding implements IViewBinding {
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
 	}
 
-	setTokenScript(tokenScript: TokenScript){
+	setTokenScript(tokenScript: TokenScript) {
 		this.tokenScript = tokenScript;
 	}
 
-	viewLoading(){
+	viewLoading() {
 		this.showLoader();
 	}
 
@@ -42,84 +40,64 @@ export class ViewBinding implements IViewBinding {
 		this.hideLoader();
 	}
 
-	async showTokenView(card: Card){
+	async showTokenView(card: Card) {
 
 		this.currentCard = card;
 
-		(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "block";
+		//(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "block";
 
 		await this.injectContentView(card);
 
 		this.setupConfirmButton(card);
 
-		this.renderAttributesTable();
-
 		this.hideLoader();
 	}
 
-	async unloadTokenView(){
+	async unloadTokenView() {
 		this.currentCard = null;
 
-		(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "none";
+		//(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "none";
 		this.iframe.src = "";
 		this.actionBar.style.display = "none";
-		this.view.querySelector(".attribute-table").innerHTML = "";
+		//this.view.querySelector(".attribute-table").innerHTML = "";
 	}
 
-	async renderAttributesTable(){
-		let attrTable = "<tr><th>Attribute</th><th>Value</th></tr>";
-
-		const rowRender = async (attr: Attribute, isLocal = false) => {
-			return `<tr><td>${attr.getName()} ${isLocal? "(Card)" : "(Global)"}</td><td>${await attr.getCurrentValue()}</td></tr>`;
-		}
-
-		for (let attr of this.tokenScript.getAttributes()){
-			attrTable += await rowRender(attr);
-		}
-
-		for (let attr of this.currentCard.getAttributes()){
-			attrTable += await rowRender(attr, true);
-		}
-
-		this.view.querySelector(".attribute-table").innerHTML = attrTable;
-	}
-
-	private showLoader(){
+	protected showLoader() {
 		this.loader.style.display = "flex";
 	}
 
-	private hideLoader(){
+	protected hideLoader() {
 		this.loader.style.display = "none";
 	}
 
-	private async injectContentView(card: Card){
+	private async injectContentView(card: Card) {
 
 		if (!card.view) {
 			this.iframe.src = "";
 			return;
 		}
 
-		if (card.isUrlView){
+		if (card.isUrlView) {
 
 			this.iframe.src = card.url;
 
 		} else {
 			const html = await card.renderViewHtml();
 
-			const blob = new Blob( [html], { type: "text/html" } );
+			const blob = new Blob([html], {type: "text/html"});
 
 			const urlFragment = card.urlFragment;
 
-			this.iframe.src = URL.createObjectURL(blob) + (urlFragment ? "#"+urlFragment : "");
+			this.iframe.src = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
 
 			// TODO: try src-doc method
 		}
 
 	}
 
-	private setupConfirmButton(card: Card){
+	private setupConfirmButton(card: Card) {
 
-		if (card.type == "action"){
+		if (card.type == "action") {
 			this.actionBar.style.display = "block";
 			this.actionBtn.innerText = card.label;
 		} else {
@@ -127,56 +105,9 @@ export class ViewBinding implements IViewBinding {
 		}
 	}
 
-	// TODO: move this logic into engine
-	async confirmAction(){
+	abstract confirmAction();
 
-		const transaction = this.currentCard.getTransaction();
-
-		this.showLoader();
-
-		if (transaction){
-
-			console.log(transaction.getTransactionInfo());
-
-			try {
-				await this.currentCard.executeTransaction((data) => {
-					switch (data.status){
-						case "submitted":
-							this.showToast(
-								'info',
-								"Transaction submitted",
-								(<span>
-									{"Processing TX, please wait.. "}<br/>
-									{"TX Number: " + data.txNumber }
-								</span>)
-							);
-							break;
-						case "confirmed":
-							this.showToast(
-								'success',
-								"Transaction confirmed",
-								(<span>
-									{"TX " + data.txNumber + " confirmed!"}<br/>{
-									data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
-								</span>)
-							);
-							break;
-					}
-				});
-			} catch (e){
-				console.error(e);
-				this.showToast('error', "Transaction Error", e.message);
-			}
-
-		} else {
-			// this.iframe.contentWindow.onConfirm();
-			this.postMessageToView(ViewEvent.ON_CONFIRM, {});
-		}
-
-		this.hideLoader();
-	}
-
-	getViewBindingJavascript(){
+	getViewBindingJavascript() {
 		return `
 			window.addEventListener("message", (event) => {
 
@@ -244,11 +175,11 @@ export class ViewBinding implements IViewBinding {
 		`;
 	}
 
-	private postMessageToView(method: ViewEvent, params: any){
+	protected postMessageToView(method: ViewEvent, params: any) {
 		this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
-	private handlePostMessageFromView(event: MessageEvent){
+	protected handlePostMessageFromView(event: MessageEvent) {
 
 		if (!this.iframe.src)
 			return;
@@ -269,9 +200,9 @@ export class ViewBinding implements IViewBinding {
 		this.handleMessageFromView(event.data.method, event.data?.params);
 	}
 
-	async handleMessageFromView(method: RequestFromView, params: any){
+	async handleMessageFromView(method: RequestFromView, params: any) {
 
-		switch (method){
+		switch (method) {
 
 			case RequestFromView.SIGN_PERSONAL_MESSAGE:
 				console.log("Event from view: Sign personal message");
@@ -280,7 +211,6 @@ export class ViewBinding implements IViewBinding {
 
 			case RequestFromView.PUT_USER_INPUT:
 				await this.tokenScript.getViewController().setUserEntryValues(params);
-				this.renderAttributesTable();
 				break;
 
 			default:
@@ -290,7 +220,7 @@ export class ViewBinding implements IViewBinding {
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
 
-		switch (event){
+		switch (event) {
 
 			case ViewEvent.TOKENS_UPDATED:
 				const tokens = {
@@ -302,7 +232,6 @@ export class ViewBinding implements IViewBinding {
 				//this.iframe.contentWindow.web3.tokens.dataChanged(tokens, tokens, cardId);
 				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id});
 
-				await this.renderAttributesTable();
 				this.hideLoader();
 				return;
 

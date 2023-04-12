@@ -7,8 +7,9 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource } from "./components/app/app";
-import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
+import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
+import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { JSX } from "@stencil/core";
 import { TokenGridContext } from "./components/viewer/tokens-grid";
@@ -18,6 +19,10 @@ export namespace Components {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
     }
     interface AttributeTable {
+    }
+    interface ConfirmStep {
+        "tokenScript": TokenScript1;
+        "viewer": IntegrationViewer;
     }
     interface DebugViewerTab {
         "app": AppRoot;
@@ -33,6 +38,10 @@ export namespace Components {
     }
     interface SecurityStatus {
         "tokenScript": TokenScript1;
+    }
+    interface SelectStep {
+        "tokenScript": TokenScript1;
+        "viewer": IntegrationViewer;
     }
     interface StartTab {
         "tabId": string;
@@ -63,6 +72,10 @@ export namespace Components {
         "token": TokenGridContext;
         "tokenScript": TokenScript1;
     }
+    interface ViewStep {
+        "tokenScript": TokenScript1;
+        "viewer": IntegrationViewer;
+    }
     interface ViewerTab {
         "app": AppRoot;
         "tabId": string;
@@ -81,6 +94,12 @@ declare global {
     var HTMLAttributeTableElement: {
         prototype: HTMLAttributeTableElement;
         new (): HTMLAttributeTableElement;
+    };
+    interface HTMLConfirmStepElement extends Components.ConfirmStep, HTMLStencilElement {
+    }
+    var HTMLConfirmStepElement: {
+        prototype: HTMLConfirmStepElement;
+        new (): HTMLConfirmStepElement;
     };
     interface HTMLDebugViewerTabElement extends Components.DebugViewerTab, HTMLStencilElement {
     }
@@ -105,6 +124,12 @@ declare global {
     var HTMLSecurityStatusElement: {
         prototype: HTMLSecurityStatusElement;
         new (): HTMLSecurityStatusElement;
+    };
+    interface HTMLSelectStepElement extends Components.SelectStep, HTMLStencilElement {
+    }
+    var HTMLSelectStepElement: {
+        prototype: HTMLSelectStepElement;
+        new (): HTMLSelectStepElement;
     };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
@@ -142,6 +167,12 @@ declare global {
         prototype: HTMLTokensGridItemElement;
         new (): HTMLTokensGridItemElement;
     };
+    interface HTMLViewStepElement extends Components.ViewStep, HTMLStencilElement {
+    }
+    var HTMLViewStepElement: {
+        prototype: HTMLViewStepElement;
+        new (): HTMLViewStepElement;
+    };
     interface HTMLViewerTabElement extends Components.ViewerTab, HTMLStencilElement {
     }
     var HTMLViewerTabElement: {
@@ -151,16 +182,19 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
+        "confirm-step": HTMLConfirmStepElement;
         "debug-viewer-tab": HTMLDebugViewerTabElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "security-status": HTMLSecurityStatusElement;
+        "select-step": HTMLSelectStepElement;
         "start-tab": HTMLStartTabElement;
         "tab-header-item": HTMLTabHeaderItemElement;
         "tabbed-viewer": HTMLTabbedViewerElement;
         "token-icon": HTMLTokenIconElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
+        "view-step": HTMLViewStepElement;
         "viewer-tab": HTMLViewerTabElement;
     }
 }
@@ -168,6 +202,10 @@ declare namespace LocalJSX {
     interface AppRoot {
     }
     interface AttributeTable {
+    }
+    interface ConfirmStep {
+        "tokenScript"?: TokenScript1;
+        "viewer"?: IntegrationViewer;
     }
     interface DebugViewerTab {
         "app"?: AppRoot;
@@ -183,6 +221,10 @@ declare namespace LocalJSX {
     }
     interface SecurityStatus {
         "tokenScript"?: TokenScript1;
+    }
+    interface SelectStep {
+        "tokenScript"?: TokenScript1;
+        "viewer"?: IntegrationViewer;
     }
     interface StartTab {
         "tabId"?: string;
@@ -210,6 +252,10 @@ declare namespace LocalJSX {
         "token"?: TokenGridContext;
         "tokenScript"?: TokenScript1;
     }
+    interface ViewStep {
+        "tokenScript"?: TokenScript1;
+        "viewer"?: IntegrationViewer;
+    }
     interface ViewerTab {
         "app"?: AppRoot;
         "tabId"?: string;
@@ -218,16 +264,19 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
+        "confirm-step": ConfirmStep;
         "debug-viewer-tab": DebugViewerTab;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
         "security-status": SecurityStatus;
+        "select-step": SelectStep;
         "start-tab": StartTab;
         "tab-header-item": TabHeaderItem;
         "tabbed-viewer": TabbedViewer;
         "token-icon": TokenIcon;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
+        "view-step": ViewStep;
         "viewer-tab": ViewerTab;
     }
 }
@@ -237,16 +286,19 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
+            "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
+            "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;
             "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
+            "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;
         }
     }
