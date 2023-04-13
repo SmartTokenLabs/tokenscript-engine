@@ -1,10 +1,9 @@
 import {Component, h, JSX, Prop, State, Watch} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
-import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
-
-export type TokenGridContext = (INFTTokenDetail | IToken) & { contextId: string; };
+import {findCardByUrlParam} from "../viewers/util/findCardByUrlParam";
+import {getTokensFlat, TokenGridContext} from "../viewers/util/getTokensFlat";
 
 @Component({
 	tag: 'tokens-grid',
@@ -53,24 +52,7 @@ export class TokensGrid {
 
 		this.currentTokens = tokens;
 
-		this.currentTokensFlat = Object.keys(this.currentTokens).reduce((tokenArr, contractName) => {
-
-			if (this.currentTokens[contractName].nftDetails){
-
-				// NFTs
-				const tokens = this.currentTokens[contractName].nftDetails.map((nft, index) => {
-					return {...nft, contextId: contractName + "-" + index};
-				});
-				tokenArr.push(...tokens);
-			} else {
-				// fungible token with balance
-				const flatToken = {...this.currentTokens[contractName], contextId: contractName};
-				tokenArr.push(flatToken);
-			}
-
-			return tokenArr;
-
-		}, []);
+		this.currentTokensFlat = getTokensFlat(this.currentTokens);
 
 		this.invokeUrlAction();
 	}
@@ -84,7 +66,7 @@ export class TokensGrid {
 
 		const action = params.get("card");
 
-		const cardRes = this.findCardByUrlParam(action);
+		const cardRes = findCardByUrlParam(action, this.tokenScript);
 
 		if (!cardRes){
 			this.showToast('error', "Card not found", "The card '" + action + "' cannot be found.")
@@ -105,23 +87,6 @@ export class TokensGrid {
 		}
 
 		this.showToast('error', "No supported tokens", "None of your tokens support the " + action + " action.")
-	}
-
-	private findCardByUrlParam(id: string){
-
-		const cards = this.tokenScript.getCards();
-
-		for (let [index, card] of cards.entries()){
-			if (card.name == id)
-				return {card, index};
-		}
-
-		const index = parseInt(id);
-
-		if (!isNaN(index) && cards[index])
-			return {card: cards[index], index};
-
-		return null;
 	}
 
 	private showCard(card: Card, token: TokenGridContext, cardIndex: number){

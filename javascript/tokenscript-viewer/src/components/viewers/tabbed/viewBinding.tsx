@@ -14,9 +14,16 @@ export class ViewBinding extends AbstractViewBinding {
 
 	async showTokenView(card: Card){
 
+		(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "block";
+
 		await super.showTokenView(card);
 
 		this.renderAttributesTable();
+	}
+
+	async unloadTokenView(){
+		(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "none";
+		await super.unloadTokenView();
 	}
 
 	async renderAttributesTable(){

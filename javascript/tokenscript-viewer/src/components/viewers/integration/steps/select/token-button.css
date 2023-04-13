@@ -1,0 +1,29 @@
+
+.token-button {
+	width: 300px;
+	height: 96px;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	margin: 10px;
+	border: 1px #000 solid;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.token-button.disabled {
+	opacity: 0.8;
+}
+
+.token-details {
+	padding: 10px;
+}
+
+h5 {
+	margin: 5px 0;
+}
+
+token-icon {
+	width: 100px;
+	height: 100px;
+}

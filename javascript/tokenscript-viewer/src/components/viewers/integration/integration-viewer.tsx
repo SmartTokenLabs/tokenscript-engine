@@ -1,6 +1,8 @@
 import {Component, h, Prop, State} from "@stencil/core";
 import {AppRoot, TokenScriptSource} from "../../app/app";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
+import {findCardByUrlParam} from "../util/findCardByUrlParam";
 
 @Component({
 	tag: 'integration-viewer',
@@ -22,6 +24,8 @@ export class IntegrationViewer {
 	urlRequest: URLSearchParams;
 
 	messageTarget?: Window;
+
+	card: Card
 
 	componentWillLoad(){
 
@@ -45,19 +49,16 @@ export class IntegrationViewer {
 
 	private verifyRequest(){
 
-		if (this.urlRequest.has("callbackUri")){
-			// Return result via URL
-			return;
+		if (!this.urlRequest.has("callbackUri")){
+
+			this.messageTarget = window.parent ? window.parent : window.opener;
+
+			console.log(this.messageTarget);
+
+			if (!this.messageTarget || this.messageTarget.location.href === document.location.href)
+				throw new Error("Cannot return message to requester, no callbackUrl supplied or window parent & opener is null.");
+
 		}
-
-		this.messageTarget = window.parent ? window.parent : window.opener;
-
-		console.log(this.messageTarget);
-
-		if (!this.messageTarget || this.messageTarget.location.href === document.location.href)
-			throw new Error("Cannot return message to requester, no callbackUrl supplied or window parent & opener is null.");
-
-		// TODO: Check referrer
 	}
 
 	async processUrlLoad(){
@@ -92,7 +93,14 @@ export class IntegrationViewer {
 
 		try {
 			this.tokenScript = await this.app.loadTokenscript(source, tsId)
+
+			this.card = findCardByUrlParam(this.urlRequest.get("card"), this.tokenScript).card;
+
+			if (!this.card)
+				throw new Error("Card " + this.urlRequest.get("card") + " could not be found.");
+
 			this.step = "confirm";
+
 		} catch (e){
 			console.error(e);
 			alert("Failed to load TokenScript: " + e.message);
@@ -126,11 +134,11 @@ export class IntegrationViewer {
 				case "confirm":
 					return (<confirm-step viewer={this} tokenScript={this.tokenScript}></confirm-step>);
 
-				//case "view":
-					//return (<viewer-tab app={this.app} tokenScript={this.tokenScript}></viewer-tab>)
+				case "token":
+					return (<select-step viewer={this} tokenScript={this.tokenScript} card={this.card}></select-step>);
 
 				case "view":
-					return (<view-step viewer={this} tokenScript={this.tokenScript}></view-step>)
+					return (<view-step viewer={this} tokenScript={this.tokenScript} card={this.card}></view-step>);
 			}
 		}
 

@@ -25,7 +25,7 @@ export class ConfirmStep {
 	render(){
 		return (
 			<div>
-				<div>
+				<div style={{textAlign: "center"}}>
 					<div>
 						<p>
 							<span>{document.referrer ?? "https://somesite.com/"}</span>wants to you to perform an action with the following TokenScript:<br/>
@@ -34,7 +34,7 @@ export class ConfirmStep {
 					</div>
 					<div>
 						<button class="btn btn-primary accept-btn" onClick={() => {
-							this.viewer.step = "view";
+							this.viewer.step = "token";
 						}}>Accept</button>
 						<button class="btn btn-secondary deny-btn" onClick={() => {
 							this.viewer.returnResultToRequester({

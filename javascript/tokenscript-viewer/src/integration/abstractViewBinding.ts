@@ -44,8 +44,6 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		//(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "block";
-
 		await this.injectContentView(card);
 
 		this.setupConfirmButton(card);
@@ -55,11 +53,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	async unloadTokenView() {
 		this.currentCard = null;
-
-		//(this.view.querySelector(".view-container") as HTMLDivElement).style.display = "none";
 		this.iframe.src = "";
 		this.actionBar.style.display = "none";
-		//this.view.querySelector(".attribute-table").innerHTML = "";
 	}
 
 	protected showLoader() {
