@@ -85,8 +85,20 @@ export class SelectStep {
 			});
 		}
 
-		if (availableTokens.length === 1){
+		if (availableTokens.length === 0){
 
+			this.viewer.returnResultToRequester({
+				action: "ts-callback",
+				error: "You do not have any tokens that support this action"
+			});
+
+			return;
+		}
+
+		if (availableTokens.length === 1){
+			const refs = availableTokens[0].contextId.split("-");
+			this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]): null);
+			this.viewer.step = "view";
 		}
 
 		this.viewer.app.hideTsLoader();

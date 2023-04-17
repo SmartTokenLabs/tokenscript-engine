@@ -55,7 +55,7 @@ export class IntegrationViewer {
 
 			console.log(this.messageTarget);
 
-			if (!this.messageTarget || this.messageTarget.location.href === document.location.href)
+			if (!this.messageTarget)
 				throw new Error("Cannot return message to requester, no callbackUrl supplied or window parent & opener is null.");
 
 		}
@@ -117,8 +117,10 @@ export class IntegrationViewer {
 			const uri = new URL(this.urlRequest.get("callbackUri"));
 			const hQuery = new URLSearchParams(uri.hash.substring(1));
 
+			hQuery.set("tn-action", "ts-callback");
+
 			for (const [key, value] of Object.entries(data)){
-				hQuery.set(key, typeof value === "object" ? JSON.stringify(value) : value.toString());
+				hQuery.set("tn-" + key, typeof value === "object" ? JSON.stringify(value) : value.toString());
 			}
 
 			uri.hash = hQuery.toString();

@@ -115,9 +115,9 @@ class ViewBinding extends AbstractViewBinding {
 					console.log("Transaction completed!");
 
 					this.viewStep.viewer.returnResultToRequester(data);
-				}, 3000);
+				}, 1000);
 
-			}, 5000);
+			}, 3000);
 
 		}, 1000);
 
@@ -144,10 +144,8 @@ class ViewBinding extends AbstractViewBinding {
 		} else {
 			// this.iframe.contentWindow.onConfirm();
 			this.postMessageToView(ViewEvent.ON_CONFIRM, {});
-		}*/
+		}
 
-
-
-		this.hideLoader();
+		this.hideLoader();*/
 	}
 }
