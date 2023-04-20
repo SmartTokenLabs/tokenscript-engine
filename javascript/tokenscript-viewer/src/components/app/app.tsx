@@ -1,13 +1,13 @@
 import {Component, Element, h, Method, State} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
-import {Client} from "@tokenscript/token-negotiator";
 import "@tokenscript/token-negotiator/dist/theme/style.css";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
 import {TokenScript} from "../../../../engine-js/src/TokenScript";
 import {CHAIN_CONFIG} from "../../integration/constants";
 import {IWalletAdapter} from "../../../../engine-js/src/wallet/IWalletAdapter";
+import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -18,39 +18,15 @@ export type TokenScriptSource = "resolve" | "file" | "url";
 })
 export class AppRoot {
 
+	walletSelector: HTMLWalletSelectorElement;
+
+	constructor() {
+		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
+	}
+
 	async getWalletAdapter(): Promise<IWalletAdapter> {
-
 		return new EthersAdapter(async () => {
-
-			// TODO: replace with modal wallet selector
-			var negotiator: Client = new Client({
-				'type': 'active',
-				'issuers': [],
-				'uiOptions': {
-					'containerElement': '#tn-main',
-					'openingHeading': 'Connect your wallet to load this TokenScripts tokens.'
-				}
-			});
-
-			const walletProvider = await negotiator.getWalletProvider();
-
-			await walletProvider.loadConnections();
-
-			if (walletProvider.getConnectedWalletData().length === 0) {
-				return new Promise((resolve, reject) => {
-
-					negotiator.createUiInstance();
-					negotiator.getUi().initialize();
-					negotiator.getUi().updateUI("wallet", {
-						connectCallback: () => {
-							// @ts-ignore
-							resolve(walletProvider.getConnectedWalletData()[0].provider);
-						}
-					})
-				});
-			}
-
-			return walletProvider.getConnectedWalletData()[0].provider;
+			return (await Web3WalletProvider.getWallet(true)).provider;
 		}, CHAIN_CONFIG);
 	}
 
@@ -60,7 +36,7 @@ export class AppRoot {
 
 	@Element() host: HTMLElement;
 
-	@State() viewerType?: "tabbed"|"integration"
+	@State() viewerType?: "tabbed"|"integration"|"new"
 
 	showTsLoader(){
 		document.getElementById("ts-loader").style.display = "flex";
@@ -116,7 +92,7 @@ export class AppRoot {
 		});
 	}
 
-	componentWillLoad(){
+	async componentWillLoad(){
 
 		const queryStr = document.location.search.substring(1);
 		const query = new URLSearchParams(queryStr);
@@ -125,11 +101,16 @@ export class AppRoot {
 			case "integration":
 				this.viewerType = "integration";
 				break;
+			case "new":
+				this.viewerType = "new";
+				break;
 			// Fall-through to default
 			case "tabbed":
 			default:
 				this.viewerType = "tabbed";
 		}
+
+		await Web3WalletProvider.loadConnections();
 	}
 
 	render() {
@@ -142,11 +123,14 @@ export class AppRoot {
 				<main>
 					{this.viewerType === "tabbed" ? <tabbed-viewer app={this}></tabbed-viewer> : ''}
 					{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
+					{this.viewerType === "new" ? <new-viewer app={this}></new-viewer> : ''}
 				</main>
 
 				<div id="ts-loader">
 					<loading-spinner/>
 				</div>
+
+				<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector>
 
 				<div id="tn-main" class="overlay-tn"></div>
 			</div>

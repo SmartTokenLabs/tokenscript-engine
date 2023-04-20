@@ -1,0 +1,27 @@
+
+.wallet-btn {
+	width: 100%;
+	display: flex;
+	margin: 10px 0;
+	height: 60px !important;
+	align-items: center;
+}
+
+.wallet-name {
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+	position: absolute;
+	width: 100%;
+}
+
+.wallet-icon {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+}
+
+.wallet-icon svg, .wallet-icon img {
+	height: 40px;
+	width: auto;
+}

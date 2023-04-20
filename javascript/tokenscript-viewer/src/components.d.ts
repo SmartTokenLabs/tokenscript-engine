@@ -14,6 +14,7 @@ import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
 import { JSX } from "@stencil/core";
+import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
@@ -35,6 +36,13 @@ export namespace Components {
     interface LoadingSpinner {
         "color": string;
         "size": string;
+    }
+    interface NewViewer {
+        "app": AppRoot;
+    }
+    interface PopoverDialog {
+        "closeDialog": () => Promise<void>;
+        "openDialog": (dismissCallback?: () => {}) => Promise<void>;
     }
     interface SecurityStatus {
         "tokenScript": TokenScript1;
@@ -89,6 +97,11 @@ export namespace Components {
         "tabId": string;
         "tokenScript": TokenScript;
     }
+    interface WalletButton {
+    }
+    interface WalletSelector {
+        "connectWallet": () => Promise<SupportedWalletProviders>;
+    }
 }
 declare global {
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
@@ -126,6 +139,18 @@ declare global {
     var HTMLLoadingSpinnerElement: {
         prototype: HTMLLoadingSpinnerElement;
         new (): HTMLLoadingSpinnerElement;
+    };
+    interface HTMLNewViewerElement extends Components.NewViewer, HTMLStencilElement {
+    }
+    var HTMLNewViewerElement: {
+        prototype: HTMLNewViewerElement;
+        new (): HTMLNewViewerElement;
+    };
+    interface HTMLPopoverDialogElement extends Components.PopoverDialog, HTMLStencilElement {
+    }
+    var HTMLPopoverDialogElement: {
+        prototype: HTMLPopoverDialogElement;
+        new (): HTMLPopoverDialogElement;
     };
     interface HTMLSecurityStatusElement extends Components.SecurityStatus, HTMLStencilElement {
     }
@@ -193,6 +218,18 @@ declare global {
         prototype: HTMLViewerTabElement;
         new (): HTMLViewerTabElement;
     };
+    interface HTMLWalletButtonElement extends Components.WalletButton, HTMLStencilElement {
+    }
+    var HTMLWalletButtonElement: {
+        prototype: HTMLWalletButtonElement;
+        new (): HTMLWalletButtonElement;
+    };
+    interface HTMLWalletSelectorElement extends Components.WalletSelector, HTMLStencilElement {
+    }
+    var HTMLWalletSelectorElement: {
+        prototype: HTMLWalletSelectorElement;
+        new (): HTMLWalletSelectorElement;
+    };
     interface HTMLElementTagNameMap {
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
@@ -200,6 +237,8 @@ declare global {
         "debug-viewer-tab": HTMLDebugViewerTabElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
+        "new-viewer": HTMLNewViewerElement;
+        "popover-dialog": HTMLPopoverDialogElement;
         "security-status": HTMLSecurityStatusElement;
         "select-step": HTMLSelectStepElement;
         "start-tab": HTMLStartTabElement;
@@ -211,6 +250,8 @@ declare global {
         "tokens-grid-item": HTMLTokensGridItemElement;
         "view-step": HTMLViewStepElement;
         "viewer-tab": HTMLViewerTabElement;
+        "wallet-button": HTMLWalletButtonElement;
+        "wallet-selector": HTMLWalletSelectorElement;
     }
 }
 declare namespace LocalJSX {
@@ -233,6 +274,11 @@ declare namespace LocalJSX {
     interface LoadingSpinner {
         "color"?: string;
         "size"?: string;
+    }
+    interface NewViewer {
+        "app"?: AppRoot;
+    }
+    interface PopoverDialog {
     }
     interface SecurityStatus {
         "tokenScript"?: TokenScript1;
@@ -284,6 +330,10 @@ declare namespace LocalJSX {
         "tabId"?: string;
         "tokenScript"?: TokenScript;
     }
+    interface WalletButton {
+    }
+    interface WalletSelector {
+    }
     interface IntrinsicElements {
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
@@ -291,6 +341,8 @@ declare namespace LocalJSX {
         "debug-viewer-tab": DebugViewerTab;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
+        "new-viewer": NewViewer;
+        "popover-dialog": PopoverDialog;
         "security-status": SecurityStatus;
         "select-step": SelectStep;
         "start-tab": StartTab;
@@ -302,6 +354,8 @@ declare namespace LocalJSX {
         "tokens-grid-item": TokensGridItem;
         "view-step": ViewStep;
         "viewer-tab": ViewerTab;
+        "wallet-button": WalletButton;
+        "wallet-selector": WalletSelector;
     }
 }
 export { LocalJSX as JSX };
@@ -314,6 +368,8 @@ declare module "@stencil/core" {
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
+            "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
+            "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
@@ -325,6 +381,8 @@ declare module "@stencil/core" {
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
             "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;
+            "wallet-button": LocalJSX.WalletButton & JSXBase.HTMLAttributes<HTMLWalletButtonElement>;
+            "wallet-selector": LocalJSX.WalletSelector & JSXBase.HTMLAttributes<HTMLWalletSelectorElement>;
         }
     }
 }
