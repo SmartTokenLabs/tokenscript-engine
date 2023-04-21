@@ -4,14 +4,14 @@ import {WalletConnection, Web3WalletProvider} from "./Web3WalletProvider";
 
 @Component({
 	tag: 'wallet-button',
-	// styleUrl: 'wallet-button.css',
+	styleUrl: 'wallet-button.css',
 	shadow: false,
 	scoped: false
 })
 export class WalletButton {
 
 	@State()
-	walletInfo?: WalletInfo
+	walletInfo?: WalletInfo & WalletConnection;
 
 	async connectedCallback(){
 
@@ -32,12 +32,16 @@ export class WalletButton {
 			return;
 		}
 
-		this.walletInfo = getWalletInfo(wallet.providerType);
+		this.walletInfo = {...wallet, ...getWalletInfo(wallet.providerType)};
+	}
+
+	private formatWalletAddress(address: string){
+		return address.substring(0, 4) + "..." + address.substring(address.length - 4);
 	}
 
 	render(){
 		return (
-			<button class={"btn " + (this.walletInfo ? 'btn-secondary' : 'btn-primary')} onClick={async () => {
+			<button class={"btn wallet-connect-btn " + (this.walletInfo ? 'btn-secondary' : 'btn-primary')} onClick={async () => {
 
 				if (this.walletInfo){
 					await Web3WalletProvider.disconnectWallet();
@@ -45,7 +49,10 @@ export class WalletButton {
 					await Web3WalletProvider.getWallet(true);
 				}
 			}}>
-				{ this.walletInfo ? 'Disconnect Wallet' : 'Connect Wallet'}
+				{ this.walletInfo ? ([
+					<div class="status-dot"></div>,
+					<div title={this.walletInfo.providerType + ": " + this.walletInfo.address}>{this.formatWalletAddress(this.walletInfo.address)}</div>
+				]) : 'Connect Wallet'}
 			</button>
 		)
 	}

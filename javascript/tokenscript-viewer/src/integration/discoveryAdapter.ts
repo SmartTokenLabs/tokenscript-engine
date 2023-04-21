@@ -1,125 +1,147 @@
 import {ITokenDiscoveryAdapter} from "../../../engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {IToken} from "../../../engine-js/src/tokens/IToken";
-import {INFTTokenDetail} from "../../../engine-js/src/tokens/INFTTokenDetail";
-import {CHAIN_MAP} from "./constants";
-import type {Client} from "@tokenscript/token-negotiator";
+
+import {WalletConnection, Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {CHAIN_MAP} from "./constants";
+import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
 
-export class TokenNegotiatorDiscovery implements ITokenDiscoveryAdapter {
+const COLLECTION_CACHE_TTL = 86400;
+const TOKEN_CACHE_TTL = 3600;
+const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
 
-	updateFromEngine = false;
+export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
-	constructor(private negotiator: Client, private tokenScript: TokenScript) {
+	constructor(private tokenScript: TokenScript) {
+		Web3WalletProvider.registerWalletChangeListener(this.handleWalletChange.bind(this));
+	}
+
+	handleWalletChange(walletConnection: WalletConnection|undefined){
+		if (walletConnection){
+			this.tokenScript.getTokenMetadata(true);
+		} else {
+			this.tokenScript.setTokenMetadata([]);
+		}
+	}
+
+	async getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]> {
+
+		const walletAddress = await this.getCurrentWalletAddress();
+
+		let cachedTokens = refresh ? null : await this.getCachedTokens(initialTokenDetails, walletAddress);
+
+		if (!cachedTokens){
+			cachedTokens = await this.fetchTokens(initialTokenDetails, walletAddress);
+			await this.storeCachedTokens(initialTokenDetails, walletAddress)
+		}
+
+		return cachedTokens;
+	}
+
+	async getCurrentWalletAddress(){
+		return (await Web3WalletProvider.getWallet(true)).address;
+	}
+
+	async getCachedTokens(initialTokenDetails: IToken[], ownerAddress: string): Promise<IToken[]|false> {
+
+
+		return false;
+	}
+
+	async storeCachedTokens(tokens: IToken[], ownerAddress: string){
+
 
 	}
 
-	async getTokens(initialTokenDetails: IToken[]): Promise<IToken[]> {
+	async fetchTokens(initialTokenDetails: IToken[], ownerAddress: string){
 
-		this.updateFromEngine = true;
+		const tokenResult: IToken[] = [];
 
-		return new Promise((resolve, reject) => {
+		for (const token of initialTokenDetails){
 
-			const idMap: {[id: string]: IToken} = {};
-			const result: IToken[] = [];
+			if (!CHAIN_MAP[token.chainId])
+				continue;
 
-			const issuers = [];
+			const chain = CHAIN_MAP[token.chainId];
 
-			for (let token of initialTokenDetails){
+			try {
+				const collectionData = await this.fetchTokenMetadata(token, chain);
+				const tokenData = await this.fetchOwnerTokens(token, chain, ownerAddress)
 
-				// TODO: Remove once negotiator/discovery API has erc20 support
-				/*if (token.tokenType === "erc20"){
-					token.name = token.id;
-					result.push(token);
-					continue;
-				}*/
 
-				const ref = (token.blockChain + "-" + token.chainId + "-" + token.collectionId).toLowerCase();
-
-				if (!CHAIN_MAP[token.chainId]){
-					console.warn("Token discovery not supported for chain ID " + token.chainId);
-					continue;
-				}
-
-				idMap[ref] = token;
-
-				issuers.push({
-					onChain: true,
-					collectionID: ref,
-					contract: token.collectionId,
-					chain: CHAIN_MAP[token.chainId],
-					fungible: token.tokenType === "erc20"
-				});
-			}
-
-			// TODO: Remove once negotiator/discovery API has erc20 support
-			/*if (!issuers.length) {
-				resolve(result);
-				return;
-			}*/
-
-			this.negotiator.on('tokens-selected', (tokens) => {
-
-				console.log("Tokens discovered: ");
-				console.log(tokens.selectedTokens);
-
-				for (let refId in tokens.selectedTokens){
-
-					if (!idMap[refId])
-						continue;
-
-					const tokenData = idMap[refId];
-
-					const tokensMeta = tokens.selectedTokens[refId].tokens;
-
-					if (!tokensMeta.length)
-						continue;
+				if (token.tokenType !== "erc20") {
 
 					const nftTokenDetails: INFTTokenDetail[] = [];
 
-					if (tokenData.tokenType !== "erc20") {
+					for (let tokenMeta of tokenData) {
 
-						for (let tokenMeta of tokensMeta) {
-
-							nftTokenDetails.push({
-								collectionDetails: tokenData,
-								tokenId: tokenMeta.tokenId,
-								name: tokenMeta.title,
-								description: tokenMeta.description,
-								image: tokenMeta.image,
-								data: tokenMeta
-							});
-						}
-
-						tokenData.nftDetails = nftTokenDetails;
-						tokenData.balance = nftTokenDetails.length;
-
-					} else if (tokensMeta.length > 0) {
-						tokenData.name = tokensMeta[0].title;
-						tokenData.balance = tokensMeta[0].data?.balance;
-						tokenData.decimals = tokensMeta[0].data?.decimals;
-					} else {
-						continue;
+						nftTokenDetails.push({
+							collectionDetails: token,
+							tokenId: tokenMeta.tokenId,
+							name: tokenMeta.title,
+							description: tokenMeta.description,
+							image: tokenMeta.image,
+							data: tokenMeta
+						});
 					}
 
-					const collectionData = this.negotiator.getTokenStore().getCurrentIssuers(true)[refId];
+					token.nftDetails = nftTokenDetails;
+					token.balance = nftTokenDetails.length;
 
-					tokenData.image = collectionData.image;
-					tokenData.symbol = tokensMeta[0]?.symbol ? tokensMeta[0]?.symbol : tokensMeta[0]?.data?.symbol;
-
-					result.push(tokenData);
-				}
-
-				// This is hacky but allows us to respond to token updates and wallet change events from negotiator
-				if (this.updateFromEngine){
-					this.updateFromEngine = false;
-					resolve(result);
+				} else if (tokenData.length > 0) {
+					token.name = tokenData[0].title;
+					token.balance = tokenData[0].data?.balance;
+					token.decimals = tokenData[0].data?.decimals;
 				} else {
-					this.tokenScript.setTokenMetadata(result);
+					continue;
 				}
 
-			});
+				console.log("collection data: ", collectionData);
 
-			this.negotiator.negotiate(issuers);
-		});
+				token.image = collectionData.image;
+				token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
+
+				tokenResult.push(token);
+
+			} catch (e){
+				console.error(e);
+			}
+		}
+
+		return tokenResult;
+	}
+
+	private async fetchTokenMetadata(token: IToken, chain: string){
+
+		const url = token.tokenType === "erc20" ?
+			`/get-fungible-token?collectionAddress=${token.collectionId}&chain=${chain}&blockchain=evm` :
+			`/get-token-collection?smartContract=${token.collectionId}&chain=${chain}&blockchain=evm`;
+
+		return this.fetchRequest(url);
+	}
+
+	private async fetchOwnerTokens(token: IToken, chain: string, ownerAddress: string){
+
+		const url = token.tokenType === "erc20" ?
+			`/get-owner-fungible-tokens?collectionAddress=${token.collectionId}&owner=${ownerAddress}&chain=${chain}&blockchain=evm` :
+			`/get-owner-tokens?smartContract=${token.collectionId}&chain=${chain}&owner=${ownerAddress}&blockchain=evm`;
+
+		return this.fetchRequest(url);
+	}
+
+	private async fetchRequest(query: string){
+
+		try {
+			const response = await fetch(BASE_TOKEN_DISCOVERY_URL + query)
+			const ok = response.status >= 200 && response.status <= 299
+			if (!ok) {
+				console.warn('token api request failed: ', query)
+				return null;
+			}
+
+			return response.json();
+		} catch (msg: any) {
+			return null;
+		}
 	}
 }

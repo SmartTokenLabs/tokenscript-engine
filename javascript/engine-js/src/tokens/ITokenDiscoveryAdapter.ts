@@ -8,5 +8,5 @@ import {IToken} from "./IToken";
  * to the engine by calling TokenScript.setTokenMetadata(...);
  */
 export interface ITokenDiscoveryAdapter {
-	getTokens(initialTokenDetails: IToken[]): Promise<IToken[]>
+	getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]>
 }

@@ -1,11 +1,10 @@
 import {Component, Prop, h, State} from "@stencil/core";
 import {IntegrationViewer} from "../integration-viewer";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {Client} from "@tokenscript/token-negotiator";
-import {TokenNegotiatorDiscovery} from "../../../../integration/discoveryAdapter";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {getTokensFlat, TokenGridContext} from "../../util/getTokensFlat";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
+import {DiscoveryAdapter} from "../../../../integration/discoveryAdapter";
 
 @Component({
 	tag: 'select-step',
@@ -24,16 +23,6 @@ export class SelectStep {
 	@Prop()
 	card: Card
 
-	negotiator: Client = new Client({
-		'type': 'active',
-		'issuers': [],
-		'uiOptions': {
-			'containerElement': '#tn-integration',
-			'theme': 'light',
-			'openingHeading': 'Connect your wallet to load this TokenScripts tokens.'
-		}
-	});
-
 	currentTokens?: {[key: string]: IToken};
 
 	@State()
@@ -43,7 +32,7 @@ export class SelectStep {
 	tokenButtons: {token: TokenGridContext, enabled: boolean, buttonTitle: string}[];
 
 	async componentWillLoad() {
-		const discoveryAdapter = new TokenNegotiatorDiscovery(this.negotiator, this.tokenScript);
+		const discoveryAdapter = new DiscoveryAdapter(this.tokenScript);
 		this.tokenScript.setTokenDiscoveryAdapter(discoveryAdapter);
 
 		await this.populateTokens(await this.tokenScript.getTokenMetadata());
@@ -107,6 +96,7 @@ export class SelectStep {
 	render() {
 		return (
 			<div>
+				<wallet-button></wallet-button>
 				<div class="select-grid">
 					{
 						this.tokenButtons ? this.tokenButtons.map((tokenButton) => {

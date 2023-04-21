@@ -24,7 +24,6 @@
     "@peculiar/x509": "^1.9.2",
     "@stencil/core": "2.21.0",
     "@tokenscript/engine-js": "../engine-js/",
-    "@tokenscript/token-negotiator": "^2.4.3",
     "@toruslabs/torus-embed": "^1.41.2",
     "@walletconnect/universal-provider": "^2.7.0",
     "@walletconnect/web3-provider": "^1.8.0",

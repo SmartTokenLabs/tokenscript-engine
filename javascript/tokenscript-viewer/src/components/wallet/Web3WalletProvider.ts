@@ -1,5 +1,11 @@
 import { ethers } from 'ethers'
 
+declare global {
+	interface Window {
+		ethereum: any;
+	}
+}
+
 interface WalletConnectionState {
 	[index: string]: WalletConnection
 }

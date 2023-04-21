@@ -21,6 +21,7 @@ div {
 	display: inline-block;
 	height: 1em;
 	background-color: #dddbdd;
+	min-height: 240px;
 }
 
 .shimmer:after {

@@ -317,7 +317,7 @@ export class TokenScript {
 		// TODO: handle force reload or data TTL
 		if (!this.tokenMetadata || reload){
 
-			const tokenMeta = await this.resolveTokenMetadata();
+			const tokenMeta = await this.resolveTokenMetadata(reload);
 
 			this.tokenMetadata = {};
 
@@ -350,13 +350,13 @@ export class TokenScript {
 	/**
 	 * Request token meta updates via the TokenDiscoveryAdapter implementation provided by the user-agent
 	 */
-	public async resolveTokenMetadata() {
+	public async resolveTokenMetadata(reload: boolean) {
 
 		const tokenDiscovery = this.tokenDiscoveryAdapter ?? await this.engine.getTokenDiscoveryAdapter();
 
 		const initialTokenData = this.buildTokenDiscoveryData();
 
-		return await tokenDiscovery.getTokens(initialTokenData);
+		return await tokenDiscovery.getTokens(initialTokenData, reload);
 	}
 
 	/**

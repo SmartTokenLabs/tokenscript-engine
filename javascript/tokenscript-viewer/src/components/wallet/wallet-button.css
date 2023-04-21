@@ -1,0 +1,14 @@
+
+.wallet-connect-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.status-dot {
+	border-radius: 50%;
+	background: green;
+	width: 6px;
+	height: 6px;
+	margin: 5px;
+}
