@@ -5,110 +5,171 @@ import {WalletConnection, Web3WalletProvider} from "../components/wallet/Web3Wal
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {CHAIN_MAP} from "./constants";
 import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
+import Dexie from "dexie";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
 const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
 
+interface TSTokenCacheTokens {
+	chainId: number,
+	collectionId: string,
+	ownerAddress: string,
+	data: IToken,
+	dt: number
+}
+
+interface TSTokenCacheMeta {
+	chainId: number,
+	collectionId: string,
+	data: any,
+	dt: number
+}
+
+class TSTokenCache extends Dexie {
+
+	tokens!: Dexie.Table<TSTokenCacheTokens, string>;
+	tokenMeta!: Dexie.Table<TSTokenCacheMeta, string>;
+
+	constructor() {
+		super("TSTokenCache");
+
+		this.version(1).stores({
+			tokens: `[chainId+collectionId+ownerAddress], data, dt`,
+			tokenMeta: `[chainId+collectionId], data, dt`
+		});
+	}
+}
+
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
-	constructor(private tokenScript: TokenScript) {
-		Web3WalletProvider.registerWalletChangeListener(this.handleWalletChange.bind(this));
-	}
-
-	handleWalletChange(walletConnection: WalletConnection|undefined){
-		if (walletConnection){
-			this.tokenScript.getTokenMetadata(true);
-		} else {
-			this.tokenScript.setTokenMetadata([]);
-		}
-	}
+	private db = new TSTokenCache();
 
 	async getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]> {
 
 		const walletAddress = await this.getCurrentWalletAddress();
 
-		let cachedTokens = refresh ? null : await this.getCachedTokens(initialTokenDetails, walletAddress);
+		const resultTokens: IToken[] = [];
 
-		if (!cachedTokens){
-			cachedTokens = await this.fetchTokens(initialTokenDetails, walletAddress);
-			await this.storeCachedTokens(initialTokenDetails, walletAddress)
-		}
-
-		return cachedTokens;
-	}
-
-	async getCurrentWalletAddress(){
-		return (await Web3WalletProvider.getWallet(true)).address;
-	}
-
-	async getCachedTokens(initialTokenDetails: IToken[], ownerAddress: string): Promise<IToken[]|false> {
-
-
-		return false;
-	}
-
-	async storeCachedTokens(tokens: IToken[], ownerAddress: string){
-
-
-	}
-
-	async fetchTokens(initialTokenDetails: IToken[], ownerAddress: string){
-
-		const tokenResult: IToken[] = [];
-
-		for (const token of initialTokenDetails){
-
-			if (!CHAIN_MAP[token.chainId])
-				continue;
-
-			const chain = CHAIN_MAP[token.chainId];
+		for (const initToken of initialTokenDetails){
 
 			try {
-				const collectionData = await this.fetchTokenMetadata(token, chain);
-				const tokenData = await this.fetchOwnerTokens(token, chain, ownerAddress)
+				let cachedToken = refresh ? false : await this.getCachedTokens(initToken, walletAddress);
 
-
-				if (token.tokenType !== "erc20") {
-
-					const nftTokenDetails: INFTTokenDetail[] = [];
-
-					for (let tokenMeta of tokenData) {
-
-						nftTokenDetails.push({
-							collectionDetails: token,
-							tokenId: tokenMeta.tokenId,
-							name: tokenMeta.title,
-							description: tokenMeta.description,
-							image: tokenMeta.image,
-							data: tokenMeta
-						});
-					}
-
-					token.nftDetails = nftTokenDetails;
-					token.balance = nftTokenDetails.length;
-
-				} else if (tokenData.length > 0) {
-					token.name = tokenData[0].title;
-					token.balance = tokenData[0].data?.balance;
-					token.decimals = tokenData[0].data?.decimals;
-				} else {
-					continue;
+				if (!cachedToken) {
+					cachedToken = await this.fetchTokens(initToken, walletAddress);
+					await this.storeCachedTokens(cachedToken, walletAddress)
 				}
 
-				console.log("collection data: ", collectionData);
-
-				token.image = collectionData.image;
-				token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
-
-				tokenResult.push(token);
+				resultTokens.push(cachedToken);
 
 			} catch (e){
 				console.error(e);
 			}
 		}
 
-		return tokenResult;
+		return resultTokens;
+	}
+
+	async getCurrentWalletAddress(){
+		return (await Web3WalletProvider.getWallet(true)).address;
+	}
+
+	async getCachedTokens(initialTokenDetails: IToken, ownerAddress: string): Promise<IToken|false> {
+
+		const token = await this.db.tokens.where({
+			chainId: initialTokenDetails.chainId,
+			collectionId: initialTokenDetails.collectionId,
+			ownerAddress
+		}).first();
+
+		if (token && Date.now() < token.dt + (TOKEN_CACHE_TTL * 1000))
+			return token.data;
+
+		return false;
+	}
+
+	async storeCachedTokens(token: IToken, ownerAddress: string){
+
+		await this.db.tokens.put({
+			chainId: token.chainId,
+			collectionId: token.collectionId,
+			ownerAddress,
+			data: token,
+			dt: Date.now()
+		});
+	}
+
+	async fetchTokens(token: IToken, ownerAddress: string){
+
+		if (!CHAIN_MAP[token.chainId])
+			throw new Error("Chain ID " + token.chainId + " is not supported for token discovery");
+
+		const chain = CHAIN_MAP[token.chainId];
+
+		let collectionData = await this.getCachedMeta(token);
+
+		if (!collectionData){
+			collectionData = await this.fetchTokenMetadata(token, chain);
+			await this.storeCachedMeta(token, collectionData);
+		}
+
+		const tokenData = await this.fetchOwnerTokens(token, chain, ownerAddress)
+
+		if (token.tokenType !== "erc20") {
+
+			const nftTokenDetails: INFTTokenDetail[] = [];
+
+			for (let tokenMeta of tokenData) {
+
+				nftTokenDetails.push({
+					collectionDetails: token,
+					tokenId: tokenMeta.tokenId,
+					name: tokenMeta.title,
+					description: tokenMeta.description,
+					image: tokenMeta.image,
+					data: tokenMeta
+				});
+			}
+
+			token.nftDetails = nftTokenDetails;
+			token.balance = nftTokenDetails.length;
+
+		} else if (tokenData.length > 0) {
+			token.name = tokenData[0].title;
+			token.balance = tokenData[0].data?.balance;
+			token.decimals = tokenData[0].data?.decimals;
+		} else {
+			return token;
+		}
+
+		token.image = collectionData.image;
+		token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
+
+		return token;
+	}
+
+	private async getCachedMeta(token: IToken){
+
+		const tokenMeta = await this.db.tokenMeta.where({
+			chainId: token.chainId,
+			collectionId: token.collectionId,
+		}).first();
+
+		if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
+			return tokenMeta.data;
+
+		return false;
+	}
+
+	private async storeCachedMeta(token: IToken, data: any){
+
+		await this.db.tokenMeta.put({
+			chainId: token.chainId,
+			collectionId: token.collectionId,
+			data,
+			dt: Date.now()
+		});
 	}
 
 	private async fetchTokenMetadata(token: IToken, chain: string){

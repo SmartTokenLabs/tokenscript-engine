@@ -3,9 +3,9 @@ import {Components} from "../../../../components";
 import {TokenScript} from "../../../../../../engine-js/src/TokenScript";
 import {ViewBinding} from "../viewBinding";
 import AppRoot = Components.AppRoot;
-import "@tokenscript/token-negotiator/dist/theme/style.css";
 import "cb-toast";
 import {DiscoveryAdapter} from "../../../../integration/discoveryAdapter";
+import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
 
 @Component({
 	tag: 'viewer-tab',
@@ -28,6 +28,18 @@ export class ViewerTab {
 
 	discoveryAdapter;
 
+	constructor() {
+		Web3WalletProvider.registerWalletChangeListener(this.handleWalletChange.bind(this));
+	}
+
+	handleWalletChange(walletConnection: WalletConnection|undefined){
+		if (walletConnection){
+			this.tokenScript.getTokenMetadata(true);
+		} else {
+			this.tokenScript.setTokenMetadata([]);
+		}
+	}
+
 	@Watch('tokenScript')
 	async loadTs(){
 
@@ -37,18 +49,6 @@ export class ViewerTab {
 
 		this.viewBinding.setTokenScript(this.tokenScript);
 		this.tokenScript.setViewBinding(this.viewBinding);
-	}
-
-	componentWillLoad(){
-		if (this.tokenScript) {
-			this.discoveryAdapter = new DiscoveryAdapter(this.tokenScript);
-			this.tokenScript.setTokenDiscoveryAdapter(this.discoveryAdapter);
-		}
-	}
-
-	componentWillUpdate(){
-		this.discoveryAdapter = new DiscoveryAdapter(this.tokenScript);
-		this.tokenScript.setTokenDiscoveryAdapter(this.discoveryAdapter);
 	}
 
 	componentDidLoad() {

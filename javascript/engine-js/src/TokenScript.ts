@@ -310,14 +310,14 @@ export class TokenScript {
 
 	/**
 	 * Token metadata for the TokenScript origin contract/s
-	 * @param reload
+	 * @param reloadFromAdapter Fetch data from the token discover adapter. i.e. Used to load tokens for a different wallet address
+	 * @param bypassCache This is passed to the token discovery adapter, indicating the data should be refreshed from the source rather than being loaded from any cache
 	 */
-	public async getTokenMetadata(reload = false){
+	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false){
 
-		// TODO: handle force reload or data TTL
-		if (!this.tokenMetadata || reload){
+		if (!this.tokenMetadata || reloadFromAdapter){
 
-			const tokenMeta = await this.resolveTokenMetadata(reload);
+			const tokenMeta = await this.resolveTokenMetadata(bypassCache);
 
 			this.tokenMetadata = {};
 

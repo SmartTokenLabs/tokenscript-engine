@@ -1,5 +1,5 @@
 import {SupportedWalletProviders} from "./Web3WalletProvider";
-import {getBrowserData} from "@tokenscript/token-negotiator/dist/utils/support/getBrowserData";
+import {getBrowserData} from "./getBrowserData";
 
 export interface WalletInfo {
 	name: SupportedWalletProviders

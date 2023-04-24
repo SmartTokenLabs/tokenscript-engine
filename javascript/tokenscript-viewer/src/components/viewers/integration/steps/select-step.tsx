@@ -5,6 +5,7 @@ import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {getTokensFlat, TokenGridContext} from "../../util/getTokensFlat";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {DiscoveryAdapter} from "../../../../integration/discoveryAdapter";
+import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
 
 @Component({
 	tag: 'select-step',
@@ -31,9 +32,19 @@ export class SelectStep {
 	@State()
 	tokenButtons: {token: TokenGridContext, enabled: boolean, buttonTitle: string}[];
 
+	constructor() {
+		Web3WalletProvider.registerWalletChangeListener(this.handleWalletChange.bind(this));
+	}
+
+	handleWalletChange(walletConnection: WalletConnection|undefined){
+		if (walletConnection){
+			this.tokenScript.getTokenMetadata(true);
+		} else {
+			this.tokenScript.setTokenMetadata([]);
+		}
+	}
+
 	async componentWillLoad() {
-		const discoveryAdapter = new DiscoveryAdapter(this.tokenScript);
-		this.tokenScript.setTokenDiscoveryAdapter(discoveryAdapter);
 
 		await this.populateTokens(await this.tokenScript.getTokenMetadata());
 

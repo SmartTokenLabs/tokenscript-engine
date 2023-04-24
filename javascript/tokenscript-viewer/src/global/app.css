@@ -8,8 +8,6 @@
   Any global CSS variables should also be applied here.
 */
 
-@import '~@tokenscript/token-negotiator/dist/theme/style.css';
-
 body {
   margin: 0px;
   padding: 0px;

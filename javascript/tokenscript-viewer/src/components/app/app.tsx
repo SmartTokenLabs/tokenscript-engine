@@ -1,13 +1,12 @@
 import {Component, Element, h, Method, State} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
-import "@tokenscript/token-negotiator/dist/theme/style.css";
-
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
 import {TokenScript} from "../../../../engine-js/src/TokenScript";
 import {CHAIN_CONFIG} from "../../integration/constants";
 import {IWalletAdapter} from "../../../../engine-js/src/wallet/IWalletAdapter";
 import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
+import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -20,6 +19,8 @@ export class AppRoot {
 
 	walletSelector: HTMLWalletSelectorElement;
 
+	discoveryAdapter = new DiscoveryAdapter()
+
 	constructor() {
 		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 	}
@@ -30,7 +31,7 @@ export class AppRoot {
 		}, CHAIN_CONFIG);
 	}
 
-	tsEngine = new TokenScriptEngine(this.getWalletAdapter, null, {
+	tsEngine = new TokenScriptEngine(this.getWalletAdapter, async () => this.discoveryAdapter, {
 		ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
 	});
 
