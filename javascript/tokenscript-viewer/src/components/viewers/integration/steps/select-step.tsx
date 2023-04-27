@@ -4,7 +4,6 @@ import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {getTokensFlat, TokenGridContext} from "../../util/getTokensFlat";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
-import {DiscoveryAdapter} from "../../../../integration/discoveryAdapter";
 import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
 
 @Component({

@@ -1,4 +1,10 @@
 
+.toolbar {
+	display: flex;
+	padding: 10px 20px 0 20px;
+	justify-content: space-between;
+}
+
 attribute-table {
 	position: absolute;
 	bottom: 20px;

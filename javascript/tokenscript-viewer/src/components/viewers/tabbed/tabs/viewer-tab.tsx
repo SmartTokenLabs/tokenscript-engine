@@ -4,7 +4,6 @@ import {TokenScript} from "../../../../../../engine-js/src/TokenScript";
 import {ViewBinding} from "../viewBinding";
 import AppRoot = Components.AppRoot;
 import "cb-toast";
-import {DiscoveryAdapter} from "../../../../integration/discoveryAdapter";
 import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
 
 @Component({
@@ -77,7 +76,10 @@ export class ViewerTab {
 	render() {
 		return (
 			<div>
-				<wallet-button></wallet-button>
+				<div class="toolbar">
+					<security-status tokenScript={this.tokenScript}/>
+					<wallet-button></wallet-button>
+				</div>
 				<tokens-grid tokenScript={this.tokenScript} showToast={this.showToast.bind(this)}></tokens-grid>
 				<div class="view-container" style={{display: "none"}}>
 					<button class="close-btn" onClick={() => {
@@ -99,8 +101,6 @@ export class ViewerTab {
 					</div>
 					<attribute-table></attribute-table>
 				</div>
-				<security-status tokenScript={this.tokenScript}/>
-				<div id={'tn-' + this.uuid} class="overlay-tn light-tn"></div>
 				<cb-toast class="toast"></cb-toast>
 			</div>
 		);

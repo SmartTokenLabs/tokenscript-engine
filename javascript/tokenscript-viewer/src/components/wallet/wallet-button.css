@@ -1,14 +1,63 @@
 
+.btn-container {
+	position: relative;
+}
+
+.btn-dropdown {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #EEEEEE;
+	top: 40px;
+	border-radius: 10px;
+	padding: 5px;
+	z-index: 10;
+}
+
+.chevron::before {
+	border-style: solid;
+	border-width: 2px 2px 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(135deg);
+	vertical-align: top;
+	width: 0.45em;
+	border-color: #000;
+	margin: 0 10px;
+}
+
+.btn-dropdown button {
+	display: block;
+	height: 34px;
+	border: none;
+	border-radius: 10px;
+	font-size: 14px;
+}
+
 .wallet-connect-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	min-width: 140px;
+}
+
+.btn-connected {
+	background: #EEEEEE;
+}
+
+.btn-connected:hover, .btn-dropdown button:hover {
+	background: linear-gradient(0deg, #CECECE, #CECECE), #DDDDDD;
 }
 
 .status-dot {
 	border-radius: 50%;
-	background: green;
-	width: 6px;
-	height: 6px;
+	background: #3DBD00;
+	width: 8px;
+	height: 8px;
 	margin: 5px;
 }

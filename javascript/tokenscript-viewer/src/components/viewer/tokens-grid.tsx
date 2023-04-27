@@ -31,23 +31,6 @@ export class TokensGrid {
 		})
 	}
 
-	connectedCallback(){
-		window.addEventListener("tn-wallet-change", this.walletChangeListener);
-	}
-
-	disconnectedCallback(){
-		window.removeEventListener("tn-wallet-change", this.walletChangeListener);
-	}
-
-	private walletChangeListener = async (e: CustomEvent) => {
-		if (e.detail.provider)
-			return;
-
-		this.currentTokens = null;
-		this.currentTokensFlat = null;
-		console.log("Token Grid: TN wallet disconnect");
-	};
-
 	async populateTokens(tokens: {[key: string]: IToken} ){
 
 		this.currentTokens = tokens;

@@ -34,7 +34,7 @@ select:hover {
 }
 
 .btn {
-	border-radius: 5px;
+	border-radius: 10px;
 	height: 36px;
 	min-width: 112px;
 	background: #EEEEEE;

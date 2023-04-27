@@ -103,6 +103,22 @@ class Web3WalletProviderObj {
 		this.emitWalletChangeEvent();
 	}
 
+	async switchWallet(){
+
+		return new Promise(async (resolve, reject) => {
+
+			try {
+				const providerName = await this.selectorCallback();
+
+				await this.connectWith(providerName);
+
+				resolve(this.getConnectedWalletData('evm')[0]);
+			} catch (e){
+				reject(e);
+			}
+		});
+	}
+
 	private saveConnections() {
 		let savedConnections: WalletConnectionState = {}
 
@@ -258,6 +274,7 @@ class Web3WalletProviderObj {
 		blockchain: SupportedBlockchainsParam,
 	) {
 
+		this.connections = {};
 		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain, ethers }
 
 		// @ts-ignore
