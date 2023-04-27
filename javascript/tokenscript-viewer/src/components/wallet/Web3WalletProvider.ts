@@ -74,6 +74,10 @@ class Web3WalletProviderObj {
 		}
 	}
 
+	isWalletConnected(){
+		return this.getConnectedWalletData('evm').length > 0;
+	}
+
 	async getWallet(connect = false): Promise<WalletConnection> {
 
 		if (this.getConnectedWalletData('evm').length === 0) {

@@ -12,10 +12,10 @@ img {
 }
 
 div {
-	display: block;
+	display: flex;
 	position: relative;
 	overflow: hidden;
-	width: 100%;
+	max-width: 100%;
 }
 
 .shimmer {

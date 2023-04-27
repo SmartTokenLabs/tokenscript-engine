@@ -1,0 +1,29 @@
+
+.ts-button {
+	width: 200px;
+	height: 60px;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	background-color: #FFFEFE;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.ts-button.disabled {
+	opacity: 0.8;
+}
+
+.ts-details {
+	padding: 10px;
+}
+
+h5 {
+	margin: 5px 0;
+}
+
+token-icon {
+	width: 60px;
+	height: 60px;
+}

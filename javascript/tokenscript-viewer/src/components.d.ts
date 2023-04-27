@@ -16,6 +16,8 @@ import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
 import { JSX } from "@stencil/core";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
+    interface AddSelector {
+    }
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
     }
@@ -87,6 +89,12 @@ export namespace Components {
         "token": TokenGridContext;
         "tokenScript": TokenScript1;
     }
+    interface TokenscriptButton {
+        "enabled": boolean;
+        "imageUrl": string;
+        "name": string;
+        "subText": string;
+    }
     interface ViewStep {
         "card": Card;
         "tokenScript": TokenScript1;
@@ -104,6 +112,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLAddSelectorElement extends Components.AddSelector, HTMLStencilElement {
+    }
+    var HTMLAddSelectorElement: {
+        prototype: HTMLAddSelectorElement;
+        new (): HTMLAddSelectorElement;
+    };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
@@ -206,6 +220,12 @@ declare global {
         prototype: HTMLTokensGridItemElement;
         new (): HTMLTokensGridItemElement;
     };
+    interface HTMLTokenscriptButtonElement extends Components.TokenscriptButton, HTMLStencilElement {
+    }
+    var HTMLTokenscriptButtonElement: {
+        prototype: HTMLTokenscriptButtonElement;
+        new (): HTMLTokenscriptButtonElement;
+    };
     interface HTMLViewStepElement extends Components.ViewStep, HTMLStencilElement {
     }
     var HTMLViewStepElement: {
@@ -231,6 +251,7 @@ declare global {
         new (): HTMLWalletSelectorElement;
     };
     interface HTMLElementTagNameMap {
+        "add-selector": HTMLAddSelectorElement;
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
         "confirm-step": HTMLConfirmStepElement;
@@ -248,6 +269,7 @@ declare global {
         "token-icon": HTMLTokenIconElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
+        "tokenscript-button": HTMLTokenscriptButtonElement;
         "view-step": HTMLViewStepElement;
         "viewer-tab": HTMLViewerTabElement;
         "wallet-button": HTMLWalletButtonElement;
@@ -255,6 +277,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface AddSelector {
+    }
     interface AppRoot {
     }
     interface AttributeTable {
@@ -320,6 +344,12 @@ declare namespace LocalJSX {
         "token"?: TokenGridContext;
         "tokenScript"?: TokenScript1;
     }
+    interface TokenscriptButton {
+        "enabled"?: boolean;
+        "imageUrl"?: string;
+        "name"?: string;
+        "subText"?: string;
+    }
     interface ViewStep {
         "card"?: Card;
         "tokenScript"?: TokenScript1;
@@ -335,6 +365,7 @@ declare namespace LocalJSX {
     interface WalletSelector {
     }
     interface IntrinsicElements {
+        "add-selector": AddSelector;
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
         "confirm-step": ConfirmStep;
@@ -352,6 +383,7 @@ declare namespace LocalJSX {
         "token-icon": TokenIcon;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
+        "tokenscript-button": TokenscriptButton;
         "view-step": ViewStep;
         "viewer-tab": ViewerTab;
         "wallet-button": WalletButton;
@@ -362,6 +394,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
@@ -379,6 +412,7 @@ declare module "@stencil/core" {
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
+            "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
             "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;
             "wallet-button": LocalJSX.WalletButton & JSXBase.HTMLAttributes<HTMLWalletButtonElement>;

@@ -1,0 +1,10 @@
+
+.nv-container {
+	padding: 10px;
+}
+
+.toolbar {
+	display: flex;
+	padding: 5px 0;
+	justify-content: space-between;
+}

@@ -1,8 +1,7 @@
 import {ITokenDiscoveryAdapter} from "../../../engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {IToken} from "../../../engine-js/src/tokens/IToken";
 
-import {WalletConnection, Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_MAP} from "./constants";
 import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
 import Dexie from "dexie";

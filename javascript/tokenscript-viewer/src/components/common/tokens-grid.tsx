@@ -4,6 +4,7 @@ import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../viewers/util/getTokensFlat";
+import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 
 @Component({
 	tag: 'tokens-grid',
@@ -93,7 +94,7 @@ export class TokensGrid {
 						return (
 							<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
 						);
-					}) :  (<h3>{this.currentTokensFlat ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>)
+					}) :  (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>)
 				}
 			</div>
 		)
