@@ -22,6 +22,9 @@ export class TokensGrid {
 	@State()
 	currentTokensFlat?: TokenGridContext[];
 
+	@State()
+	loading: boolean = true;
+
 	@Watch("tokenScript")
 	async componentDidLoad() {
 
@@ -30,9 +33,17 @@ export class TokensGrid {
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
 		})
+
+		this.tokenScript.on("TOKENS_LOADING", () => {
+			this.loading = true;
+			this.currentTokensFlat = null;
+			console.log("Tokens loading");
+		})
 	}
 
 	async populateTokens(tokens: {[key: string]: IToken} ){
+
+		this.loading = false;
 
 		this.currentTokens = tokens;
 
@@ -88,14 +99,19 @@ export class TokensGrid {
 
 	render() {
 		return (
-			<div class="tokens-grid">
-				{
-					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
-						return (
-							<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
-						);
-					}) :  (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>)
-				}
+			<div>
+				<div class="tokens-grid">
+					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+					{
+						this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
+							return (
+								<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
+							);
+						}) :  (
+							!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
+						)
+					}
+				</div>
 			</div>
 		)
 	}

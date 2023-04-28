@@ -3,6 +3,7 @@ import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 
 export type TokenGridContext = (INFTTokenDetail | IToken) & { contextId: string; };
 
+// TODO: Improve engine APIs so this is not required
 export function getTokensFlat(tokens: {[name: string]: IToken}): TokenGridContext[] {
 
 	return Object.keys(tokens).reduce((tokenArr, contractName) => {

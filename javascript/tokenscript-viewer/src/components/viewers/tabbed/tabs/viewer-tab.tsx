@@ -25,8 +25,6 @@ export class ViewerTab {
 
 	uuid = Date.now();
 
-	discoveryAdapter;
-
 	constructor() {
 		Web3WalletProvider.registerWalletChangeListener(this.handleWalletChange.bind(this));
 	}
@@ -78,7 +76,10 @@ export class ViewerTab {
 			<div>
 				<div class="toolbar">
 					<security-status tokenScript={this.tokenScript}/>
-					<wallet-button></wallet-button>
+					<div>
+						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}} onClick={() => this.tokenScript.getTokenMetadata(true, true)}>↻</button>
+						<wallet-button></wallet-button>
+					</div>
 				</div>
 				<tokens-grid tokenScript={this.tokenScript} showToast={this.showToast.bind(this)}></tokens-grid>
 				<div class="view-container" style={{display: "none"}}>

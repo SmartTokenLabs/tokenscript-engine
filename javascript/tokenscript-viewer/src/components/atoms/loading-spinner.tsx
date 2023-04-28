@@ -11,7 +11,7 @@ export class LoadingSpinner {
 	color = "#fff";
 
 	@Prop()
-	size = "large";
+	size: "large"|"small" = "large";
 
 	render() {
 		const color = this.color + " transparent transparent transparent";

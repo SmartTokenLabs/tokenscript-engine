@@ -30,12 +30,18 @@ export class TokenscriptButton {
 		if (!this.tokenScript)
 			return;
 
+		this.subText = "loading...";
+
 		const tokens = await this.tokenScript.getTokenMetadata();
 
 		this.updateTokenStatus(tokens);
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.updateTokenStatus(data.tokens);
+		});
+
+		this.tokenScript.on("TOKENS_LOADING", () => {
+			this.subText = "loading...";
 		});
 	}
 

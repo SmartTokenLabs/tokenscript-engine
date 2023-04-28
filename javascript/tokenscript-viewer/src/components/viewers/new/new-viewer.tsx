@@ -94,7 +94,15 @@ export class NewViewer {
 					</button>
 				</div>
 				<div>
-					<h5>Your Tokens</h5>
+					<div style={{display: "flex", justifyContent: "space-between"}}>
+						<h5>Your Tokens</h5>
+						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
+								onClick={() => {
+									for (const id in this.myTokenScripts){
+										this.myTokenScripts[id].tokenScript.getTokenMetadata(true, true);
+									}
+								}}>↻</button>
+					</div>
 					<br/>
 					<tokenscript-grid>
 						{

@@ -23,6 +23,7 @@ export interface ITokenIdContext {
 
 export interface TokenScriptEvents {
 	TOKENS_UPDATED: TokensUpdatedEventArgs
+	TOKENS_LOADING: void
 }
 
 export interface TokensUpdatedEventArgs {
@@ -93,7 +94,7 @@ export class TokenScript {
 	private emitEvent<
 		T extends keyof TokenScriptEvents, // <- T points to a key
 		R extends (TokenScriptEvents)[T] // <- R points to the type of that key
-	>(eventType: T, params: R) {
+	>(eventType: T, params?: R) {
 		if (this.eventHandlers[eventType])
 			this.eventHandlers[eventType](params);
 	}
@@ -316,6 +317,8 @@ export class TokenScript {
 	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false){
 
 		if (!this.tokenMetadata || reloadFromAdapter){
+
+			this.emitEvent("TOKENS_LOADING");
 
 			const tokenMeta = await this.resolveTokenMetadata(bypassCache);
 
