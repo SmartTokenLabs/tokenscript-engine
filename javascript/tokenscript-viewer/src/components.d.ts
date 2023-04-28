@@ -17,6 +17,7 @@ import { JSX } from "@stencil/core";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AddSelector {
+        "openTokenScript": () => Promise<void>;
     }
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
@@ -93,7 +94,9 @@ export namespace Components {
         "enabled": boolean;
         "imageUrl": string;
         "name": string;
-        "subText": string;
+        "tokenScript"?: TokenScript1;
+    }
+    interface TokenscriptGrid {
     }
     interface ViewStep {
         "card": Card;
@@ -226,6 +229,12 @@ declare global {
         prototype: HTMLTokenscriptButtonElement;
         new (): HTMLTokenscriptButtonElement;
     };
+    interface HTMLTokenscriptGridElement extends Components.TokenscriptGrid, HTMLStencilElement {
+    }
+    var HTMLTokenscriptGridElement: {
+        prototype: HTMLTokenscriptGridElement;
+        new (): HTMLTokenscriptGridElement;
+    };
     interface HTMLViewStepElement extends Components.ViewStep, HTMLStencilElement {
     }
     var HTMLViewStepElement: {
@@ -270,6 +279,7 @@ declare global {
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
         "tokenscript-button": HTMLTokenscriptButtonElement;
+        "tokenscript-grid": HTMLTokenscriptGridElement;
         "view-step": HTMLViewStepElement;
         "viewer-tab": HTMLViewerTabElement;
         "wallet-button": HTMLWalletButtonElement;
@@ -348,7 +358,9 @@ declare namespace LocalJSX {
         "enabled"?: boolean;
         "imageUrl"?: string;
         "name"?: string;
-        "subText"?: string;
+        "tokenScript"?: TokenScript1;
+    }
+    interface TokenscriptGrid {
     }
     interface ViewStep {
         "card"?: Card;
@@ -384,6 +396,7 @@ declare namespace LocalJSX {
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
         "tokenscript-button": TokenscriptButton;
+        "tokenscript-grid": TokenscriptGrid;
         "view-step": ViewStep;
         "viewer-tab": ViewerTab;
         "wallet-button": WalletButton;
@@ -413,6 +426,7 @@ declare module "@stencil/core" {
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
+            "tokenscript-grid": LocalJSX.TokenscriptGrid & JSXBase.HTMLAttributes<HTMLTokenscriptGridElement>;
             "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;
             "wallet-button": LocalJSX.WalletButton & JSXBase.HTMLAttributes<HTMLWalletButtonElement>;

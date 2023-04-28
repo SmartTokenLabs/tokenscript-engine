@@ -1,0 +1,18 @@
+
+:host {
+	display: block;
+	width: 100%;
+}
+
+.ts-grid {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+@media screen and (max-width: 550px) {
+	tokenscript-button {
+		flex: 100%;
+	}
+}
+

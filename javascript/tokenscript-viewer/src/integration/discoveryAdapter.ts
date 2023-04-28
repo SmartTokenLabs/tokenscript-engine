@@ -4,45 +4,13 @@ import {IToken} from "../../../engine-js/src/tokens/IToken";
 import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_MAP} from "./constants";
 import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
-import Dexie from "dexie";
+import {dbProvider} from "../providers/databaseProvider";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
 const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
 
-interface TSTokenCacheTokens {
-	chainId: number,
-	collectionId: string,
-	ownerAddress: string,
-	data: IToken,
-	dt: number
-}
-
-interface TSTokenCacheMeta {
-	chainId: number,
-	collectionId: string,
-	data: any,
-	dt: number
-}
-
-class TSTokenCache extends Dexie {
-
-	tokens!: Dexie.Table<TSTokenCacheTokens, string>;
-	tokenMeta!: Dexie.Table<TSTokenCacheMeta, string>;
-
-	constructor() {
-		super("TSTokenCache");
-
-		this.version(1).stores({
-			tokens: `[chainId+collectionId+ownerAddress], data, dt`,
-			tokenMeta: `[chainId+collectionId], data, dt`
-		});
-	}
-}
-
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
-
-	private db = new TSTokenCache();
 
 	async getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]> {
 
@@ -76,7 +44,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	async getCachedTokens(initialTokenDetails: IToken, ownerAddress: string): Promise<IToken|false> {
 
-		const token = await this.db.tokens.where({
+		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
 			collectionId: initialTokenDetails.collectionId,
 			ownerAddress
@@ -90,7 +58,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	async storeCachedTokens(token: IToken, ownerAddress: string){
 
-		await this.db.tokens.put({
+		await dbProvider.tokens.put({
 			chainId: token.chainId,
 			collectionId: token.collectionId,
 			ownerAddress,
@@ -150,7 +118,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	private async getCachedMeta(token: IToken){
 
-		const tokenMeta = await this.db.tokenMeta.where({
+		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,
 			collectionId: token.collectionId,
 		}).first();
@@ -163,7 +131,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	private async storeCachedMeta(token: IToken, data: any){
 
-		await this.db.tokenMeta.put({
+		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
 			collectionId: token.collectionId,
 			data,

@@ -1,4 +1,4 @@
-import {Component, h, JSX, Prop, State} from "@stencil/core";
+import {Component, h, JSX, Prop, State, Watch} from "@stencil/core";
 
 
 @Component({
@@ -20,8 +20,12 @@ export class TokenIcon {
 	@State()
 	loaded = false;
 
-	componentWillLoad(){
+	connectedCallback(){
+		this.loadImage();
+	}
 
+	@Watch("src")
+	private loadImage(){
 		let src = this.src
 		let image;
 
@@ -39,13 +43,13 @@ export class TokenIcon {
 			image.src = src;*/
 
 			image = (<img alt={this.imageTitle} src={src}
-						onLoad={() => {
-							this.loaded = true;
-						}}
-					  	onError={(e: Event) => {
-							this.image = this.createAvatar();
-							this.loaded = true;
-						}} />);
+						  onLoad={() => {
+							  this.loaded = true;
+						  }}
+						  onError={(e: Event) => {
+							  this.image = this.createAvatar();
+							  this.loaded = true;
+						  }} />);
 		} else {
 			image = this.createAvatar()
 			this.loaded = true;
