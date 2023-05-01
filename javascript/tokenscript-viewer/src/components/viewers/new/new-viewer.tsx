@@ -26,10 +26,15 @@ export class NewViewer {
 	@State()
 	private popularTokenscripts: TokenScriptsMeta[] = [];
 
-	async componentWillLoad(){
+	componentWillLoad(){
 
 		// TODO: Temp for testing
 		// await dbProvider.myTokenScripts.clear()
+
+		this.init();
+	}
+
+	private async init(){
 
 		const tokenScriptsMap = {};
 
@@ -121,25 +126,27 @@ export class NewViewer {
 						}
 					</tokenscript-grid>
 				</div>
-				<div>
-					<h5>Popular TokenScripts</h5>
-					<br/>
-					<tokenscript-grid>
-						{
-							this.popularTokenscripts.map((ts) => {
-								return (
-									<tokenscript-button
-										name={ts.name}
-										imageUrl={ts.iconUrl}
-										onClick={() => {
-											this.addPopularTokenScript(ts);
-										}}>
-									</tokenscript-button>
-								);
-							})
-						}
-					</tokenscript-grid>
-				</div>
+				{ this.popularTokenscripts.length > 0 ?
+					<div>
+						<h5>Popular TokenScripts</h5>
+						<br/>
+						<tokenscript-grid>
+							{
+								this.popularTokenscripts.map((ts) => {
+									return (
+										<tokenscript-button
+											name={ts.name}
+											imageUrl={ts.iconUrl}
+											onClick={() => {
+												this.addPopularTokenScript(ts);
+											}}>
+										</tokenscript-button>
+									);
+								})
+							}
+						</tokenscript-grid>
+					</div> : ''
+				}
 				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement}></add-selector>
 			</div>
 		);

@@ -96,6 +96,7 @@ export class SecurityInfo {
 		}
 
 		this.securityInfo = {};
+		this.securityInfo.status = SecurityStatus.INVALID;
 		this.securityInfo.auth = AuthenticationType.NONE;
 		this.securityInfo.authText = "Could not verify contract/script authenticity";
 		this.securityInfo.integrity = IntegrityType.NONE;

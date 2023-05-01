@@ -1,0 +1,54 @@
+
+.input-container {
+	position: relative;
+	padding: 10px 0;
+}
+
+.input-container > label {
+	position: absolute;
+	background: white;
+	font-size: 11px;
+	left: 10px;
+	top: 5px;
+	padding: 0 4px;
+}
+
+.input-container > input, .input-container > select {
+	width: 100%;
+	height: 50px !important;
+	border-radius: 4px;
+}
+
+.input-container > select {
+	cursor: pointer;
+}
+
+.input-container > select:hover, .input-container > select:focus {
+	background: unset;
+}
+
+.input-container > input:focus {
+	border: 1px solid #001AFF;
+	outline: none;
+}
+
+.input-container:focus-within > label {
+	color: #001AFF
+}
+
+input[type=file] {
+	border: none !important;
+}
+
+input::file-selector-button {
+	border-radius: 10px;
+	height: 36px;
+	min-width: 73px;
+	border: none;
+	cursor: pointer;
+	background: #EEEEEE;
+}
+
+input::file-selector-button:hover {
+
+}

@@ -23,6 +23,7 @@ div {
 	height: 1em;
 	background-color: #dddbdd;
 	min-height: 240px;
+	width: 100%;
 }
 
 .shimmer:after {

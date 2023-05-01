@@ -33,6 +33,12 @@ export namespace Components {
         "tabId": string;
         "tokenScript": TokenScript;
     }
+    interface InputField {
+        "label": string;
+        "name": string;
+        "type": string;
+        "value": string;
+    }
     interface IntegrationViewer {
         "app": AppRoot;
     }
@@ -49,6 +55,12 @@ export namespace Components {
     }
     interface SecurityStatus {
         "tokenScript": TokenScript1;
+    }
+    interface SelectField {
+        "label": string;
+        "name": string;
+        "options": {label: string, value: string}[];
+        "value": string;
     }
     interface SelectStep {
         "card": Card;
@@ -145,6 +157,12 @@ declare global {
         prototype: HTMLDebugViewerTabElement;
         new (): HTMLDebugViewerTabElement;
     };
+    interface HTMLInputFieldElement extends Components.InputField, HTMLStencilElement {
+    }
+    var HTMLInputFieldElement: {
+        prototype: HTMLInputFieldElement;
+        new (): HTMLInputFieldElement;
+    };
     interface HTMLIntegrationViewerElement extends Components.IntegrationViewer, HTMLStencilElement {
     }
     var HTMLIntegrationViewerElement: {
@@ -174,6 +192,12 @@ declare global {
     var HTMLSecurityStatusElement: {
         prototype: HTMLSecurityStatusElement;
         new (): HTMLSecurityStatusElement;
+    };
+    interface HTMLSelectFieldElement extends Components.SelectField, HTMLStencilElement {
+    }
+    var HTMLSelectFieldElement: {
+        prototype: HTMLSelectFieldElement;
+        new (): HTMLSelectFieldElement;
     };
     interface HTMLSelectStepElement extends Components.SelectStep, HTMLStencilElement {
     }
@@ -265,11 +289,13 @@ declare global {
         "attribute-table": HTMLAttributeTableElement;
         "confirm-step": HTMLConfirmStepElement;
         "debug-viewer-tab": HTMLDebugViewerTabElement;
+        "input-field": HTMLInputFieldElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "new-viewer": HTMLNewViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
         "security-status": HTMLSecurityStatusElement;
+        "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
         "start-tab": HTMLStartTabElement;
         "tab-header-item": HTMLTabHeaderItemElement;
@@ -302,6 +328,12 @@ declare namespace LocalJSX {
         "tabId"?: string;
         "tokenScript"?: TokenScript;
     }
+    interface InputField {
+        "label"?: string;
+        "name"?: string;
+        "type"?: string;
+        "value"?: string;
+    }
     interface IntegrationViewer {
         "app"?: AppRoot;
     }
@@ -316,6 +348,12 @@ declare namespace LocalJSX {
     }
     interface SecurityStatus {
         "tokenScript"?: TokenScript1;
+    }
+    interface SelectField {
+        "label"?: string;
+        "name"?: string;
+        "options"?: {label: string, value: string}[];
+        "value"?: string;
     }
     interface SelectStep {
         "card"?: Card;
@@ -382,11 +420,13 @@ declare namespace LocalJSX {
         "attribute-table": AttributeTable;
         "confirm-step": ConfirmStep;
         "debug-viewer-tab": DebugViewerTab;
+        "input-field": InputField;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
         "new-viewer": NewViewer;
         "popover-dialog": PopoverDialog;
         "security-status": SecurityStatus;
+        "select-field": SelectField;
         "select-step": SelectStep;
         "start-tab": StartTab;
         "tab-header-item": TabHeaderItem;
@@ -412,11 +452,13 @@ declare module "@stencil/core" {
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
+            "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
+            "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;

@@ -30,17 +30,6 @@ export class TokenIcon {
 		let image;
 
 		if (src && src !== 'undefined') {
-			// Create image elements and add onload/onerror events
-			/*image = document.createElement('img')
-			image.loading = 'lazy'
-			image.addEventListener('load', (e: Event) => {
-				this.loaded = true;
-			})
-			image.addEventListener('error', (e: Event) => {
-				this.image = this.createAvatar();
-				this.loaded = true;
-			})
-			image.src = src;*/
 
 			image = (<img alt={this.imageTitle} src={src}
 						  onLoad={() => {
