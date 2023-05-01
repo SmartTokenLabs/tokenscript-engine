@@ -14,9 +14,14 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	async getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]> {
 
-		const walletAddress = await this.getCurrentWalletAddress();
-
 		const resultTokens: IToken[] = [];
+
+		if (!Web3WalletProvider.isWalletConnected()){
+			Web3WalletProvider.getWallet(true);
+			return [];
+		}
+
+		const walletAddress = await this.getCurrentWalletAddress();
 
 		for (const initToken of initialTokenDetails){
 
