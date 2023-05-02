@@ -82,26 +82,7 @@ export class ViewerTab {
 					</div>
 				</div>
 				<tokens-grid tokenScript={this.tokenScript} showToast={this.showToast.bind(this)}></tokens-grid>
-				<div class="view-container" style={{display: "none"}}>
-					<button class="close-btn" onClick={() => {
-						document.location.hash = "#";
-						this.tokenScript.getViewController().unloadTokenCard();
-					}}>X</button>
-					<div class="card-container">
-						<div style={{position: "relative"}}>
-							<div class="view-loader" style={{display: "none"}}>
-								<loading-spinner/>
-							</div>
-							<iframe class="tokenscript-frame"
-									sandbox="allow-scripts allow-modals allow-forms">
-							</iframe>
-						</div>
-						<div class="action-bar" style={{display: "none"}}>
-							<button class="action-btn btn btn-primary"></button>
-						</div>
-					</div>
-					<attribute-table></attribute-table>
-				</div>
+				<card-modal tokenScript={this.tokenScript}></card-modal>
 				<cb-toast class="toast"></cb-toast>
 			</div>
 		);

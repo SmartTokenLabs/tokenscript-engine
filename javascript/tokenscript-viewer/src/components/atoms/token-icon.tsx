@@ -48,8 +48,11 @@ export class TokenIcon {
 	}
 
 	private createAvatar() {
+
+		const title = this.imageTitle ?? "Unknown Token";
+
 		return (
-			<img alt={this.imageTitle} src={this.generateAvatar(this.imageTitle)}/>
+			<img alt={title} src={this.generateAvatar(title)}/>
 		)
 	}
 
@@ -57,14 +60,14 @@ export class TokenIcon {
 		const canvas = document.createElement('canvas')
 		const context = canvas.getContext('2d')
 
-		canvas.width = 200
-		canvas.height = 200
+		canvas.width = 300
+		canvas.height = 300
 
 		if (!context) return ''
 
 		context.fillStyle = this.getRandomBackgroundColor()
 		context.fillRect(0, 0, canvas.width, canvas.height)
-		context.font = "bold 100px 'Arial', sans-serif"
+		context.font = "bold 150px 'Arial', sans-serif"
 		context.fillStyle = '#fff'
 		context.textAlign = 'center'
 		context.textBaseline = 'middle'

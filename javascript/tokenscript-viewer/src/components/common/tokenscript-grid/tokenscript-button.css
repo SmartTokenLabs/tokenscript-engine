@@ -38,7 +38,7 @@
 	margin: 2px 0;
 }
 
-token-icon {
+.ts-button > token-icon {
 	margin-left: 5px;
 	border-radius: 5px;
 	width: 50px;
@@ -46,7 +46,7 @@ token-icon {
 	flex-shrink: 0;
 }
 
-.remove-btn {
+.ts-button > .remove-btn {
 	align-self: start;
 	background: none;
 	font-weight: bold;

@@ -1,6 +1,11 @@
 
+:host {
+	position: relative;
+}
+
 .nv-container {
 	padding: 10px;
+	position: relative;
 }
 
 .toolbar {

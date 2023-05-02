@@ -1,0 +1,26 @@
+
+.close-btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 20px;
+	font-size: 22px;
+	font-weight: bold;
+	width: 35px;
+	height: 35px;
+	border: #a6a6a6;
+	color: #676767;
+	border-radius: 5px;
+	padding: 4px 6px;
+	cursor: pointer !important;
+}
+
+.view-container {
+	width: 100%;
+	padding: 20px;
+	position: absolute;
+	top: 0;
+	min-height: 100%;
+	background: #1a1a1ae0;
+	z-index: 100;
+}

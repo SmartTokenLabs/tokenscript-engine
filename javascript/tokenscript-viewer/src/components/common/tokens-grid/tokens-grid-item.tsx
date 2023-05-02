@@ -1,7 +1,7 @@
 import {Component, h, JSX, Prop, State} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
-import {TokenGridContext} from "../viewers/util/getTokensFlat";
+import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 
 @Component({
 	tag: 'tokens-grid-item',

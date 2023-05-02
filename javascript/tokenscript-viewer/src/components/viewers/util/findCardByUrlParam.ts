@@ -1,5 +1,6 @@
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 
+// TODO: Improve engine APIs so this is not required
 export function findCardByUrlParam(id: string, tokenScript: TokenScript){
 
 	const cards = tokenScript.getCards();

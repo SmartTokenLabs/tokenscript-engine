@@ -8,8 +8,8 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { AppRoot, TokenScriptSource } from "./components/app/app";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
-import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
+import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -25,6 +25,11 @@ export namespace Components {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string, file?: File | string) => Promise<TokenScript>;
     }
     interface AttributeTable {
+    }
+    interface CardModal {
+        "tokenScript"?: TokenScript1;
+    }
+    interface CardView {
     }
     interface ConfirmStep {
         "tokenScript": TokenScript1;
@@ -122,6 +127,10 @@ export namespace Components {
         "tokenScript": TokenScript1;
         "viewer": IntegrationViewer;
     }
+    interface ViewerPopover {
+        "close": () => Promise<void>;
+        "open": (tokenScript: TokenScript1) => Promise<void>;
+    }
     interface ViewerTab {
         "app": AppRoot;
         "tabId": string;
@@ -151,6 +160,18 @@ declare global {
     var HTMLAttributeTableElement: {
         prototype: HTMLAttributeTableElement;
         new (): HTMLAttributeTableElement;
+    };
+    interface HTMLCardModalElement extends Components.CardModal, HTMLStencilElement {
+    }
+    var HTMLCardModalElement: {
+        prototype: HTMLCardModalElement;
+        new (): HTMLCardModalElement;
+    };
+    interface HTMLCardViewElement extends Components.CardView, HTMLStencilElement {
+    }
+    var HTMLCardViewElement: {
+        prototype: HTMLCardViewElement;
+        new (): HTMLCardViewElement;
     };
     interface HTMLConfirmStepElement extends Components.ConfirmStep, HTMLStencilElement {
     }
@@ -272,6 +293,12 @@ declare global {
         prototype: HTMLViewStepElement;
         new (): HTMLViewStepElement;
     };
+    interface HTMLViewerPopoverElement extends Components.ViewerPopover, HTMLStencilElement {
+    }
+    var HTMLViewerPopoverElement: {
+        prototype: HTMLViewerPopoverElement;
+        new (): HTMLViewerPopoverElement;
+    };
     interface HTMLViewerTabElement extends Components.ViewerTab, HTMLStencilElement {
     }
     var HTMLViewerTabElement: {
@@ -294,6 +321,8 @@ declare global {
         "add-selector": HTMLAddSelectorElement;
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
+        "card-modal": HTMLCardModalElement;
+        "card-view": HTMLCardViewElement;
         "confirm-step": HTMLConfirmStepElement;
         "debug-viewer-tab": HTMLDebugViewerTabElement;
         "input-field": HTMLInputFieldElement;
@@ -314,6 +343,7 @@ declare global {
         "tokenscript-button": HTMLTokenscriptButtonElement;
         "tokenscript-grid": HTMLTokenscriptGridElement;
         "view-step": HTMLViewStepElement;
+        "viewer-popover": HTMLViewerPopoverElement;
         "viewer-tab": HTMLViewerTabElement;
         "wallet-button": HTMLWalletButtonElement;
         "wallet-selector": HTMLWalletSelectorElement;
@@ -326,6 +356,11 @@ declare namespace LocalJSX {
     interface AppRoot {
     }
     interface AttributeTable {
+    }
+    interface CardModal {
+        "tokenScript"?: TokenScript1;
+    }
+    interface CardView {
     }
     interface ConfirmStep {
         "tokenScript"?: TokenScript1;
@@ -417,6 +452,8 @@ declare namespace LocalJSX {
         "tokenScript"?: TokenScript1;
         "viewer"?: IntegrationViewer;
     }
+    interface ViewerPopover {
+    }
     interface ViewerTab {
         "app"?: AppRoot;
         "tabId"?: string;
@@ -430,6 +467,8 @@ declare namespace LocalJSX {
         "add-selector": AddSelector;
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
+        "card-modal": CardModal;
+        "card-view": CardView;
         "confirm-step": ConfirmStep;
         "debug-viewer-tab": DebugViewerTab;
         "input-field": InputField;
@@ -450,6 +489,7 @@ declare namespace LocalJSX {
         "tokenscript-button": TokenscriptButton;
         "tokenscript-grid": TokenscriptGrid;
         "view-step": ViewStep;
+        "viewer-popover": ViewerPopover;
         "viewer-tab": ViewerTab;
         "wallet-button": WalletButton;
         "wallet-selector": WalletSelector;
@@ -462,6 +502,8 @@ declare module "@stencil/core" {
             "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
+            "card-modal": LocalJSX.CardModal & JSXBase.HTMLAttributes<HTMLCardModalElement>;
+            "card-view": LocalJSX.CardView & JSXBase.HTMLAttributes<HTMLCardViewElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
             "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
@@ -482,6 +524,7 @@ declare module "@stencil/core" {
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
             "tokenscript-grid": LocalJSX.TokenscriptGrid & JSXBase.HTMLAttributes<HTMLTokenscriptGridElement>;
             "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
+            "viewer-popover": LocalJSX.ViewerPopover & JSXBase.HTMLAttributes<HTMLViewerPopoverElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;
             "wallet-button": LocalJSX.WalletButton & JSXBase.HTMLAttributes<HTMLWalletButtonElement>;
             "wallet-selector": LocalJSX.WalletSelector & JSXBase.HTMLAttributes<HTMLWalletSelectorElement>;

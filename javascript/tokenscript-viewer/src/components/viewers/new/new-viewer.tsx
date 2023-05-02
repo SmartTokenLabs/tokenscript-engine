@@ -4,6 +4,8 @@ import {getKnownTokenScriptMetaById, knownTokenScripts} from "../../../constants
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvider";
+import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
+import {CHAIN_MAP} from "../../../integration/constants";
 
 type LoadedTokenScript = (TokenScriptsMeta & {numTokens?: number, tokenScript?: TokenScript});
 
@@ -20,6 +22,8 @@ export class NewViewer {
 
 	private addDialog: HTMLAddSelectorElement;
 
+	private viewerPopover: HTMLViewerPopoverElement;
+
 	@State()
 	private myTokenScripts: {[tsId: string]: LoadedTokenScript} = {};
 
@@ -27,10 +31,6 @@ export class NewViewer {
 	private popularTokenscripts: TokenScriptsMeta[] = [];
 
 	componentWillLoad(){
-
-		// TODO: Temp for testing
-		// await dbProvider.myTokenScripts.clear()
-
 		this.init();
 	}
 
@@ -38,7 +38,7 @@ export class NewViewer {
 
 		const tokenScriptsMap = {};
 
-		this.app.showTsLoader();
+		// this.app.showTsLoader();
 
 		for (const tsMeta of await dbProvider.myTokenScripts.toArray()){
 
@@ -53,7 +53,7 @@ export class NewViewer {
 
 		this.myTokenScripts = tokenScriptsMap;
 
-		this.app.hideTsLoader();
+		// this.app.hideTsLoader();
 
 		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
 			for (const id in this.myTokenScripts){
@@ -101,6 +101,10 @@ export class NewViewer {
 
 	private async removeTokenScript(tsId: string){
 
+		// TODO: Replace with dialog
+		if (!confirm("Are you sure you want to remove this TokenScript?"))
+			return;
+
 		await dbProvider.myTokenScripts.where("tokenScriptId").equals(tsId).delete();
 
 		const tokenScripts = this.myTokenScripts;
@@ -129,7 +133,18 @@ export class NewViewer {
 					xml: type === "file" ? tokenScript.getXmlString() : null
 				};
 
-				// TODO: Add collection logo as default icon
+				// TODO: This can possibly be moved to tokenscript-button component to allow dynamic update of the icon after it has been added
+				const originData = tokenScript.getTokenOriginData()[0];
+
+				if (originData && CHAIN_MAP[originData.chainId]) {
+					const discoveryAdapter = new DiscoveryAdapter();
+					try {
+						const data = await discoveryAdapter.getCollectionMeta(originData, CHAIN_MAP[originData.chainId]);
+						meta.iconUrl = data.image;
+					} catch (e) {
+						console.error("Failed to load tokenscript icon from collection metadata", e);
+					}
+				}
 			}
 
 			await this.addTokenScript(meta, tokenScript);
@@ -167,6 +182,10 @@ export class NewViewer {
 								}}>↻</button>
 					</div>
 					<br/>
+					{
+						Object.values(this.myTokenScripts).length === 0 ?
+							<loading-spinner color="#1A42FF" size="small"></loading-spinner> : ''
+					}
 					<tokenscript-grid>
 						{
 							Object.values(this.myTokenScripts).map((ts) => {
@@ -177,7 +196,7 @@ export class NewViewer {
 										imageUrl={ts.iconUrl}
 										tokenScript={ts.tokenScript}
 										onClick={() => {
-											console.log("Open tokenscript");
+											this.viewerPopover.open(ts.tokenScript);
 										}}
 										onRemove={async (tsId: string) => {
 											this.removeTokenScript(tsId);
@@ -210,6 +229,7 @@ export class NewViewer {
 					</div> : ''
 				}
 				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement} onFormSubmit={this.addFormSubmit.bind(this)}></add-selector>
+				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
 			</div>
 		);
 	}

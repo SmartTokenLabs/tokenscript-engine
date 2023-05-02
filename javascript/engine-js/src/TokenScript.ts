@@ -376,6 +376,13 @@ export class TokenScript {
 	}
 
 	/**
+	 * Get initial origin token data for the TokenScript
+	 */
+	public getTokenOriginData(){
+		return this.buildTokenDiscoveryData();
+	}
+
+	/**
 	 * Prepare initial token meta to be sent to the TokenDiscoveryAdapter
 	 * @param originOnly
 	 * @private

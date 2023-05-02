@@ -79,12 +79,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const chain = CHAIN_MAP[token.chainId];
 
-		let collectionData = await this.getCachedMeta(token);
-
-		if (!collectionData){
-			collectionData = await this.fetchTokenMetadata(token, chain);
-			await this.storeCachedMeta(token, collectionData);
-		}
+		let collectionData = await this.getCollectionMeta(token, chain);
 
 		const tokenData = await this.fetchOwnerTokens(token, chain, ownerAddress)
 
@@ -119,6 +114,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
 
 		return token;
+	}
+
+	public async getCollectionMeta(token: IToken, chain: string){
+
+		let collectionData = await this.getCachedMeta(token);
+
+		if (!collectionData){
+			collectionData = await this.fetchTokenMetadata(token, chain);
+			await this.storeCachedMeta(token, collectionData);
+		}
+
+		return collectionData;
 	}
 
 	private async getCachedMeta(token: IToken){
