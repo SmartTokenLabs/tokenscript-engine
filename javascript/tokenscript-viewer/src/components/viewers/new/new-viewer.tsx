@@ -1,4 +1,4 @@
-import {Component, h, Prop, State, Watch} from "@stencil/core";
+import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
 import {AppRoot, TokenScriptSource} from "../../app/app";
 import {getKnownTokenScriptMetaById, knownTokenScripts} from "../../../constants/knownTokenScripts";
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
@@ -161,7 +161,7 @@ export class NewViewer {
 
 	render(){
 		return (
-			<div class="nv-container">
+			<Host>
 				<h3>TokenScript Viewer</h3>
 				<p>Connect your wallet to use your TokenScript enabled tokens</p>
 				<div class="toolbar">
@@ -230,7 +230,7 @@ export class NewViewer {
 				}
 				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement} onFormSubmit={this.addFormSubmit.bind(this)}></add-selector>
 				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
-			</div>
+			</Host>
 		);
 	}
 

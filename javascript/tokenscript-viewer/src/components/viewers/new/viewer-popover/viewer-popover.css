@@ -5,9 +5,28 @@ viewer-popover {
 	height: 100%;
 	background: #fff;
 	top: 0;
+	left: 0;
 	display: none;
 }
 
 viewer-popover.open {
 	display: block;
+}
+
+viewer-popover .view-heading, viewer-popover .view-toolbar-buttons {
+	display: flex;
+	padding: 10px 20px;
+	align-items: center;
+}
+
+viewer-popover .view-heading > h3 {
+	margin: 0 0 0 10px;
+}
+
+viewer-popover .view-heading > button {
+	min-width: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	padding-bottom: 8px;
+	background: none;
 }

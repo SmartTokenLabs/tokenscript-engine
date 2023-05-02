@@ -24,3 +24,8 @@
 	background: #1a1a1ae0;
 	z-index: 100;
 }
+
+.view-container attribute-table {
+	position: absolute;
+	bottom: 10px;
+}

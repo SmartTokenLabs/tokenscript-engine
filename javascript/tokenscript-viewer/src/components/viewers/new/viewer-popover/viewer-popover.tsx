@@ -43,11 +43,11 @@ export class ViewerPopover {
 		return ( this.tokenScript ?
 			<Host class={(this.tokenScript ? " open" : "")}>
 				<div class="toolbar">
-					<div>
+					<div class="view-heading">
 						<button class="btn" onClick={() => this.close()}>&lt;</button>
-						<h4>{this.tokenScript.getLabel() ?? this.tokenScript.getName()}</h4>
+						<h3>{this.tokenScript.getLabel() ?? this.tokenScript.getName()}</h3>
 					</div>
-					<div>
+					<div class="view-toolbar-buttons">
 						<security-status tokenScript={this.tokenScript}/>
 						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
 								onClick={() => this.tokenScript.getTokenMetadata(true, true)}>↻

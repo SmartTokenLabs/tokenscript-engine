@@ -1,11 +1,8 @@
 
-:host {
-	position: relative;
-}
-
-.nv-container {
+new-viewer {
 	padding: 10px;
 	position: relative;
+	flex-grow: 1;
 }
 
 .toolbar {

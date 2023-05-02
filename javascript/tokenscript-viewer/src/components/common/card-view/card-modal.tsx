@@ -30,7 +30,7 @@ export class CardModal {
 		this.tokenScript.setViewBinding(this.viewBinding);
 	}
 
-	connectedCallback() {
+	componentDidLoad() {
 		if (this.tokenScript)
 			this.loadTs();
 	}
@@ -51,6 +51,7 @@ export class CardModal {
 	}
 
 	render(){
+		// TODO: Remove need for view container class (currently referenced in view adapter)
 		return (
 			<div class="view-container" style={{display: "none"}}>
 				<button class="close-btn" onClick={() => {
