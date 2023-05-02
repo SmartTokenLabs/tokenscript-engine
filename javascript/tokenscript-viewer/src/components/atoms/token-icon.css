@@ -5,6 +5,7 @@
 	justify-content: left;
 	position: relative;
 	height: auto;
+	overflow: hidden;
 }
 
 img {

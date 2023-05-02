@@ -64,7 +64,7 @@ export class TabbedViewer {
 	}
 
 	@Method()
-	async openTokenScriptTab(source: TokenScriptSource, tsId?: string, emulator?: string){
+	async openTokenScriptTab(source: TokenScriptSource, tsId?: string, file?: File, emulator?: string){
 
 		this.app.showTsLoader();
 
@@ -159,7 +159,7 @@ export class TabbedViewer {
 				tsHost = document.location.origin;
 			}
 
-			this.openTokenScriptTab("url", tsHost + "/tokenscript.tsml", tsHost);
+			this.openTokenScriptTab("url", tsHost + "/tokenscript.tsml", null, tsHost);
 			//connectSocket(tsHost);
 
 			return true;

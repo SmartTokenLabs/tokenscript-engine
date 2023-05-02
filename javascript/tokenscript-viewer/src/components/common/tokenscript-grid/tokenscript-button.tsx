@@ -12,6 +12,9 @@ import {getTokensFlat} from "../../viewers/util/getTokensFlat";
 export class TokenscriptButton {
 
 	@Prop()
+	tsId: string;
+
+	@Prop()
 	name: string;
 
 	@Prop()
@@ -25,6 +28,9 @@ export class TokenscriptButton {
 
 	@Prop({mutable: true})
 	enabled: boolean = true;
+
+	@Prop()
+	onRemove?: (tsId: string) => Promise<void>
 
 	async connectedCallback(){
 		if (!this.tokenScript)
@@ -63,6 +69,10 @@ export class TokenscriptButton {
 					<h5>{this.name}</h5>
 					{this.subText ? <span>{this.subText}</span> : ''}
 				</div>
+				{this.onRemove ? <button class="remove-btn" onClick={(e) => {
+					e.stopPropagation();
+					this.onRemove(this.tsId)}
+				}>X</button> : ''}
 			</div>
 		);
 	}

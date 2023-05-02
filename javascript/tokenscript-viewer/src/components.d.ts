@@ -17,11 +17,12 @@ import { JSX } from "@stencil/core";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AddSelector {
-        "onFormSubmit": (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
+        "closeDialog": () => Promise<void>;
+        "onFormSubmit": (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
         "openDialog": () => Promise<void>;
     }
     interface AppRoot {
-        "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
+        "loadTokenscript": (source: TokenScriptSource, tsId?: string, file?: File | string) => Promise<TokenScript>;
     }
     interface AttributeTable {
     }
@@ -35,6 +36,7 @@ export namespace Components {
         "tokenScript": TokenScript;
     }
     interface InputField {
+        "getFile": () => Promise<File>;
         "label": string;
         "name": string;
         "pattern"?: string;
@@ -83,7 +85,7 @@ export namespace Components {
     interface TabbedViewer {
         "app": AppRoot;
         "closeTab": (id: string) => Promise<void>;
-        "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, emulator?: string) => Promise<void>;
+        "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, file?: File, emulator?: string) => Promise<void>;
         "showTab": (id: string) => Promise<void>;
     }
     interface TokenButton {
@@ -109,7 +111,9 @@ export namespace Components {
         "enabled": boolean;
         "imageUrl": string;
         "name": string;
+        "onRemove"?: (tsId: string) => Promise<void>;
         "tokenScript"?: TokenScript1;
+        "tsId": string;
     }
     interface TokenscriptGrid {
     }
@@ -317,7 +321,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AddSelector {
-        "onFormSubmit"?: (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
+        "onFormSubmit"?: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
     }
     interface AppRoot {
     }
@@ -402,7 +406,9 @@ declare namespace LocalJSX {
         "enabled"?: boolean;
         "imageUrl"?: string;
         "name"?: string;
+        "onRemove"?: (tsId: string) => Promise<void>;
         "tokenScript"?: TokenScript1;
+        "tsId"?: string;
     }
     interface TokenscriptGrid {
     }

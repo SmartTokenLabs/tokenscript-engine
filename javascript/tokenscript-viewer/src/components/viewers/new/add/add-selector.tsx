@@ -13,7 +13,7 @@ export class AddSelector {
 	private dialog: HTMLPopoverDialogElement;
 
 	@Prop()
-	onFormSubmit: (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
+	onFormSubmit: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
 
 	@State()
 	type?: TokenScriptSource;
@@ -24,24 +24,29 @@ export class AddSelector {
 		await this.dialog.openDialog();
 	}
 
-	private submitForm(){
+	@Method()
+	async closeDialog(){
+		await this.dialog.closeDialog();
+	}
+
+	private async submitForm(){
 		const form = document.getElementById("add-form") as HTMLFormElement;
 
 		if (!form.checkValidity())
 			return;
 
-		switch (this.type){
+		switch (this.type) {
 			case "resolve":
 				const contract = (document.getElementById("contract-field") as HTMLInputFieldElement).value;
 				const chain = parseInt((document.getElementById("chain-field") as HTMLSelectFieldElement).value);
-				this.onFormSubmit("resolve", {contract, chain});
+				this.onFormSubmit("resolve", {tsId: chain + "-" + contract});
 				break;
 			case "url":
-				const url = (document.getElementById("url-field") as HTMLInputFieldElement).value;
-				this.onFormSubmit("url", {url});
+				const tsId = (document.getElementById("url-field") as HTMLInputFieldElement).value;
+				this.onFormSubmit("url", {tsId});
 				break;
 			case "file":
-				const file = (document.getElementById("file-field") as HTMLInputFieldElement).value as File;
+				const file = await (document.getElementById("file-field") as HTMLInputFieldElement).getFile();
 				this.onFormSubmit("file", {xml: file})
 				break;
 		}

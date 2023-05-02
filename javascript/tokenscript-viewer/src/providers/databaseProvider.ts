@@ -1,5 +1,6 @@
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import Dexie from "dexie";
+import {TokenScriptSource} from "../components/app/app";
 
 interface TSTokenCacheTokens {
 	chainId: number,
@@ -18,9 +19,9 @@ interface TSTokenCacheMeta {
 
 export interface TokenScriptsMeta {
 	tokenScriptId: string,
+	loadType: TokenScriptSource
 	name: string,
 	iconUrl?: string,
-	url?: string,
 	xml?: string,
 }
 
@@ -34,9 +35,9 @@ class TSViewerDb extends Dexie {
 		super("TSViewer");
 
 		this.version(2).stores({
-			tokens: `[chainId+collectionId+ownerAddress], data, dt`,
-			tokenMeta: `[chainId+collectionId], data, dt`,
-			myTokenScripts: `[tokenScriptId], name, iconUrl, xml`
+			tokens: `[chainId+collectionId+ownerAddress], dt`,
+			tokenMeta: `[chainId+collectionId], dt`,
+			myTokenScripts: `tokenScriptId`
 		});
 	}
 }

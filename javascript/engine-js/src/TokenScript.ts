@@ -81,7 +81,6 @@ export class TokenScript {
 		private sourceUrl: string,
 		private viewBinding?: IViewBinding
 	) {
-		console.log("TokenScript object constructed");
 		this.securityInfo = new SecurityInfo(this, this.tokenDef, this.xmlStr, this.source, this.sourceUrl);
 	}
 
@@ -109,6 +108,20 @@ export class TokenScript {
 		R extends (data: ((TokenScriptEvents)[T])) => Promise<void>|void // <- R points to the type of that key
 	>(eventType: T, callback: R){
 		this.eventHandlers[eventType] = callback;
+	}
+
+	/**
+	 * Returns the XML string for the TokenScript
+	 */
+	public getXmlString(){
+		return this.xmlStr;
+	}
+
+	/**
+	 * Returns the parsed XML DOM object for the TokenScript
+	 */
+	public getXml(){
+		return this.tokenDef;
 	}
 
 	/**

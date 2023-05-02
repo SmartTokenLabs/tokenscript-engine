@@ -45,3 +45,11 @@ token-icon {
 	height: 50px;
 	flex-shrink: 0;
 }
+
+.remove-btn {
+	align-self: start;
+	background: none;
+	font-weight: bold;
+	border: none;
+	cursor: pointer;
+}

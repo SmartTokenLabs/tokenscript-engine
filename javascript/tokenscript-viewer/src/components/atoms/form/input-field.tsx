@@ -1,4 +1,4 @@
-import {Component, h, Prop} from "@stencil/core";
+import {Component, h, Method, Prop} from "@stencil/core";
 
 @Component({
 	tag: 'input-field',
@@ -24,6 +24,13 @@ export class InputField {
 	@Prop({mutable: true})
 	value: any;
 
+	private file?: File;
+
+	@Method()
+	async getFile(){
+		return this.file;
+	}
+
 	render(){
 		return (
 			<div class="input-container">
@@ -31,7 +38,7 @@ export class InputField {
 				<input name={this.name} type={this.type} required={this.required} pattern={this.pattern} onChange={(evt: any) => {
 
 					if (this.type === "file")
-						this.value = evt.target.files[0];
+						this.file = evt.target.files[0];
 
 					this.value = evt.target.value;
 				}} />

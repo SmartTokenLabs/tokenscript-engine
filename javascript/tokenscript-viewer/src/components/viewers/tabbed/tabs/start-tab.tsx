@@ -67,7 +67,8 @@ export class StartTab {
 					<div class="start-sub-section">
 						<h4>Load from file</h4>
 						<label htmlFor="ts-file">Load XML: </label><input id="ts-file" type="file" accept=".xml,.tsml,text/xml" onChange={() => {
-							this.tabView.openTokenScriptTab("file")
+							const file = (document.getElementById("ts-file") as HTMLInputElement).files[0];
+							this.tabView.openTokenScriptTab("file", null, file);
 						}}/>
 					</div>
 					<div class="start-sub-section">

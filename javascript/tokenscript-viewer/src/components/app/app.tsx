@@ -48,23 +48,27 @@ export class AppRoot {
 	}
 
 	@Method()
-	async loadTokenscript(source: TokenScriptSource, tsId?: string): Promise<TokenScript> {
+	async loadTokenscript(source: TokenScriptSource, tsId?: string, file?: File|string): Promise<TokenScript> {
 
 		switch(source){
 			case "resolve":
-				return await this.tsEngine.getTokenScript(tsId);
+				return this.tsEngine.getTokenScript(tsId);
 			case "file":
-				return this.loadTokenScriptFromFile();
+				if (typeof file === "string"){
+					return this.tsEngine.loadTokenScript(file);
+				} else {
+					return this.loadTokenScriptFromFile(file);
+				}
 			case "url":
-				return await this.tsEngine.getTokenScriptFromUrl(tsId);
+				return this.tsEngine.getTokenScriptFromUrl(tsId);
 		}
 	}
 
-	async loadTokenScriptFromFile(): Promise<TokenScript> {
+	async loadTokenScriptFromFile(file: File): Promise<TokenScript> {
 
 		return new Promise((resolve, reject) => {
 
-			const file = (document.getElementById("ts-file") as HTMLInputElement).files[0];
+			// const file = (document.getElementById("ts-file") as HTMLInputElement).files[0];
 
 			if (file) {
 				this.showTsLoader();
@@ -89,7 +93,7 @@ export class AppRoot {
 				return;
 			}
 
-			resolve(null);
+			reject("No file selected");
 		});
 	}
 

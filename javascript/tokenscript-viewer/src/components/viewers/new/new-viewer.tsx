@@ -1,6 +1,6 @@
 import {Component, h, Prop, State, Watch} from "@stencil/core";
 import {AppRoot, TokenScriptSource} from "../../app/app";
-import {knownTokenScripts} from "../../../constants/knownTokenScripts";
+import {getKnownTokenScriptMetaById, knownTokenScripts} from "../../../constants/knownTokenScripts";
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvider";
@@ -42,10 +42,13 @@ export class NewViewer {
 
 		for (const tsMeta of await dbProvider.myTokenScripts.toArray()){
 
-			// TODO: Support URL & File loading
-			const tokenScript = await this.app.loadTokenscript('resolve', tsMeta.tokenScriptId);
+			try {
+				const tokenScript = await this.app.loadTokenscript(tsMeta.loadType, tsMeta.tokenScriptId, tsMeta.xml);
 
-			tokenScriptsMap[tsMeta.tokenScriptId] = {...tsMeta, tokenScript};
+				tokenScriptsMap[tsMeta.tokenScriptId] = {...tsMeta, tokenScript};
+			} catch (e){
+				console.error("Failed to load TokenScript definition: ", tsMeta.name);
+			}
 		}
 
 		this.myTokenScripts = tokenScriptsMap;
@@ -75,19 +78,70 @@ export class NewViewer {
 
 		this.app.showTsLoader();
 
-		const tokenScript = await this.app.loadTokenscript('resolve', tsMeta.tokenScriptId);
+		try {
+			const tokenScript = await this.app.loadTokenscript('resolve', tsMeta.tokenScriptId);
 
-		dbProvider.myTokenScripts.put(tsMeta);
-
-		const loadedTs: LoadedTokenScript = {...tsMeta, tokenScript};
-
-		this.myTokenScripts = {...this.myTokenScripts, [loadedTs.tokenScriptId]: loadedTs};
+			await this.addTokenScript(tsMeta, tokenScript);
+		} catch (e){
+			console.error(e);
+			alert(e.message); // TODO: Add proper error dialog or toast
+		}
 
 		this.app.hideTsLoader();
 	}
 
-	private async addFormSubmit(type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}){
-		console.log(type, data);
+	private async addTokenScript(tsMeta: TokenScriptsMeta, tokenScript: TokenScript){
+
+		await dbProvider.myTokenScripts.put(tsMeta);
+
+		const loadedTs: LoadedTokenScript = {...tsMeta, tokenScript};
+
+		this.myTokenScripts = {...this.myTokenScripts, [loadedTs.tokenScriptId]: loadedTs};
+	}
+
+	private async removeTokenScript(tsId: string){
+
+		await dbProvider.myTokenScripts.where("tokenScriptId").equals(tsId).delete();
+
+		const tokenScripts = this.myTokenScripts;
+		delete tokenScripts[tsId];
+
+		this.myTokenScripts = {...this.myTokenScripts};
+	}
+
+	private async addFormSubmit(type: TokenScriptSource, data: {tsId: string, xml?: File}){
+
+		this.app.showTsLoader();
+
+		try {
+			const tokenScript = await this.app.loadTokenscript(type, data.tsId, data.xml);
+
+			// TODO: Use better UID for non-resolved tokenscripts
+			const tokenScriptId = data.tsId ?? tokenScript.getName();
+
+			let meta: TokenScriptsMeta = getKnownTokenScriptMetaById(tokenScriptId)
+
+			if (!meta) {
+				meta = {
+					tokenScriptId: data.tsId ?? tokenScript.getName(),
+					loadType: type,
+					name: tokenScript.getName() ?? tokenScript.getLabel() ?? "Unknown TokenScript",
+					xml: type === "file" ? tokenScript.getXmlString() : null
+				};
+
+				// TODO: Add collection logo as default icon
+			}
+
+			await this.addTokenScript(meta, tokenScript);
+
+			await this.addDialog.closeDialog();
+
+		} catch (e){
+			console.error(e);
+			alert(e.message); // TODO: Add proper error dialog or toast
+		}
+
+		this.app.hideTsLoader();
 	}
 
 	render(){
@@ -118,11 +172,15 @@ export class NewViewer {
 							Object.values(this.myTokenScripts).map((ts) => {
 								return (
 									<tokenscript-button
+										tsId={ts.tokenScriptId}
 										name={ts.name}
 										imageUrl={ts.iconUrl}
 										tokenScript={ts.tokenScript}
 										onClick={() => {
 											console.log("Open tokenscript");
+										}}
+										onRemove={async (tsId: string) => {
+											this.removeTokenScript(tsId);
 										}}>
 									</tokenscript-button>
 								);
