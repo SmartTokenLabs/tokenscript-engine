@@ -1,5 +1,6 @@
-import {Component, h, Method, State} from "@stencil/core";
-import {CHAIN_CONFIG, CHAIN_NAME_MAP} from "../../../../integration/constants";
+import {Component, h, Method, Prop, State} from "@stencil/core";
+import {CHAIN_NAME_MAP} from "../../../../integration/constants";
+import {TokenScriptSource} from "../../../app/app";
 
 @Component({
 	tag: 'add-selector',
@@ -11,19 +12,39 @@ export class AddSelector {
 
 	private dialog: HTMLPopoverDialogElement;
 
-	@State()
-	type?: "contract"|"url"|"file";
+	@Prop()
+	onFormSubmit: (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
 
-	private formElements: {[key: string]: any} = {};
+	@State()
+	type?: TokenScriptSource;
 
 	@Method()
-	async openTokenScript(){
-
+	async openDialog(){
 		this.type = null;
-
 		await this.dialog.openDialog();
+	}
 
+	private submitForm(){
+		const form = document.getElementById("add-form") as HTMLFormElement;
 
+		if (!form.checkValidity())
+			return;
+
+		switch (this.type){
+			case "resolve":
+				const contract = (document.getElementById("contract-field") as HTMLInputFieldElement).value;
+				const chain = parseInt((document.getElementById("chain-field") as HTMLSelectFieldElement).value);
+				this.onFormSubmit("resolve", {contract, chain});
+				break;
+			case "url":
+				const url = (document.getElementById("url-field") as HTMLInputFieldElement).value;
+				this.onFormSubmit("url", {url});
+				break;
+			case "file":
+				const file = (document.getElementById("file-field") as HTMLInputFieldElement).value as File;
+				this.onFormSubmit("file", {xml: file})
+				break;
+		}
 	}
 
 	private getTypeLabel(){
@@ -38,7 +59,7 @@ export class AddSelector {
 						<div>
 						<h3>Add Token From</h3>
 						<div class="source-container">
-							<button class="btn" onClick={() => this.type = "contract"}>Contract Script</button>
+							<button class="btn" onClick={() => this.type = "resolve"}>Contract Script</button>
 							<button class="btn" onClick={() => this.type = "url"}>URL</button>
 							<button class="btn" onClick={() => this.type = "file"}>XML File</button>
 						</div>
@@ -52,30 +73,24 @@ export class AddSelector {
 							}}>&lt;</button>
 							<h4>{this.getTypeLabel()}</h4>
 						</div>
-						<div class="form-container">
-							{this.type === "contract" ? <div>
-								<form>
-									<input-field name="contract" label="Contract Address" type="text"></input-field>
-									<select-field name="chain" label="Chain"
-												  options={Object.entries(CHAIN_NAME_MAP).map((chain) => {
-														  return {value: chain[0], label: chain[1]}
-													  }
-												  )}>
-									</select-field>
-								</form>
+						<form id="add-form" class="form-container" onSubmit={(e) => { e.preventDefault(); this.submitForm(); }}>
+							{this.type === "resolve" ? <div>
+								<input-field id="contract-field" name="contract" label="Contract Address" type="text" required={true} pattern="^0x[a-fA-F0-9]{40}$"></input-field>
+								<select-field id="chain-field" name="chain" label="Chain"
+											  options={Object.entries(CHAIN_NAME_MAP).map((chain) => {
+													  return {value: chain[0], label: chain[1]}
+												  }
+											  )}>
+								</select-field>
 							</div> : ''}
 							{this.type === "url" ? <div>
-								<form>
-									<input-field name="url" label="TokenScript URL" type="text"></input-field>
-								</form>
+								<input-field id="url-field" name="url" label="TokenScript URL" type="url" required={true}></input-field>
 							</div> : ''}
 							{this.type === "file" ? <div>
-								<form>
-									<input-field name="file" label="TokenScript XML" type="file"></input-field>
-								</form>
+								<input-field id="file-field" name="file" label="TokenScript XML" type="file" required={true}></input-field>
 							</div> : ''}
 							<button class="btn btn-primary">Load</button>
-						</div>
+						</form>
 					</div> : ''
 				}
 			</popover-dialog>

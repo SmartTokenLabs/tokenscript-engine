@@ -5,11 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { AppRoot, TokenScriptSource } from "./components/app/app";
 import { TokenScript } from "../../engine-js/src/TokenScript";
-import { TokenScriptSource } from "./components/app/app";
+import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
-import { AppRoot, TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -17,7 +17,8 @@ import { JSX } from "@stencil/core";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AddSelector {
-        "openTokenScript": () => Promise<void>;
+        "onFormSubmit": (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
+        "openDialog": () => Promise<void>;
     }
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string) => Promise<TokenScript>;
@@ -36,8 +37,10 @@ export namespace Components {
     interface InputField {
         "label": string;
         "name": string;
+        "pattern"?: string;
+        "required": boolean;
         "type": string;
-        "value": string;
+        "value": any;
     }
     interface IntegrationViewer {
         "app": AppRoot;
@@ -80,7 +83,7 @@ export namespace Components {
     interface TabbedViewer {
         "app": AppRoot;
         "closeTab": (id: string) => Promise<void>;
-        "openTokenScriptTab": (source: TokenScriptSource1, tsId?: string, emulator?: string) => Promise<void>;
+        "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, emulator?: string) => Promise<void>;
         "showTab": (id: string) => Promise<void>;
     }
     interface TokenButton {
@@ -314,6 +317,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AddSelector {
+        "onFormSubmit"?: (type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}) => void;
     }
     interface AppRoot {
     }
@@ -331,8 +335,10 @@ declare namespace LocalJSX {
     interface InputField {
         "label"?: string;
         "name"?: string;
+        "pattern"?: string;
+        "required"?: boolean;
         "type"?: string;
-        "value"?: string;
+        "value"?: any;
     }
     interface IntegrationViewer {
         "app"?: AppRoot;

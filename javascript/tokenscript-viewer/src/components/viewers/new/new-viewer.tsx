@@ -1,5 +1,5 @@
 import {Component, h, Prop, State, Watch} from "@stencil/core";
-import {AppRoot} from "../../app/app";
+import {AppRoot, TokenScriptSource} from "../../app/app";
 import {knownTokenScripts} from "../../../constants/knownTokenScripts";
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
@@ -86,6 +86,10 @@ export class NewViewer {
 		this.app.hideTsLoader();
 	}
 
+	private async addFormSubmit(type: TokenScriptSource, data: {contract?: string, chain?: number, url?: string, xml?: File}){
+		console.log(type, data);
+	}
+
 	render(){
 		return (
 			<div class="nv-container">
@@ -94,7 +98,7 @@ export class NewViewer {
 				<div class="toolbar">
 					<wallet-button></wallet-button>
 					<button class="btn" onClick={() => {
-						this.addDialog.openTokenScript();
+						this.addDialog.openDialog();
 					}}>+ Add Token
 					</button>
 				</div>
@@ -147,7 +151,7 @@ export class NewViewer {
 						</tokenscript-grid>
 					</div> : ''
 				}
-				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement}></add-selector>
+				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement} onFormSubmit={this.addFormSubmit.bind(this)}></add-selector>
 			</div>
 		);
 	}
