@@ -5,15 +5,15 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AppRoot, TokenScriptSource } from "./components/app/app";
+import { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
+import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
-import { JSX } from "@stencil/core";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AddSelector {
@@ -23,6 +23,7 @@ export namespace Components {
     }
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string, file?: File | string) => Promise<TokenScript>;
+        "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
     }
     interface AttributeTable {
     }
@@ -104,7 +105,6 @@ export namespace Components {
         "src": string;
     }
     interface TokensGrid {
-        "showToast": (type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => void;
         "tokenScript": TokenScript1;
     }
     interface TokensGridItem {
@@ -141,6 +141,22 @@ export namespace Components {
     interface WalletSelector {
         "connectWallet": () => Promise<SupportedWalletProviders>;
     }
+}
+export interface CardModalCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCardModalElement;
+}
+export interface TokensGridCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTokensGridElement;
+}
+export interface ViewStepCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLViewStepElement;
+}
+export interface ViewerTabCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLViewerTabElement;
 }
 declare global {
     interface HTMLAddSelectorElement extends Components.AddSelector, HTMLStencilElement {
@@ -358,6 +374,7 @@ declare namespace LocalJSX {
     interface AttributeTable {
     }
     interface CardModal {
+        "onShowToast"?: (event: CardModalCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
     }
     interface CardView {
@@ -429,7 +446,7 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface TokensGrid {
-        "showToast"?: (type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => void;
+        "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
     }
     interface TokensGridItem {
@@ -449,6 +466,7 @@ declare namespace LocalJSX {
     }
     interface ViewStep {
         "card"?: Card;
+        "onShowToast"?: (event: ViewStepCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
         "viewer"?: IntegrationViewer;
     }
@@ -456,6 +474,7 @@ declare namespace LocalJSX {
     }
     interface ViewerTab {
         "app"?: AppRoot;
+        "onShowToast"?: (event: ViewerTabCustomEvent<ShowToastEventArgs>) => void;
         "tabId"?: string;
         "tokenScript"?: TokenScript;
     }

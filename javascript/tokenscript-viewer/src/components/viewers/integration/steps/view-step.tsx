@@ -1,9 +1,9 @@
-import {Component, Prop, h, State, Element, JSX} from "@stencil/core";
+import {Component, Prop, h, Element, Event, EventEmitter} from "@stencil/core";
 import {IntegrationViewer} from "../integration-viewer";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {AbstractViewBinding} from "../../../../integration/abstractViewBinding";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
-import {ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {ShowToastEventArgs} from "../../../app/app";
 
 @Component({
 	tag: 'view-step',
@@ -25,6 +25,13 @@ export class ViewStep {
 	@Prop()
 	card: Card;
 
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
+
 	viewBinding;
 
 	async componentDidLoad() {
@@ -32,19 +39,6 @@ export class ViewStep {
 		this.viewBinding.setTokenScript(this.tokenScript);
 		this.tokenScript.setViewBinding(this.viewBinding);
 		this.tokenScript.getViewController().showCard(this.card);
-	}
-
-	showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = this.host.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
 	}
 
 	render() {
@@ -63,7 +57,6 @@ export class ViewStep {
 						<button class="action-btn btn btn-primary"></button>
 					</div>
 				</div>
-				<cb-toast className="toast"></cb-toast>
 			</div>
 		);
 	}
@@ -89,25 +82,25 @@ class ViewBinding extends AbstractViewBinding {
 
 		setTimeout(() => {
 
-			this.viewStep.showToast(
-				'info',
-				"Transaction submitted",
-				(<span>
-									{"Processing TX, please wait.. "}<br/>
-					{"TX Number: " + data.txNumber }
-								</span>)
-			);
+			this.viewStep.showToast.emit({
+				type: 'info',
+				title: "Transaction submitted",
+				description: (<span>
+					{"Processing TX, please wait.. "}<br/>
+					{"TX Number: " + data.txNumber}
+				</span>)
+			});
 
 			setTimeout(() => {
 
-				this.viewStep.showToast(
-					'success',
-					"Transaction confirmed",
-					(<span>
-									{"TX " + data.txNumber + " confirmed!"}<br/>{
-						data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
-								</span>)
-				);
+				this.viewStep.showToast.emit({
+					type: 'success',
+					title: "Transaction confirmed",
+					description: (<span>
+						{"TX " + data.txNumber + " confirmed!"}<br/>
+						{data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
+					</span>)
+				});
 
 				this.hideLoader();
 

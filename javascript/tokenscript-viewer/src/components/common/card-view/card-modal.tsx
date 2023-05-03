@@ -1,6 +1,7 @@
-import {Component, h, JSX, Prop, Watch, Element} from "@stencil/core";
+import {Component, h, JSX, Prop, Watch, Element, Event, EventEmitter} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ViewBinding} from "../../viewers/tabbed/viewBinding";
+import {ShowToastEventArgs} from "../../app/app";
 
 @Component({
 	tag: 'card-modal',
@@ -16,6 +17,13 @@ export class CardModal {
 	@Prop()
 	tokenScript?: TokenScript;
 
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
+
 	// TODO: Migrate view binding related code to card-view component
 	viewBinding: ViewBinding;
 
@@ -23,7 +31,9 @@ export class CardModal {
 	async loadTs(){
 
 		if (!this.viewBinding){
-			this.viewBinding = new ViewBinding(this.host, this.showToast.bind(this));
+			this.viewBinding = new ViewBinding(this.host, (type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => {
+				this.showToast.emit({type, title, description});
+			});
 		}
 
 		this.viewBinding.setTokenScript(this.tokenScript);
@@ -35,20 +45,6 @@ export class CardModal {
 			this.loadTs();
 	}
 	// END TODO
-
-	// TODO: Use event to improve repetition
-	showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = document.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
-	}
 
 	render(){
 		// TODO: Remove need for view container class (currently referenced in view adapter)

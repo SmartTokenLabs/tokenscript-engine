@@ -1,4 +1,4 @@
-import {Component, Element, h, Method, State} from '@stencil/core';
+import {Component, Element, h, JSX, Listen, Method, State} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
@@ -9,6 +9,12 @@ import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
+
+export interface ShowToastEventArgs {
+	type: 'success'|'info'|'warning'|'error',
+	title: string,
+	description: string|JSX.Element
+}
 
 @Component({
 	tag: 'app-root',
@@ -97,6 +103,25 @@ export class AppRoot {
 		});
 	}
 
+	@Listen("showToast")
+	showToastHandler(event: CustomEvent<ShowToastEventArgs>){
+		this.showToast(event.detail.type, event.detail.title, event.detail.description);
+	}
+
+	@Method()
+	async showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
+
+		const cbToast = document.querySelector(".toast") as HTMLCbToastElement;
+
+		cbToast.Toast({
+			title,
+			description,
+			timeOut: 30000,
+			position: 'top-right',
+			type
+		});
+	}
+
 	async componentWillLoad(){
 
 		const queryStr = document.location.search.substring(1);
@@ -121,6 +146,7 @@ export class AppRoot {
 	render() {
 		return (
 			<div class="app-container">
+				<cb-toast class="toast" style={{zIndex: "500"}}></cb-toast>
 				<header>
 					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
 				</header>
@@ -136,8 +162,6 @@ export class AppRoot {
 				</div>
 
 				<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector>
-
-				<div id="tn-main" class="overlay-tn"></div>
 			</div>
 		);
 	}

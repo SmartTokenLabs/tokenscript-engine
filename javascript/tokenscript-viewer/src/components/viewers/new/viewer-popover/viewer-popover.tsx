@@ -26,19 +26,6 @@ export class ViewerPopover {
 		this.tokenScript = null;
 	}
 
-	showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = this.host.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
-	}
-
 	render(){
 		return ( this.tokenScript ?
 			<Host class={(this.tokenScript ? " open" : "")}>
@@ -55,9 +42,8 @@ export class ViewerPopover {
 						<wallet-button></wallet-button>
 					</div>
 				</div>
-				<tokens-grid tokenScript={this.tokenScript} showToast={this.showToast.bind(this)}></tokens-grid>
+				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>
 				<card-modal tokenScript={this.tokenScript}></card-modal>
-				<cb-toast class="toast"></cb-toast>
 			</Host> : ''
 		)
 	}

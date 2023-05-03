@@ -7,7 +7,7 @@ import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvi
 import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {CHAIN_MAP} from "../../../integration/constants";
 
-type LoadedTokenScript = (TokenScriptsMeta & {numTokens?: number, tokenScript?: TokenScript});
+type LoadedTokenScript = (TokenScriptsMeta & {tokenScript?: TokenScript});
 
 @Component({
 	tag: 'new-viewer',

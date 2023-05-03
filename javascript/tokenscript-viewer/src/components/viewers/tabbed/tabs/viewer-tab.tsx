@@ -1,10 +1,11 @@
-import {Component, Element, h, JSX, Prop, Watch} from "@stencil/core";
+import {Component, Element, Event, EventEmitter, h, JSX, Prop, Watch} from "@stencil/core";
 import {Components} from "../../../../components";
 import {TokenScript} from "../../../../../../engine-js/src/TokenScript";
 import {ViewBinding} from "../viewBinding";
 import AppRoot = Components.AppRoot;
 import "cb-toast";
 import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
+import {ShowToastEventArgs} from "../../../app/app";
 
 @Component({
 	tag: 'viewer-tab',
@@ -20,6 +21,13 @@ export class ViewerTab {
 	@Prop() tabId: string;
 
 	@Prop() tokenScript: TokenScript;
+
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
 
 	viewBinding: ViewBinding;
 
@@ -41,7 +49,9 @@ export class ViewerTab {
 	async loadTs(){
 
 		if (!this.viewBinding){
-			this.viewBinding = new ViewBinding(this.host, this.showToast.bind(this));
+			this.viewBinding = new ViewBinding(this.host,(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => {
+				this.showToast.emit({type, title, description});
+			});
 		}
 
 		this.viewBinding.setTokenScript(this.tokenScript);
@@ -53,22 +63,9 @@ export class ViewerTab {
 			this.loadTs();
 
 		// TODO: hacky fix to get it positioned below the tab bar
-		this.host.querySelector(".toast").shadowRoot
+		document.querySelector(".toast").shadowRoot
 			.querySelector(":host > div")
 			.setAttribute("style", "margin-top: 100px;");
-	}
-
-	showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = this.host.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
 	}
 
 	render() {
@@ -81,9 +78,8 @@ export class ViewerTab {
 						<wallet-button></wallet-button>
 					</div>
 				</div>
-				<tokens-grid tokenScript={this.tokenScript} showToast={this.showToast.bind(this)}></tokens-grid>
+				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>
 				<card-modal tokenScript={this.tokenScript}></card-modal>
-				<cb-toast class="toast"></cb-toast>
 			</div>
 		);
 	}

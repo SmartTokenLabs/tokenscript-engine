@@ -1,10 +1,11 @@
-import {Component, h, JSX, Prop, State, Watch} from "@stencil/core";
+import {Component, EventEmitter, h, JSX, Prop, State, Watch, Event} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
+import {ShowToastEventArgs} from "../../app/app";
 
 @Component({
 	tag: 'tokens-grid',
@@ -15,8 +16,6 @@ export class TokensGrid {
 
 	@Prop() tokenScript: TokenScript;
 
-	@Prop() showToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => void
-
 	currentTokens?: {[key: string]: IToken};
 
 	@State()
@@ -24,6 +23,13 @@ export class TokensGrid {
 
 	@State()
 	loading: boolean = true;
+
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
 
 	@Watch("tokenScript")
 	async componentDidLoad() {
@@ -64,7 +70,11 @@ export class TokensGrid {
 		const cardRes = findCardByUrlParam(action, this.tokenScript);
 
 		if (!cardRes){
-			this.showToast('error', "Card not found", "The card '" + action + "' cannot be found.")
+			this.showToast.emit({
+				type: 'error',
+				title: "Card not found",
+				description: "The card '" + action + "' cannot be found."
+			});
 			return;
 		}
 
@@ -81,7 +91,11 @@ export class TokensGrid {
 			}
 		}
 
-		this.showToast('error', "No supported tokens", "None of your tokens support the " + action + " action.")
+		this.showToast.emit({
+			type: 'error',
+			title: "No supported tokens",
+			description: "None of your tokens support the " + action + " action."
+		});
 	}
 
 	private showCard(card: Card, token: TokenGridContext, cardIndex: number){
