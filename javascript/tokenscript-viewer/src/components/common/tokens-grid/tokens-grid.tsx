@@ -1,4 +1,4 @@
-import {Component, EventEmitter, h, JSX, Prop, State, Watch, Event} from "@stencil/core";
+import {Component, EventEmitter, h, Prop, State, Watch, Event, Host} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
@@ -38,13 +38,13 @@ export class TokensGrid {
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
-		})
+		}, "grid")
 
 		this.tokenScript.on("TOKENS_LOADING", () => {
 			this.loading = true;
 			this.currentTokensFlat = null;
 			console.log("Tokens loading");
-		})
+		}, "grid")
 	}
 
 	async populateTokens(tokens: {[key: string]: IToken} ){
@@ -104,6 +104,7 @@ export class TokensGrid {
 		this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]): null);
 		console.log("Token context set");
 
+		window.scrollTo(0, 0);
 		this.tokenScript.showTokenCard(card);
 
 		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
@@ -113,7 +114,7 @@ export class TokensGrid {
 
 	render() {
 		return (
-			<div class="tokens-grid">
+			<Host class="tokens-grid">
 				<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
 				{
 					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
@@ -124,7 +125,7 @@ export class TokensGrid {
 						!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
 					)
 				}
-			</div>
+			</Host>
 		)
 	}
 }

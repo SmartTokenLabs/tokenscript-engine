@@ -1,5 +1,5 @@
-import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
-import {AppRoot, TokenScriptSource} from "../../app/app";
+import {Component, Event, EventEmitter, h, Host, Prop, State, Watch} from "@stencil/core";
+import {AppRoot, ShowToastEventArgs, TokenScriptSource} from "../../app/app";
 import {getKnownTokenScriptMetaById, knownTokenScripts} from "../../../constants/knownTokenScripts";
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
@@ -30,8 +30,42 @@ export class NewViewer {
 	@State()
 	private popularTokenscripts: TokenScriptsMeta[] = [];
 
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
+
 	componentWillLoad(){
 		this.init();
+	}
+
+	componentDidLoad(){
+		this.processUrlLoad();
+	}
+
+	private async processUrlLoad(){
+
+		const queryStr = document.location.search.substring(1);
+
+		if (!queryStr)
+			return;
+
+		const query = new URLSearchParams(queryStr);
+		let tsMeta;
+
+		if (query.has("tokenscriptUrl")){
+			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
+		} else if (query.has("chain") && query.has("contract")){
+			const tsId = query.get("chain") + "-" + query.get("contract");
+			tsMeta = await this.addFormSubmit("resolve", {tsId})
+		}
+
+		console.log("open TS", tsMeta);
+
+		if (tsMeta)
+			this.viewerPopover.open(tsMeta.tokenScript);
 	}
 
 	private async init(){
@@ -48,6 +82,11 @@ export class NewViewer {
 				tokenScriptsMap[tsMeta.tokenScriptId] = {...tsMeta, tokenScript};
 			} catch (e){
 				console.error("Failed to load TokenScript definition: ", tsMeta.name);
+				this.showToast.emit({
+					type: "error",
+					title: "Failed to load TokenScript",
+					description: e.message
+				});
 			}
 		}
 
@@ -113,6 +152,7 @@ export class NewViewer {
 		this.myTokenScripts = {...this.myTokenScripts};
 	}
 
+	// TODO: break up function into small components
 	private async addFormSubmit(type: TokenScriptSource, data: {tsId: string, xml?: File}){
 
 		this.app.showTsLoader();
@@ -150,13 +190,19 @@ export class NewViewer {
 			await this.addTokenScript(meta, tokenScript);
 
 			await this.addDialog.closeDialog();
+			this.app.hideTsLoader();
+
+			return {...meta, tokenScript};
 
 		} catch (e){
 			console.error(e);
-			alert(e.message); // TODO: Add proper error dialog or toast
+			this.app.hideTsLoader();
+			this.showToast.emit({
+				type: "error",
+				title: "Failed to load TokenScript",
+				description: e.message
+			});
 		}
-
-		this.app.hideTsLoader();
 	}
 
 	render(){

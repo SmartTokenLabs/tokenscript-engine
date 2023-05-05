@@ -30,6 +30,8 @@ export interface TokensUpdatedEventArgs {
 	tokens: TokenMetadataMap
 }
 
+export type EventHandler = (data: any) => Promise<void>|void;
+
 export type TokenMetadataMap = { [contractName: string]: IToken };
 
 export interface ITransactionStatus {
@@ -69,7 +71,7 @@ export class TokenScript {
 
 	private securityInfo: SecurityInfo;
 
-	private eventHandlers: {[eventName: string]: (data: any) => Promise<void>|void} = {};
+	private eventHandlers: {[eventName: string]: {[handlerId: string]: EventHandler}} = {};
 
 	private tokenDiscoveryAdapter?: ITokenDiscoveryAdapter;
 
@@ -95,19 +97,43 @@ export class TokenScript {
 		R extends (TokenScriptEvents)[T] // <- R points to the type of that key
 	>(eventType: T, params?: R) {
 		if (this.eventHandlers[eventType])
-			this.eventHandlers[eventType](params);
+			for (const handler of Object.values(this.eventHandlers[eventType])){
+				handler(params);
+			}
 	}
 
 	/**
 	 * Register an event listener to receive TokenScript events
 	 * @param eventType
 	 * @param callback
+	 * @param id - The ID of the event handler, used to avoid duplicate handlers & remove handlers
 	 */
 	public on<
 		T extends keyof TokenScriptEvents, // <- T points to a key
 		R extends (data: ((TokenScriptEvents)[T])) => Promise<void>|void // <- R points to the type of that key
-	>(eventType: T, callback: R){
-		this.eventHandlers[eventType] = callback;
+	>(eventType: T, callback: R, id: string = "default"){
+
+		if (!this.eventHandlers[eventType])
+			this.eventHandlers[eventType] = {};
+
+		this.eventHandlers[eventType][id] = callback;
+	}
+
+	/**
+	 * Remove an event listener
+	 * @param eventType
+	 * @param id The ID of the handler to remove - if not specified then all handlers are removed.
+	 */
+	public off<
+		T extends keyof TokenScriptEvents, // <- T points to a key
+	>(eventType: T, id?: string){
+
+		if (!id) {
+			delete this.eventHandlers[eventType];
+			return;
+		}
+
+		delete this.eventHandlers[eventType][id];
 	}
 
 	/**

@@ -25,6 +25,15 @@
 	z-index: 100;
 }
 
+@media screen and (max-width: 480px) {
+	.view-container {
+		padding: 5px;
+	}
+	.close-btn {
+		margin: 10px;
+	}
+}
+
 .view-container attribute-table {
 	position: absolute;
 	bottom: 10px;

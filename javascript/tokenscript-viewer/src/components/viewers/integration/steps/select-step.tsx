@@ -49,7 +49,7 @@ export class SelectStep {
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
-		})
+		}, "token-button")
 
 	}
 

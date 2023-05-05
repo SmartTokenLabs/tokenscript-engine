@@ -1,4 +1,4 @@
-import {Component, h, JSX, State, Element, Method, Host} from "@stencil/core";
+import {Component, h, State, Element, Method, Host} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 
 

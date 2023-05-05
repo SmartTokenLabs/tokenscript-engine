@@ -1,4 +1,4 @@
-import {Component, h, Prop} from "@stencil/core";
+import {Component, h, Host} from "@stencil/core";
 
 @Component({
 	tag: 'tokenscript-grid',
@@ -10,9 +10,9 @@ export class TokenscriptGrid {
 
 	render(){
 		return (
-			<div class="ts-grid">
+			<Host class="ts-grid">
 				<slot/>
-			</div>
+			</Host>
 		);
 	}
 }

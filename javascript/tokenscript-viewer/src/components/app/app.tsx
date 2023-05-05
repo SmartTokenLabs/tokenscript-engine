@@ -131,13 +131,13 @@ export class AppRoot {
 			case "integration":
 				this.viewerType = "integration";
 				break;
-			case "new":
-				this.viewerType = "new";
+			case "tabbed":
+				this.viewerType = "tabbed";
 				break;
 			// Fall-through to default
-			case "tabbed":
+			case "new":
 			default:
-				this.viewerType = "tabbed";
+				this.viewerType = "new";
 		}
 
 		await Web3WalletProvider.loadConnections();

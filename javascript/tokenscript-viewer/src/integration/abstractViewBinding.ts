@@ -1,9 +1,7 @@
 import {IViewBinding} from "../../../engine-js/src/view/IViewBinding";
 import {Card} from "../../../engine-js/src/tokenScript/Card";
-import {Attribute} from "../../../engine-js/src/tokenScript/Attribute";
 import {TokenScript} from "../../../engine-js/src/TokenScript";
 import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
-import {JSX, h} from "@stencil/core";
 
 export abstract class AbstractViewBinding implements IViewBinding {
 

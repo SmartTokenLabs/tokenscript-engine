@@ -141,6 +141,10 @@ export interface CardModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCardModalElement;
 }
+export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLNewViewerElement;
+}
 export interface TokensGridCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTokensGridElement;
@@ -388,6 +392,7 @@ declare namespace LocalJSX {
     }
     interface NewViewer {
         "app"?: AppRoot;
+        "onShowToast"?: (event: NewViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface PopoverDialog {
     }

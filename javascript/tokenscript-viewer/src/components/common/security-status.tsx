@@ -1,4 +1,4 @@
-import {Component, Element, h, Prop, State, Watch} from "@stencil/core";
+import {Component, h, Prop, State} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 

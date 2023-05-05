@@ -1,9 +1,4 @@
 
-:host {
-	display: block;
-	width: 100%;
-}
-
 .ts-grid {
 	display: flex;
 	gap: 10px;

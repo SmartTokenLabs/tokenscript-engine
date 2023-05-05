@@ -1,4 +1,4 @@
-import {Component, h, JSX, Prop, State} from "@stencil/core";
+import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
@@ -64,7 +64,7 @@ export class TokensGridItem {
 		}
 
 		return (
-			<div class="tokens-grid-item">
+			<Host class="tokens-grid-item">
 				<token-icon src={this.token.image} imageTitle={this.token.name}/>
 				<div class="tg-item-details">
 					<h5>{title}</h5>
@@ -80,7 +80,7 @@ export class TokensGridItem {
 						}
 					</div>
 				</div>
-			</div>
+			</Host>
 		)
 	}
 }

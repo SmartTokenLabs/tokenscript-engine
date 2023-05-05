@@ -1,4 +1,4 @@
-import {Component, h, Prop, State} from "@stencil/core";
+import {Component, h, Host, Prop, State} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
 import {getTokensFlat} from "../../viewers/util/getTokensFlat";
@@ -44,11 +44,11 @@ export class TokenscriptButton {
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.updateTokenStatus(data.tokens);
-		});
+		}, "ts-button");
 
 		this.tokenScript.on("TOKENS_LOADING", () => {
 			this.subText = "loading...";
-		});
+		}, "ts-button");
 	}
 
 	private updateTokenStatus(tokens: {[id: string]: IToken}){
@@ -61,7 +61,7 @@ export class TokenscriptButton {
 
 	render(){
 		return (
-			<div class={"ts-button" + (this.enabled ? '' : ' disabled')}
+			<Host class={"ts-button" + (this.enabled ? '' : ' disabled')}
 				 title={this.name}
 				 style={{cursor: this.enabled ? 'pointer' : 'not-allowed'}}>
 				<token-icon src={this.imageUrl} imageTitle={this.name}/>
@@ -73,7 +73,7 @@ export class TokenscriptButton {
 					e.stopPropagation();
 					this.onRemove(this.tsId)}
 				}>X</button> : ''}
-			</div>
+			</Host>
 		);
 	}
 }
