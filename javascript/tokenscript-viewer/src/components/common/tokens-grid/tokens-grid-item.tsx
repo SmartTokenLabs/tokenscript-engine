@@ -40,7 +40,7 @@ export class TokensGridItem {
 			const enabled = await card.isEnabledOrReason(context);
 
 			cardButtons.push((
-				<button class={"btn btn-primary"} onClick={() => this.showCard(card, this.token, index)}
+				<button class={"btn " + (index === 0  ? "btn-primary" : "btn-secondary")} onClick={() => this.showCard(card, this.token, index)}
 						disabled={enabled !== true}
 						title={enabled !== true ? enabled : label}>
 					{label}
@@ -52,20 +52,33 @@ export class TokensGridItem {
 	}
 
 	render() {
+
+		let title;
+		let details;
+
+		if ("tokenId" in this.token && this.token.tokenId){
+			title = "#" + this.token.tokenId;
+			details = this.token.name;
+		} else {
+			title = this.token.name;
+		}
+
 		return (
 			<div class="tokens-grid-item">
 				<token-icon src={this.token.image} imageTitle={this.token.name}/>
-				<h5>{this.token.name}</h5>
-				{
-					"tokenId" in this.token && this.token.tokenId ?
-						<span title={this.token.tokenId.toString()}>#{this.token.tokenId}</span>
-						: ''
-				}
-				<div class="actions">
-					{ this.cardButtons ?
-						this.cardButtons :
-						<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
+				<div class="tg-item-details">
+					<h5>{title}</h5>
+					{
+						details ?
+							<span title={details}>{details}</span>
+							: ''
 					}
+					<div class="actions">
+						{ this.cardButtons ?
+							this.cardButtons :
+							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
+						}
+					</div>
 				</div>
 			</div>
 		)

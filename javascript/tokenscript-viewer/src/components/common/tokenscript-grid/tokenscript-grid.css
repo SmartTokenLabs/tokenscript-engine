@@ -10,9 +10,9 @@
 	flex-wrap: wrap;
 }
 
-@media screen and (max-width: 550px) {
-	tokenscript-button {
-		flex: 100%;
+@media (max-width: 768px) {
+	.ts-grid {
+		justify-content: space-evenly;
 	}
 }
 

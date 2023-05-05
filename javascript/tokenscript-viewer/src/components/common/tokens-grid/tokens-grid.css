@@ -1,6 +1,22 @@
 
+
+
 .tokens-grid {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 15px;
+	margin: 0 auto;
+	position: relative;
 }
+
+@media (max-width: 768px) {
+	.tokens-grid {
+		justify-content: space-evenly;
+	}
+}
+
+/*@media (max-width: 480px) {
+	.tokens-grid {
+		justify-content: space-evenly;
+	}
+}*/

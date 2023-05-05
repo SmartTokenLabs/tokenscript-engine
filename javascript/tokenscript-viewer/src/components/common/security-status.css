@@ -1,6 +1,11 @@
 
 .security-status {
-	padding: 10px 10px;
+	box-sizing: border-box;
+	margin: 0 5px;
+	padding: 5px 5px;
 	border-radius: 10px;
-	font-size: 12px;
+	font-size: 20px;
+	width: 36px;
+	height: 36px;
+	text-align: center;
 }

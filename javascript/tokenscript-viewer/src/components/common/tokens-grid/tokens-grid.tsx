@@ -113,19 +113,17 @@ export class TokensGrid {
 
 	render() {
 		return (
-			<div>
-				<div class="tokens-grid">
-					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
-					{
-						this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
-							return (
-								<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
-							);
-						}) :  (
-							!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
-						)
-					}
-				</div>
+			<div class="tokens-grid">
+				<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+				{
+					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
+						return (
+							<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
+						);
+					}) :  (
+						!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
+					)
+				}
 			</div>
 		)
 	}

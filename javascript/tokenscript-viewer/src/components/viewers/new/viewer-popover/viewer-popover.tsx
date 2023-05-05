@@ -36,10 +36,12 @@ export class ViewerPopover {
 					</div>
 					<div class="view-toolbar-buttons">
 						<security-status tokenScript={this.tokenScript}/>
-						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
-								onClick={() => this.tokenScript.getTokenMetadata(true, true)}>↻
-						</button>
-						<wallet-button></wallet-button>
+						<div>
+							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
+									onClick={() => this.tokenScript.getTokenMetadata(true, true)}>↻
+							</button>
+							<wallet-button></wallet-button>
+						</div>
 					</div>
 				</div>
 				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>

@@ -36,11 +36,6 @@ export namespace Components {
         "tokenScript": TokenScript1;
         "viewer": IntegrationViewer;
     }
-    interface DebugViewerTab {
-        "app": AppRoot;
-        "tabId": string;
-        "tokenScript": TokenScript;
-    }
     interface InputField {
         "getFile": () => Promise<File>;
         "label": string;
@@ -195,12 +190,6 @@ declare global {
         prototype: HTMLConfirmStepElement;
         new (): HTMLConfirmStepElement;
     };
-    interface HTMLDebugViewerTabElement extends Components.DebugViewerTab, HTMLStencilElement {
-    }
-    var HTMLDebugViewerTabElement: {
-        prototype: HTMLDebugViewerTabElement;
-        new (): HTMLDebugViewerTabElement;
-    };
     interface HTMLInputFieldElement extends Components.InputField, HTMLStencilElement {
     }
     var HTMLInputFieldElement: {
@@ -340,7 +329,6 @@ declare global {
         "card-modal": HTMLCardModalElement;
         "card-view": HTMLCardViewElement;
         "confirm-step": HTMLConfirmStepElement;
-        "debug-viewer-tab": HTMLDebugViewerTabElement;
         "input-field": HTMLInputFieldElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
@@ -382,11 +370,6 @@ declare namespace LocalJSX {
     interface ConfirmStep {
         "tokenScript"?: TokenScript1;
         "viewer"?: IntegrationViewer;
-    }
-    interface DebugViewerTab {
-        "app"?: AppRoot;
-        "tabId"?: string;
-        "tokenScript"?: TokenScript;
     }
     interface InputField {
         "label"?: string;
@@ -489,7 +472,6 @@ declare namespace LocalJSX {
         "card-modal": CardModal;
         "card-view": CardView;
         "confirm-step": ConfirmStep;
-        "debug-viewer-tab": DebugViewerTab;
         "input-field": InputField;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
@@ -524,7 +506,6 @@ declare module "@stencil/core" {
             "card-modal": LocalJSX.CardModal & JSXBase.HTMLAttributes<HTMLCardModalElement>;
             "card-view": LocalJSX.CardView & JSXBase.HTMLAttributes<HTMLCardViewElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
-            "debug-viewer-tab": LocalJSX.DebugViewerTab & JSXBase.HTMLAttributes<HTMLDebugViewerTabElement>;
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;

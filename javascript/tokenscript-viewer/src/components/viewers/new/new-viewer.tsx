@@ -172,7 +172,7 @@ export class NewViewer {
 					</button>
 				</div>
 				<div>
-					<div style={{display: "flex", justifyContent: "space-between"}}>
+					<div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
 						<h5>Your Tokens</h5>
 						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
 								onClick={() => {

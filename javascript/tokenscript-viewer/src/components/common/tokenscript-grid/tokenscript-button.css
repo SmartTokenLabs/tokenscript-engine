@@ -11,8 +11,15 @@
 	overflow: hidden;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 768px) {
 	.ts-button {
+		width: 300px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.ts-button {
+		min-width: 250px;
 		width: 100%;
 	}
 }

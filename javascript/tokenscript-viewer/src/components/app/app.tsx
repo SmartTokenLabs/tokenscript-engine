@@ -1,4 +1,4 @@
-import {Component, Element, h, JSX, Listen, Method, State} from '@stencil/core';
+import {Component, Element, h, Host, JSX, Listen, Method, State} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
@@ -145,24 +145,25 @@ export class AppRoot {
 
 	render() {
 		return (
-			<div class="app-container">
-				<cb-toast class="toast" style={{zIndex: "500"}}></cb-toast>
-				<header>
-					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
-				</header>
+			<Host>
+				<div class="app-container">
+					<cb-toast class="toast" style={{zIndex: "500"}}></cb-toast>
+					<header>
+						<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
+					</header>
 
-				<main>
-					{this.viewerType === "tabbed" ? <tabbed-viewer app={this}></tabbed-viewer> : ''}
-					{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
-					{this.viewerType === "new" ? <new-viewer app={this}></new-viewer> : ''}
-				</main>
+					<main>
+						{this.viewerType === "tabbed" ? <tabbed-viewer app={this}></tabbed-viewer> : ''}
+						{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
+						{this.viewerType === "new" ? <new-viewer app={this}></new-viewer> : ''}
+					</main>
 
-				<div id="ts-loader">
-					<loading-spinner/>
+					<div id="ts-loader">
+						<loading-spinner/>
+					</div>
 				</div>
-
 				<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector>
-			</div>
+			</Host>
 		);
 	}
 }

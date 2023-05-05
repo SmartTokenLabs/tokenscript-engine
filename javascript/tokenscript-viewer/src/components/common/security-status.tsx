@@ -13,30 +13,41 @@ export class SecurityStatus {
 
 	@State() securityInfo: Partial<ISecurityInfo>;
 
+	@State() statusColor: string;
+	@State() statusIcon: string;
+
 	async componentDidLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo();
+		this.updateStatusState();
 		console.log("Security status loaded!");
 	}
 
-	private getStatusColor(){
+	private updateStatusState(){
 		switch (this.securityInfo.status){
 			case TSSecurityStatus.VALID:
-				return "#3bd23b";
+				this.statusColor = "#3bd23b";
+				this.statusIcon = "✔";
+				break;
 			case TSSecurityStatus.WARNING:
-				return "#ff871d";
+				this.statusColor = "#ff871d";
+				this.statusIcon = "⚠";
+				break;
 			case TSSecurityStatus.INVALID:
-				return "#ff4f4f";
+				this.statusColor = "#ff4f4f";
+				this.statusIcon = "⚠";
+				break;
 		}
 	}
 
 	render() {
 		return (
 			this.securityInfo ?
-				<div class="security-status" style={{background: this.getStatusColor()}}
-					title={"TokenScript security information\n\n" +
+				<div class="security-status" style={{background: this.statusColor}}
+					title={this.securityInfo.statusText + "\n\n" +
+						"TokenScript security information\n\n" +
 						"Integrity: " + this.securityInfo.integrityText + "\n" +
 						"Authentication: " + (this.securityInfo.authText ?? "N/A")}>
-					{this.securityInfo.statusText}
+					{this.statusIcon}
 				</div>
 			: ''
 		)

@@ -84,11 +84,10 @@ export class TabbedViewer {
 		const id = Date.now().toString();
 
 		const query = new URLSearchParams(document.location.search);
-		const component = query.has("debugTab") ? "debug-viewer-tab" : "viewer-tab";
 
 		const tab = this.tabs[id] = {
 			tabHeader: document.createElement("tab-header-item", {is: "tab-header-item"}) as HTMLTabHeaderItemElement,
-			content: document.createElement(component, {is: component}) as HTMLViewerTabElement
+			content: document.createElement("viewer-tab", {is: "viewer-tab"}) as HTMLViewerTabElement
 		};
 
 		tab.tabHeader.tabView = this;

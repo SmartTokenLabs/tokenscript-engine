@@ -13,6 +13,14 @@ viewer-popover.open {
 	display: block;
 }
 
+viewer-popover .view-heading {
+	flex-wrap: nowrap;
+}
+
+viewer-popover .view-toolbar-buttons {
+	flex-wrap: nowrap;
+}
+
 viewer-popover .view-heading, viewer-popover .view-toolbar-buttons {
 	display: flex;
 	padding: 10px 20px;
@@ -21,6 +29,7 @@ viewer-popover .view-heading, viewer-popover .view-toolbar-buttons {
 
 viewer-popover .view-heading > h3 {
 	margin: 0 0 0 10px;
+	flex-shrink: 0;
 }
 
 viewer-popover .view-heading > button {
