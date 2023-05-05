@@ -16,6 +16,8 @@ import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
+    interface AboutTokenscript {
+    }
     interface AddSelector {
         "closeDialog": () => Promise<void>;
         "onFormSubmit": (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
@@ -158,6 +160,12 @@ export interface ViewerTabCustomEvent<T> extends CustomEvent<T> {
     target: HTMLViewerTabElement;
 }
 declare global {
+    interface HTMLAboutTokenscriptElement extends Components.AboutTokenscript, HTMLStencilElement {
+    }
+    var HTMLAboutTokenscriptElement: {
+        prototype: HTMLAboutTokenscriptElement;
+        new (): HTMLAboutTokenscriptElement;
+    };
     interface HTMLAddSelectorElement extends Components.AddSelector, HTMLStencilElement {
     }
     var HTMLAddSelectorElement: {
@@ -327,6 +335,7 @@ declare global {
         new (): HTMLWalletSelectorElement;
     };
     interface HTMLElementTagNameMap {
+        "about-tokenscript": HTMLAboutTokenscriptElement;
         "add-selector": HTMLAddSelectorElement;
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
@@ -358,6 +367,8 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface AboutTokenscript {
+    }
     interface AddSelector {
         "onFormSubmit"?: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
     }
@@ -471,6 +482,7 @@ declare namespace LocalJSX {
     interface WalletSelector {
     }
     interface IntrinsicElements {
+        "about-tokenscript": AboutTokenscript;
         "add-selector": AddSelector;
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
@@ -505,6 +517,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "about-tokenscript": LocalJSX.AboutTokenscript & JSXBase.HTMLAttributes<HTMLAboutTokenscriptElement>;
             "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;

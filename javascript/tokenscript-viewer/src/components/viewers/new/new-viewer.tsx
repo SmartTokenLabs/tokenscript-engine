@@ -24,6 +24,8 @@ export class NewViewer {
 
 	private viewerPopover: HTMLViewerPopoverElement;
 
+	private aboutDialog: HTMLPopoverDialogElement;
+
 	@State()
 	private myTokenScripts: {[tsId: string]: LoadedTokenScript} = {};
 
@@ -209,7 +211,7 @@ export class NewViewer {
 		return (
 			<Host>
 				<h3>TokenScript Viewer</h3>
-				<p>Connect your wallet to use your TokenScript enabled tokens</p>
+				<p>Connect your wallet to use your TokenScript enabled tokens. <a onClick={() => this.aboutDialog.openDialog()}>Learn More</a>.</p>
 				<div class="toolbar">
 					<wallet-button></wallet-button>
 					<button class="btn" onClick={() => {
@@ -276,6 +278,9 @@ export class NewViewer {
 				}
 				<add-selector ref={el => this.addDialog = el as HTMLAddSelectorElement} onFormSubmit={this.addFormSubmit.bind(this)}></add-selector>
 				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
+				<popover-dialog ref={el => this.aboutDialog = el as HTMLPopoverDialogElement}>
+					<about-tokenscript></about-tokenscript>
+				</popover-dialog>
 			</Host>
 		);
 	}

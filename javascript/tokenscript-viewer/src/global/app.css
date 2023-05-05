@@ -72,3 +72,9 @@ select:hover {
 	border-color: #4F95FF !important;
 	color: #4F95FF !important;
 }
+
+a {
+	color: #001AFF;
+	text-decoration: underline;
+	cursor: pointer;
+}
