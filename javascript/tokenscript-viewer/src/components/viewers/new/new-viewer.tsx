@@ -30,6 +30,9 @@ export class NewViewer {
 	private myTokenScripts: {[tsId: string]: LoadedTokenScript} = {};
 
 	@State()
+	private scriptsLoading = true;
+
+	@State()
 	private popularTokenscripts: TokenScriptsMeta[] = [];
 
 	@Event({
@@ -93,6 +96,7 @@ export class NewViewer {
 		}
 
 		this.myTokenScripts = tokenScriptsMap;
+		this.scriptsLoading = false;
 
 		// this.app.hideTsLoader();
 
@@ -219,9 +223,9 @@ export class NewViewer {
 					}}>+ Add Token
 					</button>
 				</div>
-				<div>
+				<div style={{padding: "10px 0"}}>
 					<div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-						<h5>Your Tokens</h5>
+						<h4>Your Tokens</h4>
 						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
 								onClick={() => {
 									for (const id in this.myTokenScripts){
@@ -229,36 +233,40 @@ export class NewViewer {
 									}
 								}}>↻</button>
 					</div>
-					<br/>
 					{
-						Object.values(this.myTokenScripts).length === 0 ?
-							<loading-spinner color="#1A42FF" size="small"></loading-spinner> : ''
+						this.scriptsLoading ?
+							<loading-spinner color="#1A42FF" size="small"></loading-spinner> :
+							(Object.values(this.myTokenScripts).length > 0 ?
+									<tokenscript-grid>
+										{
+											Object.values(this.myTokenScripts).map((ts) => {
+												return (
+													<tokenscript-button
+														tsId={ts.tokenScriptId}
+														name={ts.name}
+														imageUrl={ts.iconUrl}
+														tokenScript={ts.tokenScript}
+														onClick={() => {
+															this.viewerPopover.open(ts.tokenScript);
+														}}
+														onRemove={async (tsId: string) => {
+															this.removeTokenScript(tsId);
+														}}>
+													</tokenscript-button>
+												);
+											})
+										}
+									</tokenscript-grid> :
+									<div>
+										<strong style={{fontSize: "13px"}}>You don't have any TokenScripts in your library yet</strong><br/>
+										<span style={{fontSize: "12px"}}>Add TokenScripts by selecting popular ones below or adding them manually via the Add Tokens button.</span>
+									</div>
+							)
 					}
-					<tokenscript-grid>
-						{
-							Object.values(this.myTokenScripts).map((ts) => {
-								return (
-									<tokenscript-button
-										tsId={ts.tokenScriptId}
-										name={ts.name}
-										imageUrl={ts.iconUrl}
-										tokenScript={ts.tokenScript}
-										onClick={() => {
-											this.viewerPopover.open(ts.tokenScript);
-										}}
-										onRemove={async (tsId: string) => {
-											this.removeTokenScript(tsId);
-										}}>
-									</tokenscript-button>
-								);
-							})
-						}
-					</tokenscript-grid>
 				</div>
 				{ this.popularTokenscripts.length > 0 ?
 					<div>
-						<h5>Popular TokenScripts</h5>
-						<br/>
+						<h4>Popular TokenScripts</h4>
 						<tokenscript-grid>
 							{
 								this.popularTokenscripts.map((ts) => {
