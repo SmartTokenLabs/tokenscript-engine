@@ -39,6 +39,7 @@ select:hover {
 	height: 36px;
 	min-width: 112px;
 	background: #EEEEEE;
+	color: #0B0B0B;
 	border: none;
 	cursor: pointer;
 }
@@ -71,6 +72,7 @@ select:hover {
 .btn-secondary:disabled {
 	border-color: #4F95FF !important;
 	color: #4F95FF !important;
+	pointer-events: auto !important;
 }
 
 a {
