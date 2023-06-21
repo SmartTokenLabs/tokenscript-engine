@@ -60,7 +60,13 @@ export class NewViewer {
 		const query = new URLSearchParams(queryStr);
 		let tsMeta;
 
-		if (query.has("tokenscriptUrl")){
+		if (query.has("ticket") || query.has("attestation")) {
+
+			const tokenScript = await this.app.tsEngine.importAttestationUsingTokenScript(query)
+
+			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
+
+		} else if (query.has("tokenscriptUrl")){
 			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
 		} else if (query.has("chain") && query.has("contract")){
 			const tsId = query.get("chain") + "-" + query.get("contract");

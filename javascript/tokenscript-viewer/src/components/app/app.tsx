@@ -7,6 +7,7 @@ import {CHAIN_CONFIG} from "../../integration/constants";
 import {IWalletAdapter} from "../../../../engine-js/src/wallet/IWalletAdapter";
 import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
+import {AttestationStorageAdapter} from "../../integration/attestationStorageAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -26,6 +27,7 @@ export class AppRoot {
 	walletSelector: HTMLWalletSelectorElement;
 
 	discoveryAdapter = new DiscoveryAdapter()
+	attestationStorageAdapter = new AttestationStorageAdapter();
 
 	constructor() {
 		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
@@ -37,9 +39,14 @@ export class AppRoot {
 		}, CHAIN_CONFIG);
 	}
 
-	tsEngine = new TokenScriptEngine(this.getWalletAdapter, async () => this.discoveryAdapter, {
-		ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
-	});
+	tsEngine = new TokenScriptEngine(
+		this.getWalletAdapter,
+		async () => this.discoveryAdapter,
+		() => this.attestationStorageAdapter ,
+		{
+			ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
+		}
+	);
 
 	@Element() host: HTMLElement;
 

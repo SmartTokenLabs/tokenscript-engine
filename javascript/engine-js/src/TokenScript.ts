@@ -10,6 +10,7 @@ import {SecurityInfo} from "./security/SecurityInfo";
 import {Selections} from "./tokenScript/selection/Selections";
 import {Label} from "./tokenScript/Label";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
+import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefinitions";
 
 export interface ITokenContext extends IToken {
 	selectedNftIndex?: number
@@ -62,6 +63,8 @@ export class TokenScript {
 	private cards?: Card[];
 
 	private attributes?: Attributes;
+
+	private attestationDefinitions?: AttestationDefinitions;
 
 	private selections?: Selections;
 
@@ -501,6 +504,18 @@ export class TokenScript {
 		}
 
 		return this.attributes;
+	}
+
+	/**
+	 * The attestation definitions defined in the TokenScripts
+	 */
+	public getAttestationDefinitions(){
+
+		if (!this.attestationDefinitions){
+			this.attestationDefinitions = new AttestationDefinitions(this, this.tokenDef.documentElement);
+		}
+
+		return this.attestationDefinitions;
 	}
 
 	/**

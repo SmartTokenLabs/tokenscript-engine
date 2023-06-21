@@ -3,6 +3,8 @@ import {TokenScript} from "./TokenScript";
 import {IWalletAdapter} from "./wallet/IWalletAdapter";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {IViewBinding} from "./view/IViewBinding";
+import {AttestationManager} from "./attestation/AttestationManager";
+import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
 
 export interface IEngineConfig {
 	ipfsGateway: string
@@ -25,11 +27,13 @@ export enum ScriptSourceType {
 export class TokenScriptEngine {
 
 	private repo: Repo = new Repo(this);
+	private attestationManager?: AttestationManager;
 
 	// TODO: Should we pass in a function or a constructor, dunno
 	constructor(
 		public getWalletAdapter: () => Promise<IWalletAdapter>,
 		public getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>,
+		public getAttestationStorageAdapter?: () => IAttestationStorageAdapter,
 		public config?: IEngineConfig
 	) {
 		if (this.config){
@@ -40,6 +44,45 @@ export class TokenScriptEngine {
 		} else {
 			this.config = DEFAULT_CONFIG;
 		}
+
+		if (this.getAttestationStorageAdapter)
+			this.attestationManager = new AttestationManager(this, this.getAttestationStorageAdapter());
+	}
+
+	public getAttestationManager(){
+		if (!this.attestationManager)
+			throw new Error("Attestation storage adapter not provided");
+
+		return this.attestationManager;
+	}
+
+	public async importAttestationUsingTokenScript(urlParams: URLSearchParams): Promise<TokenScript> {
+
+		// const url = new URL(magicLink);
+		// const urlParams = new URLSearchParams(url.hash.substring(1) ?? url.search.substring(1));
+
+		if (!urlParams.has("tokensscriptUrl"))
+			throw new Error("tokenScriptUri parameter not provided");
+
+		// Read attestation from magic link
+		const attestation = this.getAttestationManager().readMagicLink(urlParams);
+
+		// Load tokenScript
+		const tokenScript = await this.getTokenScriptFromUrl(urlParams.get("tokenscriptUrl"));
+
+		const attestationDefs = tokenScript.getAttestationDefinitions();
+
+		// Read through attestation definitions and find the one that matches the attestation
+		for (const definition of attestationDefs){
+
+			// Match collection hashes
+
+			// Match found, store attestation
+		}
+
+		throw new Error("Not yet implemented!");
+
+		//return tokenScript
 	}
 
 	/**

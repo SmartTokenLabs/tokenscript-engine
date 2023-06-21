@@ -22,6 +22,7 @@
     "typescript": "^4.7.2"
   },
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^0.29.0",
     "@peculiar/x509": "^1.9.2",
     "@stencil/core": "2.21.0",
     "@tokenscript/engine-js": "../engine-js/",
@@ -33,6 +34,7 @@
     "dexie": "^3.2.3",
     "ethers": "^5.7.2",
     "ipfs-only-hash": "^4.0.0",
+    "pako": "^2.1.0",
     "typescript-memoize": "^1.1.1",
     "webcrypto-liner": "^1.4.0",
     "xmldsigjs": "^2.5.1"
