@@ -61,28 +61,40 @@ export class TokenScriptEngine {
 		// const url = new URL(magicLink);
 		// const urlParams = new URLSearchParams(url.hash.substring(1) ?? url.search.substring(1));
 
-		if (!urlParams.has("tokensscriptUrl"))
-			throw new Error("tokenScriptUri parameter not provided");
+		if (!urlParams.has("scriptURI"))
+			throw new Error("scriptURI parameter not provided");
 
 		// Read attestation from magic link
-		const attestation = this.getAttestationManager().readMagicLink(urlParams);
+		const attestation = await this.getAttestationManager().readMagicLink(urlParams);
 
 		// Load tokenScript
-		const tokenScript = await this.getTokenScriptFromUrl(urlParams.get("tokenscriptUrl"));
+		const tokenScript = await this.getTokenScriptFromUrl(urlParams.get("scriptURI"));
 
+		// TODO: Remove - only here for debugging
+		// const data = await attestation.getAttestationData()
+		// console.log("Attestation data: ", data);
+
+		const collectionHash = await attestation.getCollectionHash();
 		const attestationDefs = tokenScript.getAttestationDefinitions();
 
 		// Read through attestation definitions and find the one that matches the attestation
 		for (const definition of attestationDefs){
 
+			const collectionHashes = definition.calculateAttestationCollectionHashes();
+
 			// Match collection hashes
+			if (collectionHashes.indexOf(collectionHash) === -1)
+				continue
+
+			console.log("Successfully matched collection hash to tokenscript attestation definition!");
 
 			// Match found, store attestation
+			await this.attestationManager.saveAttestation(definition, attestation);
+
+			return tokenScript
 		}
 
-		throw new Error("Not yet implemented!");
-
-		//return tokenScript
+		throw new Error("The provided TokenScript does not contain an attestation definition for the included attestation.");
 	}
 
 	/**

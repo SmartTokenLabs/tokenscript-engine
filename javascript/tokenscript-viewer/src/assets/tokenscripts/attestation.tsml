@@ -1,0 +1,136 @@
+<ts:token xmlns:ethereum="urn:ethereum:constantinople" xmlns:ts="http://tokenscript.org/2022/09/tokenscript" xmlns:xhmtl="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Test2" xsi:schemaLocation="http://tokenscript.org/2022/09/tokenscript http://tokenscript.org/2022/09/tokenscript.xsd">
+	<ts:label>
+		<ts:plurals xml:lang="en">
+			<ts:string quantity="one">Test2 Token</ts:string>
+			<ts:string quantity="other">Test2 Tokens</ts:string>
+		</ts:plurals>
+	</ts:label>
+	<ts:contract interface="erc721" name="TestToken">
+		<ts:address network="5">0x07d6AE261994e0024377c2306178123582aC62d6</ts:address>
+	</ts:contract>
+	<ts:attestation name="MyAttestation" type="eas">
+		<ts:meta>
+			<ts:title>My Attestation</ts:title>
+			<ts:image>https://somesite.com/someimage.png</ts:image>
+			<ts:description>A really good attestation</ts:description>
+		</ts:meta>
+
+		<ts:key>0408d4bc48bc518c82fb4ad216ef88c11068b3f0c40ba60c255f9e0a7a18382e27654eee6b2283266071567993392c1a338fa0b9f2db7aaab1ba8bf2179808dd34</ts:key>
+
+		<ts:eventId>devcon7</ts:eventId>
+
+		<ts:idFields>eventId,ticketId</ts:idFields>
+		<ts:eas schemaUID="0x7f6fb09beb1886d0b223e9f15242961198dd360021b2c9f75ac879c0f786cafd"/>
+	</ts:attestation>
+	<ts:origins>
+
+		<ts:ethereum contract="TestToken"/>
+		<ts:attestation name="MyAttestation"/>
+	</ts:origins>
+	<ts:cards>
+		<ts:viewContent xmlns="http://www.w3.org/1999/xhtml" name="common">
+
+
+		<div xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Welcome to TokenScript</h1>
+	<table class="data-table">
+		<tbody><tr>
+			<td>Key</td>
+			<td>Value</td>
+		</tr>
+	</tbody></table>
+	<h1>Testing build update</h1>
+</div>
+<style xmlns="http://www.w3.org/1999/xhtml">/*&lt;![CDATA[*/
+
+	div &gt; h4 { font-size: 18px }
+
+ /*//]]&gt;*/</style>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">//&lt;![CDATA[
+
+	window.addEventListener("DOMContentLoaded", () =&gt; {
+
+		if (!localStorage.getItem("ls-test"))
+			localStorage.setItem("ls-test", "test!");
+	})
+
+//]]&gt;</script>
+<script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
+document.getElementsByClassName("data-table")[0].innerHTML+=`\n\t\t&lt;tr&gt;\n\t\t\t&lt;td&gt;Document Hash Query:&lt;/td&gt;\n\t\t\t&lt;td&gt;${document.location.hash}&lt;/td&gt;\n\t\t&lt;/tr&gt;\n\t`;
+//# sourceMappingURL=bundle.js.map
+//]]&gt;</script><style>
+					/* <![CDATA[ */
+
+body {
+	background: black;
+	color: blue;
+}
+
+body > h1 {
+	font-size: 22px;
+}
+
+body > h1 {
+	font-size: 22px;
+}
+
+					/* ]]> */
+				</style></ts:viewContent>
+		<ts:card name="Mint" type="action">
+
+			<ts:label>
+				<ts:string xml:lang="en">Mint</ts:string>
+			</ts:label>
+
+			<ts:attribute name="toAddress">
+				<ts:type>
+					<ts:syntax>1.3.6.1.4.1.1466.115.121.1.15</ts:syntax>
+				</ts:type>
+				<ts:origins>
+					<ts:user-entry as="address"/>
+				</ts:origins>
+			</ts:attribute>
+
+			<ts:transaction>
+				<ethereum:transaction as="uint" contract="TestToken" function="safeMint">
+					<ts:data>
+						<ts:address ref="toAddress"/>
+						<ts:string>https://smart-token-labs-demo-server.mypinata.cloud/ipfs/QmXdnWNa2CaRCUa4jMTirmkVJkygr2LtnccSuDY3yXrvVm/bayc_1013.json</ts:string>
+					</ts:data>
+				</ethereum:transaction>
+			</ts:transaction>
+
+			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="mint-action-1" xml:lang="en">
+				<ts:viewContent name="common"/>
+
+			</ts:view>
+		</ts:card>
+		<ts:card name="Mint2" type="action">
+
+			<ts:label>
+				<ts:string xml:lang="en">Mint 2</ts:string>
+			</ts:label>
+			<ts:attribute name="toAddress">
+				<ts:type>
+					<ts:syntax>1.3.6.1.4.1.1466.115.121.1.15</ts:syntax>
+				</ts:type>
+				<ts:origins>
+					<ts:user-entry as="address"/>
+				</ts:origins>
+			</ts:attribute>
+			<ts:transaction>
+				<ethereum:transaction as="uint" contract="TestToken" function="safeMint">
+					<ts:data>
+						<ts:address ref="toAddress"/>
+						<ts:string>https://smart-token-labs-demo-server.mypinata.cloud/ipfs/QmXdnWNa2CaRCUa4jMTirmkVJkygr2LtnccSuDY3yXrvVm/bayc_1013.json</ts:string>
+					</ts:data>
+				</ethereum:transaction>
+			</ts:transaction>
+			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="mint-action-2" xml:lang="en">
+				<ts:viewContent name="common"/>
+
+			</ts:view>
+		</ts:card>
+	</ts:cards>
+
+</ts:token>

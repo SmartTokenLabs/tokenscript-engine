@@ -62,9 +62,27 @@ export class NewViewer {
 
 		if (query.has("ticket") || query.has("attestation")) {
 
-			const tokenScript = await this.app.tsEngine.importAttestationUsingTokenScript(query)
+			this.app.showTsLoader();
 
-			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
+			try {
+
+				const tokenScript = await this.app.tsEngine.importAttestationUsingTokenScript(query)
+
+			} catch (e){
+				console.error(e);
+				this.app.hideTsLoader();
+				this.showToast.emit({
+					type: "error",
+					title: "Failed to import attestation",
+					description: e.message
+				});
+				return;
+			}
+
+			// Import completed successfully, add tokenscript to myTokenScripts
+			tsMeta = await this.addFormSubmit("url", {tsId: query.get("scriptURI")})
+
+			// TODO: Show success message
 
 		} else if (query.has("tokenscriptUrl")){
 			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})

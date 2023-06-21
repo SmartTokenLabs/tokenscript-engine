@@ -4,7 +4,7 @@ import {Attribute} from "../Attribute";
 
 export class AttestationDefinitions {
 
-	private definitions: {[attestationName: string]: AttestationDefinition };
+	private definitions?: {[attestationName: string]: AttestationDefinition };
 
 	constructor(
 		private tokenScript: TokenScript,
@@ -22,7 +22,9 @@ export class AttestationDefinitions {
 
 			this.definitions = {};
 
-			const defElems = this.elem.getElementsByTagName("ts:attestation");
+			const defElems = Array.prototype.slice.call(this.elem.children).filter((elem: Element) => {
+				return elem.tagName === "ts:attestation"
+			});
 
 			for (const defElem of defElems){
 				const definition = new AttestationDefinition(this.tokenScript, defElem);

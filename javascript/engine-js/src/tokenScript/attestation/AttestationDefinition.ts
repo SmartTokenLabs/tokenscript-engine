@@ -1,4 +1,5 @@
 import {TokenScript} from "../../TokenScript";
+import {sha256} from "ethers/lib/utils";
 
 export interface AttestationMeta {
 	title: string,
@@ -41,9 +42,15 @@ export class AttestationDefinition {
 	}
 
 	get keys(): string[] {
-		return Array.of(...this.elem.getElementsByTagName("ts:key")).map((keyElem: Element) => {
-			return keyElem.innerHTML
-		})
+
+		const keys = [];
+		const keyElems = this.elem.getElementsByTagName("ts:key");
+
+		for (const keyElem of keyElems){
+			keys.push(keyElem.innerHTML);
+		}
+
+		return keys;
 	}
 
 	get eventId(): string {
@@ -59,7 +66,43 @@ export class AttestationDefinition {
 		return idElems[0].innerHTML.split(",") ?? []
 	}
 
-	get schemaUid(): string {
-		return this.elem.getElementsByTagName("ts:eas")?.[0].innerHTML ?? "0x0000000000000000000000000000000000000000000000000000000000000000";
+	get schemaUID(): string {
+
+		const easElem = this.elem.getElementsByTagName("ts:eas");
+		if (easElem.length){
+			if (easElem[0].hasAttribute("schemaUID")){
+				return easElem[0].getAttribute("schemaUID");
+			}
+		}
+
+		return "0x0000000000000000000000000000000000000000000000000000000000000000";
+	}
+
+	public calculateAttestationCollectionHashes(): string[] {
+
+		const hashes = [];
+
+		let schemaUID = this.schemaUID;
+
+		if (schemaUID.indexOf("0x") === 0)
+			schemaUID = schemaUID.substring(2);
+
+		const encoder = new TextEncoder();
+
+		for (let key of this.keys){
+
+			if (key.indexOf("0x") === 0)
+				key = key.substring(2);
+
+			const hashText = schemaUID + "-" + key + (this.eventId ? "-" + this.eventId : '');
+
+			console.log("Definition hash text: ", hashText);
+
+			const hash = sha256(encoder.encode(hashText));
+
+			hashes.push(hash);
+		}
+
+		return hashes;
 	}
 }

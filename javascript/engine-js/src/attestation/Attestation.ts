@@ -1,6 +1,5 @@
 import {
 	EAS,
-	getOffchainUID,
 	Offchain, OFFCHAIN_ATTESTATION_TYPES, SchemaEncoder, SchemaRecord,
 	SchemaRegistry,
 	SignedOffchainAttestation
@@ -9,10 +8,17 @@ import {
 	decodeBase64ZippedBase64,
 } from "./AttestationUrl";
 import {BigNumber, ethers} from "ethers";
+import {sha256} from "ethers/lib/utils";
+
 
 export const EAS_RPC_CONFIG = {
 	1: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
 	11155111: 'https://rpc.sepolia.org/',
+}
+
+export const EAS_REGISTRY_CONFIG = {
+	1: "0xA7b39296258348C78294F95B872b282326A97BDF",
+	11155111: "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
 }
 
 export class Attestation {
@@ -41,6 +47,10 @@ export class Attestation {
 		if (!EAS_RPC_CONFIG[domain.chainId])
 			throw new Error(`EAS chain ID ${domain.chainId} is not supported`);
 
+		// TODO: Add all contract versions
+		if (!EAS_REGISTRY_CONFIG[domain.chainId])
+			throw new Error(`EAS schema registry address not available for chain ID ${domain.chainId}`);
+
 		this.offChain = new Offchain({
 			version: domain.version,
 			address: domain.verifyingContract,
@@ -53,7 +63,7 @@ export class Attestation {
 			signerOrProvider: provider
 		})
 
-		this.schemaRegistry = new SchemaRegistry(domain.verifyingContract, {
+		this.schemaRegistry = new SchemaRegistry(EAS_REGISTRY_CONFIG[domain.chainId], {
 			signerOrProvider: provider
 		})
 
@@ -62,21 +72,21 @@ export class Attestation {
 
 	private recoverSignerInfo(){
 
-		const hash = ethers.utils._TypedDataEncoder.hash(this.offChain.getDomainTypedData(), {Attestation: OFFCHAIN_ATTESTATION_TYPES[1].types}, this.attestation.message);
+		const hash = ethers.utils._TypedDataEncoder.hash(this.offChain.getDomainTypedData(), {Attest: OFFCHAIN_ATTESTATION_TYPES[0].types}, this.attestation.message);
 
 		this.signerPublicKey = ethers.utils.recoverPublicKey(hash, this.attestation.signature);
-		this.signerAddress = ethers.utils.recoverAddress(hash, this.attestation.signature)
+		this.signerAddress = ethers.utils.recoverAddress(hash, this.attestation.signature);
+
+		console.log("Signer key: ", this.signerPublicKey)
 	}
 
 	public async getSchemaRecord(){
 
-		if (this.schemaRecord)
-			return this.schemaRecord;
+		if (!this.schemaRecord) {
+			this.schemaRecord = await this.schemaRegistry.getSchema({uid: this.attestation.message.schema});
+		}
 
-		// Get schema from registry
-		const schemaUid = this.attestation.message.schema;
-
-		this.schemaRecord = await this.schemaRegistry.getSchema({uid: schemaUid});
+		return this.schemaRecord;
 	}
 
 	public async verifyAttestation(){
@@ -112,7 +122,7 @@ export class Attestation {
 
 		if (!this.decodedData) {
 
-			const schemaRecord = this.getSchemaRecord();
+			const schemaRecord = await this.getSchemaRecord();
 			const schemaEncoder = new SchemaEncoder((await schemaRecord).schema)
 			const data = schemaEncoder.decodeData(this.attestation.message.data);
 
@@ -138,6 +148,43 @@ export class Attestation {
 		}
 
 		return data[fieldName]
+	}
+
+	async getAttestationId(idFields: string[]){
+
+		if (!idFields.length){
+			return this.attestation.uid;
+		}
+
+		const data = await this.getAttestationData();
+
+		const parts = [];
+
+		for (const field of idFields){
+			if (data[field])
+				parts.push(data[field]);
+		}
+
+		return parts.join("-");
+	}
+
+	async getCollectionHash(){
+
+		const parts = [];
+
+		parts.push(this.attestation.message.schema.substring(2));
+		parts.push(this.signerPublicKey.substring(2));
+
+		const data = await this.getAttestationData();
+
+		if (data.eventId)
+			parts.push(data.eventId);
+
+		const encoder = new TextEncoder();
+
+		console.log("Attestation hash text: ", parts.join("-"));
+
+		return sha256(encoder.encode(parts.join("-")));
 	}
 
 }

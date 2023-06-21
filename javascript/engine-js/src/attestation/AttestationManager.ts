@@ -2,6 +2,7 @@ import {IAttestationStorageAdapter} from "./IAttestationStorageAdapter";
 import {TokenScriptEngine} from "../Engine";
 import {AttestationDefinition} from "../tokenScript/attestation/AttestationDefinition";
 import {Attestation} from "./Attestation";
+import {sha256} from "ethers/lib/utils";
 
 export class AttestationManager {
 
@@ -33,19 +34,27 @@ export class AttestationManager {
 
 		await attestation.verifyAttestation();
 
-		const data = await attestation.getAttestationData()
-
-		console.log("Attestation data: ", data);
-
 		return attestation;
 	}
 
-	private async saveAttestation(){
+	public async saveAttestation(definition: AttestationDefinition, attestation: Attestation){
 
+		const id = await attestation.getAttestationId(definition.idFields);
+
+		console.log("Attestation ID: " + id);
 	}
 
 	public async getAttestations(definition: AttestationDefinition){
 
+		const collectionHashes = definition.calculateAttestationCollectionHashes();
+
+
 	}
+
+	public async removeAttestation(definition: AttestationDefinition, id: string){
+		// TODO: Implement removal
+	}
+
+
 
 }
