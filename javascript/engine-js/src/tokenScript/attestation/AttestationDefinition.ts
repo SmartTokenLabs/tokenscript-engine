@@ -41,7 +41,7 @@ export class AttestationDefinition {
 		return {
 			title: meta.getElementsByTagName("ts:title")?.[0].innerHTML ?? this.tokenScript.getLabel(),
 			image: meta.getElementsByTagName("ts:image")?.[0].innerHTML ?? "",
-			description: meta.getElementsByTagName("ts:title")?.[0].innerHTML ?? "",
+			description: meta.getElementsByTagName("ts:description")?.[0].innerHTML ?? "",
 		}
 	}
 
