@@ -18,6 +18,8 @@ div {
 	overflow: hidden;
 	width: 100%;
 	aspect-ratio: 1 / 1;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .shimmer {

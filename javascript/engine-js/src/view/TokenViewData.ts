@@ -59,6 +59,9 @@ export class TokenViewData {
 				image_preview_url: nftDetails?.image ?? tokenContext.image,
 				...attrsData
 			};
+
+			data.tokenInfo = nftDetails.data;
+
 		} else {
 			const contracts = this.tokenScript.getContracts(true);
 

@@ -95,12 +95,46 @@ export class NewViewer {
 		} else if (query.has("chain") && query.has("contract")){
 			const tsId = query.get("chain") + "-" + query.get("contract");
 			tsMeta = await this.addFormSubmit("resolve", {tsId})
+		} else if (query.has("emulator")){
+			const tsId = query.get("emulator") + "/tokenscript.tsml";
+			tsMeta = await this.addFormSubmit("url", {tsId})
+			this.connectEmulatorSocket(tsId, query.get("emulator"));
 		}
 
 		console.log("open TS", tsMeta);
 
 		if (tsMeta)
 			this.viewerPopover.open(tsMeta.tokenScript);
+	}
+
+	connectEmulatorSocket(tsId: string, host: string){
+
+		try {
+			const webSocket = new WebSocket("ws://" + new URL(host).host + "/ws");
+
+			webSocket.onopen = (event) => {
+				console.log("connected: ", event.type);
+				webSocket.send("Websocket client connected!");
+			};
+
+			webSocket.onmessage = async (event) => {
+
+				if (event.data != "BUILD_UPDATED")
+					return;
+
+				// TODO: Implement build started and build error events
+				try {
+					const tsMeta = await this.addFormSubmit("url", {tsId});
+					await this.viewerPopover.close();
+					this.viewerPopover.open(tsMeta.tokenScript);
+				} catch (e){
+					console.error(e);
+					alert("Failed to reload TokenScript changes");
+				}
+			}
+		} catch (e){
+			console.error(e);
+		}
 	}
 
 	private async init(){
@@ -205,7 +239,7 @@ export class NewViewer {
 				meta = {
 					tokenScriptId: data.tsId ?? tokenScript.getName(),
 					loadType: type,
-					name: tokenScript.getName() ?? tokenScript.getLabel() ?? "Unknown TokenScript",
+					name: tokenScript.getLabel() ?? tokenScript.getName() ?? "Unknown TokenScript",
 					xml: type === "file" ? tokenScript.getXmlString() : null
 				};
 
