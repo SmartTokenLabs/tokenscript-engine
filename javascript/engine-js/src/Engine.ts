@@ -107,7 +107,7 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		return this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, resolveResult.sourceUrl, viewBinding);
+		return this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, tsId, resolveResult.sourceUrl, viewBinding);
 	}
 
 	/**
@@ -117,13 +117,14 @@ export class TokenScriptEngine {
 	 */
 	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
 
+		// TODO: Add caching for URL loaded tokenscripts, add URL source to repo
 		const res = await fetch(url);
 
 		if (res.status < 200 || res.status > 399){
 			throw new Error("Failed to load URL: " + res.statusText);
 		}
 
-		return this.initializeTokenScriptObject(await res.text(), ScriptSourceType.URL, url, viewBinding);
+		return this.initializeTokenScriptObject(await res.text(), ScriptSourceType.URL, url, url, viewBinding);
 	}
 
 	// TODO: The engine should hold the tokenscript object in memory until explicitly cleared, or done so via some intrinsic.
@@ -135,22 +136,23 @@ export class TokenScriptEngine {
 	 */
 	public async loadTokenScript(xml: string, viewBinding?: IViewBinding) {
 
-		return this.initializeTokenScriptObject(xml, ScriptSourceType.UNKNOWN, null, viewBinding);
+		return this.initializeTokenScriptObject(xml, ScriptSourceType.UNKNOWN, null, null, viewBinding);
 	}
 
 	/**
 	 * Instantiate a new TokenScript object
 	 * @param xml
 	 * @param source
+	 * @param sourceId
 	 * @param sourceUrl
 	 * @param viewBinding
 	 * @private
 	 */
-	private initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceUrl?: string, viewBinding?: IViewBinding){
+	private initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding){
 		try {
 			let parser = new DOMParser();
 			let tokenXml = parser.parseFromString(xml,"text/xml");
-			return new TokenScript(this, tokenXml, xml, source, sourceUrl, viewBinding);
+			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding);
 		} catch (e){
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}

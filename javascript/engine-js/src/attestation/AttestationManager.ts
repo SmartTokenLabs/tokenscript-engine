@@ -2,7 +2,6 @@ import {IAttestationStorageAdapter} from "./IAttestationStorageAdapter";
 import {TokenScriptEngine} from "../Engine";
 import {AttestationDefinition} from "../tokenScript/attestation/AttestationDefinition";
 import {Attestation} from "./Attestation";
-import {sha256} from "ethers/lib/utils";
 
 export class AttestationManager {
 
@@ -29,8 +28,13 @@ export class AttestationManager {
 		if (!attestationStr)
 			throw new Error('Incomplete token params in URL.')
 
+		const meta: {[name: string]: any} = {};
+
+		if (id) meta.id = id;
+		if (secret) meta.secret = secret;
+
 		// Decode and validate attestation
-		const attestation = new Attestation(type, attestationStr, id, secret);
+		const attestation = new Attestation(type, attestationStr, {commitmentId: id, commitmentSecret: secret});
 
 		await attestation.verifyAttestation();
 
@@ -39,22 +43,32 @@ export class AttestationManager {
 
 	public async saveAttestation(definition: AttestationDefinition, attestation: Attestation){
 
-		const id = await attestation.getAttestationId(definition.idFields);
+		const record = await attestation.getDatabaseRecord(definition.idFields);
 
-		console.log("Attestation ID: " + id);
+		// TODO: Check for existing record and only update authoritative TokenScript if public key matches the signing key
+		record.authoritativeTokenScript = definition.getTokenScript().getSourceInfo()
+
+		return this.storageAdapter.saveAttestation(record);
 	}
 
 	public async getAttestations(definition: AttestationDefinition){
 
 		const collectionHashes = definition.calculateAttestationCollectionHashes();
 
+		// TODO: Add additional logic to check if it's the authoritative tokenscript.
+		//  We should treat the meta title/image/desc in the authoritative tokenscript.
+		//  If this definition does not match the authoritative one, fetch the authoritative tokenscript to show meta.
 
+		const attests = await this.storageAdapter.getAttestations(collectionHashes);
+
+		for (const attest of attests)
+			attest.meta = {...attest.meta, ...definition.meta};
+
+		return attests;
 	}
 
-	public async removeAttestation(definition: AttestationDefinition, id: string){
-		// TODO: Implement removal
+	public async removeAttestation(collectionHash: string, id: string){
+		return this.storageAdapter.removeAttestation(collectionHash, id);
 	}
-
-
 
 }

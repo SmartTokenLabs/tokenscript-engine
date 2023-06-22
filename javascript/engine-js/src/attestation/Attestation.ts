@@ -9,6 +9,7 @@ import {
 } from "./AttestationUrl";
 import {BigNumber, ethers} from "ethers";
 import {sha256} from "ethers/lib/utils";
+import {IAttestationData} from "./IAttestationStorageAdapter";
 
 
 export const EAS_RPC_CONFIG = {
@@ -36,8 +37,7 @@ export class Attestation {
 	constructor(
 		private type: string,
 		private base64Attestation: string,
-		private id?: string,
-		private secret?: string
+		private meta: {[name: string]: any} = {}
 	) {
 		const decoded = decodeBase64ZippedBase64(base64Attestation);
 		this.attestation = decoded.sig as SignedOffchainAttestation;
@@ -185,6 +185,20 @@ export class Attestation {
 		console.log("Attestation hash text: ", parts.join("-"));
 
 		return sha256(encoder.encode(parts.join("-")));
+	}
+
+	public async getDatabaseRecord(idFields: string[], ): Promise<IAttestationData> {
+
+		return <IAttestationData>{
+			collectionId: await this.getCollectionHash(),
+			tokenId: await this.getAttestationId(idFields),
+			type: "eas",
+			token: this.base64Attestation,
+			decodedToken: this.attestation,
+			decodedData: await this.getAttestationData(),
+			meta: this.meta,
+			dt: Date.now()
+		};
 	}
 
 }

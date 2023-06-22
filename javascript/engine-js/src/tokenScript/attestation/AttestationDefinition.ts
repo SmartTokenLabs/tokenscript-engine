@@ -16,6 +16,10 @@ export class AttestationDefinition {
 
 	}
 
+	getTokenScript(){
+		return this.tokenScript
+	}
+
 	get name(){
 		return this.elem.getAttribute("name");
 	}

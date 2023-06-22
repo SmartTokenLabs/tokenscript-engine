@@ -83,10 +83,18 @@ export class TokenScript {
 		private tokenDef: XMLDocument,
 		private xmlStr: string,
 		private source: ScriptSourceType,
+		private sourceId: string,
 		private sourceUrl: string,
 		private viewBinding?: IViewBinding
 	) {
 		this.securityInfo = new SecurityInfo(this, this.tokenDef, this.xmlStr, this.source, this.sourceUrl);
+	}
+
+	public getSourceInfo(){
+		return {
+			tsId: this.sourceId,
+			source: this.source
+		}
 	}
 
 	/**
