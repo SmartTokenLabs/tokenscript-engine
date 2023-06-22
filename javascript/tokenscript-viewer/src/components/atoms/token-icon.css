@@ -2,7 +2,7 @@
 :host {
 	display: flex;
 	align-items: center;
-	justify-content: left;
+	justify-content: center;
 	position: relative;
 	height: auto;
 	overflow: hidden;
@@ -16,7 +16,8 @@ div {
 	display: flex;
 	position: relative;
 	overflow: hidden;
-	max-width: 100%;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 }
 
 .shimmer {

@@ -100,8 +100,6 @@ export class AttestationDefinition {
 
 			const hashText = schemaUID + "-" + key + (this.eventId ? "-" + this.eventId : '');
 
-			console.log("Definition hash text: ", hashText);
-
 			const hash = sha256(encoder.encode(hashText));
 
 			hashes.push(hash);

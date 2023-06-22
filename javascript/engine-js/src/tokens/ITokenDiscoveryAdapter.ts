@@ -1,4 +1,4 @@
-import {IToken} from "./IToken";
+import {ITokenCollection} from "./ITokenCollection";
 
 /**
  * Defines the interface for token discovery that is provided by the user-agent.
@@ -8,5 +8,5 @@ import {IToken} from "./IToken";
  * to the engine by calling TokenScript.setTokenMetadata(...);
  */
 export interface ITokenDiscoveryAdapter {
-	getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]>
+	getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]>
 }

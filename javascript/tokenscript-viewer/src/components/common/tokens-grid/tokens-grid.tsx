@@ -1,6 +1,6 @@
 import {Component, EventEmitter, h, Prop, State, Watch, Event, Host} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
@@ -16,7 +16,7 @@ export class TokensGrid {
 
 	@Prop() tokenScript: TokenScript;
 
-	currentTokens?: {[key: string]: IToken};
+	currentTokens?: {[key: string]: ITokenCollection};
 
 	@State()
 	currentTokensFlat?: TokenGridContext[];
@@ -47,7 +47,7 @@ export class TokensGrid {
 		}, "grid")
 	}
 
-	async populateTokens(tokens: {[key: string]: IToken} ){
+	async populateTokens(tokens: {[key: string]: ITokenCollection} ){
 
 		this.loading = false;
 
@@ -85,6 +85,8 @@ export class TokensGrid {
 				selectedNftId: ("tokenId" in token) ? token.tokenId : undefined
 			}
 
+			console.log("Token context: ", context);
+
 			if (await cardRes.card.isEnabledOrReason(context) === true) {
 				this.showCard(cardRes.card, token, cardRes.index);
 				return;
@@ -117,7 +119,7 @@ export class TokensGrid {
 			<Host class="tokens-grid">
 				<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
 				{
-					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token, index) => {
+					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
 						return (
 							<tokens-grid-item tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
 						);

@@ -1,6 +1,6 @@
 import {Component, h, Host, Prop, State} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {getTokensFlat} from "../../viewers/util/getTokensFlat";
 
 @Component({
@@ -51,7 +51,7 @@ export class TokenscriptButton {
 		}, "ts-button");
 	}
 
-	private updateTokenStatus(tokens: {[id: string]: IToken}){
+	private updateTokenStatus(tokens: {[id: string]: ITokenCollection}){
 
 		const flat = getTokensFlat(tokens);
 

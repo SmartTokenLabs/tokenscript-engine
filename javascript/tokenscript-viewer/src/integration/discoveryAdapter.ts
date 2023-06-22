@@ -1,9 +1,9 @@
 import {ITokenDiscoveryAdapter} from "../../../engine-js/src/tokens/ITokenDiscoveryAdapter";
-import {IToken} from "../../../engine-js/src/tokens/IToken";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 
 import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_MAP} from "./constants";
-import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
+import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
 
 const COLLECTION_CACHE_TTL = 86400;
@@ -12,9 +12,9 @@ const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
-	async getTokens(initialTokenDetails: IToken[], refresh: boolean): Promise<IToken[]> {
+	async getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
 
-		const resultTokens: IToken[] = [];
+		const resultTokens: ITokenCollection[] = [];
 
 		if (!Web3WalletProvider.isWalletConnected()){
 			Web3WalletProvider.getWallet(true);
@@ -47,7 +47,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return (await Web3WalletProvider.getWallet(true)).address;
 	}
 
-	async getCachedTokens(initialTokenDetails: IToken, ownerAddress: string): Promise<IToken|false> {
+	async getCachedTokens(initialTokenDetails: ITokenCollection, ownerAddress: string): Promise<ITokenCollection|false> {
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
@@ -61,7 +61,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return false;
 	}
 
-	async storeCachedTokens(token: IToken, ownerAddress: string){
+	async storeCachedTokens(token: ITokenCollection, ownerAddress: string){
 
 		await dbProvider.tokens.put({
 			chainId: token.chainId,
@@ -72,7 +72,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		});
 	}
 
-	async fetchTokens(token: IToken, ownerAddress: string){
+	async fetchTokens(token: ITokenCollection, ownerAddress: string){
 
 		if (!CHAIN_MAP[token.chainId])
 			throw new Error("Chain ID " + token.chainId + " is not supported for token discovery");
@@ -85,7 +85,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		if (token.tokenType !== "erc20") {
 
-			const nftTokenDetails: INFTTokenDetail[] = [];
+			const nftTokenDetails: ITokenDetail[] = [];
 
 			for (let tokenMeta of tokenData) {
 
@@ -99,7 +99,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				});
 			}
 
-			token.nftDetails = nftTokenDetails;
+			token.tokenDetails = nftTokenDetails;
 			token.balance = nftTokenDetails.length;
 
 		} else if (tokenData.length > 0) {
@@ -110,13 +110,15 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return token;
 		}
 
-		token.image = collectionData.image;
+		if (collectionData?.image)
+			token.image = collectionData.image;
+
 		token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
 
 		return token;
 	}
 
-	public async getCollectionMeta(token: IToken, chain: string){
+	public async getCollectionMeta(token: ITokenCollection, chain: string){
 
 		let collectionData = await this.getCachedMeta(token);
 
@@ -128,7 +130,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return collectionData;
 	}
 
-	private async getCachedMeta(token: IToken){
+	private async getCachedMeta(token: ITokenCollection){
 
 		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,
@@ -141,7 +143,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return false;
 	}
 
-	private async storeCachedMeta(token: IToken, data: any){
+	private async storeCachedMeta(token: ITokenCollection, data: any){
 
 		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
@@ -151,7 +153,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		});
 	}
 
-	private async fetchTokenMetadata(token: IToken, chain: string){
+	private async fetchTokenMetadata(token: ITokenCollection, chain: string){
 
 		const url = token.tokenType === "erc20" ?
 			`/get-fungible-token?collectionAddress=${token.collectionId}&chain=${chain}&blockchain=evm` :
@@ -160,7 +162,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return this.fetchRequest(url);
 	}
 
-	private async fetchOwnerTokens(token: IToken, chain: string, ownerAddress: string){
+	private async fetchOwnerTokens(token: ITokenCollection, chain: string, ownerAddress: string){
 
 		const url = token.tokenType === "erc20" ?
 			`/get-owner-fungible-tokens?collectionAddress=${token.collectionId}&owner=${ownerAddress}&chain=${chain}&blockchain=evm` :

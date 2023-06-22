@@ -1,4 +1,4 @@
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import Dexie from "dexie";
 import {TokenScriptSource} from "../components/app/app";
 import {IAttestationData} from "@tokenscript/engine-js/src/attestation/IAttestationStorageAdapter";
@@ -7,7 +7,7 @@ interface TSTokenCacheTokens {
 	chainId: number,
 	collectionId: string,
 	ownerAddress: string,
-	data: IToken,
+	data: ITokenCollection,
 	dt: number
 }
 

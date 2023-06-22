@@ -66,7 +66,18 @@ export class NewViewer {
 
 			try {
 
-				const tokenScript = await this.app.tsEngine.importAttestationUsingTokenScript(query)
+				const {definition} = await this.app.tsEngine.importAttestationUsingTokenScript(query);
+
+				// Import completed successfully, add tokenscript to myTokenScripts
+				tsMeta = await this.addFormSubmit("url", {tsId: query.get("scriptURI"), image: definition.meta.image});
+
+				document.location.hash = "";
+
+				this.showToast.emit({
+					type: "success",
+					title: "Attestation imported",
+					description: "Successfully imported " + definition.meta.title
+				});
 
 			} catch (e){
 				console.error(e);
@@ -78,11 +89,6 @@ export class NewViewer {
 				});
 				return;
 			}
-
-			// Import completed successfully, add tokenscript to myTokenScripts
-			tsMeta = await this.addFormSubmit("url", {tsId: query.get("scriptURI")})
-
-			// TODO: Show success message
 
 		} else if (query.has("tokenscriptUrl")){
 			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
@@ -183,7 +189,7 @@ export class NewViewer {
 	}
 
 	// TODO: break up function into small components
-	private async addFormSubmit(type: TokenScriptSource, data: {tsId: string, xml?: File}){
+	private async addFormSubmit(type: TokenScriptSource, data: {tsId: string, xml?: File, image?: string}){
 
 		this.app.showTsLoader();
 
@@ -204,15 +210,19 @@ export class NewViewer {
 				};
 
 				// TODO: This can possibly be moved to tokenscript-button component to allow dynamic update of the icon after it has been added
-				const originData = tokenScript.getTokenOriginData()[0];
+				if (data.image){
+					meta.iconUrl = data.image;
+				} else {
+					const originData = tokenScript.getTokenOriginData()[0];
 
-				if (originData && CHAIN_MAP[originData.chainId]) {
-					const discoveryAdapter = new DiscoveryAdapter();
-					try {
-						const data = await discoveryAdapter.getCollectionMeta(originData, CHAIN_MAP[originData.chainId]);
-						meta.iconUrl = data.image;
-					} catch (e) {
-						console.error("Failed to load tokenscript icon from collection metadata", e);
+					if (originData && CHAIN_MAP[originData.chainId]) {
+						const discoveryAdapter = new DiscoveryAdapter();
+						try {
+							const data = await discoveryAdapter.getCollectionMeta(originData, CHAIN_MAP[originData.chainId]);
+							meta.iconUrl = data.image;
+						} catch (e) {
+							console.error("Failed to load tokenscript icon from collection metadata", e);
+						}
 					}
 				}
 			}

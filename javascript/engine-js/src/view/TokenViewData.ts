@@ -43,7 +43,7 @@ export class TokenViewData {
 
 		if (tokenContext){
 
-			const nftDetails = tokenContext.selectedNftIndex !== undefined ? tokenContext.nftDetails[tokenContext.selectedNftIndex] : null;
+			const nftDetails = tokenContext.selectedNftIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedNftIndex] : null;
 
 			// TODO: Find out where to use token name/description or collection name/description
 			data = {

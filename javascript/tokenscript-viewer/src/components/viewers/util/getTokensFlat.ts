@@ -1,17 +1,17 @@
-import {INFTTokenDetail} from "@tokenscript/engine-js/src/tokens/INFTTokenDetail";
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
+import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 
-export type TokenGridContext = (INFTTokenDetail | IToken) & { contextId: string; };
+export type TokenGridContext = (ITokenDetail | ITokenCollection) & { contextId: string; };
 
 // TODO: Improve engine APIs so this is not required
-export function getTokensFlat(tokens: {[name: string]: IToken}): TokenGridContext[] {
+export function getTokensFlat(tokens: {[name: string]: ITokenCollection}): TokenGridContext[] {
 
 	return Object.keys(tokens).reduce((tokenArr, contractName) => {
 
-		if (tokens[contractName].nftDetails){
+		if (tokens[contractName].tokenDetails){
 
 			// NFTs
-			const nfts = tokens[contractName].nftDetails.map((nft, index) => {
+			const nfts = tokens[contractName].tokenDetails.map((nft, index) => {
 				return {...nft, contextId: contractName + "-" + index};
 			});
 			tokenArr.push(...nfts);

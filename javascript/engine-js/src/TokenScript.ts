@@ -2,7 +2,7 @@ import {ScriptSourceType, TokenScriptEngine} from "./Engine";
 import {Card} from "./tokenScript/Card";
 import {Contract} from "./tokenScript/Contract";
 import {Transaction} from "./tokenScript/Transaction";
-import {IToken} from "./tokens/IToken";
+import {ITokenCollection} from "./tokens/ITokenCollection";
 import {Attributes} from "./tokenScript/Attributes";
 import {ViewController} from "./view/ViewController";
 import {IViewBinding} from "./view/IViewBinding";
@@ -12,7 +12,7 @@ import {Label} from "./tokenScript/Label";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefinitions";
 
-export interface ITokenContext extends IToken {
+export interface ITokenContext extends ITokenCollection {
 	selectedNftIndex?: number
 	selectedNftId?: string
 }
@@ -33,7 +33,7 @@ export interface TokensUpdatedEventArgs {
 
 export type EventHandler = (data: any) => Promise<void>|void;
 
-export type TokenMetadataMap = { [contractName: string]: IToken };
+export type TokenMetadataMap = { [contractName: string]: ITokenCollection };
 
 export interface ITransactionStatus {
 	status: 'confirmed'|'submitted',
@@ -378,6 +378,39 @@ export class TokenScript {
 				this.tokenMetadata[token.id] = token;
 			}
 
+			for (const definition of this.getAttestationDefinitions()){
+
+				const id = definition.name;
+
+				const tokenCollection: ITokenCollection = {
+					id,
+					blockChain: "offchain",
+					chainId: 0,
+					tokenType: "eas",
+					collectionId: id,
+					tokenDetails: [],
+					name: definition.meta.title,
+					image: definition.meta.image,
+					description: definition.meta.description,
+					decimals: 0,
+					balance: 0
+				};
+
+				for (const attestation of await this.engine.getAttestationManager().getAttestations(definition)){
+					tokenCollection.balance++;
+					tokenCollection.tokenDetails.push({
+						collectionDetails: tokenCollection,
+						name: definition.meta.title,
+						tokenId: attestation.tokenId,
+						description: definition.meta.description,
+						image: definition.meta.image,
+						data: attestation
+					})
+				}
+
+				this.tokenMetadata[tokenCollection.id] = tokenCollection;
+			}
+
 			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata})
 		}
 
@@ -389,7 +422,7 @@ export class TokenScript {
 	 * This can be used for the user-agent to push token updates rather than calling getTokenMeta with the refresh option
 	 * @param tokenMetadata
 	 */
-	public setTokenMetadata(tokenMetadata: IToken[]){
+	public setTokenMetadata(tokenMetadata: ITokenCollection[]){
 		const metaMap: TokenMetadataMap = {};
 
 		for (let meta of tokenMetadata){
@@ -428,7 +461,7 @@ export class TokenScript {
 
 		const originContracts = this.getContracts(originOnly);
 
-		const initialTokenDetails: IToken[] = [];
+		const initialTokenDetails: ITokenCollection[] = [];
 
 		for (let i in originContracts){
 
@@ -477,13 +510,13 @@ export class TokenScript {
 			return;
 		}
 
-		if (!this.tokenMetadata[contractName].nftDetails?.[tokenIndex]){
+		if (!this.tokenMetadata[contractName].tokenDetails?.[tokenIndex]){
 			throw new Error("Cannot set token context: contractName was not found")
 		}
 
 		this.tokenContext = this.tokenMetadata[contractName];
 		this.tokenContext.selectedNftIndex = tokenIndex;
-		this.tokenContext.selectedNftId = this.tokenMetadata[contractName].nftDetails[tokenIndex].tokenId;
+		this.tokenContext.selectedNftId = this.tokenMetadata[contractName].tokenDetails[tokenIndex].tokenId;
 
 		if (this.hasViewBinding()) {
 			const currentCard = this.getViewController().getCurrentCard();

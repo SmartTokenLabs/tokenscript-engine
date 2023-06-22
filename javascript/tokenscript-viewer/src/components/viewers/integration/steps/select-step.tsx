@@ -1,7 +1,7 @@
 import {Component, Prop, h, State} from "@stencil/core";
 import {IntegrationViewer} from "../integration-viewer";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {IToken} from "@tokenscript/engine-js/src/tokens/IToken";
+import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {getTokensFlat, TokenGridContext} from "../../util/getTokensFlat";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {WalletConnection, Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
@@ -23,7 +23,7 @@ export class SelectStep {
 	@Prop()
 	card: Card
 
-	currentTokens?: {[key: string]: IToken};
+	currentTokens?: {[key: string]: ITokenCollection};
 
 	@State()
 	currentTokensFlat?: TokenGridContext[];
@@ -53,7 +53,7 @@ export class SelectStep {
 
 	}
 
-	async populateTokens(tokens: {[key: string]: IToken} ){
+	async populateTokens(tokens: {[key: string]: ITokenCollection} ){
 
 		this.viewer.app.showTsLoader();
 

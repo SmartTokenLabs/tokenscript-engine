@@ -5,6 +5,7 @@ import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {IViewBinding} from "./view/IViewBinding";
 import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
+import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
 
 export interface IEngineConfig {
 	ipfsGateway: string
@@ -56,7 +57,7 @@ export class TokenScriptEngine {
 		return this.attestationManager;
 	}
 
-	public async importAttestationUsingTokenScript(urlParams: URLSearchParams): Promise<TokenScript> {
+	public async importAttestationUsingTokenScript(urlParams: URLSearchParams): Promise<{definition: AttestationDefinition, tokenScript: TokenScript}> {
 
 		// const url = new URL(magicLink);
 		// const urlParams = new URLSearchParams(url.hash.substring(1) ?? url.search.substring(1));
@@ -91,7 +92,7 @@ export class TokenScriptEngine {
 			// Match found, store attestation
 			await this.attestationManager.saveAttestation(definition, attestation);
 
-			return tokenScript
+			return {definition, tokenScript}
 		}
 
 		throw new Error("The provided TokenScript does not contain an attestation definition for the included attestation.");

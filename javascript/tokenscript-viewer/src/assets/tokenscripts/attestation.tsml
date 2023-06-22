@@ -10,27 +10,27 @@
 	</ts:contract>
 	<ts:attestation name="MyAttestation" type="eas">
 		<ts:meta>
-			<ts:title>My Attestation</ts:title>
-			<ts:image>https://somesite.com/someimage.png</ts:image>
-			<ts:description>A really good attestation</ts:description>
+			<ts:title>Devcon 7 Attestation</ts:title>
+			<ts:image>https://raw.githubusercontent.com/TokenScript/token-negotiator/main/mock-images/devcon.svg</ts:image>
+			<ts:description>Your Devcon 7 ticket attestation. Use it to claim great perks available for all Devcon 7 attendees!</ts:description>
 		</ts:meta>
-
+		
 		<ts:key>0408d4bc48bc518c82fb4ad216ef88c11068b3f0c40ba60c255f9e0a7a18382e27654eee6b2283266071567993392c1a338fa0b9f2db7aaab1ba8bf2179808dd34</ts:key>
-
+		
 		<ts:eventId>devcon7</ts:eventId>
-
-		<ts:idFields>eventId,ticketId</ts:idFields>
+		
+		<ts:idFields>ticketId</ts:idFields>
 		<ts:eas schemaUID="0x7f6fb09beb1886d0b223e9f15242961198dd360021b2c9f75ac879c0f786cafd"/>
 	</ts:attestation>
 	<ts:origins>
-
+		
 		<ts:ethereum contract="TestToken"/>
 		<ts:attestation name="MyAttestation"/>
 	</ts:origins>
 	<ts:cards>
 		<ts:viewContent xmlns="http://www.w3.org/1999/xhtml" name="common">
-
-
+			
+			
 		<div xmlns="http://www.w3.org/1999/xhtml">
 	<h1>Welcome to TokenScript</h1>
 	<table class="data-table">
@@ -41,7 +41,7 @@
 	</tbody></table>
 	<h1>Testing build update</h1>
 </div>
-<style xmlns="http://www.w3.org/1999/xhtml">/*&lt;![CDATA[*/
+<style xmlns="http://www.w3.org/1999/xhtml">/*&lt;![CDATA[*/ 
 
 	div &gt; h4 { font-size: 18px }
 
@@ -60,7 +60,7 @@ document.getElementsByClassName("data-table")[0].innerHTML+=`\n\t\t&lt;tr&gt;\n\
 //# sourceMappingURL=bundle.js.map
 //]]&gt;</script><style>
 					/* <![CDATA[ */
-
+					
 body {
 	background: black;
 	color: blue;
@@ -77,7 +77,7 @@ body > h1 {
 					/* ]]> */
 				</style></ts:viewContent>
 		<ts:card name="Mint" type="action">
-
+			
 			<ts:label>
 				<ts:string xml:lang="en">Mint</ts:string>
 			</ts:label>
@@ -102,11 +102,11 @@ body > h1 {
 
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="mint-action-1" xml:lang="en">
 				<ts:viewContent name="common"/>
-
+				
 			</ts:view>
 		</ts:card>
 		<ts:card name="Mint2" type="action">
-
+			
 			<ts:label>
 				<ts:string xml:lang="en">Mint 2</ts:string>
 			</ts:label>
@@ -128,7 +128,7 @@ body > h1 {
 			</ts:transaction>
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="mint-action-2" xml:lang="en">
 				<ts:viewContent name="common"/>
-
+				
 			</ts:view>
 		</ts:card>
 	</ts:cards>
