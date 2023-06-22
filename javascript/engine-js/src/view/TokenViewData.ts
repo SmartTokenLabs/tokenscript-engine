@@ -60,7 +60,8 @@ export class TokenViewData {
 				...attrsData
 			};
 
-			data.tokenInfo = nftDetails.data;
+			if (nftDetails.data)
+				data.tokenInfo = nftDetails.data;
 
 		} else {
 			const contracts = this.tokenScript.getContracts(true);

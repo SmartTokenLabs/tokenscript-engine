@@ -37,15 +37,20 @@ export class TokensGridItem {
 				selectedNftId: ("tokenId" in this.token) ? this.token.tokenId : undefined
 			}
 
-			const enabled = await card.isEnabledOrReason(context);
+			try {
+				const enabled = await card.isEnabledOrReason(context);
 
-			cardButtons.push((
-				<button class={"btn " + (index === 0  ? "btn-primary" : "btn-secondary")} onClick={() => this.showCard(card, this.token, index)}
-						disabled={enabled !== true}
-						title={enabled !== true ? enabled : label}>
-					{label}
-				</button>
-			));
+				cardButtons.push((
+					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}
+							onClick={() => this.showCard(card, this.token, index)}
+							disabled={enabled !== true}
+							title={enabled !== true ? enabled : label}>
+						{label}
+					</button>
+				));
+			} catch (e){
+				console.error("Failed to check if card is available");
+			}
 		}
 
 		this.cardButtons = cardButtons;
