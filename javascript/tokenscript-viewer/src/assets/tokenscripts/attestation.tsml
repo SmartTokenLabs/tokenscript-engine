@@ -17,7 +17,7 @@
 		
 		<ts:key>0408d4bc48bc518c82fb4ad216ef88c11068b3f0c40ba60c255f9e0a7a18382e27654eee6b2283266071567993392c1a338fa0b9f2db7aaab1ba8bf2179808dd34</ts:key>
 		
-		<ts:eventId>devcon7</ts:eventId>
+		<ts:eventId>devcon6</ts:eventId>
 		
 		<ts:idFields>ticketId</ts:idFields>
 		<ts:eas schemaUID="0x7f6fb09beb1886d0b223e9f15242961198dd360021b2c9f75ac879c0f786cafd"/>
