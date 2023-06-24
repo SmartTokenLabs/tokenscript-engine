@@ -1,5 +1,5 @@
 import {Component, EventEmitter, h, Prop, State, Watch, Event, Host} from "@stencil/core";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
@@ -80,9 +80,9 @@ export class TokensGrid {
 
 		for (let token of this.currentTokensFlat){
 
-			const context = {
+			const context: ITokenIdContext = {
 				chainId: ("chainId" in token) ? token.chainId : token.collectionDetails.chainId,
-				selectedNftId: ("tokenId" in token) ? token.tokenId : undefined
+				selectedTokenId: ("tokenId" in token) ? token.tokenId : undefined
 			}
 
 			console.log("Token context: ", context);

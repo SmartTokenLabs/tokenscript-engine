@@ -1,5 +1,5 @@
 import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 
@@ -32,9 +32,9 @@ export class TokensGridItem {
 				label = card.type === "token" ? "Token Info" : card.type + " Card";
 
 			// TODO: Rework NFT/fungible interfaces so they are cross compatible
-			const context = {
+			const context: ITokenIdContext = {
 				chainId: ("chainId" in this.token) ? this.token.chainId : this.token.collectionDetails.chainId,
-				selectedNftId: ("tokenId" in this.token) ? this.token.tokenId : undefined
+				selectedTokenId: ("tokenId" in this.token) ? this.token.tokenId : undefined
 			}
 
 			try {
@@ -49,7 +49,7 @@ export class TokensGridItem {
 					</button>
 				));
 			} catch (e){
-				console.error("Failed to check if card is available");
+				console.error("Failed to check if card is available", e);
 			}
 		}
 
