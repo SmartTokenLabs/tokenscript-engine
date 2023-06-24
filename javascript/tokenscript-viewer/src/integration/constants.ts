@@ -27,6 +27,7 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.ARBITRUM]: "arbitrum",
 	[ChainID.OPTIMISM]: "optimism",
 	[ChainID.GOERLI]: "goerli",
+	[ChainID.SEPOLIA]: "sepolia",
 	[ChainID.KOVAN]: "kovan",
 	[ChainID.BSC]: "bsc",
 	[ChainID.MUMBAI]: "mumbai",
@@ -39,6 +40,7 @@ export const CHAIN_MAP: ChainMapInterface = {
 export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.ETHEREUM]: "Ethereum Mainnet",
 	[ChainID.GOERLI]: "Goerli (Ethereum Testnet)",
+	[ChainID.SEPOLIA]: "Sepolia (Ethereum Testnet)",
 	[ChainID.POLYGON]: "Polygon",
 	[ChainID.MUMBAI]: "Mumbai (Polygon Testnet)",
 	[ChainID.ARBITRUM]: "Arbitrum",

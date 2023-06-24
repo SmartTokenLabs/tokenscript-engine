@@ -11,15 +11,16 @@ import {Selections} from "./tokenScript/selection/Selections";
 import {Label} from "./tokenScript/Label";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefinitions";
+import {Attestation} from "./attestation/Attestation";
 
 export interface ITokenContext extends ITokenCollection {
-	selectedNftIndex?: number
-	selectedNftId?: string
+	selectedTokenIndex?: number
+	selectedTokenId?: string
 }
 
 export interface ITokenIdContext {
 	chainId: number
-	selectedNftId?: string
+	selectedTokenId?: string
 }
 
 export interface TokenScriptEvents {
@@ -319,7 +320,7 @@ export class TokenScript {
 					} else {
 						console.warn("Contract with name " + contractName + " could not be found.")
 					}
-				} else {
+				} else if (origin.tagName != "ts:attestation") {
 					console.warn("Token origin with tag " + origin.tagName + " is not supported");
 				}
 			}
@@ -398,13 +399,19 @@ export class TokenScript {
 
 				for (const attestation of await this.engine.getAttestationManager().getAttestations(definition)){
 					tokenCollection.balance++;
+
+					const data: any = attestation;
+
+					// TODO: Maybe move to attestation import?
+					data.abiEncoded = Attestation.getAbiEncodedEasAttestation(attestation.decodedToken);
+
 					tokenCollection.tokenDetails.push({
 						collectionDetails: tokenCollection,
 						name: definition.meta.title,
 						tokenId: attestation.tokenId,
 						description: definition.meta.description,
 						image: definition.meta.image,
-						data: attestation
+						data,
 					})
 				}
 
@@ -515,8 +522,8 @@ export class TokenScript {
 		}
 
 		this.tokenContext = this.tokenMetadata[contractName];
-		this.tokenContext.selectedNftIndex = tokenIndex;
-		this.tokenContext.selectedNftId = this.tokenMetadata[contractName].tokenDetails[tokenIndex].tokenId;
+		this.tokenContext.selectedTokenIndex = tokenIndex;
+		this.tokenContext.selectedTokenId = this.tokenMetadata[contractName].tokenDetails[tokenIndex].tokenId;
 
 		if (this.hasViewBinding()) {
 			const currentCard = this.getViewController().getCurrentCard();

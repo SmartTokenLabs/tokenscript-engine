@@ -43,25 +43,25 @@ export class TokenViewData {
 
 		if (tokenContext){
 
-			const nftDetails = tokenContext.selectedNftIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedNftIndex] : null;
+			const tokenDetails = tokenContext.selectedTokenIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedTokenIndex] : null;
 
 			// TODO: Find out where to use token name/description or collection name/description
 			data = {
-				name: nftDetails?.name ?? tokenContext.name,
-				description: nftDetails?.description ?? tokenContext.description,
+				name: tokenDetails?.name ?? tokenContext.name,
+				description: tokenDetails?.description ?? tokenContext.description,
 				label: tokenContext.name,
 				symbol: tokenContext.symbol,
 				_count: tokenContext.balance,
 				contractAddress: tokenContext.collectionId,
 				chainId: tokenContext.chainId,
-				tokenId: tokenContext.selectedNftId,
+				tokenId: tokenContext.selectedTokenId,
 				ownerAddress: await this.getCurrentOwnerAddress(),
-				image_preview_url: nftDetails?.image ?? tokenContext.image,
+				image_preview_url: tokenDetails?.image ?? tokenContext.image,
 				...attrsData
 			};
 
-			if (nftDetails.data)
-				data.tokenInfo = nftDetails.data;
+			if (tokenDetails.data)
+				data.tokenInfo = tokenDetails.data;
 
 		} else {
 			const contracts = this.tokenScript.getContracts(true);
@@ -83,7 +83,7 @@ export class TokenViewData {
 
 	public getViewDataId(){
 		if (!this.viewContainerId){
-			this.viewContainerId = "token-card-" + this.tokenScript.getCurrentTokenContext()?.selectedNftId;
+			this.viewContainerId = "token-card-" + this.tokenScript.getCurrentTokenContext()?.selectedTokenId;
 		}
 
 		return this.viewContainerId;

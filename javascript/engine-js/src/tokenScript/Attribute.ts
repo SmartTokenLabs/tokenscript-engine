@@ -172,7 +172,7 @@ export class Attribute {
 			case "ethereum:call":
 			case "ethereum:event":
 
-				console.log("Resolving attribute: " + this.getName() + " for token context " + tokenContext?.selectedNftId);
+				console.log("Resolving attribute: " + this.getName() + " for token context " + tokenContext?.selectedTokenId);
 
 				const contract = this.tokenScript.getContractByName(origin.getAttribute("contract"));
 				const wallet = await this.tokenScript.getEngine().getWalletAdapter();
@@ -301,8 +301,8 @@ export class Attribute {
 		let scope = "-1";
 
 		if (this.getDependsOnTokenId()){
-			if (tokenContext?.selectedNftId)
-				scope = tokenContext.selectedNftId;
+			if (tokenContext?.selectedTokenId)
+				scope = tokenContext.selectedTokenId;
 		}
 
 		return scope

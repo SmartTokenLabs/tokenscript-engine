@@ -34,8 +34,8 @@ export abstract class AbstractDependencyBranch implements IArgument {
 				if (!tokenContext)
 					throw new Error("tokenId reference cannot be resolved as no token context is set.");
 
-				if (tokenContext.selectedNftId){
-					const rawValue = tokenContext.selectedNftId;
+				if (tokenContext.selectedTokenId){
+					const rawValue = tokenContext.selectedTokenId;
 					return BigInt(rawValue);
 				} else {
 					throw new Error("tokenId reference is not accessible under the context of a fungible token");

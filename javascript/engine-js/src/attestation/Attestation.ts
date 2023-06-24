@@ -8,7 +8,7 @@ import {
 	decodeBase64ZippedBase64,
 } from "./AttestationUrl";
 import {BigNumber, ethers} from "ethers";
-import {sha256} from "ethers/lib/utils";
+import {defaultAbiCoder, joinSignature, sha256} from "ethers/lib/utils";
 import {IAttestationData} from "./IAttestationStorageAdapter";
 
 
@@ -199,6 +199,25 @@ export class Attestation {
 			meta: this.meta,
 			dt: Date.now()
 		};
+	}
+
+	public static getAbiEncodedEasAttestation(signedAttestation: SignedOffchainAttestation){
+
+		const attestationData = defaultAbiCoder.encode(
+			signedAttestation.types.Attest.map((field) => field.type),
+			signedAttestation.types.Attest.map((field) => signedAttestation.message[field.name])
+		);
+
+		const domainData = defaultAbiCoder.encode(
+			["string", "uint256", "address"],
+			[signedAttestation.domain.version, signedAttestation.domain.chainId, signedAttestation.domain.verifyingContract]
+		);
+
+		const attestation = defaultAbiCoder.encode(
+			["bytes", "bytes"], [domainData, attestationData]
+		)
+
+		return {attestation, signature: joinSignature(signedAttestation.signature)}
 	}
 
 }
