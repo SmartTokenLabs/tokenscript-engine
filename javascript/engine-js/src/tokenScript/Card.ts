@@ -263,8 +263,27 @@ export class Card {
 		this.getAttributes().invalidate();
 		this.tokenScript.getAttributes().invalidate();
 
-		if (updateViewData && this.tokenScript.hasViewBinding())
-			await this.tokenScript.getViewController().updateCardData();
+		// Pause to let token discovery service update
+		await new Promise(resolve => setTimeout(resolve, 3000));
+
+		// TODO: transactions should declare specific triggers such as the need to reload tokens
+		const tokens = await this.tokenScript.getTokenMetadata(true, true);
+
+		if (!this.tokenScript.hasViewBinding())
+			return;
+
+		const context = this.tokenScript.getCurrentTokenContext();
+
+		// Close view if token no longer exists for current tokenContext or action is no longer allowed
+		if (
+			tokens[context.originId]?.[context.selectedTokenIndex] &&
+			await this.isEnabledOrReason(context)
+		){
+			if (updateViewData)
+				await this.tokenScript.getViewController().updateCardData();
+		} else {
+			await this.tokenScript.getViewController().unloadTokenCard();
+		}
 	}
 
 	/**

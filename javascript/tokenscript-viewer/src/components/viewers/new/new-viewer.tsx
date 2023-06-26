@@ -253,7 +253,8 @@ export class NewViewer {
 						const discoveryAdapter = new DiscoveryAdapter();
 						try {
 							const data = await discoveryAdapter.getCollectionMeta(originData, CHAIN_MAP[originData.chainId]);
-							meta.iconUrl = data.image;
+							if (!meta.iconUrl)
+								meta.iconUrl = data.image;
 						} catch (e) {
 							console.error("Failed to load tokenscript icon from collection metadata", e);
 						}

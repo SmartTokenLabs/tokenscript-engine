@@ -45,6 +45,8 @@ export class TokensGrid {
 			this.currentTokensFlat = null;
 			console.log("Tokens loading");
 		}, "grid")
+
+		this.invokeUrlAction();
 	}
 
 	async populateTokens(tokens: {[key: string]: ITokenCollection} ){
@@ -54,8 +56,6 @@ export class TokensGrid {
 		this.currentTokens = tokens;
 
 		this.currentTokensFlat = getTokensFlat(this.currentTokens);
-
-		this.invokeUrlAction();
 	}
 
 	private async invokeUrlAction(){
@@ -85,8 +85,6 @@ export class TokensGrid {
 				chainId: ("chainId" in token) ? token.chainId : token.collectionDetails.chainId,
 				selectedTokenId: ("tokenId" in token) ? token.tokenId : undefined
 			}
-
-			console.log("Token context: ", context);
 
 			if (cardRes.card.isAvailableForOrigin(token.originId) && await cardRes.card.isEnabledOrReason(context) === true) {
 				this.showCard(cardRes.card, token, cardRes.index);
