@@ -34,7 +34,7 @@
 	</ts:selection>
 	<ts:cards>
 		
-		<ts:card name="Info" type="token">
+		<ts:card name="Info" origins="Devcon6Attestation" type="token">
 			<ts:label>
 				<ts:string xml:lang="en">Info</ts:string>
 			</ts:label>
@@ -78,7 +78,7 @@ body > h1 {
 					/* ]]> */
 				</style></ts:view>
 		</ts:card>
-		<ts:card exclude="alreadyRedeemed" name="Mint" type="action">
+		<ts:card exclude="alreadyRedeemed" name="Mint" origins="Devcon6Attestation" type="action">
 			
 			<ts:label>
 				<ts:string xml:lang="en">Mint Souvenir NFT</ts:string>
@@ -120,7 +120,7 @@ body > h1 {
 					/* ]]> */
 				</style></ts:view>
 		</ts:card>
-		<ts:card name="Burn" type="action">
+		<ts:card name="Burn" origins="Devcon6Souvenir" type="action">
 			
 			<ts:label>
 				<ts:string xml:lang="en">Burn</ts:string>
