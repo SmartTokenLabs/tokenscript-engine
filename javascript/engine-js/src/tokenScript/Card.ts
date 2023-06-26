@@ -52,6 +52,17 @@ export class Card {
 	}
 
 	/**
+	 * References the token origins that the card is available for as a space-separated list
+	 */
+	get origins(){
+		const origins = this.cardDef.getAttribute("origins");
+		if (!origins)
+			return []; // Attribute not specified = card available for all origins in the TokenScript
+
+		return origins.split(" ");
+	}
+
+	/**
 	 * The HTML web content associated with the card
 	 */
 	get view(): Element {
@@ -199,6 +210,9 @@ export class Card {
 	 */
 	public async isEnabledOrReason(tokenContext: ITokenIdContext) {
 
+		if (!this.isAvailableForOrigin(tokenContext.originId))
+			return false;
+
 		if (!this.exclude)
 			return true;
 
@@ -209,6 +223,13 @@ export class Card {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Is available for origin
+	 */
+	public isAvailableForOrigin(originId: string){
+		return (this.origins.length === 0 || this.origins.indexOf(originId) > -1)
 	}
 
 	/**

@@ -22,7 +22,15 @@ export class TokensGridItem {
 	async componentDidLoad() {
 
 		const cardButtons: JSX.Element[] = [];
-		const cards = this.tokenScript.getCards();
+
+		// TODO: Rework NFT/fungible interfaces so they are cross compatible
+		const context: ITokenIdContext = {
+			originId: this.token.originId,
+			chainId: ("chainId" in this.token) ? this.token.chainId : this.token.collectionDetails.chainId,
+			selectedTokenId: ("tokenId" in this.token) ? this.token.tokenId : undefined
+		}
+
+		const cards = this.tokenScript.getCards(this.token.originId);
 
 		for (let [index, card] of cards.entries()){
 
@@ -31,14 +39,11 @@ export class TokensGridItem {
 			if (label === "Unnamed Card")
 				label = card.type === "token" ? "Token Info" : card.type + " Card";
 
-			// TODO: Rework NFT/fungible interfaces so they are cross compatible
-			const context: ITokenIdContext = {
-				chainId: ("chainId" in this.token) ? this.token.chainId : this.token.collectionDetails.chainId,
-				selectedTokenId: ("tokenId" in this.token) ? this.token.tokenId : undefined
-			}
-
 			try {
 				const enabled = await card.isEnabledOrReason(context);
+
+				if (enabled === false)
+					continue;
 
 				cardButtons.push((
 					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}

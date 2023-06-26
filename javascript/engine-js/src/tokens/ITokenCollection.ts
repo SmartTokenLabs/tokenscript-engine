@@ -9,7 +9,7 @@ export type TokenType = "erc20" | "erc721" | "eas";
 export type BlockChain = "eth" | "offchain";
 
 export interface ITokenCollection {
-	id: string,
+	originId: string,
 	blockChain: BlockChain;
 	chainId: number;
 	tokenType: TokenType;

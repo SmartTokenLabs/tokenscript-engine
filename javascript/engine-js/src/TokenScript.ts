@@ -14,11 +14,13 @@ import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefin
 import {Attestation} from "./attestation/Attestation";
 
 export interface ITokenContext extends ITokenCollection {
+	originId: string
 	selectedTokenIndex?: number
 	selectedTokenId?: string
 }
 
 export interface ITokenIdContext {
+	originId: string
 	chainId: number
 	selectedTokenId?: string
 }
@@ -245,7 +247,7 @@ export class TokenScript {
 	/**
 	 * An array of cards for the TokenScript
 	 */
-	public getCards(): Card[] {
+	public getCards(tokenOrigin?: string): Card[] {
 
 		if (!this.cards) {
 
@@ -262,6 +264,13 @@ export class TokenScript {
 
 				this.cards.push(card);
 			}
+		}
+
+		// Only return cards available for the specified token origins
+		if (tokenOrigin){
+			return this.cards.filter((card) => {
+				return card.origins.length === 0 || card.origins.indexOf(tokenOrigin) > -1;
+			});
 		}
 
 		return this.cards;
@@ -376,7 +385,7 @@ export class TokenScript {
 			this.tokenMetadata = {};
 
 			for (let token of tokenMeta){
-				this.tokenMetadata[token.id] = token;
+				this.tokenMetadata[token.originId] = token;
 			}
 
 			for (const definition of this.getAttestationDefinitions()){
@@ -384,7 +393,7 @@ export class TokenScript {
 				const id = definition.name;
 
 				const tokenCollection: ITokenCollection = {
-					id,
+					originId: id,
 					blockChain: "offchain",
 					chainId: 0,
 					tokenType: "eas",
@@ -415,7 +424,7 @@ export class TokenScript {
 					})
 				}
 
-				this.tokenMetadata[tokenCollection.id] = tokenCollection;
+				this.tokenMetadata[tokenCollection.originId] = tokenCollection;
 			}
 
 			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata})
@@ -433,7 +442,7 @@ export class TokenScript {
 		const metaMap: TokenMetadataMap = {};
 
 		for (let meta of tokenMetadata){
-			metaMap[meta.id] = meta;
+			metaMap[meta.originId] = meta;
 		}
 
 		this.tokenMetadata = metaMap;
@@ -480,7 +489,7 @@ export class TokenScript {
 			for (let key in addresses){
 
 				initialTokenDetails.push({
-					id: i, // TODO: ensure that this is unique
+					originId: i, // TODO: ensure that this is unique
 					blockChain: "eth",
 					tokenType: contract.getInterface(),
 					chainId: addresses[key].chain,
@@ -522,6 +531,7 @@ export class TokenScript {
 		}
 
 		this.tokenContext = this.tokenMetadata[contractName];
+		this.tokenContext.originId = contractName;
 		this.tokenContext.selectedTokenIndex = tokenIndex;
 		this.tokenContext.selectedTokenId = this.tokenMetadata[contractName].tokenDetails[tokenIndex].tokenId;
 

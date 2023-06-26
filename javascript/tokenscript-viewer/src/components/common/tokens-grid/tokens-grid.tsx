@@ -81,13 +81,14 @@ export class TokensGrid {
 		for (let token of this.currentTokensFlat){
 
 			const context: ITokenIdContext = {
+				originId: token.originId,
 				chainId: ("chainId" in token) ? token.chainId : token.collectionDetails.chainId,
 				selectedTokenId: ("tokenId" in token) ? token.tokenId : undefined
 			}
 
 			console.log("Token context: ", context);
 
-			if (await cardRes.card.isEnabledOrReason(context) === true) {
+			if (cardRes.card.isAvailableForOrigin(token.originId) && await cardRes.card.isEnabledOrReason(context) === true) {
 				this.showCard(cardRes.card, token, cardRes.index);
 				return;
 			}

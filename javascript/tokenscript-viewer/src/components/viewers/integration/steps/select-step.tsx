@@ -67,6 +67,7 @@ export class SelectStep {
 		for (let token of this.currentTokensFlat){
 
 			const context = {
+				originId: token.originId,
 				chainId: ("chainId" in token) ? token.chainId : token.collectionDetails.chainId,
 				selectedNftId: ("tokenId" in token) ? token.tokenId : undefined
 			}
@@ -76,6 +77,9 @@ export class SelectStep {
 			if (enabled === true) {
 				availableTokens.push(token);
 			}
+
+			if (enabled === false)
+				continue;
 
 			this.tokenButtons.push({
 				token: token,
