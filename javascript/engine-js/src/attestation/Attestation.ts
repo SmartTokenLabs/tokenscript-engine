@@ -182,8 +182,6 @@ export class Attestation {
 
 		const encoder = new TextEncoder();
 
-		console.log("Attestation hash text: ", parts.join("-"));
-
 		return sha256(encoder.encode(parts.join("-")));
 	}
 
@@ -203,21 +201,17 @@ export class Attestation {
 
 	public static getAbiEncodedEasAttestation(signedAttestation: SignedOffchainAttestation){
 
-		const attestationData = defaultAbiCoder.encode(
+		const attestation = defaultAbiCoder.encode(
 			signedAttestation.types.Attest.map((field) => field.type),
 			signedAttestation.types.Attest.map((field) => signedAttestation.message[field.name])
 		);
 
-		const domainData = defaultAbiCoder.encode(
+		const domain = defaultAbiCoder.encode(
 			["string", "uint256", "address"],
 			[signedAttestation.domain.version, signedAttestation.domain.chainId, signedAttestation.domain.verifyingContract]
 		);
 
-		const attestation = defaultAbiCoder.encode(
-			["bytes", "bytes"], [domainData, attestationData]
-		)
-
-		return {attestation, signature: joinSignature(signedAttestation.signature)}
+		return {attestation, domain, signature: joinSignature(signedAttestation.signature)}
 	}
 
 }

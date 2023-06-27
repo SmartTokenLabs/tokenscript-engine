@@ -6,7 +6,7 @@
 		</ts:plurals>
 	</ts:label>
 	<ts:contract interface="erc721" name="Devcon6Souvenir">
-		<ts:address network="11155111">0x3aFD8b7a8a756Cea4A1C03D6e3ff9d5D040229cD</ts:address>
+		<ts:address network="11155111">0xBc38B8d5EDbBEa727E4050fe0901D32ef0edf0F1</ts:address>
 	</ts:contract>
 	<ts:attestation name="Devcon6Attestation" type="eas">
 		<ts:meta>
