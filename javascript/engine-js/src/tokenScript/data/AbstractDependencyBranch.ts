@@ -29,6 +29,7 @@ export abstract class AbstractDependencyBranch implements IArgument {
 
 		switch (this.ref){
 
+			// TODO: This can be removed, these are provided via context data
 			case "tokenId":
 
 				if (!tokenContext)
@@ -46,6 +47,12 @@ export abstract class AbstractDependencyBranch implements IArgument {
 				return await walletProvider.getCurrentWalletAddress();
 
 			default:
+				// First, check if values is provided in TokenContextData
+				const contextData = this.tokenScript.getTokenContextData(tokenContext);
+
+				if (contextData[this.ref])
+					return contextData[this.ref];
+
 				return await this.resolveValue(tokenContext);
 		}
 	}

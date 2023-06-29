@@ -76,7 +76,7 @@ export class NewViewer {
 				this.showToast.emit({
 					type: "success",
 					title: "Attestation imported",
-					description: "Successfully imported " + definition.meta.title
+					description: "Successfully imported " + definition.meta.name
 				});
 
 			} catch (e){
@@ -96,7 +96,7 @@ export class NewViewer {
 			const tsId = query.get("chain") + "-" + query.get("contract");
 			tsMeta = await this.addFormSubmit("resolve", {tsId})
 		} else if (query.has("emulator")){
-			const tsId = query.get("emulator") + "/tokenscript.tsml";
+			const tsId = new URL(query.get("emulator")).origin + "/tokenscript.tsml";
 			tsMeta = await this.addFormSubmit("url", {tsId})
 			this.connectEmulatorSocket(tsId, query.get("emulator"));
 		}
@@ -311,6 +311,7 @@ export class NewViewer {
 											Object.values(this.myTokenScripts).map((ts) => {
 												return (
 													<tokenscript-button
+														key={ts.tokenScriptId}
 														tsId={ts.tokenScriptId}
 														name={ts.name}
 														imageUrl={ts.iconUrl}

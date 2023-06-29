@@ -12,10 +12,12 @@ import {Label} from "./tokenScript/Label";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefinitions";
 import {Attestation} from "./attestation/Attestation";
+import {Origin, OriginType} from "./tokenScript/Origin";
+import {ITokenContextData} from "./tokens/ITokenContextData";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
-	selectedTokenIndex?: number
+	selectedTokenIndex?: number // TODO: Deprecate selectedTokenIndex
 	selectedTokenId?: string
 }
 
@@ -58,6 +60,8 @@ export interface ITransactionListener {
 export class TokenScript {
 
 	private label?: Label;
+
+	private origins?: { [originName: string]: Origin };
 
 	private contracts?: { [contractName: string]: Contract };
 
@@ -277,10 +281,10 @@ export class TokenScript {
 	}
 
 	/**
-	 * Load contracts contained in the TokenScript
-	 * @private
+	 * Contracts for the TokenScript
+	 * @param originsOnly
 	 */
-	private loadContracts(){
+	public getContracts(originsOnly = false) {
 
 		if (!this.contracts) {
 
@@ -297,22 +301,27 @@ export class TokenScript {
 
 				this.contracts[contract.getName()] = contract;
 			}
-
 		}
-	}
-
-	/**
-	 * Contracts for the TokenScript
-	 * @param originsOnly
-	 */
-	public getContracts(originsOnly = false) {
-
-		this.loadContracts();
 
 		if (originsOnly){
+			const origins = this.getOrigins();
+			const originContracts = {};
+			for (const name in this.contracts){
+				if (origins[name])
+					originContracts[name] = this.contracts[name];
+			}
+		}
+
+		return this.contracts;
+	}
+
+	public getOrigins(){
+
+		if (!this.origins){
 
 			const origins = this.tokenDef.documentElement.getElementsByTagName("ts:origins");
-			const originContracts: { [key: string]: Contract } = {};
+
+			this.origins = {}
 
 			for (let i in origins[0].children) {
 
@@ -323,21 +332,21 @@ export class TokenScript {
 				if (origin.tagName == "ts:ethereum"){
 
 					const contractName = origin.getAttribute("contract");
+					this.origins[contractName] = new Origin(this, contractName, "contract");
 
-					if (this.contracts[contractName]){
-						originContracts[contractName] = this.contracts[contractName];
-					} else {
-						console.warn("Contract with name " + contractName + " could not be found.")
-					}
-				} else if (origin.tagName != "ts:attestation") {
+				} else if (origin.tagName == "ts:attestation") {
+
+					const attestDefName = origin.getAttribute("name");
+					this.origins[attestDefName] = new Origin(this, attestDefName, "attestation");
+
+				} else {
 					console.warn("Token origin with tag " + origin.tagName + " is not supported");
 				}
 			}
 
-			return originContracts;
 		}
 
-		return this.contracts;
+		return this.origins;
 	}
 
 	/**
@@ -346,9 +355,9 @@ export class TokenScript {
 	 */
 	getContractByName(name: string) {
 
-		this.loadContracts();
+		const contracts = this.getContracts();
 
-		return this.contracts?.[name];
+		return contracts?.[name];
 	}
 
 	/**
@@ -399,7 +408,7 @@ export class TokenScript {
 					tokenType: "eas",
 					collectionId: id,
 					tokenDetails: [],
-					name: definition.meta.title,
+					name: definition.meta.name,
 					image: definition.meta.image,
 					description: definition.meta.description,
 					decimals: 0,
@@ -416,7 +425,7 @@ export class TokenScript {
 
 					tokenCollection.tokenDetails.push({
 						collectionDetails: tokenCollection,
-						name: definition.meta.title,
+						name: definition.meta.name,
 						tokenId: attestation.tokenId,
 						description: definition.meta.description,
 						image: definition.meta.image,
@@ -466,6 +475,83 @@ export class TokenScript {
 	 */
 	public getTokenOriginData(){
 		return this.buildTokenDiscoveryData();
+	}
+
+	public async getTokenContextData(tokenIdContext?: ITokenIdContext){
+
+		let tokenContext: ITokenContext;
+
+		if (tokenIdContext){
+
+			// Get token context object from ITokenIdContext
+			tokenContext = this.tokenMetadata[tokenIdContext.originId];
+			let tokenIndex = null;
+
+			for (const [index, token] of Object.entries(tokenContext.tokenDetails)){
+				if (token.tokenId === tokenIdContext.selectedTokenId){
+					tokenIndex = index;
+					break;
+				}
+			}
+
+			tokenContext = {
+				...this.tokenMetadata[tokenIdContext.originId],
+				selectedTokenId: tokenIdContext.selectedTokenId,
+				selectedTokenIndex: tokenIndex
+			};
+
+		} else {
+			tokenContext = this.tokenContext;
+		}
+
+		let data: ITokenContextData;
+
+		if (tokenContext){
+
+			const tokenDetails = tokenContext.selectedTokenIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedTokenIndex] : null;
+
+			data = {
+				name: tokenDetails?.name ?? tokenContext.name,
+				description: tokenDetails?.description ?? tokenContext.description,
+				label: tokenContext.name,
+				symbol: tokenContext.symbol,
+				_count: tokenContext.balance,
+				contractAddress: tokenContext.collectionId,
+				chainId: tokenContext.chainId,
+				tokenId: tokenContext.selectedTokenId,
+				ownerAddress: await this.getCurrentOwnerAddress(),
+				image_preview_url: tokenDetails?.image ?? tokenContext.image,
+			};
+
+			// Additional token data is provided for attestations
+			if (tokenDetails.data) {
+				data.tokenInfo = tokenDetails.data;
+				data.attestation = tokenDetails.data.abiEncoded.attestation;
+				data.signature = tokenDetails.data.abiEncoded.signature;
+			}
+
+		} else {
+			const contracts = this.getContracts(true);
+
+			const primaryAddr = contracts[Object.keys(contracts)[0]].getFirstAddress();
+
+			data = {
+				name: this.getName(),
+				label: this.getLabel(),
+				contractAddress: primaryAddr?.address,
+				chainId: primaryAddr?.chain,
+				ownerAddress: await this.getCurrentOwnerAddress(),
+			};
+		}
+
+		return data;
+	}
+
+	public async getCurrentOwnerAddress(){
+		// TODO: ownerAddress should probably come from token details rather than the current wallet
+		const walletProvider = await this.engine.getWalletAdapter();
+
+		return await walletProvider.getCurrentWalletAddress();
 	}
 
 	/**

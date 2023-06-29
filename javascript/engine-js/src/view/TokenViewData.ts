@@ -15,8 +15,6 @@ export class TokenViewData {
 
 	public async getCurrentTokenData(bypassLocks = false){
 
-		const tokenContext = this.tokenScript.getCurrentTokenContext();
-
 		const attrsData = {};
 
 		const attrs = this.tokenScript.getAttributes();
@@ -34,51 +32,14 @@ export class TokenViewData {
 		for (let localAttr of localAttrs) {
 			try {
 				attrsData[localAttr.getName()] = await localAttr.getJsonSafeValue(bypassLocks);
-			} catch (e){
+			} catch (e) {
 				console.warn(e);
 			}
 		}
 
-		let data;
+		const tokenContextData = await this.tokenScript.getTokenContextData();
 
-		if (tokenContext){
-
-			const tokenDetails = tokenContext.selectedTokenIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedTokenIndex] : null;
-
-			// TODO: Find out where to use token name/description or collection name/description
-			data = {
-				name: tokenDetails?.name ?? tokenContext.name,
-				description: tokenDetails?.description ?? tokenContext.description,
-				label: tokenContext.name,
-				symbol: tokenContext.symbol,
-				_count: tokenContext.balance,
-				contractAddress: tokenContext.collectionId,
-				chainId: tokenContext.chainId,
-				tokenId: tokenContext.selectedTokenId,
-				ownerAddress: await this.getCurrentOwnerAddress(),
-				image_preview_url: tokenDetails?.image ?? tokenContext.image,
-				...attrsData
-			};
-
-			if (tokenDetails.data)
-				data.tokenInfo = tokenDetails.data;
-
-		} else {
-			const contracts = this.tokenScript.getContracts(true);
-
-			const primaryAddr = contracts[Object.keys(contracts)[0]].getFirstAddress();
-
-			data = {
-				name: this.tokenScript.getName(),
-				label: this.tokenScript.getLabel(),
-				contractAddress: primaryAddr?.address,
-				chainId: primaryAddr?.chain,
-				ownerAddress: await this.getCurrentOwnerAddress(),
-				...attrsData
-			};
-		}
-
-		return data;
+		return {...attrsData, ...tokenContextData};
 	}
 
 	public getViewDataId(){
@@ -87,13 +48,6 @@ export class TokenViewData {
 		}
 
 		return this.viewContainerId;
-	}
-
-	public async getCurrentOwnerAddress(){
-		// TODO: ownerAddress should probably come from token details rather than the current wallet
-		const walletProvider = await this.tokenScript.getEngine().getWalletAdapter();
-
-		return await walletProvider.getCurrentWalletAddress();
 	}
 
 	public async getTokenJavascript(){

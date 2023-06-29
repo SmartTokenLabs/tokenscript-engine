@@ -2,6 +2,7 @@ import {ITokenIdContext, TokenScript} from "../../../TokenScript";
 import {Attributes} from "../../Attributes";
 import {EthUtils} from "../../../ethereum/EthUtils";
 import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
+import {ITokenContextData} from "../../../tokens/ITokenContextData";
 
 export interface IArgument {
 	type: string;
@@ -40,27 +41,63 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 
 		if (this.ref || this.localRef){
 
-			let attr;
+			// First, check if values is provided in TokenContextData
+			const contextData = await this.tokenScript.getTokenContextData(tokenContext);
 
-			// TODO: Rework this to avoid exception and put into getBackingAttribute function to cover filter values
-			try {
-				attr = this.getBackingAttribute();
-			} catch (e){
-				// local-ref can be used to get attributes defined by a view that aren't explicitly defined in the tokenscript
-				value = this.tokenScript.getViewController().getUserEntryValue(this.localRef);
+			if (contextData[this.ref]) {
+				value = contextData[this.ref];
 
-				if (!value){
-					throw e;
-				}
+				// Special case for encoding attestations into struct argument
+				if (this.type === "struct")
+					return this.encodeStruct(this.ref, contextData);
+
+			} else {
+				value = await this.resolveFromAttribute(tokenContext);
 			}
-
-			if (attr)
-				value = await attr.getValue(true, false, tokenContext);
 
 		} else {
 			value = this.content;
 		}
 
 		return EthUtils.encodeTransactionParameter(this.type, value);
+	}
+
+	private async encodeStruct(name: string, contextData: ITokenContextData){
+
+		switch (name){
+			case "attestation":
+				const signedAttestation = contextData.tokenInfo.decodedToken;
+				const attestStructData = {};
+
+				for (const field of signedAttestation.types.Attest){
+					attestStructData[field.name] = signedAttestation.message[field.name];
+				}
+
+				return attestStructData;
+
+			default:
+				throw new Error("Struct encoding is not defined for " + this.ref + " attribute.");
+		}
+	}
+
+	private async resolveFromAttribute(tokenContext?: ITokenIdContext){
+
+		let attr;
+
+		// TODO: Rework this to avoid exception and put into getBackingAttribute function to cover filter values
+		try {
+			attr = this.getBackingAttribute();
+			return await attr.getValue(true, false, tokenContext);
+
+		} catch (e){
+			// local-ref can be used to get attributes defined by a view that aren't explicitly defined in the tokenscript
+			const value = this.tokenScript.getViewController().getUserEntryValue(this.localRef);
+
+			if (!value){
+				throw e;
+			}
+
+			return value;
+		}
 	}
 }
