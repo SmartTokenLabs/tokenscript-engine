@@ -9,9 +9,6 @@ export interface IAttestationData {
 	decodedToken: SignedOffchainAttestation;
 	decodedData: { [name: string]: any };
 	meta: {
-		name: string,
-		description: string,
-		image: string,
 		[name: string]: any
 	};
 	authoritativeTokenScript: {

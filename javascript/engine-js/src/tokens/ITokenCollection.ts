@@ -13,7 +13,7 @@ export interface ITokenCollection {
 	blockChain: BlockChain;
 	chainId: number;
 	tokenType: TokenType;
-	collectionId: string;
+	contractAddress?: string;
 	name?: string;
 	description?: string;
 	symbol?: string;

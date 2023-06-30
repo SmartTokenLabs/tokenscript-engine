@@ -7,22 +7,22 @@ import {ITokenDetailData} from "./ITokenDetail";
  */
 // TODO: Confirm all questions in comments
 export interface ITokenContextData {
-	name: string; // Collection or token level name?
-	description?: string; // Collection or token level description?
+	name: string; // Collection level name or title
+	description?: string; // Collection level description
 	label: string; // Should this be the label of the TokenScript?
 	symbol?: string;
-	_count?: number, // Should this be changed to balance? This is how I am currently setting it
+	_count?: number, // Balance of the current token (or total tokens if it's an NFT or attestation)
 	contractAddress?: string; // Only set for blockchain tokens
-	chainId: number; // Should this be the chain of the attestation too?
+	chainId: number; // The chain of the token or 0 if it's an attestation
 	tokenId?: number|string; // In the case of attestations, this is the ID generated using idFields in the attestation definition
 	ownerAddress: string; // The owner of the blockchain token OR the recipient field in an attestation
 	image_preview_url?: string; // Collection or token level image?
+	// TODO: look at namespacing tokenscript XML attributes & user-input values to avoid name collision
 	/*attributes: {
 		[attributeName: string]: any // A collection of TokenScript XML attributes & user-input values
 	}*/
 	[attributeName: string]: any
-	// Token info contains different values depending on whether attestation or blockchain token, but the specified values are always available
-	// NOT specified for fungible tokens
+	// NFT Related data: NOT specified for fungible tokens
 	tokenInfo?: ITokenDetailData
 	// Is it a good idea putting these here? If we implement dot notation for transaction arguments then it's a bit redundant
 	attestation?: string;

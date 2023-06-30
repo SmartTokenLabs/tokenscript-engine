@@ -406,7 +406,6 @@ export class TokenScript {
 					blockChain: "offchain",
 					chainId: 0,
 					tokenType: "eas",
-					collectionId: id,
 					tokenDetails: [],
 					name: definition.meta.name,
 					image: definition.meta.image,
@@ -428,6 +427,7 @@ export class TokenScript {
 
 					tokenCollection.tokenDetails.push({
 						collectionDetails: tokenCollection,
+						collectionId: attestation.collectionId,
 						tokenId: attestation.tokenId,
 						name,
 						description,
@@ -520,22 +520,19 @@ export class TokenScript {
 				label: tokenContext.name,
 				symbol: tokenContext.symbol,
 				_count: tokenContext.balance,
-				contractAddress: tokenContext.collectionId,
+				contractAddress: tokenContext.contractAddress,
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
 				ownerAddress: await this.getCurrentOwnerAddress(),
 				image_preview_url: tokenDetails?.image ?? tokenContext.image,
 			};
 
-			// Additional token data is provided for attestations
-			console.log("token data: ", tokenDetails.data);
-
 			if (tokenDetails) {
 
 				data.tokenInfo = {
-					collectionId: tokenDetails.collectionDetails.collectionId,
+					collectionId: tokenDetails.collectionId,
 					tokenId: tokenDetails.tokenId,
-					type: tokenDetails.data.type === "eas" ? "eas" : "erc721",
+					type: tokenContext.tokenType,
 					name: tokenDetails.name ?? tokenDetails.data.title,
 					description: tokenDetails.description,
 					image: tokenDetails.image,
@@ -543,6 +540,7 @@ export class TokenScript {
 					data: tokenDetails.data
 				}
 
+				// Extract top level attestation fields for use in transaction inputs.
 				if (tokenDetails?.data?.abiEncoded) {
 					data.attestation = tokenDetails.data.abiEncoded.attestation;
 					data.signature = tokenDetails.data.abiEncoded.signature;
@@ -598,7 +596,7 @@ export class TokenScript {
 					blockChain: "eth",
 					tokenType: contract.getInterface(),
 					chainId: addresses[key].chain,
-					collectionId: addresses[key].address,
+					contractAddress: addresses[key].address,
 				});
 			}
 		}

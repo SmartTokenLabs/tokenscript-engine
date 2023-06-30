@@ -51,7 +51,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
-			collectionId: initialTokenDetails.collectionId,
+			collectionId: initialTokenDetails.contractAddress,
 			ownerAddress
 		}).first();
 
@@ -65,7 +65,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokens.put({
 			chainId: token.chainId,
-			collectionId: token.collectionId,
+			collectionId: token.contractAddress,
 			ownerAddress,
 			data: token,
 			dt: Date.now()
@@ -92,6 +92,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				nftTokenDetails.push({
 					collectionDetails: token,
 					tokenId: tokenMeta.tokenId,
+					collectionId: token.contractAddress,
 					name: tokenMeta.title,
 					description: tokenMeta.description,
 					image: tokenMeta.image,
@@ -101,10 +102,13 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 			token.tokenDetails = nftTokenDetails;
 			token.balance = nftTokenDetails.length;
+			token.symbol = tokenData[0].symbol;
+			token.decimals = 0;
 
 		} else if (tokenData.length > 0) {
 			token.name = tokenData[0].title;
 			token.balance = tokenData[0].data?.balance;
+			token.symbol = tokenData[0].symbol;
 			token.decimals = tokenData[0].data?.decimals;
 		} else {
 			return token;
@@ -134,7 +138,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,
-			collectionId: token.collectionId,
+			collectionId: token.contractAddress,
 		}).first();
 
 		if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
@@ -147,7 +151,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
-			collectionId: token.collectionId,
+			collectionId: token.contractAddress,
 			data,
 			dt: Date.now()
 		});
@@ -156,8 +160,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	private async fetchTokenMetadata(token: ITokenCollection, chain: string){
 
 		const url = token.tokenType === "erc20" ?
-			`/get-fungible-token?collectionAddress=${token.collectionId}&chain=${chain}&blockchain=evm` :
-			`/get-token-collection?smartContract=${token.collectionId}&chain=${chain}&blockchain=evm`;
+			`/get-fungible-token?collectionAddress=${token.contractAddress}&chain=${chain}&blockchain=evm` :
+			`/get-token-collection?smartContract=${token.contractAddress}&chain=${chain}&blockchain=evm`;
 
 		return this.fetchRequest(url);
 	}
@@ -165,8 +169,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	private async fetchOwnerTokens(token: ITokenCollection, chain: string, ownerAddress: string){
 
 		const url = token.tokenType === "erc20" ?
-			`/get-owner-fungible-tokens?collectionAddress=${token.collectionId}&owner=${ownerAddress}&chain=${chain}&blockchain=evm` :
-			`/get-owner-tokens?smartContract=${token.collectionId}&chain=${chain}&owner=${ownerAddress}&blockchain=evm`;
+			`/get-owner-fungible-tokens?collectionAddress=${token.contractAddress}&owner=${ownerAddress}&chain=${chain}&blockchain=evm` :
+			`/get-owner-tokens?smartContract=${token.contractAddress}&chain=${chain}&owner=${ownerAddress}&blockchain=evm`;
 
 		return this.fetchRequest(url);
 	}

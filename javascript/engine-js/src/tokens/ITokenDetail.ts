@@ -1,12 +1,12 @@
-import {ITokenCollection} from "./ITokenCollection";
+import {ITokenCollection, TokenType} from "./ITokenCollection";
 import {IAttestationData} from "../attestation/IAttestationStorageAdapter";
-import {SignedOffchainAttestation} from "@ethereum-attestation-service/eas-sdk";
 
 /**
  * Represents a specific non-fungible token
  */
 export interface ITokenDetail {
 	collectionDetails: ITokenCollection;
+	collectionId: string;
 	tokenId: string;
 	name: string;
 	description: string;
@@ -18,7 +18,7 @@ export interface ITokenDetail {
 export interface ITokenDetailData {
 	collectionId: string; // Contract address or attestation collection hash.
 	tokenId: string; // Duplicated,
-	type: "eas"|"erc721";
+	type: TokenType;
 	// Token specific metadata. For NFTs this is the standard NFT metadata.
 	name: string
 	image: string
