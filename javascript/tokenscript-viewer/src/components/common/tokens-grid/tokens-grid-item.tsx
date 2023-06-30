@@ -61,6 +61,10 @@ export class TokensGridItem {
 		this.cardButtons = cardButtons;
 	}
 
+	private showTokenInfo(token: TokenGridContext){
+		(document.getElementById("token-info-popover") as HTMLTokenInfoPopoverElement).openDialog(token);
+	}
+
 	render() {
 
 		let title;
@@ -83,6 +87,7 @@ export class TokensGridItem {
 							<span title={details}>{details}</span>
 							: ''
 					}
+					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>?</button>
 					<div class="actions">
 						{ this.cardButtons ?
 							this.cardButtons :

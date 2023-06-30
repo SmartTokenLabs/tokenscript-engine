@@ -127,6 +127,7 @@ export class TokensGrid {
 						!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
 					)
 				}
+				<token-info-popover id="token-info-popover" />
 			</Host>
 		)
 	}

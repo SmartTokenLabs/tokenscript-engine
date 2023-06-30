@@ -11,8 +11,14 @@ export interface ITokenDetail {
 	name: string;
 	description: string;
 	image?: string;
-	attributes?: [];
+	attributes?: NFTAttribute[];
 	data?: IAttestationData | any;
+}
+
+export interface NFTAttribute {
+	trait_type: string,
+	display_type?: string,
+	value: string
 }
 
 export interface ITokenDetailData {

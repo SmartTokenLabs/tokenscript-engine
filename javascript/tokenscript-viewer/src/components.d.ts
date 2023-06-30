@@ -101,6 +101,10 @@ export namespace Components {
         "imageTitle": string;
         "src": string;
     }
+    interface TokenInfoPopover {
+        "closeDialog": () => Promise<void>;
+        "openDialog": (token: TokenGridContext) => Promise<void>;
+    }
     interface TokensGrid {
         "tokenScript": TokenScript1;
     }
@@ -280,6 +284,12 @@ declare global {
         prototype: HTMLTokenIconElement;
         new (): HTMLTokenIconElement;
     };
+    interface HTMLTokenInfoPopoverElement extends Components.TokenInfoPopover, HTMLStencilElement {
+    }
+    var HTMLTokenInfoPopoverElement: {
+        prototype: HTMLTokenInfoPopoverElement;
+        new (): HTMLTokenInfoPopoverElement;
+    };
     interface HTMLTokensGridElement extends Components.TokensGrid, HTMLStencilElement {
     }
     var HTMLTokensGridElement: {
@@ -355,6 +365,7 @@ declare global {
         "tabbed-viewer": HTMLTabbedViewerElement;
         "token-button": HTMLTokenButtonElement;
         "token-icon": HTMLTokenIconElement;
+        "token-info-popover": HTMLTokenInfoPopoverElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
         "tokenscript-button": HTMLTokenscriptButtonElement;
@@ -444,6 +455,8 @@ declare namespace LocalJSX {
         "imageTitle"?: string;
         "src"?: string;
     }
+    interface TokenInfoPopover {
+    }
     interface TokensGrid {
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
@@ -502,6 +515,7 @@ declare namespace LocalJSX {
         "tabbed-viewer": TabbedViewer;
         "token-button": TokenButton;
         "token-icon": TokenIcon;
+        "token-info-popover": TokenInfoPopover;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
         "tokenscript-button": TokenscriptButton;
@@ -537,6 +551,7 @@ declare module "@stencil/core" {
             "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
             "token-button": LocalJSX.TokenButton & JSXBase.HTMLAttributes<HTMLTokenButtonElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
+            "token-info-popover": LocalJSX.TokenInfoPopover & JSXBase.HTMLAttributes<HTMLTokenInfoPopoverElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
