@@ -58,6 +58,11 @@ export class EthUtils {
 		return {
 			"components": [
 				{
+					"internalType": "bytes32",
+					"name": "schema",
+					"type": "bytes32"
+				},
+				{
 					"internalType": "address",
 					"name": "recipient",
 					"type": "address"
@@ -86,11 +91,6 @@ export class EthUtils {
 					"internalType": "bytes",
 					"name": "data",
 					"type": "bytes"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "schema",
-					"type": "bytes32"
 				}
 			],
 			"internalType": "struct EasTicketVerify.AttestationCoreData",

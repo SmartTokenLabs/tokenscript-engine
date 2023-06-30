@@ -102,7 +102,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 			token.tokenDetails = nftTokenDetails;
 			token.balance = nftTokenDetails.length;
-			token.symbol = tokenData[0].symbol;
+			token.symbol = collectionData?.symbol;
 			token.decimals = 0;
 
 		} else if (tokenData.length > 0) {
