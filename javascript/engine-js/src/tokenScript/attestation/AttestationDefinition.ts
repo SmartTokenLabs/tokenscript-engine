@@ -1,5 +1,5 @@
 import {TokenScript} from "../../TokenScript";
-import {sha256} from "ethers/lib/utils";
+import {keccak256} from "ethers/lib/utils";
 
 export interface AttestationDefinitionMeta {
 	name: string,
@@ -106,9 +106,9 @@ export class AttestationDefinition {
 			if (key.indexOf("0x") === 0)
 				key = key.substring(2);
 
-			const hashText = schemaUID + "-" + key + (this.eventId ? "-" + this.eventId : '');
+			const hashText = schemaUID + key + (this.eventId ? this.eventId : '');
 
-			const hash = sha256(encoder.encode(hashText));
+			const hash = keccak256(encoder.encode(hashText));
 
 			hashes.push(hash);
 		}

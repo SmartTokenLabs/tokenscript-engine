@@ -8,7 +8,7 @@ import {
 	decodeBase64ZippedBase64,
 } from "./AttestationUrl";
 import {BigNumber, ethers} from "ethers";
-import {defaultAbiCoder, joinSignature, sha256} from "ethers/lib/utils";
+import {defaultAbiCoder, joinSignature, keccak256} from "ethers/lib/utils";
 import {IAttestationData} from "./IAttestationStorageAdapter";
 
 
@@ -182,10 +182,10 @@ export class Attestation {
 
 		const encoder = new TextEncoder();
 
-		return sha256(encoder.encode(parts.join("-")));
+		return keccak256(encoder.encode(parts.join("")));
 	}
 
-	public async getDatabaseRecord(idFields: string[], ): Promise<IAttestationData> {
+	public async getDatabaseRecord(idFields: string[]): Promise<IAttestationData> {
 
 		return <IAttestationData>{
 			collectionId: await this.getCollectionHash(),
