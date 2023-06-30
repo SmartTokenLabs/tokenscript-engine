@@ -418,18 +418,22 @@ export class TokenScript {
 				for (const attestation of await this.engine.getAttestationManager().getAttestations(definition)){
 					tokenCollection.balance++;
 
-					const data: any = attestation;
+					const {name, description, image, attributes, ...otherMeta}: any = attestation.meta;
 
-					// TODO: Maybe move to attestation import?
-					data.abiEncoded = Attestation.getAbiEncodedEasAttestation(attestation.decodedToken);
+					const data = {
+						...attestation,
+						meta: otherMeta,
+						abiEncoded: Attestation.getAbiEncodedEasAttestation(attestation.decodedToken)
+					}
 
 					tokenCollection.tokenDetails.push({
 						collectionDetails: tokenCollection,
-						name: definition.meta.name,
 						tokenId: attestation.tokenId,
-						description: definition.meta.description,
-						image: definition.meta.image,
-						data,
+						name,
+						description,
+						image,
+						attributes,
+						data
 					})
 				}
 
@@ -524,10 +528,25 @@ export class TokenScript {
 			};
 
 			// Additional token data is provided for attestations
-			if (tokenDetails.data) {
-				data.tokenInfo = tokenDetails.data;
-				data.attestation = tokenDetails.data.abiEncoded.attestation;
-				data.signature = tokenDetails.data.abiEncoded.signature;
+			console.log("token data: ", tokenDetails.data);
+
+			if (tokenDetails) {
+
+				data.tokenInfo = {
+					collectionId: tokenDetails.collectionDetails.collectionId,
+					tokenId: tokenDetails.tokenId,
+					type: tokenDetails.data.type === "eas" ? "eas" : "erc721",
+					name: tokenDetails.name ?? tokenDetails.data.title,
+					description: tokenDetails.description,
+					image: tokenDetails.image,
+					attributes: tokenDetails.attributes ?? [],
+					data: tokenDetails.data
+				}
+
+				if (tokenDetails?.data?.abiEncoded) {
+					data.attestation = tokenDetails.data.abiEncoded.attestation;
+					data.signature = tokenDetails.data.abiEncoded.signature;
+				}
 			}
 
 		} else {

@@ -1,4 +1,5 @@
 import {SignedOffchainAttestation} from "@ethereum-attestation-service/eas-sdk";
+import {ITokenDetailData} from "./ITokenDetail";
 
 /**
  * The data that is injected into a tokenscript card, and can be used as transaction arguments.
@@ -22,24 +23,7 @@ export interface ITokenContextData {
 	[attributeName: string]: any
 	// Token info contains different values depending on whether attestation or blockchain token, but the specified values are always available
 	// NOT specified for fungible tokens
-	tokenInfo?: {
-		collectionId: string; // Contract address or attestation collection hash.
-		tokenId: string; // Duplicated,
-		type: "eas"|"erc712";
-		// Includes token specific metadata. For NFTs this is the standard NFT metadata.
-		// For attestations, attributes array could be prefilled with attribute data,
-		// with labels defined in "visibleIdField" elements in attribute definition (James's proposal)
-		meta: {
-			name: string
-			image: string
-			description: string,
-			attributes: {}
-		}
-		// Attestation specific stuff
-		encodedToken?: string;
-		decodedToken?: SignedOffchainAttestation;
-		decodedData?: {[field: string]: any};
-	}
+	tokenInfo?: ITokenDetailData
 	// Is it a good idea putting these here? If we implement dot notation for transaction arguments then it's a bit redundant
 	attestation?: string;
 	signature?: string;

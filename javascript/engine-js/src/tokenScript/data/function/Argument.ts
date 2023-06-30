@@ -100,7 +100,7 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 
 		switch (name){
 			case "attestation":
-				const signedAttestation = contextData.tokenInfo.decodedToken;
+				const signedAttestation = contextData.tokenInfo.data.decodedToken;
 				const attestStructData = {};
 
 				for (const field of signedAttestation.types.Attest){

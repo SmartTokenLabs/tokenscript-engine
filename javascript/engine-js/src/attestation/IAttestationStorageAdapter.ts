@@ -7,8 +7,13 @@ export interface IAttestationData {
 	type: "eas";
 	token: string;
 	decodedToken: SignedOffchainAttestation;
-	decodedData: {[name: string]: any};
-	meta: {[name: string]: any};
+	decodedData: { [name: string]: any };
+	meta: {
+		name: string,
+		description: string,
+		image: string,
+		[name: string]: any
+	};
 	authoritativeTokenScript: {
 		tsId: string, // URL or resolver ID
 		source: ScriptSourceType

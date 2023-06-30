@@ -1,10 +1,11 @@
 import {TokenScript} from "../../TokenScript";
 import {sha256} from "ethers/lib/utils";
 
-export interface AttestationMeta {
+export interface AttestationDefinitionMeta {
 	name: string,
 	image: string,
 	description: string
+	attributes: {name: string, label: string}[]
 }
 
 export class AttestationDefinition {
@@ -28,20 +29,27 @@ export class AttestationDefinition {
 		return this.elem.getAttribute("type");
 	}
 
-	get meta(): AttestationMeta {
+	get meta(): AttestationDefinitionMeta {
 		const meta = this.elem.getElementsByTagName("ts:meta")?.[0];
 
 		if (!meta)
 			return {
 				name: this.tokenScript.getLabel(),
 				image: "",
-				description: ""
+				description: "",
+				attributes: []
 			}
 
 		return {
 			name: meta.getElementsByTagName("ts:name")?.[0]?.innerHTML ?? this.tokenScript.getLabel(),
 			image: meta.getElementsByTagName("ts:image")?.[0]?.innerHTML ?? "",
 			description: meta.getElementsByTagName("ts:description")?.[0].innerHTML ?? "",
+			attributes: Array.from(meta.getElementsByTagName("ts:attributeField")).map((elem) => {
+				return {
+					name: elem.getAttribute("name"),
+					label: elem.innerHTML
+				}
+			})
 		}
 	}
 

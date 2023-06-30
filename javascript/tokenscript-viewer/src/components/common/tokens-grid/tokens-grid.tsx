@@ -46,7 +46,8 @@ export class TokensGrid {
 			console.log("Tokens loading");
 		}, "grid")
 
-		this.invokeUrlAction();
+		// TODO: Move to parent component OR ensure parent component is rendered before calling
+		setTimeout(() => this.invokeUrlAction(), 500);
 	}
 
 	async populateTokens(tokens: {[key: string]: ITokenCollection} ){
