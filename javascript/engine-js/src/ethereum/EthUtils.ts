@@ -53,51 +53,6 @@ export class EthUtils {
 		throw new Error("Ethereum argument encoding for type " + type + " is not defined");
 	}
 
-	public static getAttestationStructTypes(){
-
-		return {
-			"components": [
-				{
-					"internalType": "bytes32",
-					"name": "schema",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "address",
-					"name": "recipient",
-					"type": "address"
-				},
-				{
-					"internalType": "uint64",
-					"name": "time",
-					"type": "uint64"
-				},
-				{
-					"internalType": "uint64",
-					"name": "expirationTime",
-					"type": "uint64"
-				},
-				{
-					"internalType": "bool",
-					"name": "revocable",
-					"type": "bool"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "refUID",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "bytes",
-					"name": "data",
-					"type": "bytes"
-				}
-			],
-			"internalType": "struct EasTicketVerify.AttestationCoreData",
-			"type": "tuple"
-		}
-	}
-
 	/**
 	 * Returns true if the argument type is int or uint
 	 * @param type

@@ -44,10 +44,17 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 
 			switch (this.ref){
 				case "attestation":
-					arg = {
-						...arg,
-						...EthUtils.getAttestationStructTypes()
-					};
+					const data = await this.tokenScript.getTokenContextData(tokenContext);
+
+					arg.type = "tuple";
+					arg.internalType = "struct EasTicketVerify.AttestationCoreData";
+					arg.components = data.tokenInfo.data.decodedToken.types.Attest.map((field) => {
+						return {
+							name: field.name,
+							type: field.type,
+							internalType: field.type
+						}
+					})
 
 					break;
 
