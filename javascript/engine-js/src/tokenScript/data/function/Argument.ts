@@ -1,6 +1,6 @@
 import {ITokenIdContext, TokenScript} from "../../../TokenScript";
 import {Attributes} from "../../Attributes";
-import {EthUtils} from "../../../ethereum/EthUtils";
+import {EthUtils, IEthersArgument} from "../../../ethereum/EthUtils";
 import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
 import {ITokenContextData} from "../../../tokens/ITokenContextData";
 
@@ -31,6 +31,38 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 	}
 
 	/**
+	 * Get the ethers argument data for this argument
+	 */
+	public async getEthersArgument(tokenContext: ITokenIdContext, name: string){
+
+		let arg: Partial<IEthersArgument> = {
+			name,
+			value: await this.getValue(tokenContext)
+		};
+
+		if (this.type === "struct"){
+
+			switch (this.ref){
+				case "attestation":
+					arg = {
+						...arg,
+						...EthUtils.getAttestationStructTypes()
+					};
+
+					break;
+
+				default:
+					throw new Error("Struct encoding is not defined for " + this.ref + " attribute.");
+			}
+		} else {
+			arg.type = this.type;
+			arg.internalType = this.type;
+		}
+
+		return arg
+	}
+
+	/**
 	 * Resolve the argument value. In the case of arguments, they can reference a special value or attribute by using the XML ref or local-ref attributes
 	 * @param tokenContext
 	 * @protected
@@ -41,16 +73,18 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 
 		if (this.ref || this.localRef){
 
-			// First, check if values is provided in TokenContextData
-			const contextData = await this.tokenScript.getTokenContextData(tokenContext);
+			if (tokenContext){
+				// First, check if values is provided in TokenContextData
+				const contextData = await this.tokenScript.getTokenContextData(tokenContext);
 
-			if (contextData[this.ref]) {
-				value = contextData[this.ref];
+				if (contextData[this.ref]) {
+					value = contextData[this.ref];
 
-				// Special case for encoding attestations into struct argument
-				if (this.type === "struct")
-					return this.encodeStruct(this.ref, contextData);
+					// Special case for encoding attestations into struct argument
+					if (this.type === "struct")
+						return this.encodeStruct(this.ref, contextData);
 
+				}
 			} else {
 				value = await this.resolveFromAttribute(tokenContext);
 			}

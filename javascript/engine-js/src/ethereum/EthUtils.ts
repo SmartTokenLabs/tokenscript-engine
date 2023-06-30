@@ -1,5 +1,18 @@
 import {ethers} from "ethers";
 
+
+export interface IEthersArgument {
+	name: string,
+	value: any,
+	type: string,
+	internalType: string,
+	components?: {
+		name: string,
+		type: string,
+		internalType: string
+	}[]
+}
+
 /**
  * Various static utilities methods for integration with ethers.js
  */
@@ -38,6 +51,51 @@ export class EthUtils {
 		}
 
 		throw new Error("Ethereum argument encoding for type " + type + " is not defined");
+	}
+
+	public static getAttestationStructTypes(){
+
+		return {
+			"components": [
+				{
+					"internalType": "address",
+					"name": "recipient",
+					"type": "address"
+				},
+				{
+					"internalType": "uint64",
+					"name": "time",
+					"type": "uint64"
+				},
+				{
+					"internalType": "uint64",
+					"name": "expirationTime",
+					"type": "uint64"
+				},
+				{
+					"internalType": "bool",
+					"name": "revocable",
+					"type": "bool"
+				},
+				{
+					"internalType": "bytes32",
+					"name": "refUID",
+					"type": "bytes32"
+				},
+				{
+					"internalType": "bytes",
+					"name": "data",
+					"type": "bytes"
+				},
+				{
+					"internalType": "bytes32",
+					"name": "schema",
+					"type": "bytes32"
+				}
+			],
+			"internalType": "struct EasTicketVerify.AttestationCoreData",
+			"type": "tuple"
+		}
 	}
 
 	/**
