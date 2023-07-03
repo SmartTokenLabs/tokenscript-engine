@@ -80,27 +80,33 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 
 		if (this.ref || this.localRef){
 
-			if (tokenContext){
-				// First, check if values is provided in TokenContextData
-				const contextData = await this.tokenScript.getTokenContextData(tokenContext);
+			if (tokenContext)
+				value = await this.resolveUsingTokenContext(tokenContext);
 
-				if (contextData[this.ref]) {
-					value = contextData[this.ref];
-
-					// Special case for encoding attestations into struct argument
-					if (this.type === "struct")
-						return this.encodeStruct(this.ref, contextData);
-
-				}
-			} else {
+			if (!value)
 				value = await this.resolveFromAttribute(tokenContext);
-			}
 
 		} else {
 			value = this.content;
 		}
 
 		return EthUtils.encodeTransactionParameter(this.type, value);
+	}
+
+	private async resolveUsingTokenContext(tokenContext?: ITokenIdContext){
+
+		const contextData = await this.tokenScript.getTokenContextData(tokenContext);
+
+		// TODO: support dot notation to access nested data in transactions
+		if (!contextData[this.ref])
+			return null;
+
+		// Special case for encoding attestations into struct argument
+		if (this.type === "struct") {
+			return this.encodeStruct(this.ref, contextData);
+		} else {
+			return contextData[this.ref];
+		}
 	}
 
 	private async encodeStruct(name: string, contextData: ITokenContextData){

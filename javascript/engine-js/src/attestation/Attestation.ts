@@ -173,7 +173,7 @@ export class Attestation {
 		const parts = [];
 
 		parts.push(this.attestation.message.schema.substring(2));
-		parts.push(this.signerPublicKey.substring(2));
+		parts.push(this.signerAddress.substring(2).toLowerCase());
 
 		const data = await this.getAttestationData();
 

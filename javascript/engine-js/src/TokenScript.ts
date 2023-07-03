@@ -489,14 +489,15 @@ export class TokenScript {
 
 			// Get token context object from ITokenIdContext
 			tokenContext = this.tokenMetadata[tokenIdContext.originId];
-			let tokenIndex = null;
+			let tokenIndex = undefined;
 
-			for (const [index, token] of Object.entries(tokenContext.tokenDetails)){
-				if (token.tokenId === tokenIdContext.selectedTokenId){
-					tokenIndex = index;
-					break;
+			if (tokenContext.tokenDetails)
+				for (const [index, token] of Object.entries(tokenContext.tokenDetails)){
+					if (token.tokenId === tokenIdContext.selectedTokenId){
+						tokenIndex = index;
+						break;
+					}
 				}
-			}
 
 			tokenContext = {
 				...this.tokenMetadata[tokenIdContext.originId],
