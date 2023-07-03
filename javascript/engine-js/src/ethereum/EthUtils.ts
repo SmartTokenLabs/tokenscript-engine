@@ -34,6 +34,7 @@ export class EthUtils {
 
 			case "string":
 			case "address": // Address is presumed to be properly hex encoded OR is an ENS name
+			case "struct":
 				return value;
 		}
 
