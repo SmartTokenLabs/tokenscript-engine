@@ -7,17 +7,6 @@ import {TokenScriptEngine} from "../../Engine";
  */
 export class ScriptURI implements SourceInterface {
 
-	/**
-	 * Public IPFS gateways are sometimes very slow, so when a custom IPFS gateway is supplied in the config,
-	 * we update the following URLs to our own gateways.
-	 * @private
-	 */
-	private IPFS_REPLACE_GATEWAYS = [
-		"ipfs://",
-		"https://ipfs.io/ipfs/",
-		"https://gateway.pinata.cloud/ipfs/"
-	];
-
 	constructor(private context: TokenScriptEngine) {
 	}
 
@@ -43,17 +32,7 @@ export class ScriptURI implements SourceInterface {
 
 		console.log("Resolved ScriptURI: " + uri);
 
-		for (let gateway of this.IPFS_REPLACE_GATEWAYS){
-
-			if (this.context.config.ipfsGateway.indexOf(gateway) === 0){
-				continue;
-			}
-
-			if (uri.indexOf(gateway) === 0){
-				uri = uri.replace(gateway, this.context.config.ipfsGateway);
-				break;
-			}
-		}
+		uri = this.context.processIpfsUrl(uri);
 
 		let response = await fetch(uri);
 

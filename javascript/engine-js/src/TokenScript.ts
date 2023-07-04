@@ -544,7 +544,7 @@ export class TokenScript {
 				// Extract top level attestation fields for use in transaction inputs.
 				if (tokenDetails?.data?.abiEncoded) {
 					data.attestation = tokenDetails.data.abiEncoded.attestation;
-					data.signature = tokenDetails.data.abiEncoded.signature;
+					data.attestationSig = tokenDetails.data.abiEncoded.signature;
 				}
 			}
 

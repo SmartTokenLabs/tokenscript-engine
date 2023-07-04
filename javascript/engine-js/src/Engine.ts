@@ -62,14 +62,25 @@ export class TokenScriptEngine {
 		// const url = new URL(magicLink);
 		// const urlParams = new URLSearchParams(url.hash.substring(1) ?? url.search.substring(1));
 
-		if (!urlParams.has("scriptURI"))
-			throw new Error("scriptURI parameter not provided");
-
 		// Read attestation from magic link
 		const attestation = await this.getAttestationManager().readMagicLink(urlParams);
 
+		let scriptUri;
+
+		if (urlParams.has("scriptURI")){
+			scriptUri = urlParams.get("scriptURI");
+		} else {
+			const attestData = await attestation.getAttestationData();
+
+			if (attestData.scriptURI){
+				scriptUri = attestData.scriptURI;
+			} else {
+				throw new Error("scriptURI parameter not provided");
+			}
+		}
+
 		// Load tokenScript
-		const tokenScript = await this.getTokenScriptFromUrl(urlParams.get("scriptURI"));
+		const tokenScript = await this.getTokenScriptFromUrl(this.processIpfsUrl(scriptUri));
 
 		// TODO: Remove - only here for debugging
 		// const data = await attestation.getAttestationData()
@@ -170,5 +181,34 @@ export class TokenScriptEngine {
 		} catch (e){
 			throw new Error("Signing failed: " + e.message);
 		}
+	}
+
+	// TODO: This should probably be moved somewhere else
+	/**
+	 * Public IPFS gateways are sometimes very slow, so when a custom IPFS gateway is supplied in the config,
+	 * we update the following URLs to our own gateways.
+	 * @private
+	 */
+	private IPFS_REPLACE_GATEWAYS = [
+		"ipfs://",
+		"https://ipfs.io/ipfs/",
+		"https://gateway.pinata.cloud/ipfs/"
+	];
+
+	public processIpfsUrl(uri: string){
+
+		for (let gateway of this.IPFS_REPLACE_GATEWAYS){
+
+			if (this.config.ipfsGateway.indexOf(gateway) === 0){
+				continue;
+			}
+
+			if (uri.indexOf(gateway) === 0){
+				uri = uri.replace(gateway, this.config.ipfsGateway);
+				break;
+			}
+		}
+
+		return uri;
 	}
 }

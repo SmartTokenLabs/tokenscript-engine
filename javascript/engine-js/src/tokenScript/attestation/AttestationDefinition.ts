@@ -103,6 +103,7 @@ export class AttestationDefinition {
 
 		for (let key of this.keys){
 
+			// If key is defined in XML without 0x, append it
 			if (key.indexOf("0x") === -1)
 				key = "0x" + key;
 

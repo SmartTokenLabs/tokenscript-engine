@@ -26,5 +26,5 @@ export interface ITokenContextData {
 	tokenInfo?: ITokenDetailData
 	// Is it a good idea putting these here? If we implement dot notation for transaction arguments then it's a bit redundant
 	attestation?: string;
-	signature?: string;
+	attestationSig?: string;
 }

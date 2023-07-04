@@ -66,10 +66,10 @@ export class NewViewer {
 
 			try {
 
-				const {definition} = await this.app.tsEngine.importAttestationUsingTokenScript(query);
+				const {definition, tokenScript} = await this.app.tsEngine.importAttestationUsingTokenScript(query);
 
 				// Import completed successfully, add tokenscript to myTokenScripts
-				tsMeta = await this.addFormSubmit("url", {tsId: query.get("scriptURI"), image: definition.meta.image});
+				tsMeta = await this.addFormSubmit("url", {tsId: tokenScript.getSourceInfo().tsId, image: definition.meta.image});
 
 				document.location.hash = "";
 

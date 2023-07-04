@@ -187,17 +187,12 @@ export class Attribute {
 
 					let outputType = EthUtils.tokenScriptOutputToEthers(this.asType);
 
-					const args = new Arguments(this.tokenScript, origin, this.localAttrContext);
+					const args = new Arguments(this.tokenScript, origin, this.localAttrContext).getArguments();
 
 					const ethParams = [];
 
-					for (let argsObj of args) {
-						ethParams.push({
-							name: "0",
-							type: argsObj.type,
-							internalType: argsObj.type,
-							value: await argsObj.getValue(tokenContext) // TODO: parameter encoding
-						})
+					for (let i in args) {
+						ethParams.push(await args[i].getEthersArgument(tokenContext, i.toString()))
 					}
 
 					res = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, [outputType]);
