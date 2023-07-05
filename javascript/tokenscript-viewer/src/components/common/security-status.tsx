@@ -39,14 +39,30 @@ export class SecurityStatus {
 		}
 	}
 
+	private getDetailedSecurityInfo(){
+
+		console.log(this.securityInfo.originStatuses);
+
+		const authMethods = this.securityInfo.originStatuses.reduce((previous, originStatus) => {
+
+			// TODO: Map to label values
+
+			if (previous.indexOf(originStatus.type) === -1)
+				previous.push(originStatus.type);
+			return previous;
+		}, []);
+
+		return "TokenScript security information\n\n" +
+			(this.securityInfo.signerPublicKey ? "Signer Key: " + this.securityInfo.signerPublicKey + "\n" : "") +
+			"Authentication: " + (authMethods.join(", "));
+	}
+
 	render() {
 		return (
 			this.securityInfo ?
 				<div class="security-status" style={{background: this.statusColor}}
 					title={this.securityInfo.statusText + "\n\n" +
-						"TokenScript security information\n\n" +
-						"Integrity: " + this.securityInfo.integrityText + "\n" +
-						"Authentication: " + (this.securityInfo.authText ?? "N/A")}>
+						this.getDetailedSecurityInfo()}>
 					{this.statusIcon}
 				</div>
 			: ''

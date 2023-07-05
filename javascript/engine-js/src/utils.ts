@@ -61,3 +61,12 @@ export function uint8arrayToBase64( bytes: Uint8Array ): string {
 	}
 
 }
+
+/**
+ * Convert a UInt8Array to hex
+ * @param uint8
+ */
+export function uint8tohex(uint8: Uint8Array): string {
+	if (!uint8 || !uint8.length) return '';
+	return Array.from(uint8).map(i => ('0' + i.toString(16)).slice(-2)).join('');
+}

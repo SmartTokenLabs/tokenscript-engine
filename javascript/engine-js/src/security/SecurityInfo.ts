@@ -1,19 +1,8 @@
 import {ScriptSourceType} from "../Engine";
 import {TokenScript} from "../TokenScript";
-import {DSigValidator} from "./validator/DSigValidator";
-import {IpfsCidValidator} from "./validator/IpfsCidValidator";
-
-export enum IntegrityType {
-	NONE = "none",
-	URL_HASH = "urlHash", // The URL that is provided by ScriptUri contract method has a SHA256 hash
-	XML_DSIG = "dsig",
-}
-
-export enum AuthenticationType {
-	NONE = "none",
-	SCRIPT_URI = "scriptUri", // The script has been loaded from a URL specified by the ScriptUri smart contract function.
-	XML_DSIG = "dsig", // The XML dsig is an EC signature, signed by the origin smart contract deployer
-}
+import {DSigValidator} from "./DSigValidator";
+import * as IPFSOnlyHash from 'ipfs-only-hash';
+import {IOriginSecurityInfo} from "../tokenScript/Origin";
 
 export enum SecurityStatus {
 	VALID = "valid",
@@ -22,13 +11,12 @@ export enum SecurityStatus {
 }
 
 export interface ISecurityInfo {
-	sourceUrl: string,
-	auth: AuthenticationType,
-	authText: string,
-	integrity: IntegrityType,
-	integrityText: string,
+	signerPublicKey?: string,
+	ipfsCid?: string,
 	status: SecurityStatus,
 	statusText: string,
+	signerInfo: string // TODO: This is where we can put details of a known signer
+	originStatuses: IOriginSecurityInfo[]
 }
 
 /**
@@ -39,6 +27,9 @@ export interface ISecurityInfo {
 export class SecurityInfo {
 
 	private securityInfo?: Partial<ISecurityInfo>;
+
+	// TODO: Implement root key resolution from EAS keychain contract
+	//private signerRootKey?: string
 
 	constructor(
 		private tokenScript: TokenScript,
@@ -51,56 +42,67 @@ export class SecurityInfo {
 	}
 
 	/**
+	 * Populate the top level security info for the TokenScript.
+	 * This includes the XML public key and the IPFS CID
+	 */
+	private async loadTokenScriptKeyInfo(){
+
+		this.securityInfo = {};
+
+		const result = await new DSigValidator().getSignerKey(this.tokenScript);
+
+		if (result !== false){
+			this.securityInfo.signerPublicKey = result;
+		}
+
+		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.xmlStr, null);
+
+		await this.verifyOrigins();
+	}
+
+	private async verifyOrigins(){
+
+		this.securityInfo.originStatuses = [];
+
+		const origins = this.tokenScript.getOrigins();
+		let originFailCount = 0;
+
+		for (const name in origins){
+			const origin = origins[name];
+			const originStatus = await origin.getOriginSecurityStatus(this.securityInfo);
+
+			if (originStatus.status === SecurityStatus.INVALID)
+				originFailCount++;
+
+			this.securityInfo.originStatuses.push(originStatus);
+		}
+
+		if (originFailCount === 0){
+			this.securityInfo.status = SecurityStatus.VALID;
+			this.securityInfo.statusText = "The TokenScript is authenticated for use with all specified token origins.";
+		} else {
+			this.securityInfo.status = SecurityStatus.INVALID;
+
+			// Some origins are linked
+			if (originFailCount < Object.values(origins).length){
+				this.securityInfo.statusText = "The TokenScript is not authenticated for some token origins. \nTake care when signing transactions for these tokens.";
+			} else {
+				// No origins are linked
+				this.securityInfo.statusText = "The TokenScript is not authenticated for any listed token origins. \nSign any transactions with caution.";
+			}
+		}
+	}
+
+	/**
 	 * Verify the TokenScript file and return validity data
 	 */
 	public async getInfo(){
 
 		if (!this.securityInfo){
-
-			await this.verify();
-
-			if (!this.securityInfo.statusText){
-				if (this.securityInfo.status === SecurityStatus.VALID){
-					this.securityInfo.statusText = "TokenScript authenticity & integrity successfully validated";
-				} else {
-					this.securityInfo.statusText = "TokenScript authenticity and integrity cannot be established";
-				}
-			}
-
-			console.log("TokenScript security info result: ", this.securityInfo);
+			await this.loadTokenScriptKeyInfo();
 		}
 
 		return this.securityInfo;
-	}
-
-	/**
-	 * Verify the file using various IScriptValidator implementations
-	 * @private
-	 */
-	private async verify(){
-
-		const dsigResult = await new DSigValidator().validate(this.tokenScript, this.sourceUrl, this.xmlStr);
-
-		if (dsigResult !== false){
-			this.securityInfo = dsigResult;
-			return;
-		}
-
-		if (this.source === ScriptSourceType.SCRIPT_URI) {
-			const ipfsResult = await new IpfsCidValidator().validate(this.tokenScript, this.sourceUrl, this.xmlStr)
-
-			if (ipfsResult !== false){
-				this.securityInfo = ipfsResult;
-				return;
-			}
-		}
-
-		this.securityInfo = {};
-		this.securityInfo.status = SecurityStatus.INVALID;
-		this.securityInfo.auth = AuthenticationType.NONE;
-		this.securityInfo.authText = "Could not verify contract/script authenticity";
-		this.securityInfo.integrity = IntegrityType.NONE;
-		this.securityInfo.integrityText = "Could not validated TokenScript file integrity";
 	}
 
 }

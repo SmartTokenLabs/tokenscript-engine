@@ -1,19 +1,19 @@
 import {TokenScript} from "../TokenScript";
+import {Contract} from "../tokenScript/Contract";
 
 export interface IKeySource {
-	type: "contractCall" | "static";
-	valueType: "rsa" | "ec" | "ethAddress";
+	type: "contractCall" | "deployer";
+	valueType: "ec" | "ethAddress";
 	value: string; // Should be a valid hex encoded key or address
 }
 
 /**
- * The public key resolver is used to determine trusted public keys for a specific TokenScript and is used in DSIG validation
- * This is matched against the DSIG signer or the CA when x509 certificates are present in the TokenScript
+ * The contract key resolver is used to resolve the owner or deployer of a smart contract
  */
-export class PubkeyResolver {
+export class ContractKeyResolver {
 
 	/**
-	 * Define trusted public key sources
+	 * Define contract deployment key sources
 	 * @private
 	 */
 	private static KEY_SOURCES: IKeySource[] = [
@@ -22,16 +22,11 @@ export class PubkeyResolver {
 			valueType: "ethAddress",
 			value: "owner" // The trusted public key of the TokenScript is the smart contract owner (contract must implement 'ownable' interface)
 		},
-		// TODO: Resolve using ERC5XX1 key or static STL root certificate
+		// TODO: Resolve by finding contract constructor transaction sender
 		/*{
-			type: "contractCall",
+			type: "deployer",
 			valueType: "ethAddress",
-			value: "scriptkey"
-		},
-		{
-			type: "static",
-			valueType: "rsa",
-			value: "0x0"
+			value: ""
 		}*/
 	];
 
@@ -39,13 +34,18 @@ export class PubkeyResolver {
 
 	}
 
-	public async resolvePublicKey(){
+	/**
+	 * Resolve script public key for a contract
+	 * @param contract
+	 */
+	public async resolvePublicKey(contract: Contract){
 
 		const adapter = await this.tokenScript.getEngine().getWalletAdapter();
-		const contract = Object.values(this.tokenScript.getContracts(true))[0];
+
+		// TODO: Implement multiple address checks
 		const address = contract.getFirstAddress();
 
-		for (let keySource of PubkeyResolver.KEY_SOURCES){
+		for (let keySource of ContractKeyResolver.KEY_SOURCES){
 
 			try {
 

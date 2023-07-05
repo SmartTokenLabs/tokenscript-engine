@@ -18,14 +18,12 @@ export class ScriptURI implements SourceInterface {
 	 */
 	async getTokenScriptXml(tsId: string): Promise<ResolveResult> {
 
-		const provider = await this.context.getWalletAdapter();
-
 		const [chain, contractAddr] = tsId.split("-");
 
 		if (!contractAddr || contractAddr.indexOf("0x") !== 0)
 			throw new Error("Not a ScriptUri ID");
 
-		let uri = await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string"]);
+		let uri = await this.context.getScriptUri(chain, contractAddr);
 
 		if (!uri)
 			throw new Error("ScriptURI is not set on this contract or chain");

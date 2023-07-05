@@ -211,4 +211,9 @@ export class TokenScriptEngine {
 
 		return uri;
 	}
+
+	public async getScriptUri(chain: string, contractAddr: string){
+		const provider = await this.getWalletAdapter();
+		return provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string"]);
+	}
 }

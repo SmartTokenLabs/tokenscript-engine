@@ -36,9 +36,39 @@ export class AttestationDefinitions {
 		return this.definitions;
 	}
 
+	getOriginDefinitions(){
+
+		const definitions = this.getDefinitions();
+		const origins = this.tokenScript.getOrigins();
+		const originAttestations = {};
+
+		for (const name in definitions){
+			if (origins[name])
+				originAttestations[name] = definitions[name];
+		}
+
+		return new OriginAttestationDefinitions(originAttestations);
+	}
+
 	getDefinition(name: string): AttestationDefinition {
 		const definitions = this.getDefinitions();
 		return definitions[name];
+	}
+
+	[Symbol.iterator](): Iterator<AttestationDefinition | undefined> {
+		return Object.values(this.getDefinitions()).values();
+	}
+}
+
+export class OriginAttestationDefinitions {
+
+	constructor(
+		private definitions: {[attestationName: string]: AttestationDefinition }
+	) {
+	}
+
+	public getDefinitions(){
+		return this.definitions;
 	}
 
 	[Symbol.iterator](): Iterator<AttestationDefinition | undefined> {

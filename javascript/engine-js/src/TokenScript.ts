@@ -100,7 +100,8 @@ export class TokenScript {
 	public getSourceInfo(){
 		return {
 			tsId: this.sourceId,
-			source: this.source
+			source: this.source,
+			sourceUrl: this.sourceUrl
 		}
 	}
 
@@ -310,6 +311,7 @@ export class TokenScript {
 				if (origins[name])
 					originContracts[name] = this.contracts[name];
 			}
+			return originContracts;
 		}
 
 		return this.contracts;
@@ -671,11 +673,14 @@ export class TokenScript {
 	/**
 	 * The attestation definitions defined in the TokenScripts
 	 */
-	public getAttestationDefinitions(){
+	public getAttestationDefinitions(originsOnly = true){
 
 		if (!this.attestationDefinitions){
 			this.attestationDefinitions = new AttestationDefinitions(this, this.tokenDef.documentElement);
 		}
+
+		if (originsOnly)
+			this.attestationDefinitions.getOriginDefinitions();
 
 		return this.attestationDefinitions;
 	}
