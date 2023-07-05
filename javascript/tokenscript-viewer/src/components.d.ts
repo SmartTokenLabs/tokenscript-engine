@@ -105,6 +105,10 @@ export namespace Components {
         "closeDialog": () => Promise<void>;
         "openDialog": (token: TokenGridContext) => Promise<void>;
     }
+    interface TokenSecurityStatus {
+        "originId": string;
+        "tokenScript": TokenScript1;
+    }
     interface TokensGrid {
         "tokenScript": TokenScript1;
     }
@@ -290,6 +294,12 @@ declare global {
         prototype: HTMLTokenInfoPopoverElement;
         new (): HTMLTokenInfoPopoverElement;
     };
+    interface HTMLTokenSecurityStatusElement extends Components.TokenSecurityStatus, HTMLStencilElement {
+    }
+    var HTMLTokenSecurityStatusElement: {
+        prototype: HTMLTokenSecurityStatusElement;
+        new (): HTMLTokenSecurityStatusElement;
+    };
     interface HTMLTokensGridElement extends Components.TokensGrid, HTMLStencilElement {
     }
     var HTMLTokensGridElement: {
@@ -366,6 +376,7 @@ declare global {
         "token-button": HTMLTokenButtonElement;
         "token-icon": HTMLTokenIconElement;
         "token-info-popover": HTMLTokenInfoPopoverElement;
+        "token-security-status": HTMLTokenSecurityStatusElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
         "tokenscript-button": HTMLTokenscriptButtonElement;
@@ -457,6 +468,10 @@ declare namespace LocalJSX {
     }
     interface TokenInfoPopover {
     }
+    interface TokenSecurityStatus {
+        "originId"?: string;
+        "tokenScript"?: TokenScript1;
+    }
     interface TokensGrid {
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
@@ -516,6 +531,7 @@ declare namespace LocalJSX {
         "token-button": TokenButton;
         "token-icon": TokenIcon;
         "token-info-popover": TokenInfoPopover;
+        "token-security-status": TokenSecurityStatus;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
         "tokenscript-button": TokenscriptButton;
@@ -552,6 +568,7 @@ declare module "@stencil/core" {
             "token-button": LocalJSX.TokenButton & JSXBase.HTMLAttributes<HTMLTokenButtonElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "token-info-popover": LocalJSX.TokenInfoPopover & JSXBase.HTMLAttributes<HTMLTokenInfoPopoverElement>;
+            "token-security-status": LocalJSX.TokenSecurityStatus & JSXBase.HTMLAttributes<HTMLTokenSecurityStatusElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;

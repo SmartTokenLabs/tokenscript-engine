@@ -27,6 +27,7 @@ export interface ISecurityInfo {
 export class SecurityInfo {
 
 	private securityInfo?: Partial<ISecurityInfo>;
+	private originStatuses: {[name: string]: IOriginSecurityInfo} = {};
 
 	// TODO: Implement root key resolution from EAS keychain contract
 	//private signerRootKey?: string
@@ -75,6 +76,7 @@ export class SecurityInfo {
 				originFailCount++;
 
 			this.securityInfo.originStatuses.push(originStatus);
+			this.originStatuses[name] = originStatus;
 		}
 
 		if (originFailCount === 0){
@@ -103,6 +105,21 @@ export class SecurityInfo {
 		}
 
 		return this.securityInfo;
+	}
+
+	/**
+	 *
+	 * @param originId
+	 */
+	public async getOriginInfo(originId: string){
+
+		// TODO: Track valid public keys and contract sources in originInfo and compare to individual NFT or attestation issuer
+
+		if (!this.securityInfo){
+			await this.loadTokenScriptKeyInfo();
+		}
+
+		return this.originStatuses[originId];
 	}
 
 }

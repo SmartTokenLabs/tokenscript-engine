@@ -95,6 +95,7 @@ export class TokensGridItem {
 						}
 					</div>
 				</div>
+				<token-security-status tokenScript={this.tokenScript} originId={this.token.originId} />
 			</Host>
 		)
 	}

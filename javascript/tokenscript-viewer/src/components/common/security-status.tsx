@@ -17,9 +17,9 @@ export class SecurityStatus {
 	@State() statusIcon: string;
 
 	async componentDidLoad() {
-		this.securityInfo = await this.tokenScript.getSecurityInfo();
+		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
 		this.updateStatusState();
-		console.log("Security status loaded!");
+		console.log("Security status loaded!", this.securityInfo);
 	}
 
 	private updateStatusState(){

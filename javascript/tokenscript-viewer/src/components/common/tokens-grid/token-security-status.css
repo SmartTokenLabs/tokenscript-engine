@@ -1,0 +1,11 @@
+
+.token-security-status {
+	box-sizing: border-box;
+	border-radius: 25px;
+	font-size: 16px;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	cursor: pointer;
+	line-height: 27px;
+}

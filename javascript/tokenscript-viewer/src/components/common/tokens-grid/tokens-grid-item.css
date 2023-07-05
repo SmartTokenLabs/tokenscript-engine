@@ -6,6 +6,7 @@
 	width: 250px;
 	overflow: hidden;
 	background: #FFFEFE;
+	position: relative;
 }
 
 .tokens-grid-item img {
@@ -56,4 +57,11 @@
 	margin: 18px 10px;
 	border-radius: 25px !important;
 	padding: 0;
+}
+
+token-security-status {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 5px;
 }

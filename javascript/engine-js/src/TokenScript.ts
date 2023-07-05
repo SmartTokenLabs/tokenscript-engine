@@ -179,8 +179,8 @@ export class TokenScript {
 	/**
 	 * The SecurityInfo object related to this TokenScript
 	 */
-	public async getSecurityInfo(){
-		return await this.securityInfo.getInfo();
+	public getSecurityInfo(){
+		return this.securityInfo;
 	}
 
 	/**

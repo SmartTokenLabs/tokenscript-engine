@@ -3,7 +3,11 @@ import * as xmldsigjs from "xmldsigjs";
 import {KeyInfoX509Data, KeyValue, X509Certificate} from "xmldsigjs";
 import * as x509 from "@peculiar/x509";
 import {uint8tohex} from "../utils";
+import {Crypto, CryptoKey} from "webcrypto-liner/build/index.es";
 
+const crypto = new Crypto();
+xmldsigjs.Application.setEngine("WebCryptoLiner", crypto);
+x509.cryptoProvider.set(crypto);
 
 export class DSigValidator {
 
@@ -70,7 +74,7 @@ export class DSigValidator {
 	 * @private
 	 */
 	private async keyToHex(key: CryptoKey){
-		return uint8tohex(new Uint8Array(await crypto.subtle.exportKey(key.algorithm.name === "ECDSA" ? "raw" : "spki", key)))
+		return "0x" + uint8tohex(new Uint8Array(await crypto.subtle.exportKey(key.algorithm.name === "ECDSA" ? "raw" : "spki", key)))
 	}
 
 	/**
