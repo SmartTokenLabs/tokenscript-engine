@@ -1,4 +1,4 @@
-import {Component, h, Prop, State} from "@stencil/core";
+import {Component, h, Prop, State, Watch} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 
@@ -18,10 +18,9 @@ export class SecurityStatus {
 
 	async componentDidLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
-		this.updateStatusState();
-		console.log("Security status loaded!", this.securityInfo);
 	}
 
+	@Watch("securityInfo")
 	private updateStatusState(){
 		switch (this.securityInfo.status){
 			case TSSecurityStatus.VALID:
@@ -40,8 +39,6 @@ export class SecurityStatus {
 	}
 
 	private getDetailedSecurityInfo(){
-
-		console.log(this.securityInfo.originStatuses);
 
 		const authMethods = this.securityInfo.originStatuses.reduce((previous, originStatus) => {
 

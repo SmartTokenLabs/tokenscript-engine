@@ -36,7 +36,7 @@ export class Origin {
 			if (securityInfo.signerPublicKey)
 				await this.validateBySignerKey(securityInfo.signerPublicKey);
 
-			if (!securityInfo && this.type === "contract")
+			if (!this.securityStatus && this.type === "contract")
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
 
 			if (!this.securityStatus)
@@ -97,7 +97,7 @@ export class Origin {
 		const contract = this.tokenScript.getContractByName(this.name);
 
 		const scriptSource = this.tokenScript.getSourceInfo();
-		const [chain, contractAddress] = scriptSource.tsId;
+		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");
 
 		// The same script Cid should be specified for all addresses in the same contract scriptUri in order to be valid
 		const addresses = contract.getAddresses();
@@ -109,17 +109,21 @@ export class Origin {
 			let scriptUri = null;
 
 			if (
+				contractAddress &&
 				scriptSource.source === "scriptUri" &&
 				address.address === contractAddress &&
 				address.chain === parseInt(chain)
 			){
 				scriptUri = scriptSource.sourceUrl;
 			} else {
-				try {
+				// We could fetch the scriptURI of the contract and compare the IPFS hash, but for the moment this seems like overkill and is slow
+				return;
+				/*try {
 					scriptUri = await this.tokenScript.getEngine().getScriptUri(address.chain, address.address);
 				} catch (e) {
 					console.warn(e);
-				}
+				}*/
+				// TODO: Should download file and calculate IPFS hash rather than relying on the URL?
 			}
 
 			if (!scriptUri)
@@ -132,8 +136,6 @@ export class Origin {
 
 			if (ipfsCid !== urlCid[1])
 				return;
-
-			// TODO: Should download file and calculate IPFS hash rather than relying on the URL?
 		}
 
 		this.securityStatus = {
