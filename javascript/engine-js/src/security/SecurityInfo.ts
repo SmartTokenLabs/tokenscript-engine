@@ -28,6 +28,7 @@ export class SecurityInfo {
 
 	private securityInfo?: Partial<ISecurityInfo>;
 	private originStatuses: {[name: string]: IOriginSecurityInfo} = {};
+	private lock?: Promise<void>;
 
 	// TODO: Implement root key resolution from EAS keychain contract
 	//private signerRootKey?: string
@@ -50,7 +51,7 @@ export class SecurityInfo {
 
 		this.securityInfo = {};
 
-		const result = await new DSigValidator().getSignerKey(this.tokenScript);
+		const result = await (new DSigValidator()).getSignerKey(this.tokenScript);
 
 		if (result !== false){
 			this.securityInfo.signerPublicKey = result;
@@ -100,9 +101,11 @@ export class SecurityInfo {
 	 */
 	public async getInfo(){
 
-		if (!this.securityInfo){
-			await this.loadTokenScriptKeyInfo();
+		if (!this.lock){
+			this.lock = this.loadTokenScriptKeyInfo();
 		}
+
+		await this.lock;
 
 		return this.securityInfo;
 	}
@@ -115,9 +118,11 @@ export class SecurityInfo {
 
 		// TODO: Track valid public keys and contract sources in originInfo and compare to individual NFT or attestation issuer
 
-		if (!this.securityInfo){
-			await this.loadTokenScriptKeyInfo();
+		if (!this.lock){
+			this.lock = this.loadTokenScriptKeyInfo();
 		}
+
+		await this.lock;
 
 		return this.originStatuses[originId];
 	}

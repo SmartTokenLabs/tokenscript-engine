@@ -65,6 +65,13 @@ export class TokensGridItem {
 		(document.getElementById("token-info-popover") as HTMLTokenInfoPopoverElement).openDialog(token);
 	}
 
+	private async deleteAttestation(){
+		if (("collectionId" in this.token) && confirm("Are you sure you want to delete this attestation?")) {
+			await this.tokenScript.getEngine().getAttestationManager().removeAttestation(this.token.collectionId, this.token.tokenId);
+			this.tokenScript.getTokenMetadata(true);
+		}
+	}
+
 	render() {
 
 		let title;
@@ -96,6 +103,7 @@ export class TokensGridItem {
 					</div>
 				</div>
 				<token-security-status tokenScript={this.tokenScript} originId={this.token.originId} />
+				{this.token.data.type === "eas" ? <button class="delete-attest-btn" title="Delete attestation" onClick={() => this.deleteAttestation()}>X</button> : '' }
 			</Host>
 		)
 	}

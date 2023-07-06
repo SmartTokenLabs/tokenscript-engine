@@ -111,7 +111,7 @@ export class Origin {
 			if (
 				scriptSource.source === "scriptUri" &&
 				address.address === contractAddress &&
-				address.chain === chain
+				address.chain === parseInt(chain)
 			){
 				scriptUri = scriptSource.sourceUrl;
 			} else {

@@ -1,7 +1,7 @@
-import {Component, h, Prop, State} from "@stencil/core";
-import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
+import {Component, h, Prop, State, Watch} from "@stencil/core";
+import {SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {IOriginSecurityInfo, Origin} from "@tokenscript/engine-js/src/tokenScript/Origin";
+import {IOriginSecurityInfo} from "@tokenscript/engine-js/src/tokenScript/Origin";
 
 @Component({
 	tag: 'token-security-status',
@@ -20,11 +20,12 @@ export class TokenSecurityStatus {
 
 	async componentDidLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getOriginInfo(this.originId);
-		this.updateStatusState();
 	}
 
+	@Watch("securityInfo")
 	private updateStatusState(){
-		switch (this.securityInfo.status){
+
+		switch (this.securityInfo?.status){
 			case TSSecurityStatus.VALID:
 				this.statusColor = "#3bd23b";
 				this.statusIcon = "✔";

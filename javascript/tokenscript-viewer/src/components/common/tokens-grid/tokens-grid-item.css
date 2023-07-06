@@ -62,6 +62,23 @@
 token-security-status {
 	position: absolute;
 	top: 0;
+	left: 0;
+	margin: 10px;
+}
+
+.delete-attest-btn {
+	position: absolute;
+	top: 0;
 	right: 0;
-	margin: 5px;
+	margin: 10px;
+	background: none;
+	border: none;
+	font-weight: bold;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.tokens-grid-item > token-icon {
+	/*background: rgba(0, 26, 255, 0.13);*/
+	background: #0000000a;
 }
