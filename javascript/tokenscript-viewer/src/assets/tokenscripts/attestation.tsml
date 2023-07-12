@@ -92,9 +92,15 @@ body > h1 {
 				
 				
 			<h3 xmlns="http://www.w3.org/1999/xhtml">Enter Door</h3>
+
+<p xmlns="http://www.w3.org/1999/xhtml">Use your Devcon attestation to open the secret door in the hacker village.</p>
+
+<div xmlns="http://www.w3.org/1999/xhtml">
+
+</div>
 <script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
 /*! For license information please see enter.js.LICENSE.txt */
-(()=&gt;{class t{constructor(t){this.props=t}render(){return`\n         &lt;h3&gt;Sign the challenge to unlock ...&lt;/h3&gt;\n          &lt;div id="msg"&gt;Preparing to unlock the entrance door.&lt;/div&gt;\n          &lt;div id="inputBox"&gt;\n          &lt;h3&gt;Door open time&lt;/h3&gt;\n          &lt;input id="openTime" type="number" value='20' /&gt;\n          &lt;/div&gt;\n          &lt;div id="attestation"&gt;${this.props.attestation}&lt;/div&gt;\n          &lt;div id="attestationSig"&gt;${this.props.signature}&lt;/div&gt;\n          &lt;div id="status"/&gt;`}}function e(t){if(!t.ok)throw Error(t.statusText);return t.text()}web3.tokens.dataChanged=(e,n,o)=&gt;{const i=n.currentInstance;document.getElementById(o).innerHTML=new t(i).render()};var n="0x7D586C708C741345098248D47A2D9353A1FAE115".toLowerCase(),o="http://scriptproxy.smarttokenlabs.com";document.addEventListener("DOMContentLoaded",(function(){window.onload=function(){fetch(`${o}:8080/api/${n}/getChallenge`).then(e).then((function(t){document.getElementById("msg").innerHTML="Challenge: "+t,window.challenge=t}))},window.onConfirm=function(t){if(void 0===window.challenge||0==window.challenge.length)return;const e=window.challenge;document.getElementById("status").innerHTML="Wait for signature...",web3.personal.sign({data:e},(function(t,e){if(null!=t)document.getElementById("status").innerHTML=t;else{document.getElementById("status").innerHTML="Verifying credentials ...";let t=document.getElementById("openTime").value,i=document.getElementById("attestation").textContent,d=document.getElementById("attestationSig").textContent;fetch(`${o}:8080/api/${n}/checkSignature?openTime=${t}&amp;sig=${e}&amp;attn=${i}&amp;attnSig=${d}`).then((function(t){if(t.ok)return t.text();throw document.getElementById("status").innerHTML=t.statusText,Error(t.statusText)})).then((function(t){"pass"==t?(document.getElementById("status").innerHTML="Entrance granted!",window.close()):document.getElementById("status").innerHTML="Failed with: "+t})).catch((function(){console.log("error blah")}))}})),window.challenge="",document.getElementById("msg").innerHTML=""}}))})();
+(()=&gt;{class t{constructor(t){this.props=t}render(){return`\n         &lt;h3&gt;Sign the challenge to unlock ...&lt;/h3&gt;\n          &lt;div id="msg"&gt;Preparing to unlock the entrance door.&lt;/div&gt;\n          &lt;div id="inputBox"&gt;\n          &lt;h3&gt;Door open time&lt;/h3&gt;\n          &lt;input id="openTime" type="number" value='20' /&gt;\n          &lt;/div&gt;\n          &lt;div id="attestation"&gt;${this.props.attestation}&lt;/div&gt;\n          &lt;div id="attestationSig"&gt;${this.props.attestationSig}&lt;/div&gt;\n          &lt;div id="status"/&gt;`}}function e(t){if(!t.ok)throw Error(t.statusText);return t.text()}web3.tokens.dataChanged=(e,n,o)=&gt;{const i=n.currentInstance;document.getElementById(o).innerHTML=new t(i).render()};var n="0x7D586C708C741345098248D47A2D9353A1FAE115".toLowerCase(),o="http://scriptproxy.smarttokenlabs.com";document.addEventListener("DOMContentLoaded",(function(){window.onload=function(){fetch(`${o}:8080/api/${n}/getChallenge`).then(e).then((function(t){document.getElementById("msg").innerHTML="Challenge: "+t,window.challenge=t}))},window.onConfirm=function(t){if(void 0===window.challenge||0==window.challenge.length)return;const e=window.challenge;document.getElementById("status").innerHTML="Wait for signature...",web3.personal.sign({data:e},(function(t,e){if(null!=t)document.getElementById("status").innerHTML=t;else{document.getElementById("status").innerHTML="Verifying credentials ...";let t=document.getElementById("openTime").value,i=document.getElementById("attestation").textContent,a=document.getElementById("attestationSig").textContent;fetch(`${o}:8080/api/${n}/checkSignature?openTime=${t}&amp;sig=${e}&amp;attn=${i}&amp;attnSig=${a}`).then((function(t){if(t.ok)return t.text();throw document.getElementById("status").innerHTML=t.statusText,Error(t.statusText)})).then((function(t){"pass"==t?(document.getElementById("status").innerHTML="Entrance granted!",window.close()):document.getElementById("status").innerHTML="Failed with: "+t})).catch((function(){console.log("error blah")}))}})),window.challenge="",document.getElementById("msg").innerHTML=""}}))})();
 //# sourceMappingURL=enter.js.map
 //]]&gt;</script><style>
 					/* <![CDATA[ */
@@ -126,7 +132,7 @@ body > h1 {
 				<ethereum:transaction as="uint" contract="Devcon6Souvenir" function="mintUsingAttestation">
 					<ts:data>
 						<ts:struct ref="attestation"/>
-						<ts:bytes ref="signature"/>
+						<ts:bytes ref="attestationSig"/>
 					</ts:data>
 				</ethereum:transaction>
 			</ts:transaction>
@@ -213,4 +219,4 @@ body > h1 {
 		</ts:origins>
 	</ts:attribute>
 
-</ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>XdrzEanFcp09zG7nlD66141BTnFpov7stWQb27CGcwQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>WPi2C75nA6rXXGeUgajIHGLgo/DDMRZvb5rM2/90n+OkPmhGWsEfcdaowlbUUndThW0tXwqpx/X/32pYieKWjg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>CNS8SLxRjIL7StIW74jBEGiz8MQLpgwlX54Kehg4Lic=</ecdsa:X><ecdsa:Y>ZU7uayKDJmBxVnmTOSwaM4+gufLbeqqxuovyF5gI3TQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
