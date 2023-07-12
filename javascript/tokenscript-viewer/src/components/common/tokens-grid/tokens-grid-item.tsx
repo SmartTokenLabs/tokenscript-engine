@@ -103,7 +103,7 @@ export class TokensGridItem {
 					</div>
 				</div>
 				<token-security-status tokenScript={this.tokenScript} originId={this.token.originId} />
-				{this.token.data.type === "eas" ? <button class="delete-attest-btn" title="Delete attestation" onClick={() => this.deleteAttestation()}>X</button> : '' }
+				{this.token?.data?.type === "eas" ? <button class="delete-attest-btn" title="Delete attestation" onClick={() => this.deleteAttestation()}>X</button> : '' }
 			</Host>
 		)
 	}
