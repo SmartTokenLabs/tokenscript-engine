@@ -15,6 +15,7 @@ import {IAttestationData} from "./IAttestationStorageAdapter";
 export const EAS_RPC_CONFIG = {
 	1: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
 	11155111: 'https://rpc.sepolia.org/',
+	42161: 'https://arb1.arbitrum.io/rpc'
 }
 
 export const EAS_REGISTRY_CONFIG = {
