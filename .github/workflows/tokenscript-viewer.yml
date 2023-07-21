@@ -3,10 +3,10 @@ name: "tokenscript-viewer CI"
 on:
   push:
     paths:
-      - javascript/tokenscript-viewer/**
+      - javascript/**
   pull_request:
     paths:
-      - javascript/tokenscript-viewer/**
+      - javascript/**
   workflow_dispatch:
 
 env:
@@ -44,7 +44,7 @@ jobs:
     environment:
       name: tokenscript-viewer-${{ (github.ref_name == 'master' && 'prod') || 'stage' }}
       url: ${{ github.ref_name == 'master' && env.PROD_URL || env.STAGE_URL }}
-    if: github.event_name == 'push' && contains(fromJson('["master", "staging"]'), github.ref_name)
+    if: contains(fromJson('["master", "staging"]'), github.ref_name)
     runs-on: ubuntu-latest
     needs:
       - build
