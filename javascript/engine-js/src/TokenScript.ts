@@ -474,6 +474,9 @@ export class TokenScript {
 
 		const initialTokenData = this.buildTokenDiscoveryData();
 
+		if (!initialTokenData.length)
+			return [];
+
 		return await tokenDiscovery.getTokens(initialTokenData, reload);
 	}
 
