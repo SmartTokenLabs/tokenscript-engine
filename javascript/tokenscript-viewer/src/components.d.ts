@@ -473,6 +473,8 @@ declare namespace LocalJSX {
         "tokenScript"?: TokenScript1;
     }
     interface TokensGrid {
+        "onHideLoader"?: (event: TokensGridCustomEvent<void>) => void;
+        "onShowLoader"?: (event: TokensGridCustomEvent<void>) => void;
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
     }

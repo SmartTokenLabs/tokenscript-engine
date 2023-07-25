@@ -1,6 +1,6 @@
 import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
-import {TokenScript} from "../TokenScript";
+import {ITransactionListener, TokenScript} from "../TokenScript";
 
 export enum ViewEvent {
 	TOKENS_UPDATED = "tokensUpdated",
@@ -32,8 +32,14 @@ export class ViewController {
 	/**
 	 * Show a card in the user interface
 	 * @param card
+	 * @param transactionListener
 	 */
-	async showCard(card: Card){
+	async showOrExecuteCard(card: Card, transactionListener?: ITransactionListener){
+
+		if (!card.view){
+			// Transaction-only card
+			return card.executeTransaction(transactionListener);
+		}
 
 		//this.userEntryValues = {};
 		this.currentCard = card;

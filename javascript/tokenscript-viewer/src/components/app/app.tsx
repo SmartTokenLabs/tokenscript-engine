@@ -52,8 +52,18 @@ export class AppRoot {
 
 	@State() viewerType?: "tabbed"|"integration"|"new"
 
+	@Listen("showLoader")
+	showLoaderHandler(_event: CustomEvent<void>){
+		this.showTsLoader();
+	}
+
 	showTsLoader(){
 		document.getElementById("ts-loader").style.display = "flex";
+	}
+
+	@Listen("hideLoader")
+	hideLoaderHandler(_event: CustomEvent<void>){
+		this.hideTsLoader();
 	}
 
 	hideTsLoader(){

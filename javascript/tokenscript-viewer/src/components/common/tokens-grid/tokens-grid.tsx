@@ -1,11 +1,12 @@
-import {Component, EventEmitter, h, Prop, State, Watch, Event, Host} from "@stencil/core";
-import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {Component, EventEmitter, h, Prop, State, Watch, Event, Host, JSX} from "@stencil/core";
+import {ITokenIdContext, ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {ShowToastEventArgs} from "../../app/app";
+import {showTransactionNotification} from "../../viewers/util/showTransactionNotification";
 
 @Component({
 	tag: 'tokens-grid',
@@ -30,6 +31,20 @@ export class TokensGrid {
 		cancelable: true,
 		bubbles: true,
 	}) showToast: EventEmitter<ShowToastEventArgs>;
+
+	@Event({
+		eventName: 'showLoader',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showLoader: EventEmitter<void>;
+
+	@Event({
+		eventName: 'hideLoader',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) hideLoader: EventEmitter<void>;
 
 	@Watch("tokenScript")
 	async componentDidLoad() {
@@ -100,18 +115,40 @@ export class TokensGrid {
 		});
 	}
 
-	private showCard(card: Card, token: TokenGridContext, cardIndex: number){
+	private async showCard(card: Card, token: TokenGridContext, cardIndex: number){
 
 		const refs = token.contextId.split("-");
 		this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]): null);
-		console.log("Token context set");
 
 		window.scrollTo(0, 0);
-		this.tokenScript.showTokenCard(card);
+
+		try {
+			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
+
+				if (data.status === "started")
+					this.showLoader.emit();
+
+				if (data.status === "submitted")
+					this.hideLoader.emit();
+
+				await showTransactionNotification(data, this.showToast);
+			});
+
+		} catch(e){
+			console.error(e);
+			this.hideLoader.emit();
+			this.showToast.emit({
+				type: 'error',
+				title: "Transaction Error",
+				description: e.message
+			});
+			return;
+		}
 
 		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
 		// TODO: set only card param rather than updating the whole hash query
-		document.location.hash = "#card=" + (card.name ?? cardIndex);
+		if (card.view)
+			document.location.hash = "#card=" + (card.name ?? cardIndex);
 	}
 
 	render() {
@@ -121,7 +158,7 @@ export class TokensGrid {
 				{
 					this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
 						return (
-							<tokens-grid-item key={token.contextId} tokenScript={this.tokenScript} token={token} showCard={this.showCard}></tokens-grid-item>
+							<tokens-grid-item key={token.contextId} tokenScript={this.tokenScript} token={token} showCard={this.showCard.bind(this)}></tokens-grid-item>
 						);
 					}) :  (
 						!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''

@@ -41,8 +41,8 @@ export type EventHandler = (data: any) => Promise<void>|void;
 export type TokenMetadataMap = { [contractName: string]: ITokenCollection };
 
 export interface ITransactionStatus {
-	status: 'confirmed'|'submitted',
-	txNumber: string,
+	status: 'started'|'submitted'|'confirmed',
+	txNumber?: string,
 	txLink?: string,
 	txRecord?: any
 }
@@ -226,9 +226,10 @@ export class TokenScript {
 	/**
 	 * Show a card in the UI
 	 * @param card The card object to display
+	 * @param transactionListener For transaction-only cards, supply a listener to get transaction status
 	 */
-	public async showTokenCard(card: Card){
-		await this.getViewController().showCard(card);
+	public async showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener){
+		await this.getViewController().showOrExecuteCard(card, transactionListener);
 	}
 
 	/**
@@ -717,24 +718,28 @@ export class TokenScript {
 	 */
 	public async executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation: boolean = true){
 
-		const wallet = await this.engine.getWalletAdapter();
-		const transInfo = transaction.getTransactionInfo();
-
-		// TODO: confirm with James exact use cases of having multiple address in a contract element
-		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
-		const contract = transInfo.contract.getAddressByChain(chain, true);
-
-		const ethParams = [];
-
-		for (let i in transInfo.args){
-			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), i.toString()))
-		}
-
-		const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
+		listener({status: 'started'});
 
 		try {
+
+			const wallet = await this.engine.getWalletAdapter();
+			const transInfo = transaction.getTransactionInfo();
+
+			// TODO: confirm with James exact use cases of having multiple address in a contract element
+			const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
+
+			const contract = transInfo.contract.getAddressByChain(chain, true);
+
+			const ethParams = [];
+
+			for (let i in transInfo.args){
+				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), i.toString()))
+			}
+
+			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
+
 			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener);
+
 		} catch (e){
 
 			console.error(e);

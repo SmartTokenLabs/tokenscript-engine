@@ -49,9 +49,7 @@ export class ViewerTab {
 	async loadTs(){
 
 		if (!this.viewBinding){
-			this.viewBinding = new ViewBinding(this.host,(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element) => {
-				this.showToast.emit({type, title, description});
-			});
+			this.viewBinding = new ViewBinding(this.host,this.showToast);
 		}
 
 		this.viewBinding.setTokenScript(this.tokenScript);

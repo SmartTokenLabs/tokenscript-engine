@@ -38,7 +38,8 @@ export class ViewStep {
 		this.viewBinding = new ViewBinding(this);
 		this.viewBinding.setTokenScript(this.tokenScript);
 		this.tokenScript.setViewBinding(this.viewBinding);
-		this.tokenScript.getViewController().showCard(this.card);
+		// TODO: Add transaction notifications and loader for transaction-only cards
+		this.tokenScript.showOrExecuteTokenCard(this.card);
 	}
 
 	render() {

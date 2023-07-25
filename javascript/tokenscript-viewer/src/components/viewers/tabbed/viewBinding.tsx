@@ -1,13 +1,16 @@
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {Attribute} from "../../../../../engine-js/src/tokenScript/Attribute";
 import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
-import {JSX, h} from "@stencil/core";
+import {JSX, h, EventEmitter} from "@stencil/core";
 import {AbstractViewBinding} from "../../../integration/abstractViewBinding";
+import {showTransactionNotification} from "../util/showTransactionNotification";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
+import {ShowToastEventArgs} from "../../app/app";
 
 export class ViewBinding extends AbstractViewBinding {
 
 	constructor(protected view: HTMLElement,
-				private showToast?: (type: 'success'|'info'|'warning'|'error', title: string, description:string|JSX.Element) => void) {
+				private showToast?: EventEmitter<ShowToastEventArgs>) {
 
 		super(view);
 	}
@@ -56,33 +59,14 @@ export class ViewBinding extends AbstractViewBinding {
 			console.log(transaction.getTransactionInfo());
 
 			try {
-				await this.currentCard.executeTransaction((data) => {
-					switch (data.status){
-						case "submitted":
-							this.showToast(
-								'info',
-								"Transaction submitted",
-								(<span>
-									{"Processing TX, please wait.. "}<br/>
-									{"TX Number: " + data.txNumber }
-								</span>)
-							);
-							break;
-						case "confirmed":
-							this.showToast(
-								'success',
-								"Transaction confirmed",
-								(<span>
-									{"TX " + data.txNumber + " confirmed!"}<br/>{
-									data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
-								</span>)
-							);
-							break;
-					}
-				});
+				await this.currentCard.executeTransaction((data: ITransactionStatus) => { showTransactionNotification(data, this.showToast); });
 			} catch (e){
 				console.error(e);
-				this.showToast('error', "Transaction Error", e.message);
+				this.showToast.emit({
+					type: 'error',
+					title: "Transaction Error",
+					description: e.message
+				});
 			}
 
 		} else {
