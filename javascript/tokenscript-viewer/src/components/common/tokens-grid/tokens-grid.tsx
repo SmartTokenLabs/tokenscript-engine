@@ -128,7 +128,7 @@ export class TokensGrid {
 				if (data.status === "started")
 					this.showLoader.emit();
 
-				if (data.status === "submitted")
+				if (data.status === "confirmed")
 					this.hideLoader.emit();
 
 				await showTransactionNotification(data, this.showToast);
