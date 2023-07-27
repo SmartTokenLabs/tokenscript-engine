@@ -12,6 +12,7 @@ export enum ViewEvent {
 export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
+	CLOSE = "close"
 }
 
 /**

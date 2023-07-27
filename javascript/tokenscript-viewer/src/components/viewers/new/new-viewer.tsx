@@ -52,6 +52,7 @@ export class NewViewer {
 
 	private async processUrlLoad(){
 
+		// TODO: Support attestation in hash parameters too
 		const queryStr = document.location.search.substring(1);
 
 		if (!queryStr)
@@ -72,6 +73,7 @@ export class NewViewer {
 				tsMeta = await this.addFormSubmit("url", {tsId: tokenScript.getSourceInfo().tsId, image: definition.meta.image});
 
 				document.location.hash = "";
+				window.history.replaceState({}, document.title, "/");
 
 				this.showToast.emit({
 					type: "success",

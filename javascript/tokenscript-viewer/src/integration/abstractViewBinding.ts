@@ -166,6 +166,12 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			/*document.addEventListener("DOMContentLoaded", function() {
 				sendUserInputValues();
 			});*/
+
+			const closing = window.close;
+  			window.close = function () {
+    			postMessageToEngine("close", undefined);
+    			closing();
+  			};
 		`;
 	}
 
@@ -205,6 +211,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 			case RequestFromView.PUT_USER_INPUT:
 				await this.tokenScript.getViewController().setUserEntryValues(params);
+				break;
+
+			case RequestFromView.CLOSE:
+				this.unloadTokenView()
 				break;
 
 			default:
