@@ -16,7 +16,7 @@
 			<ts:attributeField name="data.eventId">Event ID</ts:attributeField>
 			<ts:attributeField name="data.ticketClass">Ticket Class</ts:attributeField>
 			<ts:attributeField name="data.ticketId">Ticket ID</ts:attributeField>
-			<ts:attributeField name="time">Valid From</ts:attributeField>
+			<ts:attributeField display_type="date" name="time">Valid From</ts:attributeField>
 			<ts:attributeField name="meta.commitmentId">Email</ts:attributeField>
 		</ts:meta>
 		
@@ -41,7 +41,7 @@
 		
 		<ts:card name="Info" origins="Devcon6Attestation" type="token">
 			<ts:label>
-				<ts:string xml:lang="en">Info</ts:string>
+				<ts:string xml:lang="en">Ticket Info</ts:string>
 			</ts:label>
 
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -51,6 +51,9 @@
 			<div xmlns="http://www.w3.org/1999/xhtml">
 	<div id="attestation-container">
 
+	</div>
+	<div>
+		<a href="https://archive.devcon.org/archive/playlists/devcon-6/">View Conference Guide</a>
 	</div>
 	<div>
 		<h4>Event Entry QR</h4>
@@ -83,25 +86,682 @@ body > h1 {
 					/* ]]> */
 				</style></ts:view>
 		</ts:card>
-		<ts:card name="Enter" origins="Devcon6Attestation" type="action">
+		<ts:card name="Unlock" origins="Devcon6Attestation" type="action">
 			
 			<ts:label>
-				<ts:string xml:lang="en">Enter</ts:string>
+				<ts:string xml:lang="en">Unlock</ts:string>
 			</ts:label>
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 				
 				
-			<h3 xmlns="http://www.w3.org/1999/xhtml">Enter Door</h3>
+			<p xmlns="http://www.w3.org/1999/xhtml">Use your Devcon attestation to open the secret door in the hacker village.</p>
 
-<p xmlns="http://www.w3.org/1999/xhtml">Use your Devcon attestation to open the secret door in the hacker village.</p>
+<div xmlns="http://www.w3.org/1999/xhtml" id="status">Preparing to lock...</div>
 
-<div xmlns="http://www.w3.org/1999/xhtml">
-
+<div xmlns="http://www.w3.org/1999/xhtml" id="loader">
+	<div class="lds-ring">
+		<div style=""></div>
+		<div style=""></div>
+		<div style=""></div>
+		<div style=""></div>
+	</div>
+	<div id="load-status"></div>
 </div>
+
+<div xmlns="http://www.w3.org/1999/xhtml" class="door-container">
+	<div class="door" onclick="onConfirm()">
+		<div class="door-front">
+			<img class="deva" src="https://pbs.twimg.com/profile_images/1535034047407312904/bcFyZnKT_400x400.jpg"/>
+			<div class="knob"></div>
+		</div>
+		<div class="door-back">
+			<img class="devcon-poster" src="https://entethalliance.org/wp-content/uploads/2022/10/devcon-image-1.jpg"/>
+			<div class="rack"></div>
+			<div class="hat"></div>
+			<div class="jacket"></div>
+		</div>
+		<div class="door-mat"></div>
+	</div>
+</div>
+
+<style xmlns="http://www.w3.org/1999/xhtml">/*&lt;![CDATA[*/ 
+
+
+	.door-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 50px;
+		overflow: visible;
+	}
+
+	.door {
+		position: relative;
+		width: 170px;
+		height:270px;
+		cursor: pointer;
+		transform-style: preserve-3d;
+		transform: perspective(2500px);
+	}
+
+	.devcon-poster {
+		position: absolute;
+		top: 10px;
+		left: 26px;
+		width: 120px;
+	}
+
+	.deva {
+		position: absolute;
+		z-index: 50;
+		top: 40px;
+		left: 54px;
+		width: 60px;
+	}
+
+	.door-front {
+		width: 170px;
+		height:270px;
+		overflow: hidden;
+		transform-origin: left;
+		box-shadow: 30px 0 50px rgba(0,0,0,0.2);
+		position: absolute;
+		background-color: #924500;
+		z-index:1;
+		transition: .5s;
+	}
+
+	.door-front:before, .door-front:after {
+		content:"";
+		position: absolute;
+		background-color: #924500;
+		width: 105px;
+		height: 75px;
+		border: 10px ridge #b05500;
+		left:22.5px;
+	}
+
+	.door-front:before {
+		top:25px;
+	}
+
+	.door-front:after {
+		top:155px;
+	}
+	.knob {
+		position: absolute;
+		width: 20px;
+		height:30px;
+		background-color: #eeba0b;
+		top:122px;
+		left:145px;
+		border-radius:2px;
+	}
+
+	.knob:before {
+		content:"";
+		position: absolute;
+		border-radius:50%;
+		background-color: #f1c83c;
+		width:18px;
+		height:18px;
+		left:-1px;
+		box-shadow: 2px 2px rgba(0,0,0,0.2);
+	}
+
+	.knob:after {
+		content:"";
+		position: absolute;
+		width:4px;
+		height:7px;
+		background-color: #333;
+		top:20px;
+		left:8.5px;
+	}
+
+	.door.opened .door-front {
+		transform: rotateY(-160deg);
+	}
+
+	.door-back {
+		position: relative;
+		background: linear-gradient(0deg, rgba(193,124,116,1) 13%, rgba(73,88,103,1) 13%, rgba(79,100,124,1) 15%, rgba(87,115,153,1) 15%);
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		outline: 10px solid #edf2f4;
+	}
+
+	.rack {
+		position: absolute;
+		width: 7px;
+		height:150px;
+		background-color: #a78a7f;
+		top:90px;
+		left:100px;
+	}
+
+	.rack:before {
+		content:"";
+		position: absolute;
+		width:70px;
+		height:10px;
+		border-radius: 30px 30px 0 0;
+		background-color: #8c1c13;
+		top:150px;
+		left:-30px;
+	}
+
+	.rack:after {
+		position: absolute;
+		content:"";
+		width:30px;
+		height: 30px;
+		border-bottom: 5px solid #a78a7f;
+		border-right: 5px solid #a78a7f;
+		border-bottom-right-radius:100%;
+		top:20px;
+	}
+
+	.hat {
+		position: absolute;
+		width: 60px;
+		height: 15px;
+		border-radius:20px 20px 0 0;
+		background-color: #bf4342;
+		top:80px;
+		left:75px;
+	}
+
+	.hat:before {
+		content:"";
+		position: absolute;
+		width: 40px;
+		height: 20px;
+		border-radius:10px 10px 0 0;
+		background-color: #bf4342;
+		top:-20px;
+		left:10px;
+		box-shadow: inset 0 -5px #e7d7c1;
+	}
+
+	.hat:after {
+		content:"";
+		position: absolute;
+		width: 40px;
+		height: 100px;
+		background-color: #735751;
+		border-radius: 50% 60% 20% 20% / 70% 70% 20% 20%;
+		top:20px;
+		left:45px;
+	}
+
+	.jacket {
+		position: absolute;
+		width: 7px;
+		height: 7px;
+		background-color: #e7d7c1;
+		border-radius:50%;
+		top:120px;
+		left:137px;
+		box-shadow: 0 20px #e7d7c1;
+	}
+
+	.jacket:before {
+		content:"";
+		position: absolute;
+		width: 25px;
+		height: 25px;
+		background-color: #a78a7f;
+		left:-10px;
+		top:40px;
+	}
+
+	.jacket:after {
+		content:"";
+		position: absolute;
+		border-top: 15px solid #8c1c13;
+		border-right: 15px solid transparent;
+		border-left: 15px solid transparent;
+		width:0;
+		height:0;
+		top:40px;
+		left:-12px;
+	}
+
+	.door-mat {
+		position: relative;
+		perspective: 200px;
+	}
+
+	.door-mat:before {
+		content:"";
+		position: absolute;
+		left: 0;
+		width: 170px;
+		height: 70px;
+		background: repeating-linear-gradient(#a8763e, #a8763e 10px,
+		#9d741a 10px, #9d741a 20px);
+		top:20px;
+		outline:5px solid #a8763e;
+		transform: rotateX(45deg);
+	}
+
+	#status {
+
+	}
+
+	#load-status {
+		margin-top: 20px;
+		color: white;
+	}
+
+	#loader {
+		position: absolute;
+		z-index: 100;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		top: 0;
+		left: 0;
+		background: rgba(11, 11, 11, 0.7);
+	}
+
+	.lds-ring {
+		display: inline-block;
+		position: relative;
+		width: 80px;
+		height: 80px;
+	}
+	.lds-ring div {
+		box-sizing: border-box;
+		display: block;
+		position: absolute;
+		width: 64px;
+		height: 64px;
+		margin: 8px;
+		border: 8px solid;
+		border-color: #fff transparent transparent transparent;
+		border-radius: 50%;
+		animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	}
+
+	.lds-ring div:nth-child(1) {
+		animation-delay: -0.45s;
+	}
+	.lds-ring div:nth-child(2) {
+		animation-delay: -0.3s;
+	}
+	.lds-ring div:nth-child(3) {
+		animation-delay: -0.15s;
+	}
+	@keyframes lds-ring {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+
+ /*//]]&gt;*/</style>
 <script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
 /*! For license information please see enter.js.LICENSE.txt */
-(()=&gt;{class t{constructor(t){this.props=t}render(){return`\n         &lt;h3&gt;Sign the challenge to unlock ...&lt;/h3&gt;\n          &lt;div id="msg"&gt;Preparing to unlock the entrance door.&lt;/div&gt;\n          &lt;div id="inputBox"&gt;\n          &lt;h3&gt;Door open time&lt;/h3&gt;\n          &lt;input id="openTime" type="number" value='20' /&gt;\n          &lt;/div&gt;\n          &lt;div id="attestation"&gt;${this.props.attestation}&lt;/div&gt;\n          &lt;div id="attestationSig"&gt;${this.props.attestationSig}&lt;/div&gt;\n          &lt;div id="status"/&gt;`}}function e(t){if(!t.ok)throw Error(t.statusText);return t.text()}web3.tokens.dataChanged=(e,n,o)=&gt;{const i=n.currentInstance;document.getElementById(o).innerHTML=new t(i).render()};var n="0x7D586C708C741345098248D47A2D9353A1FAE115".toLowerCase(),o="http://scriptproxy.smarttokenlabs.com";document.addEventListener("DOMContentLoaded",(function(){window.onload=function(){fetch(`${o}:8080/api/${n}/getChallenge`).then(e).then((function(t){document.getElementById("msg").innerHTML="Challenge: "+t,window.challenge=t}))},window.onConfirm=function(t){if(void 0===window.challenge||0==window.challenge.length)return;const e=window.challenge;document.getElementById("status").innerHTML="Wait for signature...",web3.personal.sign({data:e},(function(t,e){if(null!=t)document.getElementById("status").innerHTML=t;else{document.getElementById("status").innerHTML="Verifying credentials ...";let t=document.getElementById("openTime").value,i=document.getElementById("attestation").textContent,a=document.getElementById("attestationSig").textContent;fetch(`${o}:8080/api/${n}/checkSignature?openTime=${t}&amp;sig=${e}&amp;attn=${i}&amp;attnSig=${a}`).then((function(t){if(t.ok)return t.text();throw document.getElementById("status").innerHTML=t.statusText,Error(t.statusText)})).then((function(t){"pass"==t?(document.getElementById("status").innerHTML="Entrance granted!",window.close()):document.getElementById("status").innerHTML="Failed with: "+t})).catch((function(){console.log("error blah")}))}})),window.challenge="",document.getElementById("msg").innerHTML=""}}))})();
+(()=&gt;{class t{constructor(t){this.props=t}render(){return`\n\t\t  &lt;h3&gt;Enter Door&lt;/h3&gt;\n          &lt;h4&gt;Sign the challenge to unlock ...&lt;/h4&gt;\n          &lt;div style="display: none;"&gt;\n\t\t\t  &lt;div id="inputBox"&gt;\n\t\t\t  &lt;h3&gt;Door open time&lt;/h3&gt;\n\t\t\t  &lt;input id="openTime" type="number" value='20' /&gt;\n\t\t\t  &lt;/div&gt;\n\t\t\t  &lt;div id="attestation"&gt;${this.props.attestation}&lt;/div&gt;\n\t\t\t  &lt;div id="attestationSig"&gt;${this.props.attestationSig}&lt;/div&gt;\n          &lt;/div&gt;\n\t\t`}}function e(t){if(!t.ok)throw Error(t.statusText);return t.text()}web3.tokens.dataChanged=(e,n,o)=&gt;{const d=n.currentInstance;document.getElementById(o).innerHTML=new t(d).render()};var n="0x32A611066C00A043C202889D67DF86F4F2C82285".toLowerCase(),o="https://scriptproxy.smarttokenlabs.com";document.addEventListener("DOMContentLoaded",(function(){function t(){document.getElementById("load-status").innerText="Fetching challenge...",document.getElementById("loader").style.display="flex",fetch(`${o}:8433/api/${n}/getChallenge`).then(e).then((function(t){document.getElementById("status").innerHTML="Challenge: "+t,window.challenge=t,document.getElementById("loader").style.display="none"}))}window.onload=t,window.onConfirm=function(){if(void 0===window.challenge||0==window.challenge.length)return;const e=window.challenge;document.getElementById("loader").style.display="flex",document.getElementById("load-status").innerHTML="Waiting for signature...",web3.personal.sign({data:e},(function(e,d){if(null!=e)document.getElementById("status").innerHTML=(e.indexOf("ACTION_REJECTED"),"Signing rejected"),document.getElementById("loader").style.display="none";else{window.challenge="",document.getElementById("status").innerHTML="Verifying credentials ...",document.getElementById("load-status").innerHTML="Verifying credentials ...";let e=document.getElementById("openTime").value,i=document.getElementById("attestation").textContent,a=document.getElementById("attestationSig").textContent;fetch(`${o}:8433/api/${n}/checkSignature?openTime=${e}&amp;sig=${d}&amp;attn=${i}&amp;attnSig=${a}`).then((function(t){if(t.ok)return t.text();throw document.getElementById("status").innerHTML=t.statusText,Error(t.statusText)})).then((function(e){"pass"==e?(document.getElementById("status").innerHTML="Entrance granted!",document.getElementsByClassName("door")[0].classList.add("opened"),setTimeout((()=&gt;window.close()),2e3)):document.getElementById("status").innerHTML="Failed with: "+e,document.getElementById("loader").style.display="none",setTimeout((()=&gt;t()),2e3)})).catch((function(t){document.getElementById("loader").style.display="none"}))}}))}}))})();
 //# sourceMappingURL=enter.js.map
+//]]&gt;</script><style>
+					/* <![CDATA[ */
+					
+* {
+	font-family: "Source Sans Pro", sans-serif;
+}
+
+body {
+	text-align: center;
+}
+
+body > h1 {
+	font-size: 22px;
+}
+
+body > h1 {
+	font-size: 22px;
+}
+
+					/* ]]> */
+				</style></ts:view>
+		</ts:card>
+		<ts:card name="Lock" origins="Devcon6Attestation" type="action">
+			
+			<ts:label>
+				<ts:string xml:lang="en">Lock</ts:string>
+			</ts:label>
+			<ts:view xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+				
+				
+			<p xmlns="http://www.w3.org/1999/xhtml">Use your Devcon attestation to close the secret door in the hacker village.</p>
+
+<div xmlns="http://www.w3.org/1999/xhtml" id="status">Preparing to lock...</div>
+
+<div xmlns="http://www.w3.org/1999/xhtml" id="loader">
+	<div class="lds-ring">
+		<div style=""></div>
+		<div style=""></div>
+		<div style=""></div>
+		<div style=""></div>
+	</div>
+	<div id="load-status"></div>
+</div>
+
+<div xmlns="http://www.w3.org/1999/xhtml" class="door-container">
+	<div class="door opened" onclick="onConfirm()">
+		<div class="door-front">
+			<img class="deva" src="https://pbs.twimg.com/profile_images/1535034047407312904/bcFyZnKT_400x400.jpg"/>
+			<div class="knob"></div>
+		</div>
+		<div class="door-back">
+			<img class="devcon-poster" src="https://entethalliance.org/wp-content/uploads/2022/10/devcon-image-1.jpg"/>
+			<div class="rack"></div>
+			<div class="hat"></div>
+			<div class="jacket"></div>
+		</div>
+		<div class="door-mat"></div>
+	</div>
+</div>
+
+<style xmlns="http://www.w3.org/1999/xhtml">/*&lt;![CDATA[*/ 
+
+
+	.door-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 50px;
+		overflow: visible;
+	}
+
+	.door {
+		position: relative;
+		width: 170px;
+		height:270px;
+		cursor: pointer;
+		transform-style: preserve-3d;
+		transform: perspective(2500px);
+	}
+
+	.devcon-poster {
+		position: absolute;
+		top: 10px;
+		left: 26px;
+		width: 120px;
+	}
+
+	.deva {
+		position: absolute;
+		z-index: 50;
+		top: 40px;
+		left: 54px;
+		width: 60px;
+	}
+
+	.door-front {
+		width: 170px;
+		height:270px;
+		overflow: hidden;
+		transform-origin: left;
+		box-shadow: 30px 0 50px rgba(0,0,0,0.2);
+		position: absolute;
+		background-color: #924500;
+		z-index:1;
+		transition: .5s;
+	}
+
+	.door-front:before, .door-front:after {
+		content:"";
+		position: absolute;
+		background-color: #924500;
+		width: 105px;
+		height: 75px;
+		border: 10px ridge #b05500;
+		left:22.5px;
+	}
+
+	.door-front:before {
+		top:25px;
+	}
+
+	.door-front:after {
+		top:155px;
+	}
+	.knob {
+		position: absolute;
+		width: 20px;
+		height:30px;
+		background-color: #eeba0b;
+		top:122px;
+		left:145px;
+		border-radius:2px;
+	}
+
+	.knob:before {
+		content:"";
+		position: absolute;
+		border-radius:50%;
+		background-color: #f1c83c;
+		width:18px;
+		height:18px;
+		left:-1px;
+		box-shadow: 2px 2px rgba(0,0,0,0.2);
+	}
+
+	.knob:after {
+		content:"";
+		position: absolute;
+		width:4px;
+		height:7px;
+		background-color: #333;
+		top:20px;
+		left:8.5px;
+	}
+
+	.door.opened .door-front {
+		transform: rotateY(-160deg);
+	}
+
+	.door-back {
+		position: relative;
+		background: linear-gradient(0deg, rgba(193,124,116,1) 13%, rgba(73,88,103,1) 13%, rgba(79,100,124,1) 15%, rgba(87,115,153,1) 15%);
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		outline: 10px solid #edf2f4;
+	}
+
+	.rack {
+		position: absolute;
+		width: 7px;
+		height:150px;
+		background-color: #a78a7f;
+		top:90px;
+		left:100px;
+	}
+
+	.rack:before {
+		content:"";
+		position: absolute;
+		width:70px;
+		height:10px;
+		border-radius: 30px 30px 0 0;
+		background-color: #8c1c13;
+		top:150px;
+		left:-30px;
+	}
+
+	.rack:after {
+		position: absolute;
+		content:"";
+		width:30px;
+		height: 30px;
+		border-bottom: 5px solid #a78a7f;
+		border-right: 5px solid #a78a7f;
+		border-bottom-right-radius:100%;
+		top:20px;
+	}
+
+	.hat {
+		position: absolute;
+		width: 60px;
+		height: 15px;
+		border-radius:20px 20px 0 0;
+		background-color: #bf4342;
+		top:80px;
+		left:75px;
+	}
+
+	.hat:before {
+		content:"";
+		position: absolute;
+		width: 40px;
+		height: 20px;
+		border-radius:10px 10px 0 0;
+		background-color: #bf4342;
+		top:-20px;
+		left:10px;
+		box-shadow: inset 0 -5px #e7d7c1;
+	}
+
+	.hat:after {
+		content:"";
+		position: absolute;
+		width: 40px;
+		height: 100px;
+		background-color: #735751;
+		border-radius: 50% 60% 20% 20% / 70% 70% 20% 20%;
+		top:20px;
+		left:45px;
+	}
+
+	.jacket {
+		position: absolute;
+		width: 7px;
+		height: 7px;
+		background-color: #e7d7c1;
+		border-radius:50%;
+		top:120px;
+		left:137px;
+		box-shadow: 0 20px #e7d7c1;
+	}
+
+	.jacket:before {
+		content:"";
+		position: absolute;
+		width: 25px;
+		height: 25px;
+		background-color: #a78a7f;
+		left:-10px;
+		top:40px;
+	}
+
+	.jacket:after {
+		content:"";
+		position: absolute;
+		border-top: 15px solid #8c1c13;
+		border-right: 15px solid transparent;
+		border-left: 15px solid transparent;
+		width:0;
+		height:0;
+		top:40px;
+		left:-12px;
+	}
+
+	.door-mat {
+		position: relative;
+		perspective: 200px;
+	}
+
+	.door-mat:before {
+		content:"";
+		position: absolute;
+		left: 0;
+		width: 170px;
+		height: 70px;
+		background: repeating-linear-gradient(#a8763e, #a8763e 10px,
+		#9d741a 10px, #9d741a 20px);
+		top:20px;
+		outline:5px solid #a8763e;
+		transform: rotateX(45deg);
+	}
+
+	#status {
+
+	}
+
+	#load-status {
+		margin-top: 20px;
+		color: white;
+	}
+
+	#loader {
+		position: absolute;
+		z-index: 100;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		top: 0;
+		left: 0;
+		background: rgba(11, 11, 11, 0.7);
+	}
+
+	.lds-ring {
+		display: inline-block;
+		position: relative;
+		width: 80px;
+		height: 80px;
+	}
+	.lds-ring div {
+		box-sizing: border-box;
+		display: block;
+		position: absolute;
+		width: 64px;
+		height: 64px;
+		margin: 8px;
+		border: 8px solid;
+		border-color: #fff transparent transparent transparent;
+		border-radius: 50%;
+		animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	}
+
+	.lds-ring div:nth-child(1) {
+		animation-delay: -0.45s;
+	}
+	.lds-ring div:nth-child(2) {
+		animation-delay: -0.3s;
+	}
+	.lds-ring div:nth-child(3) {
+		animation-delay: -0.15s;
+	}
+	@keyframes lds-ring {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+
+ /*//]]&gt;*/</style>
+<script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
+/*! For license information please see lock.js.LICENSE.txt */
+(()=&gt;{class t{constructor(t){this.props=t}render(){return`\n\t\t  &lt;h3&gt;Lock Door&lt;/h3&gt;\n          &lt;h4&gt;Sign the challenge to lock ...&lt;/h4&gt;\n          &lt;div style="display: none;"&gt;\n\t\t\t  &lt;div id="inputBox"&gt;\n\t\t\t  &lt;h3&gt;Door open time&lt;/h3&gt;\n\t\t\t  &lt;input id="openTime" type="number" value='20' /&gt;\n\t\t\t  &lt;/div&gt;\n\t\t\t  &lt;div id="attestation"&gt;${this.props.attestation}&lt;/div&gt;\n\t\t\t  &lt;div id="attestationSig"&gt;${this.props.attestationSig}&lt;/div&gt;\n          &lt;/div&gt;\n\t\t`}}function e(t){if(!t.ok)throw Error(t.statusText);return t.text()}web3.tokens.dataChanged=(e,n,o)=&gt;{const i=n.currentInstance;document.getElementById(o).innerHTML=new t(i).render()};const n="0x32A611066C00A043C202889D67DF86F4F2C82285".toLowerCase(),o="https://scriptproxy.smarttokenlabs.com";document.addEventListener("DOMContentLoaded",(function(){function t(){document.getElementById("load-status").innerText="Fetching challenge...",document.getElementById("loader").style.display="flex",fetch(`${o}:8433/api/${n}/getChallenge`).then(e).then((function(t){document.getElementById("status").innerHTML="Challenge: "+t,window.challenge=t,document.getElementById("loader").style.display="none"}))}window.onload=t,window.onConfirm=function(){if(void 0===window.challenge||0==window.challenge.length)return;const e=window.challenge;document.getElementById("loader").style.display="flex",document.getElementById("load-status").innerHTML="Waiting for signature...",web3.personal.sign({data:e},(function(e,i){if(null!=e)document.getElementById("status").innerHTML=(e.indexOf("ACTION_REJECTED"),"Signing rejected"),document.getElementById("loader").style.display="none";else{window.challenge="",document.getElementById("status").innerHTML="Verifying credentials ...",document.getElementById("load-status").innerHTML="Verifying credentials ...";document.getElementById("openTime").value;let e=document.getElementById("attestation").textContent,d=document.getElementById("attestationSig").textContent;fetch(`${o}:8433/api/${n}/checkSignatureLock?openTime=0&amp;sig=${i}&amp;attn=${e}&amp;attnSig=${d}`).then((function(t){if(t.ok)return t.text();throw document.getElementById("status").innerHTML=t.statusText,Error(t.statusText)})).then((function(e){"pass"==e?(document.getElementById("status").innerHTML="Entrance granted!",document.getElementsByClassName("door")[0].classList.remove("opened"),setTimeout((()=&gt;window.close()),2e3)):document.getElementById("status").innerHTML="Failed with: "+e,document.getElementById("loader").style.display="none",setTimeout((()=&gt;t()),2e3)})).catch((function(t){document.getElementById("loader").style.display="none"}))}}))}}))})();
+//# sourceMappingURL=lock.js.map
 //]]&gt;</script><style>
 					/* <![CDATA[ */
 					
@@ -139,7 +799,18 @@ body > h1 {
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 				
 				
-			<h1 xmlns="http://www.w3.org/1999/xhtml">Mint</h1>
+			<h3 xmlns="http://www.w3.org/1999/xhtml">Mint your Devcon 6 Souvenir NFT!</h3>
+
+<img xmlns="http://www.w3.org/1999/xhtml" alt="Bird of Paradise" src="https://www.latin-wife.com/images/strelitzia-reginae-flower-orange.jpg" style="max-width: 100%; box-sizing: border-box; padding: 20px 20px 0 20px;"/>
+<p xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom: 20px; font-size: 12px;">The Bird of Paradise flower.</p>
+
+<p xmlns="http://www.w3.org/1999/xhtml" style="text-align: left; padding: 10px 20px;">
+	This ticket NFT serves as a souvenir for Devcon 6, with a symbolic focus on LATAM and the beautiful destination of Bogota Colombia.
+	The bird of paradise is known as the ultimate symbol of paradise and freedom. Due to its tropical nature, this flower symbolizes freedom and joy.
+</p>
+
+<video xmlns="http://www.w3.org/1999/xhtml" src="https://resources.smarttokenlabs.com/devcon6/Comp_ETH.mp4" autoplay="autoplay" loop="loop" style="max-width: 100%; box-sizing: border-box; padding: 0 20px;"></video>
+
 <script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
 web3.tokens.dataChanged=(e,n,a)=&gt;{n.currentInstance};
 //# sourceMappingURL=mint.js.map
@@ -177,34 +848,6 @@ body > h1 {
 					</ts:data>
 				</ethereum:transaction>
 			</ts:transaction>
-			<ts:view xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-				
-				
-			<h1 xmlns="http://www.w3.org/1999/xhtml">Mint</h1>
-<script xmlns="http://www.w3.org/1999/xhtml">//&lt;![CDATA[
-web3.tokens.dataChanged=(e,n,a)=&gt;{n.currentInstance};
-//# sourceMappingURL=mint.js.map
-//]]&gt;</script><style>
-					/* <![CDATA[ */
-					
-* {
-	font-family: "Source Sans Pro", sans-serif;
-}
-
-body {
-	text-align: center;
-}
-
-body > h1 {
-	font-size: 22px;
-}
-
-body > h1 {
-	font-size: 22px;
-}
-
-					/* ]]> */
-				</style></ts:view>
 		</ts:card>
 	</ts:cards>
 
@@ -219,4 +862,4 @@ body > h1 {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>XdrzEanFcp09zG7nlD66141BTnFpov7stWQb27CGcwQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>WPi2C75nA6rXXGeUgajIHGLgo/DDMRZvb5rM2/90n+OkPmhGWsEfcdaowlbUUndThW0tXwqpx/X/32pYieKWjg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>CNS8SLxRjIL7StIW74jBEGiz8MQLpgwlX54Kehg4Lic=</ecdsa:X><ecdsa:Y>ZU7uayKDJmBxVnmTOSwaM4+gufLbeqqxuovyF5gI3TQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>NVYmCXDw/pJmCKP2rht1fy/bZifyS7PszibErze+em0=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>69YWr39jWaufEetnc1uOBW0BfXjLkYZQinYRLk83qsl20ZvclXTKMNdKdJW/Ugks1ZXllvj93iZ7R17xkKJe5A==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>CNS8SLxRjIL7StIW74jBEGiz8MQLpgwlX54Kehg4Lic=</ecdsa:X><ecdsa:Y>ZU7uayKDJmBxVnmTOSwaM4+gufLbeqqxuovyF5gI3TQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
