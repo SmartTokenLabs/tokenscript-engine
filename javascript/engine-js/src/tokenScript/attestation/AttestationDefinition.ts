@@ -5,7 +5,7 @@ export interface AttestationDefinitionMeta {
 	name: string,
 	image: string,
 	description: string
-	attributes: {name: string, label: string}[]
+	attributes: {name: string, label: string, display_type?: string}[]
 }
 
 export class AttestationDefinition {
@@ -47,7 +47,8 @@ export class AttestationDefinition {
 			attributes: Array.from(meta.getElementsByTagName("ts:attributeField")).map((elem) => {
 				return {
 					name: elem.getAttribute("name"),
-					label: elem.innerHTML
+					label: elem.innerHTML,
+					display_type: elem.getAttribute("display_type"),
 				}
 			})
 		}

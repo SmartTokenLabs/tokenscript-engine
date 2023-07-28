@@ -43,10 +43,20 @@ export class TokenInfoPopover {
 							<tbody>
 							{
 								this.token.attributes.map((attr) => {
+
+									let value = attr.value;
+
+									switch (attr.display_type){
+										case "date":
+											const date = new Date(parseInt(value) * 1000);
+											value = date.toLocaleDateString() + " " + date.toLocaleTimeString();
+											break;
+									}
+
 									return (
 										<tr>
 											<td>{attr.trait_type}</td>
-											<td>{attr.value}</td>
+											<td>{value}</td>
 										</tr>
 									)
 								})

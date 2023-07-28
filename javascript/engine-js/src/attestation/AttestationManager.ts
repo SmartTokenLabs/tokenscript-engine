@@ -110,6 +110,7 @@ export class AttestationManager {
 
 			attributes.push({
 				trait_type: attrDef.label,
+				display_type: attrDef.display_type,
 				value
 			});
 		}
