@@ -11,10 +11,10 @@ import {BigNumber, ethers} from "ethers";
 import {defaultAbiCoder, joinSignature, keccak256} from "ethers/lib/utils";
 import {IAttestationData} from "./IAttestationStorageAdapter";
 
-
+// TODO: Move to config parameter & consolidate with wallet adapter RPC config
 export const EAS_RPC_CONFIG = {
 	1: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
-	11155111: 'https://rpc.sepolia.org/',
+	11155111: 'https://sepolia.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
 	42161: 'https://arb1.arbitrum.io/rpc'
 }
 
