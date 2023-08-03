@@ -59,7 +59,7 @@ export class Attestation {
 			chainId: domain.chainId
 		}, 1);
 
-		const provider = new ethers.providers.JsonRpcProvider(EAS_RPC_CONFIG[domain.chainId], domain.chainId);
+		const provider = new ethers.providers.StaticJsonRpcProvider(EAS_RPC_CONFIG[domain.chainId], domain.chainId);
 
 		this.eas = new EAS(domain.verifyingContract, {
 			signerOrProvider: provider
