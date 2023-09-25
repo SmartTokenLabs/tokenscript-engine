@@ -10,6 +10,7 @@ import {
 import {BigNumber, ethers} from "ethers";
 import {defaultAbiCoder, joinSignature, keccak256} from "ethers/lib/utils";
 import {IAttestationData} from "./IAttestationStorageAdapter";
+import {AttestationDefinition} from "../tokenScript/attestation/AttestationDefinition";
 
 // TODO: Move to config parameter & consolidate with wallet adapter RPC config
 export const EAS_RPC_CONFIG = {
@@ -170,7 +171,7 @@ export class Attestation {
 		return parts.join("-");
 	}
 
-	async getCollectionHash(){
+	async getCollectionHash(definition: AttestationDefinition){
 
 		const parts = [];
 
@@ -178,20 +179,26 @@ export class Attestation {
 		parts.push(this.signerAddress.substring(2).toLowerCase());
 
 		const data = await this.getAttestationData();
+		const collectionFields = definition.collectionFields;
 
-		if (data.eventId)
+		if (collectionFields.length){
+			for (const field of collectionFields){
+				parts.push(data[field.name]);
+			}
+		} else if(definition.eventId && data.eventId) {
 			parts.push(data.eventId);
+		}
 
 		const encoder = new TextEncoder();
 
 		return keccak256(encoder.encode(parts.join("")));
 	}
 
-	public async getDatabaseRecord(idFields: string[]): Promise<IAttestationData> {
+	public async getDatabaseRecord(definition: AttestationDefinition): Promise<IAttestationData> {
 
 		return <IAttestationData>{
-			collectionId: await this.getCollectionHash(),
-			tokenId: await this.getAttestationId(idFields),
+			collectionId: await this.getCollectionHash(definition),
+			tokenId: await this.getAttestationId(definition.idFields),
 			type: "eas",
 			token: this.base64Attestation,
 			decodedToken: this.attestation,

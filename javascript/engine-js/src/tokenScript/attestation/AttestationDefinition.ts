@@ -66,8 +66,25 @@ export class AttestationDefinition {
 		return keys;
 	}
 
+	/**
+	 * @deprecated in favour of collection fields
+	 */
 	get eventId(): string {
 		return this.elem.getElementsByTagName("ts:eventId")?.[0].innerHTML ?? null
+	}
+
+	get collectionFields(): {name: string, value}[] {
+		const collectionFields = this.elem.getElementsByTagName("ts:collectionFields")?.[0];
+
+		if (!collectionFields)
+			return [];
+
+		return Array.from(collectionFields.getElementsByTagName("ts:collectionField")).map((elem) => {
+			return {
+				name: elem.getAttribute("name"),
+				value: elem.innerHTML
+			};
+		});
 	}
 
 	get idFields(): string[] {
@@ -110,7 +127,19 @@ export class AttestationDefinition {
 
 			key = computeAddress(key).substring(2).toLowerCase();
 
-			const hashText = schemaUID + key + (this.eventId ? this.eventId : '');
+			const collectionParts = [];
+
+			const collectionFields = this.collectionFields;
+
+			if (collectionFields.length){
+				for (const field of collectionFields){
+					collectionParts.push(field.value);
+				}
+			} else if(this.eventId) {
+				collectionParts.push(this.eventId);
+			}
+
+			const hashText = schemaUID + key + collectionParts.join("");
 
 			const hash = keccak256(encoder.encode(hashText));
 

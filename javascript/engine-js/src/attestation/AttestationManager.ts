@@ -43,7 +43,7 @@ export class AttestationManager {
 
 	public async saveAttestation(definition: AttestationDefinition, attestation: Attestation){
 
-		const record = await attestation.getDatabaseRecord(definition.idFields);
+		const record = await attestation.getDatabaseRecord(definition);
 
 		// TODO: Check for existing record and only update authoritative TokenScript if public key matches the signing key
 		record.authoritativeTokenScript = definition.getTokenScript().getSourceInfo()

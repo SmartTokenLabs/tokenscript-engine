@@ -86,12 +86,12 @@ export class TokenScriptEngine {
 		// const data = await attestation.getAttestationData()
 		// console.log("Attestation data: ", data);
 
-		const collectionHash = await attestation.getCollectionHash();
 		const attestationDefs = tokenScript.getAttestationDefinitions();
 
 		// Read through attestation definitions and find the one that matches the attestation
 		for (const definition of attestationDefs){
 
+			const collectionHash = await attestation.getCollectionHash(definition);
 			const collectionHashes = definition.calculateAttestationCollectionHashes();
 
 			// Match collection hashes
