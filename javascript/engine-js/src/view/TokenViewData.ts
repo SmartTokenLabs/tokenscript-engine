@@ -57,13 +57,15 @@ export class TokenViewData {
 		console.log("Loading view with data:");
 		console.log(tokenData);
 
+		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
+
 		return `
 
 		const _currentTokenInstance = JSON.parse('${JSON.stringify(tokenData).replace("^\\'", "\\'")}');
 
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
-		const rpcURL = "https://public-node-api.klaytnapi.com/v1/cypress"; // TODO: provide RPC URL
+		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
 		const chainID = "${tokenData.chainId}";
 
 		window.web3CallBacks = {}

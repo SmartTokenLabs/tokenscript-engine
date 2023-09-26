@@ -119,7 +119,7 @@ export class EthersAdapter implements IWalletAdapter {
 		return new Contract(contractAddr, [abiData], provider);
 	}
 
-	private getRpcUrl(chainId: number){
+	public getRpcUrl(chainId: number){
 
 		if (!this.chainConfig[chainId])
 			throw new Error("RPC URL is not configured for ethereum chain: " + chainId);

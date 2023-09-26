@@ -31,4 +31,5 @@ export interface IWalletAdapter {
 		listener?: ITransactionListener
 	): Promise<any>;
 	getChain(): Promise<number>;
+	getRpcUrl(chainId: number): string;
 }
