@@ -106,7 +106,7 @@ export class TokenViewData {
 		   web3.tokens.dataChanged('test', web3.tokens.data, '${this.getViewDataId()}') //TODO: Cache previous value of token to feed into first arg
 		}
 
-		window.onload = refresh;
+		//window.onload = refresh;
 
 		web3.eth = {
 		walletBalance: 0

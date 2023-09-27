@@ -23,6 +23,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.actionBtn.addEventListener('click', this.confirmAction.bind(this));
 
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
+
+		this.iframe.onload = () => {
+			this.hideLoader();
+		}
 	}
 
 	setTokenScript(tokenScript: TokenScript) {
@@ -45,8 +49,6 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		await this.injectContentView(card);
 
 		this.setupConfirmButton(card);
-
-		this.hideLoader();
 	}
 
 	async unloadTokenView() {

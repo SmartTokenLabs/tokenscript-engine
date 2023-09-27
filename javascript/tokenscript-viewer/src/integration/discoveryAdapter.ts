@@ -217,14 +217,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		//console.log("Contract symbol: ", symbol);
 
 		try {
-			contractUri = await contract.contractUri();
+			contractUri = await contract.contractURI();
 		} catch (e){
 			console.log(e);
 		}
 		//console.log("Contract URI: ", contractUri);
 
 		if (contractUri){
-			const contractMeta = await (await fetch(contractUri)).json();
+			const contractMeta = await (await fetch(contractUri, {
+				headers: {
+					'Accept': 'text/plain'
+				}
+			})).json();
 			if (contractMeta.name || contractMeta.title)
 				name = contractMeta.name ?? contractMeta.title;
 			if (contractMeta.description)
@@ -256,16 +260,28 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			for (let i=0; i<balance; i++){
 				const tokenId = BigInt(await contract.tokenOfOwnerByIndex(owner, i));
 
-				console.log("Token ID: ", tokenId);
+				let meta: any = {};
 
-				//const metaUri = await contract.tokenURI(tokenId);
+				try {
+					const metaUri = await contract.tokenURI(tokenId);
+
+					meta = await (await fetch(metaUri, {
+						headers: {
+							'Accept': 'text/plain'
+						}
+					})).json();
+				} catch (e){
+					console.warn("Failed to load token metadata:", e);
+				}
+
+				console.log(meta);
 
 				tokenDetails.push({
 					collectionId: token.originId,
 					tokenId: tokenId.toString(),
-					name: "Test token #" + tokenId,
-					description: "",
-					image: "",
+					name: meta.name ?? "Test token #" + tokenId,
+					description: meta.description ?? "",
+					image: meta.image ?? "",
 					collectionDetails: token
 				});
 				//console.log("Meta Uri: ", metaUri);
