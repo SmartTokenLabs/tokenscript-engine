@@ -8,11 +8,11 @@
 
 	<ts:contract interface="erc721" name="SmartCatNFT">
 		
-		<ts:address network="11155111">0xcB07B864EdFa7Fe4C3843474923b9447440B3092</ts:address>
+		<ts:address network="11155111">0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c</ts:address>
 	</ts:contract>
 	<ts:contract name="SmartCatScore">
 		
-		<ts:address network="11155111">0x99aef63DF6181b443192C2ee95C98c926656EeC0</ts:address>
+		<ts:address network="11155111">0xB30513a49B509f796F7B8AD2fFE8fe59890Cd091</ts:address>
 	</ts:contract>
 
 	<ts:origins>
@@ -314,4 +314,4 @@ body > h1 {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>dyIel9Y1Zm6shVjzhDi29y53oFzybo3W04nvtx5xuBE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>h+9ZD/EwDfLVgo4dYqC3NQPjhU7W5LsgytMMnWPeyhQEoSVhpVYPOUNwEun79D4MF0Pr1k8kKx6ARjcpotX08Q==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>CNS8SLxRjIL7StIW74jBEGiz8MQLpgwlX54Kehg4Lic=</ecdsa:X><ecdsa:Y>ZU7uayKDJmBxVnmTOSwaM4+gufLbeqqxuovyF5gI3TQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>i08BOCXKzYZdpGZQRKvDCITkQYUyPTR3UKbzBcE0g9E=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>Vq4CYPeDleAvRkoJKXBGqxA28L65yT1Qdd85Vcy2PfcvnCoLH+EFgtOoMEXYUcjkEB7KVsO6RWGRNDT5niPFcw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>CNS8SLxRjIL7StIW74jBEGiz8MQLpgwlX54Kehg4Lic=</ecdsa:X><ecdsa:Y>ZU7uayKDJmBxVnmTOSwaM4+gufLbeqqxuovyF5gI3TQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
