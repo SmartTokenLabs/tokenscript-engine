@@ -212,8 +212,19 @@ export class TokenScriptEngine {
 		return uri;
 	}
 
-	public async getScriptUri(chain: string, contractAddr: string){
+	public async getScriptUri(chain: string, contractAddr: string) {
 		const provider = await this.getWalletAdapter();
-		return provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string[]"]);
+		let uri: string|string[]|null;
+
+		try {
+			uri = Array.from(await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string[]"])) as string[];
+		} catch (e) {
+			uri = await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string"]);
+		}
+
+		if (uri && Array.isArray(uri))
+			uri = uri.length ? uri[0] : null
+
+		return <string>uri;
 	}
 }

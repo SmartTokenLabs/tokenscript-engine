@@ -1,4 +1,4 @@
-import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min'
+/*import WalletConnectProvider from '@walletconnect/web3-provider/dist/umd/index.min'
 import { WC_DEFAULT_RPC_MAP } from './WalletConnectV2Provider'
 
 export const getWalletConnectProviderInstance = async (checkConnectionOnly?: boolean) => {
@@ -7,4 +7,4 @@ export const getWalletConnectProviderInstance = async (checkConnectionOnly?: boo
 		qrcode: !checkConnectionOnly,
 		rpc: WC_DEFAULT_RPC_MAP,
 	})
-}
+}*/

@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import {WC_DEFAULT_RPC_MAP, WC_V2_DEFAULT_CHAINS} from "./providers/WalletConnectV2Provider";
 
 declare global {
 	interface Window {
@@ -12,7 +13,7 @@ interface WalletConnectionState {
 
 export interface WalletOptionsInterface {
 	walletConnectV2?: {
-		chains?: string[]
+		chains?: number[]
 		rpcMap: { [chainId: string]: string }
 	}
 }
@@ -162,7 +163,7 @@ class Web3WalletProviderObj {
 				for (let item in state) {
 					let provider = state[item].providerType
 					switch (provider) {
-						case 'WalletConnect':
+						/*case 'WalletConnect':
 							{
 								let walletConnectProvider = await import('./providers/WalletConnectProvider')
 								let walletConnect = await walletConnectProvider.getWalletConnectProviderInstance(true)
@@ -176,7 +177,7 @@ class Web3WalletProviderObj {
 										})
 								}
 							}
-							break
+							break*/
 
 						case 'WalletConnectV2':
 							{
@@ -362,7 +363,7 @@ class Web3WalletProviderObj {
 		}
 	}
 
-	async WalletConnect(checkConnectionOnly: boolean) {
+	/*async WalletConnect(checkConnectionOnly: boolean) {
 
 		const walletConnectProvider = await import('./providers/WalletConnectProvider')
 
@@ -384,17 +385,17 @@ class Web3WalletProviderObj {
 				})
 				.catch((e) => reject(e))
 		})
-	}
+	}*/
 
 	async WalletConnectV2(checkConnectionOnly: boolean) {
 
 		const walletConnectProvider = await import('./providers/WalletConnectV2Provider')
 
-		const universalWalletConnect = await walletConnectProvider.getWalletConnectV2ProviderInstance()
+		const walletConnectV2 = await walletConnectProvider.getWalletConnectV2ProviderInstance()
 
 		let QRCodeModal
 
-		universalWalletConnect.on('display_uri', async (uri: string) => {
+		walletConnectV2.on('display_uri', async (uri: string) => {
 			QRCodeModal = (await import('@walletconnect/qrcode-modal')).default
 
 			QRCodeModal.open(uri, () => {
@@ -402,7 +403,7 @@ class Web3WalletProviderObj {
 			})
 		})
 
-		universalWalletConnect.on('session_delete', ({ id, topic }: { id: number; topic: string }) => {
+		walletConnectV2.on('session_delete', ({ id, topic }: { id: number; topic: string }) => {
 			// TODO: There is currently a bug in the universal provider that prevents this handler from being called.
 			//  After this is fixed, this should handle the event correctly
 			//  https://github.com/WalletConnect/walletconnect-monorepo/issues/1772
@@ -412,31 +413,26 @@ class Web3WalletProviderObj {
 		let preSavedWalletOptions = this.walletOptions
 
 		return new Promise((resolve, reject) => {
-			if (checkConnectionOnly && !universalWalletConnect.session) {
+			if (checkConnectionOnly && !walletConnectV2.session) {
 				reject('Not connected')
 			} else {
 				let connect
 
-				if (universalWalletConnect.session) {
-					connect = universalWalletConnect.enable()
+				if (walletConnectV2.session) {
+					connect = walletConnectV2.enable()
 				} else {
 					// @ts-ignore
-					connect = universalWalletConnect.connect({
-						namespaces: {
-							eip155: {
-								methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
-								chains: preSavedWalletOptions?.walletConnectV2?.chains ?? walletConnectProvider.WC_V2_DEFAULT_CHAINS,
-								events: ['chainChanged', 'accountsChanged'],
-								rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? walletConnectProvider.WC_DEFAULT_RPC_MAP,
-							},
-						},
+					connect = walletConnectV2.connect({
+						chains: [1],
+						optionalChains: preSavedWalletOptions?.walletConnectV2?.chains ?? WC_V2_DEFAULT_CHAINS,
+						rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? WC_DEFAULT_RPC_MAP,
 					})
 				}
 
 				connect
 					.then(() => {
 						QRCodeModal?.close()
-						const provider = new ethers.providers.Web3Provider(universalWalletConnect, 'any')
+						const provider = new ethers.providers.Web3Provider(walletConnectV2, 'any')
 						resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnectV2))
 					})
 					.catch((e) => {

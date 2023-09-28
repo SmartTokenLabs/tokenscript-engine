@@ -1,4 +1,5 @@
-import UniversalProvider from '@walletconnect/universal-provider'
+// import UniversalProvider from '@walletconnect/universal-provider'
+import EthereumProvider from "@walletconnect/ethereum-provider";
 
 export const WC_DEFAULT_RPC_MAP = {
 	1: 'https://ethereum.publicnode.com', // mainnet
@@ -18,26 +19,41 @@ export const WC_DEFAULT_RPC_MAP = {
 	10: 'https://mainnet.optimism.io', // Optimism
 }
 
-export const WC_V2_DEFAULT_CHAINS = [
+/*export const WC_V2_DEFAULT_CHAINS = [
 	'eip155:1', // Mainnet
-	// 'eip155:5',
-	// 'eip155:11155111',
+	'eip155:5', // Goerli
+	'eip155:11155111', // Sepolia
 	'eip155:137', // Polygon
-	// 'eip155:80001',
-	// 'eip155:56',
-	// 'eip155:97',
-	// 'eip155:43114',
-	// 'eip155:43113',
+	'eip155:80001', // Mumbai
+	'eip155:56',
+	'eip155:97',
+	'eip155:43114',
+	'eip155:43113',
 	'eip155:250', // Fantom
 	'eip155:25', // Cronos
 	'eip155:42161', // Arbitrum
 	'eip155:10', // Optimism
+]*/
+
+export const WC_V2_DEFAULT_CHAINS = [
+	1, // Mainnet
+	5, // Goerli
+	11155111, // Sepolia
+	137, // Polygon
+	80001, // Mumbai
+	56, // BSC
+	97, // BSC testnet
+	42161, // Arbitrum
+	10, // Optimism
 ]
 
 export const getWalletConnectV2ProviderInstance = async () => {
-	return await UniversalProvider.init({
+	// @ts-ignore
+	return await EthereumProvider.init({
 		projectId: '2ec7ead81da1226703ad789c0b2f7b30',
-		logger: 'debug',
-		relayUrl: 'wss://relay.walletconnect.com',
-	})
+		methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
+		events: ['chainChanged', 'accountsChanged'],
+		showQrModal: false,
+		optionalChains: WC_V2_DEFAULT_CHAINS
+	});
 }

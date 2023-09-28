@@ -33,6 +33,8 @@ export class Origin {
 
 		if (!this.securityStatus){
 
+			console.log("Validating token origin: " + this.name);
+
 			if (securityInfo.signerPublicKey)
 				await this.validateBySignerKey(securityInfo.signerPublicKey);
 
@@ -63,12 +65,19 @@ export class Origin {
 				// transform tokenscript signing key into address if required
 				const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
 
-				if (dsigKeyOrAddress.toLowerCase() === contractKey.value)
+				console.log("DSIG validator: revolved contract deployment key: ", contractKey);
+
+				if (dsigKeyOrAddress.toLowerCase() === contractKey.value.toLowerCase()) {
 					this.securityStatus = {
 						type: AuthenticationType.XML_DSIG,
 						status: SecurityStatus.VALID,
 						statusText: "The TokenScript signer matches the contract deployer for this token"
 					}
+
+					console.log("DSIG validator: DSIG matched successfully");
+				} else {
+					console.warn("DSIG validator: contract key does not match DSIG: ", dsigKeyOrAddress);
+				}
 
 			} catch (e) {
 				console.warn(e);
@@ -80,8 +89,11 @@ export class Origin {
 
 			// TODO: This will cause valid attestations to be marked as a fail, rework so status for a specific token can be fetched
 			for (const key of definition.keys){
-				if (publicKeyHex.replace("0x", "").toLowerCase() !== key.replace("0x", "").toLowerCase())
+				console.log("DSIG Validator: matching attestation issuer key: ", key);
+				if (publicKeyHex.replace("0x", "").toLowerCase() !== key.replace("0x", "").toLowerCase()) {
+					console.warn("DSIG Validator: attestation issuer key does not match DSIG: ", publicKeyHex);
 					return; // Does not match one key
+				}
 			}
 
 			this.securityStatus = {
@@ -126,16 +138,24 @@ export class Origin {
 				// TODO: Should download file and calculate IPFS hash rather than relying on the URL?
 			}
 
-			if (!scriptUri)
+			console.log("IPFS Validator: checking source URL ", scriptUri);
+
+			if (!scriptUri) {
+				console.warn("IPFS Validator: source URL not set");
 				return;
+			}
 
 			const urlCid = scriptUri.match(/^.*[\/=]?([a-zA-z1-9]{46})[\/?&.]?.*$/);
 
-			if (!urlCid)
+			if (!urlCid) {
+				console.log("IPFS Validator: Not an IPFS URL, skipping");
 				return; // Not a IPFS hosted file
+			}
 
-			if (ipfsCid !== urlCid[1])
+			if (ipfsCid !== urlCid[1]) {
+				console.warn("IPFS Validator: CID does not match source URL");
 				return;
+			}
 		}
 
 		this.securityStatus = {

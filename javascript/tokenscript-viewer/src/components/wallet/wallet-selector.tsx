@@ -39,7 +39,7 @@ export class WalletSelector {
 			providers.push(getWalletInfo(SupportedWalletProviders.MetaMask));
 		}
 
-		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
+		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
 		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnectV2));
 		providers.push(getWalletInfo(SupportedWalletProviders.Torus));
 
