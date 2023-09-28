@@ -32,7 +32,9 @@ export class ScriptURI implements SourceInterface {
 
 		uri = this.context.processIpfsUrl(uri);
 
-		let response = await fetch(uri);
+		let response = await fetch(uri, {
+			cache: "no-store"
+		});
 
 		if (response.status < 200 || response.status > 299)
 			throw new Error("HTTP Error: " + response.status);
