@@ -24,9 +24,8 @@ div {
 
 .shimmer {
 	display: inline-block;
-	height: 1em;
 	background-color: #dddbdd;
-	min-height: 240px;
+	height: 100%;
 	width: 100%;
 }
 

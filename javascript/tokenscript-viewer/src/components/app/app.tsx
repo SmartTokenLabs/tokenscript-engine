@@ -50,7 +50,7 @@ export class AppRoot {
 
 	@Element() host: HTMLElement;
 
-	@State() viewerType?: "tabbed"|"integration"|"new"
+	@State() viewerType?: "tabbed"|"integration"|"new"|"joyid-token";
 
 	@Listen("showLoader")
 	showLoaderHandler(_event: CustomEvent<void>){
@@ -151,6 +151,9 @@ export class AppRoot {
 			case "tabbed":
 				this.viewerType = "tabbed";
 				break;
+			case "joyid-token":
+				this.viewerType = "joyid-token";
+				break;
 			// Fall-through to default
 			case "new":
 			default:
@@ -173,6 +176,7 @@ export class AppRoot {
 						{this.viewerType === "tabbed" ? <tabbed-viewer app={this}></tabbed-viewer> : ''}
 						{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
 						{this.viewerType === "new" ? <new-viewer app={this}></new-viewer> : ''}
+						{this.viewerType === "joyid-token" ? <token-viewer app={this}></token-viewer> : ''}
 					</main>
 
 					<div id="ts-loader">
