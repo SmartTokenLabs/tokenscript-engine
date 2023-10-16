@@ -8,6 +8,7 @@ import {IWalletAdapter} from "../../../../engine-js/src/wallet/IWalletAdapter";
 import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 import {AttestationStorageAdapter} from "../../integration/attestationStorageAdapter";
+import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -34,8 +35,15 @@ export class AppRoot {
 	}
 
 	async getWalletAdapter(): Promise<IWalletAdapter> {
+
+		console.log("Getting wallet adapter: ", this.viewerType);
+
+		const provider = this.viewerType === "joyid-token" ?
+			new IFrameEthereumProvider() :
+			(await Web3WalletProvider.getWallet(true)).provider
+
 		return new EthersAdapter(async () => {
-			return (await Web3WalletProvider.getWallet(true)).provider;
+			return provider;
 		}, CHAIN_CONFIG);
 	}
 
