@@ -51,12 +51,15 @@ export class ContractKeyResolver {
 
 				if (keySource.type === "contractCall"){
 
-					keySource.value = await adapter.call(
+					const value = await adapter.call(
 						address.chain, address.address, keySource.value, [],
 						[(keySource.valueType === "ethAddress" ? "address" : "bytes")]
 					);
 
-					return keySource;
+					return {
+						...keySource,
+						value
+					};
 				}
 
 				throw new Error("Key source type " + keySource.type + " is not implemented");

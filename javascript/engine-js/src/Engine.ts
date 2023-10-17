@@ -119,7 +119,7 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		return this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, tsId, resolveResult.sourceUrl, viewBinding);
+		return await this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, tsId, resolveResult.sourceUrl, viewBinding);
 	}
 
 	/**
@@ -136,7 +136,7 @@ export class TokenScriptEngine {
 			throw new Error("Failed to load URL: " + res.statusText);
 		}
 
-		return this.initializeTokenScriptObject(await res.text(), ScriptSourceType.URL, url, url, viewBinding);
+		return await this.initializeTokenScriptObject(await res.text(), ScriptSourceType.URL, url, url, viewBinding);
 	}
 
 	// TODO: The engine should hold the tokenscript object in memory until explicitly cleared, or done so via some intrinsic.
@@ -151,7 +151,7 @@ export class TokenScriptEngine {
 	 */
 	public async loadTokenScript(xml: string, viewBinding?: IViewBinding, sourceType: ScriptSourceType = ScriptSourceType.UNKNOWN, sourceId?: string, sourceUrl?: string) {
 
-		return this.initializeTokenScriptObject(xml, sourceType, sourceId, sourceUrl, viewBinding);
+		return await this.initializeTokenScriptObject(xml, sourceType, sourceId, sourceUrl, viewBinding);
 	}
 
 	/**
@@ -163,9 +163,16 @@ export class TokenScriptEngine {
 	 * @param viewBinding
 	 * @private
 	 */
-	private initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding){
+	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding){
 		try {
-			let parser = new DOMParser();
+			let parser
+			if ((typeof process !== 'undefined') && (process.release.name === 'node')){
+				const {JSDOM} = await import("jsdom");
+				const jsdom = new JSDOM();
+				parser = new jsdom.window.DOMParser();
+			} else {
+				parser = new DOMParser();
+			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
 			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding);
 		} catch (e){
