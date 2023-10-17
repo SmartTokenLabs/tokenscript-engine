@@ -17,7 +17,7 @@
 				if (message.origin !== "http://localhost:3333")
 					return;
 
-				console.log("Message received from iframe: ", message);
+				console.log("[IFRAME_RPC] request received: ", message);
 
 				try {
 					switch (message.data.method) {

@@ -216,7 +216,7 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 		// Send the JSON RPC to the event source.
 		this.eventTarget.postMessage(payload, this.targetOrigin);
 
-		console.log("Message posted: ", payload);
+		console.log("[IFRAME_RPC] request: ", payload);
 
 		// Delete the completer within the timeout and reject the promise.
 		setTimeout(() => {
@@ -281,7 +281,7 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 			return;
 		}
 
-		console.log("iframe response received: ", data);
+		console.log("[IFRAME_RPC] response received: ", data);
 
 		const message = data as ReceivedMessageType;
 
