@@ -5,6 +5,7 @@ header {
 
 .token-viewer {
 	max-width: 500px;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -13,6 +14,7 @@ header {
 	font-size: 18px;
 	color: #000;
 	padding: 0;
+	margin: 20px 0;
 }
 
 .image-container {
@@ -34,8 +36,26 @@ header {
 }
 
 .attribute-item {
-	border: 1px solid #000;
+	border: 2px solid #001AFF;
 	border-radius: 5px;
 	min-height: 80px;
 	padding: 5px;
+}
+
+.attribute-item h5 {
+	margin: 2px 0 5px;
+}
+
+.attribute-item span {
+	font-size: 14px;
+}
+
+.actions {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+}
+
+.actions button {
+	margin: 5px 0;
 }

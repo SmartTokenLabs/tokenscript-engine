@@ -4,7 +4,7 @@
 	</head>
 	<body>
 		<div style="width: 600px; margin: 0 auto; min-height: 800px;">
-			<iframe id="frame" src="http://localhost:3333/?viewType=joyid-token&chain=11155111&contract=0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c&tokenId=1"
+			<iframe id="frame" src="https://viewer-staging.tokenscript.org/?viewType=joyid-token&chain=11155111&contract=0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c&tokenId=1"
 					style="border: 0; width: 100%; height: 100%;"></iframe>
 		</div>
 		<script>
@@ -15,7 +15,7 @@
 				if (message.origin !== "http://localhost:3333")
 					return;
 
-				console.log("Message received from iframe: ", message);
+				console.log("Message received: ", message);
 
 				try {
 					switch (message.data.method) {
@@ -29,12 +29,12 @@
 						case "eth_blockNumber":
 						case "eth_estimateGas":
 						case "eth_sendTransaction":
+						case "eth_sendRawTransaction":
 						case "eth_getTransactionByHash":
 						case "eth_getTransactionReceipt":
 						case "eth_getTransactionCount":
 						case "personal_sign":
 						case "eth_signTypedData":
-						case "wallet_switchEthereumChain":
 							const result = await provider.send(message.data.method, message.data.params);
 							sendResponse(message.data, result);
 							break;
@@ -61,7 +61,7 @@
 					data.error = error;
 				}
 
-				iframe.contentWindow.postMessage(data, "http://localhost:3333");
+				iframe.contentWindow.postMessage(data, "https://viewer-staging.tokenscript.org");
 			}
 		</script>
 	</body>

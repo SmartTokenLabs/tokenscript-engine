@@ -9,6 +9,8 @@ import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 import {AttestationStorageAdapter} from "../../integration/attestationStorageAdapter";
 import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
+import {ethers} from "ethers";
+import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -27,8 +29,10 @@ export class AppRoot {
 
 	walletSelector: HTMLWalletSelectorElement;
 
-	discoveryAdapter = new DiscoveryAdapter()
+	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter()
 	attestationStorageAdapter = new AttestationStorageAdapter();
+
+	private iframeProvider: ethers.providers.Web3Provider;
 
 	constructor() {
 		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
@@ -36,11 +40,17 @@ export class AppRoot {
 
 	async getWalletAdapter(): Promise<IWalletAdapter> {
 
-		console.log("Getting wallet adapter: ", this.viewerType);
+		const viewerType = new URLSearchParams(document.location.search).get("viewType");
 
-		const provider = this.viewerType === "joyid-token" ?
-			new IFrameEthereumProvider() :
-			(await Web3WalletProvider.getWallet(true)).provider
+		let provider;
+
+		if (viewerType === "joyid-token"){
+			if (!this.iframeProvider)
+				this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
+			provider = this.iframeProvider;
+		} else {
+			provider = (await Web3WalletProvider.getWallet(true)).provider;
+		}
 
 		return new EthersAdapter(async () => {
 			return provider;

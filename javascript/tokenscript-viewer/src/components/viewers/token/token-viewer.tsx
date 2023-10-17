@@ -1,10 +1,12 @@
-import {Component, h, JSX, Prop, State} from "@stencil/core";
+import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot} from "../../app/app";
 import {ITokenIdContext, ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {CHAIN_MAP} from "../../../integration/constants";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
+import {BASE_TOKEN_DISCOVERY_URL} from "../../../integration/discoveryAdapter";
+import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 
 @Component({
 	tag: 'token-viewer',
@@ -102,7 +104,7 @@ export class TokenViewer {
 	private async fetchTokenMetadata(chain: number, contract: string, tokenId: string){
 
 		const request = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
-		const response = await fetch("http://localhost:3000" + request);
+		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + request);
 		const ok = response.status >= 200 && response.status <= 299
 		if (!ok) {
 			throw new Error("Failed to load token details");
@@ -141,9 +143,23 @@ export class TokenViewer {
 
 			if (selectedOrigin){
 				tokenScript.setTokenMetadata(origins);
+
+				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
+					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
+						return Promise.resolve(origins);
+					}
+				}
+
+				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
+
 				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
 				this.tokenScript = tokenScript;
-				await this.loadCardButtons(selectedOrigin)
+				await this.loadCardButtons(selectedOrigin);
+
+				tokenScript.on("TOKENS_UPDATED", () => {
+					this.cardButtons = undefined;
+					this.loadCardButtons(selectedOrigin);
+				})
 			}
 
 			console.log("tokenscript loaded!!");
@@ -236,32 +252,34 @@ export class TokenViewer {
 
 		//if (this.tokenDetails){
 			return (
-				<div class="token-viewer">
-					{ this.tokenDetails ? (<div><div class="image-container">
-						<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
-					</div>
-					<div class="info-container">
-						<h1>{this.tokenDetails.name}</h1>
-						<p>{this.tokenDetails.description}</p>
-						<div class="attribute-container">
-							{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
-								return (
-									<div class="attribute-item">
-										{attr.trait_type}<br/>
-										{attr.value}
-									</div>
-								)
-							}) : ''}
+				<Host>
+					<div class="token-viewer">
+						{ this.tokenDetails ? (<div><div class="image-container">
+							<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
 						</div>
-					</div></div>) : ''}
-					<div class="actions" style={{textAlign: "center"}}>
-						{this.cardButtons !== undefined ?
-							this.cardButtons :
-							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
-						}
+						<div class="info-container">
+							<h1>{this.tokenDetails.name}</h1>
+							<p>{this.tokenDetails.description}</p>
+							<div class="attribute-container">
+								{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
+									return (
+										<div class="attribute-item">
+											<h5>{attr.trait_type}</h5>
+											<span>{attr.value}</span>
+										</div>
+									)
+								}) : ''}
+							</div>
+						</div></div>) : ''}
+						<div class="actions" style={{textAlign: "center"}}>
+							{this.cardButtons !== undefined ?
+								this.cardButtons :
+								<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
+							}
+						</div>
 					</div>
 					<card-modal tokenScript={this.tokenScript}></card-modal>
-				</div>
+				</Host>
 			)
 		//}
 

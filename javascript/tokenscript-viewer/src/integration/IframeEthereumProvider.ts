@@ -1,4 +1,4 @@
-import { EventEmitter } from 'eventemitter3';
+import {ethers} from "ethers";
 
 // By default post to any origin
 const DEFAULT_TARGET_ORIGIN = '*';
@@ -144,9 +144,10 @@ export class RpcError extends Error {
 /**
  * This is the primary artifact of this library.
  */
-export class IFrameEthereumProvider extends EventEmitter<
-	IFrameEthereumProviderEventTypes
-> {
+export class IFrameEthereumProvider implements ethers.providers.ExternalProvider {
+
+	_isSigner = true;
+
 	/**
 	 * Differentiate this provider from other providers by providing an isIFrame property that always returns true.
 	 */
@@ -161,7 +162,6 @@ export class IFrameEthereumProvider extends EventEmitter<
 		return this;
 	}
 
-	private enabled: Promise<string[]> | null = null;
 	private readonly targetOrigin: string;
 	private readonly timeoutMilliseconds: number;
 	private readonly eventSource: MinimalEventSourceInterface;
@@ -177,7 +177,7 @@ export class IFrameEthereumProvider extends EventEmitter<
 						   eventTarget = window.parent,
 					   }: IFrameEthereumProviderOptions = {}) {
 		// Call super for `this` to be defined
-		super();
+		//super();
 
 		this.targetOrigin = targetOrigin;
 		this.timeoutMilliseconds = timeoutMilliseconds;
@@ -216,6 +216,8 @@ export class IFrameEthereumProvider extends EventEmitter<
 		// Send the JSON RPC to the event source.
 		this.eventTarget.postMessage(payload, this.targetOrigin);
 
+		console.log("Message posted to parent window: ", payload);
+
 		// Delete the completer within the timeout and reject the promise.
 		setTimeout(() => {
 			if (this.completers[id]) {
@@ -232,61 +234,32 @@ export class IFrameEthereumProvider extends EventEmitter<
 	}
 
 	/**
-	 * Send the JSON RPC and return the result.
-	 * @param method method to send to the parent provider
-	 * @param params parameters to send
-	 */
-	public async send<TParams = any[], TResult = any>(
-		method: string,
-		params?: TParams
-	): Promise<TResult> {
-		const response = await this.execute<TParams, TResult, any>(method, params);
-
-		if ('error' in response) {
-			throw new RpcError(response.error.code, response.error.message);
-		} else {
-			return response.result;
-		}
-	}
-
-	/**
-	 * Request the parent window to enable access to the user's web3 provider. Return accounts list immediately if already enabled.
-	 */
-	public async enable(): Promise<string[]> {
-		if (this.enabled === null) {
-			const promise = (this.enabled = this.send('enable').catch(error => {
-				// Clear this.enabled if it's this promise so we try again next call.
-				// this.enabled might be set from elsewhere if, e.g. the accounts changed event is emitted
-				if (this.enabled === promise) {
-					this.enabled = null;
-				}
-				// Rethrow the error.
-				throw error;
-			}));
-		}
-
-		return this.enabled;
-	}
-
-	/**
 	 * Backwards compatibility method for web3.
 	 * @param payload payload to send to the provider
 	 * @param callback callback to be called when the provider resolves
 	 */
-	public async sendAsync(
-		payload: { method: string; params?: any[] },
-		callback: (
-			error: string | null,
-			result: { method: string; params?: any[]; result: any } | any
-		) => void
-	): Promise<void> {
-		try {
-			const result = await this.execute(payload.method, payload.params);
+	public send(request: {method: string, params?: Array<any>}, callback: (error: any, response: any) => void) {
 
-			callback(null, result);
-		} catch (error) {
-			callback(error, null);
-		}
+		this.execute(request.method, request.params).then(response => {
+			if ('error' in response) {
+				callback(response.error.code + ": " + response.error.message, null);
+				//throw new RpcError(response.error.code, response.error.message);
+			} else {
+				callback(null, response.result)
+				//return response.result;
+			}
+		});
+	}
+
+	/**
+	 * Backwards compatibility method for web3.
+	 * @param request payload to send to the provider
+	 * @param callback callback to be called when the provider resolves
+	 */
+	public async sendAsync(
+		request: {method: string, params?: Array<any>}, callback: (error: any, response: any) => void
+	) {
+		return this.send(request, callback);
 	}
 
 	/**
@@ -294,12 +267,18 @@ export class IFrameEthereumProvider extends EventEmitter<
 	 * @param event message event that will be processed by the provider
 	 */
 	private handleEventSourceMessage = (event: MessageEvent) => {
+
+		if (event.origin.indexOf("https://localhost") !== 0)
+			return;
+
 		const data = event.data;
 
 		// No data to parse, skip.
 		if (!data) {
 			return;
 		}
+
+		console.log("iframe response received: ", data);
 
 		const message = data as ReceivedMessageType;
 
@@ -328,7 +307,7 @@ export class IFrameEthereumProvider extends EventEmitter<
 		}
 
 		// If the method is a request from the parent window, it is likely a subscription.
-		if ('method' in message) {
+		/*if ('method' in message) {
 			switch (message.method) {
 				case 'notification':
 					this.emitNotification(message.params);
@@ -354,19 +333,14 @@ export class IFrameEthereumProvider extends EventEmitter<
 					this.emitAccountsChanged(message.params[0]);
 					break;
 			}
-		}
+		}*/
 	};
 
-	private emitNotification(result: any) {
+	/*private emitNotification(result: any) {
 		this.emit('notification', result);
 	}
 
 	private emitConnect() {
-		// If the provider isn't enabled but it emits a connect event, assume that it's enabled and initialize
-		// with an empty list of accounts.
-		if (this.enabled === null) {
-			this.enabled = Promise.resolve([]);
-		}
 		this.emit('connect');
 	}
 
@@ -385,5 +359,5 @@ export class IFrameEthereumProvider extends EventEmitter<
 	private emitAccountsChanged(accounts: string[]) {
 		this.enabled = Promise.resolve(accounts);
 		this.emit('accountsChanged', accounts);
-	}
+	}*/
 }

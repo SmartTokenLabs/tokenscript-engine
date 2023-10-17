@@ -9,7 +9,7 @@ import {Contract, ethers} from "ethers";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
-const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
+export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 

@@ -1,4 +1,4 @@
-import {Component, h, JSX, Prop, Watch, Element, Event, EventEmitter} from "@stencil/core";
+import {Component, h, JSX, Prop, Watch, Element, Event, EventEmitter, Host} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ViewBinding} from "../../viewers/tabbed/viewBinding";
 import {ShowToastEventArgs} from "../../app/app";
@@ -47,7 +47,7 @@ export class CardModal {
 	render(){
 		// TODO: Remove need for view container class (currently referenced in view adapter)
 		return (
-			<div class="view-container" style={{display: "none"}}>
+			<Host class="view-container" style={{display: "none"}}>
 				<button class="close-btn" onClick={() => {
 					document.location.hash = "#";
 					this.tokenScript.getViewController().unloadTokenCard();
@@ -55,7 +55,7 @@ export class CardModal {
 				</button>
 				<card-view></card-view>
 				<attribute-table></attribute-table>
-			</div>
+			</Host>
 		)
 	}
 }
