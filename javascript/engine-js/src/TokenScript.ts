@@ -87,14 +87,14 @@ export class TokenScript {
 
 	constructor(
 		private engine: TokenScriptEngine,
-		private tokenDef: XMLDocument,
-		private xmlStr: string,
+		public readonly tokenDef: XMLDocument,
+		public readonly xmlStr: string,
 		private source: ScriptSourceType,
 		private sourceId: string,
 		private sourceUrl: string,
 		private viewBinding?: IViewBinding
 	) {
-		this.securityInfo = new SecurityInfo(this, this.tokenDef, this.xmlStr, this.source, this.sourceUrl);
+		this.securityInfo = new SecurityInfo(this);
 	}
 
 	public getSourceInfo(){

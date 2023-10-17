@@ -1,7 +1,7 @@
 import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {ContractKeyResolver} from "../security/ContractKeyResolver";
-import {ethers} from "ethers/lib.esm";
+import {ethers} from "ethers";
 
 export type OriginType = "contract"|"attestation"
 

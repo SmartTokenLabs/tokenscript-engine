@@ -3,7 +3,7 @@ import * as xmldsigjs from "xmldsigjs";
 import {KeyInfoX509Data, KeyValue, X509Certificate} from "xmldsigjs";
 import * as x509 from "@peculiar/x509";
 import {uint8tohex} from "../utils";
-import {Crypto, CryptoKey} from "webcrypto-liner/build/index.es";
+import {Crypto, CryptoKey} from "webcrypto-liner/build";
 
 const crypto = new Crypto();
 xmldsigjs.Application.setEngine("WebCryptoLiner", crypto);

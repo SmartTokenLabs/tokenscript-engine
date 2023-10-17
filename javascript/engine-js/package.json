@@ -2,10 +2,12 @@
   "name": "@tokenscript/engine-js",
   "version": "1.0.0",
   "description": "A Typescript implementation if the TokenScript runtime",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "main": "./dist/lib.commonjs/index.js",
+  "module": "./dist/lib.esm/index.js",
+  "types": "./dist/lib.esm/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p tsconfig-commonjs.json",
     "watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "preinstall": "npm i patch-package",
@@ -24,7 +26,7 @@
     "ethers": "^5.6.8",
     "ipfs-only-hash": "^4.0.0",
     "pako": "^2.1.0",
-    "webcrypto-liner": "^1.4.0",
+    "webcrypto-liner": "^1.4.2",
     "xmldsigjs": "^2.5.1"
   },
   "overrides": {

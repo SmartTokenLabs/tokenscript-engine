@@ -1,4 +1,3 @@
-import {ScriptSourceType} from "../Engine";
 import {TokenScript} from "../TokenScript";
 import {DSigValidator} from "./DSigValidator";
 import * as IPFSOnlyHash from 'ipfs-only-hash';
@@ -34,11 +33,7 @@ export class SecurityInfo {
 	//private signerRootKey?: string
 
 	constructor(
-		private tokenScript: TokenScript,
-		private xml: XMLDocument,
-		private xmlStr: string,
-		private source: ScriptSourceType,
-		private sourceUrl: string
+		private tokenScript: TokenScript
 	) {
 
 	}
@@ -57,7 +52,7 @@ export class SecurityInfo {
 			this.securityInfo.signerPublicKey = result;
 		}
 
-		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.xmlStr, null);
+		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);
 
 		await this.verifyOrigins();
 	}
@@ -96,17 +91,20 @@ export class SecurityInfo {
 		}
 	}
 
-	/**
-	 * Verify the TokenScript file and return validity data
-	 */
-	public async getInfo(){
+	private async checkAndLoad(){
 
 		if (!this.lock){
 			this.lock = this.loadTokenScriptKeyInfo();
 		}
 
 		await this.lock;
+	}
 
+	/**
+	 * Verify the TokenScript file and return validity data
+	 */
+	public async getInfo(){
+		await this.checkAndLoad();
 		return this.securityInfo;
 	}
 
@@ -115,16 +113,14 @@ export class SecurityInfo {
 	 * @param originId
 	 */
 	public async getOriginInfo(originId: string){
-
 		// TODO: Track valid public keys and contract sources in originInfo and compare to individual NFT or attestation issuer
-
-		if (!this.lock){
-			this.lock = this.loadTokenScriptKeyInfo();
-		}
-
-		await this.lock;
-
+		await this.checkAndLoad();
 		return this.originStatuses[originId];
+	}
+
+	public async getAllOriginInfo(){
+		await this.checkAndLoad();
+		return this.originStatuses;
 	}
 
 }

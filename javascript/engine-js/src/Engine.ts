@@ -145,10 +145,13 @@ export class TokenScriptEngine {
 	 * Create a new TokenScript instance from raw XML
 	 * @param xml XML string
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
+	 * @param sourceType
+	 * @param sourceId
+	 * @param sourceUrl
 	 */
-	public async loadTokenScript(xml: string, viewBinding?: IViewBinding) {
+	public async loadTokenScript(xml: string, viewBinding?: IViewBinding, sourceType: ScriptSourceType = ScriptSourceType.UNKNOWN, sourceId?: string, sourceUrl?: string) {
 
-		return this.initializeTokenScriptObject(xml, ScriptSourceType.UNKNOWN, null, null, viewBinding);
+		return this.initializeTokenScriptObject(xml, sourceType, sourceId, sourceUrl, viewBinding);
 	}
 
 	/**
