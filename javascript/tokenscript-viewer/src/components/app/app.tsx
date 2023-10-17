@@ -178,7 +178,8 @@ export class AppRoot {
 				this.viewerType = "new";
 		}
 
-		await Web3WalletProvider.loadConnections();
+		if (this.viewerType !== "joyid-token")
+			await Web3WalletProvider.loadConnections();
 	}
 
 	render() {
@@ -201,7 +202,7 @@ export class AppRoot {
 						<loading-spinner/>
 					</div>
 				</div>
-				<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector>
+				{ this.viewerType !== "joyid-token" ? <wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''}
 			</Host>
 		);
 	}

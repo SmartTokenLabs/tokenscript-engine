@@ -216,7 +216,7 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 		// Send the JSON RPC to the event source.
 		this.eventTarget.postMessage(payload, this.targetOrigin);
 
-		console.log("Message posted to parent window: ", payload);
+		console.log("Message posted: ", payload);
 
 		// Delete the completer within the timeout and reject the promise.
 		setTimeout(() => {
@@ -234,19 +234,17 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 	}
 
 	/**
-	 * Backwards compatibility method for web3.
-	 * @param payload payload to send to the provider
-	 * @param callback callback to be called when the provider resolves
+	 * Send the JSON RPC and return the result.
+	 * @param request
+	 * @param callback
 	 */
 	public send(request: {method: string, params?: Array<any>}, callback: (error: any, response: any) => void) {
 
 		this.execute(request.method, request.params).then(response => {
 			if ('error' in response) {
 				callback(response.error.code + ": " + response.error.message, null);
-				//throw new RpcError(response.error.code, response.error.message);
 			} else {
-				callback(null, response.result)
-				//return response.result;
+				callback(null, response.result);
 			}
 		});
 	}
@@ -259,7 +257,12 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 	public async sendAsync(
 		request: {method: string, params?: Array<any>}, callback: (error: any, response: any) => void
 	) {
-		return this.send(request, callback);
+		try {
+			const result = await this.execute(request.method, request.params);
+			callback(null, result);
+		} catch (error) {
+			callback(error.code + ": " + error.message, null);
+		}
 	}
 
 	/**
