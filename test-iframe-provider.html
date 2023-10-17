@@ -17,6 +17,9 @@
 				if (message.origin !== "http://localhost:3333")
 					return;
 
+				if (message.data.jsonrpc !== "2.0")
+					return;
+
 				console.log("[IFRAME_RPC] request received: ", message);
 
 				try {

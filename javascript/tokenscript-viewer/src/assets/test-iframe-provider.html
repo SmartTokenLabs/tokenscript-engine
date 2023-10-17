@@ -17,6 +17,9 @@
 				if (message.origin !== "https://viewer-staging.tokenscript.org")
 					return;
 
+				if (message.data.jsonrpc !== "2.0")
+					return;
+
 				console.log("[IFRAME_RPC] request received: ", message);
 
 				try {
