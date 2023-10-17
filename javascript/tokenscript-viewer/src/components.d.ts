@@ -158,6 +158,10 @@ export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLNewViewerElement;
 }
+export interface TokenViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTokenViewerElement;
+}
 export interface TokensGridCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTokensGridElement;
@@ -484,6 +488,9 @@ declare namespace LocalJSX {
     }
     interface TokenViewer {
         "app"?: AppRoot;
+        "onHideLoader"?: (event: TokenViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: TokenViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: TokenViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface TokensGrid {
         "onHideLoader"?: (event: TokensGridCustomEvent<void>) => void;

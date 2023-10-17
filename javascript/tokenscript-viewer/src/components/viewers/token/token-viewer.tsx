@@ -1,5 +1,5 @@
-import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
-import {AppRoot} from "../../app/app";
+import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
+import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITokenIdContext, ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
@@ -7,6 +7,7 @@ import {CHAIN_MAP} from "../../../integration/constants";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {BASE_TOKEN_DISCOVERY_URL} from "../../../integration/discoveryAdapter";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
+import {showTransactionNotification} from "../util/showTransactionNotification";
 
 @Component({
 	tag: 'token-viewer',
@@ -28,6 +29,27 @@ export class TokenViewer {
 	urlRequest: URLSearchParams;
 
 	@State() cardButtons: JSX.Element[]|undefined;
+
+	@Event({
+		eventName: 'showToast',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showToast: EventEmitter<ShowToastEventArgs>;
+
+	@Event({
+		eventName: 'showLoader',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showLoader: EventEmitter<void>;
+
+	@Event({
+		eventName: 'hideLoader',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) hideLoader: EventEmitter<void>;
 
 	async componentWillLoad(){
 
@@ -70,10 +92,6 @@ export class TokenViewer {
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
 
-			/*const tsId = query.get("chain") + "-" + query.get("contract");
-
-			this.openTokenScript("resolve", tsId);*/
-
 			this.app.showTsLoader();
 
 			const tokenMeta = await this.fetchTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
@@ -115,20 +133,11 @@ export class TokenViewer {
 
 	private async loadTokenScript(){
 
-		//this.app.showTsLoader();
-
 		try {
 			const chain: number = parseInt(this.urlRequest.get("chain"));
 			const contract: string = this.urlRequest.get("contract");
 			const tsId = chain + "-" + contract;
 			const tokenScript = await this.app.loadTokenscript("resolve", tsId);
-
-			/*this.card = findCardByUrlParam(this.urlRequest.get("card"), this.tokenScript).card;
-
-			if (!this.card)
-				throw new Error("Card " + this.urlRequest.get("card") + " could not be found.");*/
-
-			// Find token metadata corresponding to current contract
 
 			const origins = tokenScript.getTokenOriginData();
 			let selectedOrigin;
@@ -166,10 +175,8 @@ export class TokenViewer {
 
 		} catch (e){
 			console.error(e);
-			//alert("Failed to load TokenScript: " + e.message);
 		}
 
-		//this.app.hideTsLoader();
 	}
 
 	private async loadCardButtons(token: ITokenCollection){
@@ -222,30 +229,25 @@ export class TokenViewer {
 		try {
 			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
 
-				/*if (data.status === "started")
+				if (data.status === "started")
 					this.showLoader.emit();
 
 				if (data.status === "confirmed")
 					this.hideLoader.emit();
 
-				await showTransactionNotification(data, this.showToast);*/
+				await showTransactionNotification(data, this.showToast);
 			});
 
 		} catch(e){
 			console.error(e);
-			/*this.hideLoader.emit();
+			this.hideLoader.emit();
 			this.showToast.emit({
 				type: 'error',
 				title: "Transaction Error",
 				description: e.message
-			});*/
+			});
 			return;
 		}
-
-		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
-		// TODO: set only card param rather than updating the whole hash query
-		if (card.view)
-			document.location.hash = "#card=" + (card.name ?? cardIndex);
 	}
 
 	render(){
