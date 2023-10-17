@@ -271,7 +271,7 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 	 */
 	private handleEventSourceMessage = (event: MessageEvent) => {
 
-		if (event.origin.indexOf("https://localhost") !== 0)
+		if (this.targetOrigin !== "*" && event.origin.indexOf(this.targetOrigin) !== 0)
 			return;
 
 		const data = event.data;
@@ -281,14 +281,14 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 			return;
 		}
 
-		console.log("[IFRAME_RPC] response received: ", data);
-
 		const message = data as ReceivedMessageType;
 
 		// Always expect jsonrpc to be set to '2.0'
 		if (message.jsonrpc !== JSON_RPC_VERSION) {
 			return;
 		}
+
+		console.log("[IFRAME_RPC] response received: ", data);
 
 		// If the message has an ID, it is possibly a response message
 		if (typeof message.id !== 'undefined' && message.id !== null) {
