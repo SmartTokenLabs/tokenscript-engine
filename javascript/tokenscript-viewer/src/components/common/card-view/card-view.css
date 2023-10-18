@@ -4,10 +4,10 @@
 	max-width: 500px;
 	margin: 40px auto;
 	border-radius: 4px;
-	max-height: calc(100% - 80px);
+	max-height: 700px;
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	height: calc(100% - 60px);;
 }
 
 .view-loader {
