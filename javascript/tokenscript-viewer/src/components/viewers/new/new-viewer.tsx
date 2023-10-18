@@ -98,9 +98,10 @@ export class NewViewer {
 			const tsId = query.get("chain") + "-" + query.get("contract");
 			tsMeta = await this.addFormSubmit("resolve", {tsId})
 		} else if (query.has("emulator")){
-			const tsId = new URL(query.get("emulator")).origin + "/tokenscript.tsml";
+			const emulator = query.get("emulator") ? new URL(query.get("emulator")).origin : document.location.origin;
+			const tsId = emulator + "/tokenscript.tsml";
 			tsMeta = await this.addFormSubmit("url", {tsId})
-			this.connectEmulatorSocket(tsId, query.get("emulator"));
+			this.connectEmulatorSocket(tsId, emulator);
 		}
 
 		console.log("open TS", tsMeta);

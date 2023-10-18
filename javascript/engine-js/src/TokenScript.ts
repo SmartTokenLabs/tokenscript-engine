@@ -360,7 +360,10 @@ export class TokenScript {
 
 		const contracts = this.getContracts();
 
-		return contracts?.[name];
+		if (!contracts[name])
+			throw new Error("Contract with name " + name + " was not found in the TSML");
+
+		return contracts[name];
 	}
 
 	/**

@@ -11,7 +11,7 @@ export class CardView {
 	render(){
 		return (
 			<div class="card-container">
-				<div style={{position: "relative"}}>
+				<div class="iframe-wrapper">
 					<div class="view-loader" style={{display: "none"}}>
 						<loading-spinner/>
 					</div>
