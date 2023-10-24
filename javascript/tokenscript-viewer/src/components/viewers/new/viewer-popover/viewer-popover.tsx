@@ -45,7 +45,8 @@ export class ViewerPopover {
 					</div>
 				</div>
 				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>
-				<card-modal tokenScript={this.tokenScript}></card-modal>
+				{/*<card-modal tokenScript={this.tokenScript}></card-modal>*/}
+				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host> : ''
 		)
 	}

@@ -10,10 +10,10 @@ export class PopoverDialog {
 	@State()
 	open: boolean = false;
 
-	private dismissCallback: () => {}
+	private dismissCallback: () => void|Promise<void>
 
 	@Method()
-	async openDialog(dismissCallback?: () => {}){
+	async openDialog(dismissCallback?: () => void|Promise<void>){
 		this.open = true;
 		this.dismissCallback = dismissCallback;
 	}

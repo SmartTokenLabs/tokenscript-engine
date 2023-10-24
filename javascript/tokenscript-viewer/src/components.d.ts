@@ -36,6 +36,9 @@ export namespace Components {
     interface CardModal {
         "tokenScript"?: TokenScript1;
     }
+    interface CardPopover {
+        "tokenScript": TokenScript;
+    }
     interface CardView {
     }
     interface ConfirmStep {
@@ -63,7 +66,7 @@ export namespace Components {
     }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
-        "openDialog": (dismissCallback?: () => {}) => Promise<void>;
+        "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
         "tokenScript": TokenScript1;
@@ -158,6 +161,10 @@ export interface CardModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCardModalElement;
 }
+export interface CardPopoverCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCardPopoverElement;
+}
 export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLNewViewerElement;
@@ -214,6 +221,12 @@ declare global {
     var HTMLCardModalElement: {
         prototype: HTMLCardModalElement;
         new (): HTMLCardModalElement;
+    };
+    interface HTMLCardPopoverElement extends Components.CardPopover, HTMLStencilElement {
+    }
+    var HTMLCardPopoverElement: {
+        prototype: HTMLCardPopoverElement;
+        new (): HTMLCardPopoverElement;
     };
     interface HTMLCardViewElement extends Components.CardView, HTMLStencilElement {
     }
@@ -384,6 +397,7 @@ declare global {
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
         "card-modal": HTMLCardModalElement;
+        "card-popover": HTMLCardPopoverElement;
         "card-view": HTMLCardViewElement;
         "confirm-step": HTMLConfirmStepElement;
         "input-field": HTMLInputFieldElement;
@@ -428,6 +442,10 @@ declare namespace LocalJSX {
     interface CardModal {
         "onShowToast"?: (event: CardModalCustomEvent<ShowToastEventArgs>) => void;
         "tokenScript"?: TokenScript1;
+    }
+    interface CardPopover {
+        "onShowToast"?: (event: CardPopoverCustomEvent<ShowToastEventArgs>) => void;
+        "tokenScript"?: TokenScript;
     }
     interface CardView {
     }
@@ -551,6 +569,7 @@ declare namespace LocalJSX {
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
         "card-modal": CardModal;
+        "card-popover": CardPopover;
         "card-view": CardView;
         "confirm-step": ConfirmStep;
         "input-field": InputField;
@@ -590,6 +609,7 @@ declare module "@stencil/core" {
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "card-modal": LocalJSX.CardModal & JSXBase.HTMLAttributes<HTMLCardModalElement>;
+            "card-popover": LocalJSX.CardPopover & JSXBase.HTMLAttributes<HTMLCardPopoverElement>;
             "card-view": LocalJSX.CardView & JSXBase.HTMLAttributes<HTMLCardViewElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
