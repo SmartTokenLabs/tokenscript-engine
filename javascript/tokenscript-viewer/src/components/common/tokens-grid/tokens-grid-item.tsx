@@ -19,9 +19,14 @@ export class TokensGridItem {
 
 	@State() cardButtons: JSX.Element[];
 
+	@State() overflowCardButtons: JSX.Element[];
+
+	private overflowDialog: HTMLActionOverflowModalElement;
+
 	async componentDidLoad() {
 
 		const cardButtons: JSX.Element[] = [];
+		const overflowCardButtons: JSX.Element[] = [];
 
 		// TODO: Rework NFT/fungible interfaces so they are cross compatible
 		const context: ITokenIdContext = {
@@ -45,20 +50,27 @@ export class TokensGridItem {
 				if (enabled === false)
 					continue;
 
-				cardButtons.push((
+				const cardElem = (
 					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}
 							onClick={() => this.showCard(card, this.token, index)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
 						{label}
 					</button>
-				));
+				)
+
+				if (enabled !== true || cardButtons.length > 2){
+					overflowCardButtons.push(cardElem);
+				} else {
+					cardButtons.push(cardElem);
+				}
 			} catch (e){
 				console.error("Failed to check if card is available", e);
 			}
 		}
 
 		this.cardButtons = cardButtons;
+		this.overflowCardButtons = overflowCardButtons;
 	}
 
 	private showTokenInfo(token: TokenGridContext){
@@ -99,6 +111,18 @@ export class TokensGridItem {
 						{ this.cardButtons ?
 							this.cardButtons :
 							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
+						}
+						{ this.overflowCardButtons ?
+							[
+								(<button class="btn more-actions-btn" onClick={() => this.overflowDialog.openDialog()}>
+									+ More actions
+								</button>),
+								(<action-overflow-modal ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
+									<div class="actions">
+										{this.overflowCardButtons}
+									</div>
+								</action-overflow-modal>)
+							] : ''
 						}
 					</div>
 				</div>

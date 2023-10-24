@@ -18,6 +18,10 @@ import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider
 export namespace Components {
     interface AboutTokenscript {
     }
+    interface ActionOverflowModal {
+        "closeDialog": () => Promise<void>;
+        "openDialog": () => Promise<void>;
+    }
     interface AddSelector {
         "closeDialog": () => Promise<void>;
         "onFormSubmit": (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
@@ -180,6 +184,12 @@ declare global {
     var HTMLAboutTokenscriptElement: {
         prototype: HTMLAboutTokenscriptElement;
         new (): HTMLAboutTokenscriptElement;
+    };
+    interface HTMLActionOverflowModalElement extends Components.ActionOverflowModal, HTMLStencilElement {
+    }
+    var HTMLActionOverflowModalElement: {
+        prototype: HTMLActionOverflowModalElement;
+        new (): HTMLActionOverflowModalElement;
     };
     interface HTMLAddSelectorElement extends Components.AddSelector, HTMLStencilElement {
     }
@@ -369,6 +379,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "about-tokenscript": HTMLAboutTokenscriptElement;
+        "action-overflow-modal": HTMLActionOverflowModalElement;
         "add-selector": HTMLAddSelectorElement;
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
@@ -404,6 +415,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AboutTokenscript {
+    }
+    interface ActionOverflowModal {
     }
     interface AddSelector {
         "onFormSubmit"?: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
@@ -533,6 +546,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "about-tokenscript": AboutTokenscript;
+        "action-overflow-modal": ActionOverflowModal;
         "add-selector": AddSelector;
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
@@ -571,6 +585,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "about-tokenscript": LocalJSX.AboutTokenscript & JSXBase.HTMLAttributes<HTMLAboutTokenscriptElement>;
+            "action-overflow-modal": LocalJSX.ActionOverflowModal & JSXBase.HTMLAttributes<HTMLActionOverflowModalElement>;
             "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
