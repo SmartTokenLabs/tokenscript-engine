@@ -60,10 +60,7 @@ export class AppRoot {
 	tsEngine = new TokenScriptEngine(
 		this.getWalletAdapter,
 		async () => this.discoveryAdapter,
-		() => this.attestationStorageAdapter ,
-		{
-			ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
-		}
+		() => this.attestationStorageAdapter
 	);
 
 	@Element() host: HTMLElement;
