@@ -5,6 +5,7 @@ import {EthUtils} from "../ethereum/EthUtils";
 import {BigNumber} from "bignumber.js";
 import {FilterQuery} from "./data/event/FilterQuery";
 import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
+import {Label} from "./Label";
 
 interface TokenAttributeValue {
 	[tokenId: string]: any
@@ -20,6 +21,7 @@ export class Attribute {
 
 	private static NO_DEPENDENCY_ORIGINS = ["ts:user-entry", "ts:data"];
 
+	private label?: Label;
 	private asType?: string;
 	private scopeValues: TokenAttributeValue = {};
 
@@ -36,6 +38,17 @@ export class Attribute {
 	 */
 	public getName(){
 		return this.attributeDef.getAttribute("name");
+	}
+
+	/**
+	 * The label for the attribute
+	 */
+	public getLabel(){
+
+		if (!this.label)
+			this.label = new Label(this.attributeDef);
+
+		return this.label.getValue() ?? this.getName();
 	}
 
 	/**

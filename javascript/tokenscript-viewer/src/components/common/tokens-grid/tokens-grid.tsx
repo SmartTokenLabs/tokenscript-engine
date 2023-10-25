@@ -166,7 +166,7 @@ export class TokensGrid {
 						)
 					}
 				</div>
-				<token-info-popover id="token-info-popover" />
+				<token-info-popover id="token-info-popover" tokenScript={this.tokenScript} />
 			</Host>
 		)
 	}

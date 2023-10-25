@@ -109,6 +109,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					collectionId: token.contractAddress,
 					name: tokenMeta.title,
 					description: tokenMeta.description,
+					attributes: tokenMeta.attributes ?? [],
 					image: tokenMeta.image,
 					data: tokenMeta
 				});

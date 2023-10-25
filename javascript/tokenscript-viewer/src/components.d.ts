@@ -112,6 +112,7 @@ export namespace Components {
     interface TokenInfoPopover {
         "closeDialog": () => Promise<void>;
         "openDialog": (token: TokenGridContext) => Promise<void>;
+        "tokenScript": TokenScript;
     }
     interface TokenSecurityStatus {
         "originId": string;
@@ -514,6 +515,7 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface TokenInfoPopover {
+        "tokenScript"?: TokenScript;
     }
     interface TokenSecurityStatus {
         "originId"?: string;
