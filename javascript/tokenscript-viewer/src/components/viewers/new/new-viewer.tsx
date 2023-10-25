@@ -286,7 +286,7 @@ export class NewViewer {
 	render(){
 		return (
 			<Host>
-				<h3>TokenScript Viewer</h3>
+				<h3>Smart Token Viewer</h3>
 				<p>Connect your wallet to use your TokenScript enabled tokens. <a onClick={() => this.aboutDialog.openDialog()}>Learn More</a>.</p>
 				<div class="toolbar">
 					<wallet-button></wallet-button>
@@ -339,7 +339,7 @@ export class NewViewer {
 				</div>
 				{ this.popularTokenscripts.length > 0 ?
 					<div>
-						<h4>Popular TokenScripts</h4>
+						<h4>Popular Smart Tokens</h4>
 						<tokenscript-grid>
 							{
 								this.popularTokenscripts.map((ts) => {

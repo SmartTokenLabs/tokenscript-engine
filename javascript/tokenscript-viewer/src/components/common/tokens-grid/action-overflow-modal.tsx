@@ -2,7 +2,7 @@ import {Component, h, Method} from "@stencil/core";
 
 @Component({
 	tag: 'action-overflow-modal',
-	styleUrl: 'tokens-grid-item.css',
+	styleUrl: 'action-overflow-modal.css',
 	shadow: false,
 	scoped: false
 })
@@ -22,7 +22,7 @@ export class ActionOverflowModal {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{maxWidth: "380px"}}>
 				<slot></slot>
 			</popover-dialog>
 		)

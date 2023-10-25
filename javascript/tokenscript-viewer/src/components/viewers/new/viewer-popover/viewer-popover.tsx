@@ -1,7 +1,6 @@
 import {Component, h, State, Element, Method, Host} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 
-
 @Component({
 	tag: 'viewer-popover',
 	styleUrl: 'viewer-popover.css',
@@ -43,6 +42,19 @@ export class ViewerPopover {
 							<wallet-button></wallet-button>
 						</div>
 					</div>
+				</div>
+				<div class="meta-details">
+					{ this.tokenScript.getMetadata().description ?
+						<p>
+							{ this.tokenScript.getMetadata().description}
+						</p> : ''
+					}
+					{ this.tokenScript.getMetadata().aboutUrl ?
+						<a href={this.tokenScript.getMetadata().aboutUrl} target="_blank">
+							{ "Discover how it works" }
+							<img alt="about" src="/assets/icon/question.svg" />
+						</a> : ''
+					}
 				</div>
 				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>
 				{/*<card-modal tokenScript={this.tokenScript}></card-modal>*/}

@@ -106,7 +106,9 @@ export class TokensGridItem {
 							<span title={details}>{details}</span>
 							: ''
 					}
-					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>?</button>
+					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>
+						<img alt="info" src="/assets/icon/info.svg" />
+					</button>
 					<div class="actions">
 						{ this.cardButtons ?
 							this.cardButtons :

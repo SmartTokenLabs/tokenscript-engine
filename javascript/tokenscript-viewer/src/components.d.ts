@@ -66,6 +66,7 @@ export namespace Components {
     }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
+        "dialogStyles": {[cssProp: string]: string};
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
@@ -473,6 +474,7 @@ declare namespace LocalJSX {
         "onShowToast"?: (event: NewViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface PopoverDialog {
+        "dialogStyles"?: {[cssProp: string]: string};
     }
     interface SecurityStatus {
         "tokenScript"?: TokenScript1;
