@@ -7,6 +7,7 @@ export enum ViewEvent {
 	GET_USER_INPUT = "getUserInput",
 	EXECUTE_CALLBACK = "executeCallback",
 	ON_CONFIRM = "onConfirm",
+	TRANSACTION_EVENT = "transactionEvent"
 }
 
 export enum RequestFromView {

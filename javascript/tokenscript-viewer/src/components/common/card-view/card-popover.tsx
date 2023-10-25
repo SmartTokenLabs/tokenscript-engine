@@ -160,9 +160,12 @@ export class CardPopover implements IViewBinding {
 			console.log(transaction.getTransactionInfo());
 
 			try {
-				await this.currentCard.executeTransaction((data: ITransactionStatus) => { showTransactionNotification(data, this.showToast); });
+				await this.currentCard.executeTransaction((data: ITransactionStatus) => {
+					this.postMessageToView(ViewEvent.TRANSACTION_EVENT, data);
+					showTransactionNotification(data, this.showToast);
+				});
 			} catch (e){
-				console.error(e);
+				this.postMessageToView(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message});
 				this.showToast.emit({
 					type: 'error',
 					title: "Transaction Error",
@@ -187,7 +190,7 @@ export class CardPopover implements IViewBinding {
 					<div class="iframe-wrapper">
 						<iframe ref={(el) => this.iframe = el as HTMLIFrameElement}
 								class="tokenscript-frame"
-								sandbox="allow-scripts allow-modals allow-forms">
+								sandbox="allow-scripts allow-modals allow-forms allow-popups">
 						</iframe>
 					</div>
 					<div class="action-bar" style={{display: this.currentCard?.type == "action" ? "block" : "none"}}>

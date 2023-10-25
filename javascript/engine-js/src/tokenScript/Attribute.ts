@@ -336,7 +336,9 @@ export class Attribute {
 	public invalidate(dependentOn?: string[]){
 
 		if (dependentOn){
-			if (!this.invalidateDependencies(dependentOn) && dependentOn.indexOf(this.getName()) === -1) {
+			if (!this.invalidateDependencies(dependentOn)) {
+				if (dependentOn.indexOf(this.getName()) > -1)
+					return false;
 				console.log("Attribute '" + this.getName() + "' is not dependent on '" + JSON.stringify(dependentOn) + "', skipping invalidation");
 				return false;
 			}
