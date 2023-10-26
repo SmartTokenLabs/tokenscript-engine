@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
 import { TokenScript } from "../../engine-js/src/TokenScript";
+import { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
 import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
@@ -17,6 +17,10 @@ import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AboutTokenscript {
+    }
+    interface ActionBar {
+        "loading": boolean;
+        "tokenScript"?: TokenScript;
     }
     interface ActionOverflowModal {
         "closeDialog": () => Promise<void>;
@@ -139,6 +143,11 @@ export namespace Components {
     }
     interface TokenscriptGrid {
     }
+    interface TransferDialog {
+        "closeDialog": () => Promise<void>;
+        "openDialog": () => Promise<void>;
+        "tokenScript"?: TokenScript;
+    }
     interface ViewStep {
         "card": Card;
         "tokenScript": TokenScript1;
@@ -158,6 +167,10 @@ export namespace Components {
     interface WalletSelector {
         "connectWallet": () => Promise<SupportedWalletProviders>;
     }
+}
+export interface ActionBarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLActionBarElement;
 }
 export interface CardModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -193,6 +206,12 @@ declare global {
     var HTMLAboutTokenscriptElement: {
         prototype: HTMLAboutTokenscriptElement;
         new (): HTMLAboutTokenscriptElement;
+    };
+    interface HTMLActionBarElement extends Components.ActionBar, HTMLStencilElement {
+    }
+    var HTMLActionBarElement: {
+        prototype: HTMLActionBarElement;
+        new (): HTMLActionBarElement;
     };
     interface HTMLActionOverflowModalElement extends Components.ActionOverflowModal, HTMLStencilElement {
     }
@@ -362,6 +381,12 @@ declare global {
         prototype: HTMLTokenscriptGridElement;
         new (): HTMLTokenscriptGridElement;
     };
+    interface HTMLTransferDialogElement extends Components.TransferDialog, HTMLStencilElement {
+    }
+    var HTMLTransferDialogElement: {
+        prototype: HTMLTransferDialogElement;
+        new (): HTMLTransferDialogElement;
+    };
     interface HTMLViewStepElement extends Components.ViewStep, HTMLStencilElement {
     }
     var HTMLViewStepElement: {
@@ -394,6 +419,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "about-tokenscript": HTMLAboutTokenscriptElement;
+        "action-bar": HTMLActionBarElement;
         "action-overflow-modal": HTMLActionOverflowModalElement;
         "add-selector": HTMLAddSelectorElement;
         "app-root": HTMLAppRootElement;
@@ -422,6 +448,7 @@ declare global {
         "tokens-grid-item": HTMLTokensGridItemElement;
         "tokenscript-button": HTMLTokenscriptButtonElement;
         "tokenscript-grid": HTMLTokenscriptGridElement;
+        "transfer-dialog": HTMLTransferDialogElement;
         "view-step": HTMLViewStepElement;
         "viewer-popover": HTMLViewerPopoverElement;
         "viewer-tab": HTMLViewerTabElement;
@@ -431,6 +458,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AboutTokenscript {
+    }
+    interface ActionBar {
+        "loading"?: boolean;
+        "onHideLoader"?: (event: ActionBarCustomEvent<void>) => void;
+        "onShowLoader"?: (event: ActionBarCustomEvent<void>) => void;
+        "onShowToast"?: (event: ActionBarCustomEvent<ShowToastEventArgs>) => void;
+        "tokenScript"?: TokenScript;
     }
     interface ActionOverflowModal {
     }
@@ -548,6 +582,9 @@ declare namespace LocalJSX {
     }
     interface TokenscriptGrid {
     }
+    interface TransferDialog {
+        "tokenScript"?: TokenScript;
+    }
     interface ViewStep {
         "card"?: Card;
         "onShowToast"?: (event: ViewStepCustomEvent<ShowToastEventArgs>) => void;
@@ -568,6 +605,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "about-tokenscript": AboutTokenscript;
+        "action-bar": ActionBar;
         "action-overflow-modal": ActionOverflowModal;
         "add-selector": AddSelector;
         "app-root": AppRoot;
@@ -596,6 +634,7 @@ declare namespace LocalJSX {
         "tokens-grid-item": TokensGridItem;
         "tokenscript-button": TokenscriptButton;
         "tokenscript-grid": TokenscriptGrid;
+        "transfer-dialog": TransferDialog;
         "view-step": ViewStep;
         "viewer-popover": ViewerPopover;
         "viewer-tab": ViewerTab;
@@ -608,6 +647,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "about-tokenscript": LocalJSX.AboutTokenscript & JSXBase.HTMLAttributes<HTMLAboutTokenscriptElement>;
+            "action-bar": LocalJSX.ActionBar & JSXBase.HTMLAttributes<HTMLActionBarElement>;
             "action-overflow-modal": LocalJSX.ActionOverflowModal & JSXBase.HTMLAttributes<HTMLActionOverflowModalElement>;
             "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
@@ -636,6 +676,7 @@ declare module "@stencil/core" {
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
             "tokenscript-grid": LocalJSX.TokenscriptGrid & JSXBase.HTMLAttributes<HTMLTokenscriptGridElement>;
+            "transfer-dialog": LocalJSX.TransferDialog & JSXBase.HTMLAttributes<HTMLTransferDialogElement>;
             "view-step": LocalJSX.ViewStep & JSXBase.HTMLAttributes<HTMLViewStepElement>;
             "viewer-popover": LocalJSX.ViewerPopover & JSXBase.HTMLAttributes<HTMLViewerPopoverElement>;
             "viewer-tab": LocalJSX.ViewerTab & JSXBase.HTMLAttributes<HTMLViewerTabElement>;

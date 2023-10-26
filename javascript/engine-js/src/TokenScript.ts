@@ -266,8 +266,12 @@ export class TokenScript {
 
 	/**
 	 * An array of cards for the TokenScript
+	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
 	 */
 	public getCards(tokenOrigin?: string): Card[] {
+
+		if (!tokenOrigin)
+			tokenOrigin = this.getCurrentTokenContext().originId;
 
 		if (!this.cards) {
 

@@ -206,9 +206,12 @@ export class Card {
 	/**
 	 * Returns true if the action is allowed, or a reason string if disabled.
 	 * The reason string is the label of the ts:selection element in the TokenScript file
-	 * @param tokenContext The token context for which to determine card availability
+	 * @param tokenContext The token context for which to determine card availability, falls back to the current token context
 	 */
-	public async isEnabledOrReason(tokenContext: ITokenIdContext) {
+	public async isEnabledOrReason(tokenContext?: ITokenIdContext) {
+
+		if (!tokenContext)
+			tokenContext = this.tokenScript.getCurrentTokenContext();
 
 		if (!this.isAvailableForOrigin(tokenContext.originId))
 			return false;
