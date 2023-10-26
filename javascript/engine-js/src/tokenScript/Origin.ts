@@ -60,14 +60,18 @@ export class Origin {
 
 			try {
 				// TODO: Handle per address/chain statuses when tokens are loaded
-				const contractKey = await (new ContractKeyResolver(this.tokenScript).resolvePublicKey(contract));
+				// const contractKey = await (new ContractKeyResolver(this.tokenScript).resolvePublicKey(contract));
 
 				// transform tokenscript signing key into address if required
-				const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
+				// const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
 
-				console.log("DSIG validator: revolved contract deployment key: ", contractKey);
+				const dSigAddress = ethers.utils.computeAddress(publicKeyHex);
+				const isAdmin = await (new ContractKeyResolver(this.tokenScript).isAdmin(contract, dSigAddress));
 
-				if (dsigKeyOrAddress.toLowerCase() === contractKey.value.toLowerCase()) {
+				// console.log("DSIG validator: revolved contract deployment key: ", contractKey);
+
+				// if (dsigKeyOrAddress.toLowerCase() === contractKey.value.toLowerCase()) {
+				if (isAdmin) {
 					this.securityStatus = {
 						type: AuthenticationType.XML_DSIG,
 						status: SecurityStatus.VALID,
@@ -76,7 +80,7 @@ export class Origin {
 
 					console.log("DSIG validator: DSIG matched successfully");
 				} else {
-					console.warn("DSIG validator: contract key does not match DSIG: ", dsigKeyOrAddress);
+					console.warn(`DSIG validator: contract key does not match DSIG( publicKeyHex: ${publicKeyHex}, address: ${dSigAddress})`);
 				}
 
 			} catch (e) {
