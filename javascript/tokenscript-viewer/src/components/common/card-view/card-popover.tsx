@@ -193,7 +193,7 @@ export class CardPopover implements IViewBinding {
 								sandbox="allow-scripts allow-modals allow-forms allow-popups">
 						</iframe>
 					</div>
-					<div class="action-bar" style={{display: this.currentCard?.type == "action" ? "block" : "none"}}>
+					<div class="action-bar" style={{display: this.currentCard?.type == "action" && this.currentCard?.uiButton ? "block" : "none"}}>
 						<button class="action-btn btn btn-primary" onClick={() => this.confirmAction()}>{this.currentCard?.label}</button>
 					</div>
 				</div>

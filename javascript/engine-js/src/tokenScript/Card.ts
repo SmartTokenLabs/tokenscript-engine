@@ -77,6 +77,10 @@ export class Card {
 		return this.view.getAttribute("urlFragment")
 	}
 
+	get uiButton() {
+		return this.view.hasAttribute("uiButton") ? (this.view.getAttribute("uiButton") === 'true') : true;
+	}
+
 	/**
 	 * Determines whether the view is to be loaded from a URL or from embedded content in ts:view
 	 */

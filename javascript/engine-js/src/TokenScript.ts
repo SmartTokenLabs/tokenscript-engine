@@ -271,7 +271,7 @@ export class TokenScript {
 	public getCards(tokenOrigin?: string): Card[] {
 
 		if (!tokenOrigin)
-			tokenOrigin = this.getCurrentTokenContext().originId;
+			tokenOrigin = this.getCurrentTokenContext()?.originId;
 
 		if (!this.cards) {
 
