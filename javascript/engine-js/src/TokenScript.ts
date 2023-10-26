@@ -14,6 +14,7 @@ import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefin
 import {Attestation} from "./attestation/Attestation";
 import {Origin, OriginType} from "./tokenScript/Origin";
 import {ITokenContextData} from "./tokens/ITokenContextData";
+import {Meta} from "./tokenScript/Meta";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -60,6 +61,8 @@ export interface ITransactionListener {
 export class TokenScript {
 
 	private label?: Label;
+
+	private meta?: Meta;
 
 	private origins?: { [originName: string]: Origin };
 
@@ -251,9 +254,24 @@ export class TokenScript {
 	}
 
 	/**
+	 * The metadata for the TokenScript
+	 */
+	public getMetadata(){
+
+		if (!this.meta)
+			this.meta = new Meta(this.tokenDef.documentElement);
+
+		return this.meta;
+	}
+
+	/**
 	 * An array of cards for the TokenScript
+	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
 	 */
 	public getCards(tokenOrigin?: string): Card[] {
+
+		if (!tokenOrigin)
+			tokenOrigin = this.getCurrentTokenContext()?.originId;
 
 		if (!this.cards) {
 

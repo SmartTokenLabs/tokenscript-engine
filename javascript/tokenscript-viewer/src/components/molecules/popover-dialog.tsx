@@ -1,4 +1,4 @@
-import {Component, h, Method, State} from "@stencil/core";
+import {Component, h, Method, Prop, State} from "@stencil/core";
 
 @Component({
 	tag: 'popover-dialog',
@@ -10,10 +10,13 @@ export class PopoverDialog {
 	@State()
 	open: boolean = false;
 
-	private dismissCallback: () => {}
+	@Prop()
+	dialogStyles: {[cssProp: string]: string} = {};
+
+	private dismissCallback: () => void|Promise<void>
 
 	@Method()
-	async openDialog(dismissCallback?: () => {}){
+	async openDialog(dismissCallback?: () => void|Promise<void>){
 		this.open = true;
 		this.dismissCallback = dismissCallback;
 	}
@@ -26,7 +29,7 @@ export class PopoverDialog {
 	render(){
 		return (
 			<div class={"popover-modal" + (this.open ? ' open' : '')}>
-				<div class="popover-container">
+				<div class="popover-container" style={this.dialogStyles}>
 					<button class="close-btn" onClick={() => {
 						this.open = false;
 						if (this.dismissCallback) {

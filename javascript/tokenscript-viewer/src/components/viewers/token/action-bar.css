@@ -1,0 +1,32 @@
+
+.jid-action-bar {
+	display: flex;
+	padding: 8px 20px 20px 22px;
+	gap: 8px
+}
+
+.jid-overflow-btn {
+	flex-grow: 0;
+	color: #FFF;
+	border: #333;
+	background: #333;
+}
+
+.jid-transfer-btn {
+	flex-grow: 1;
+	border: 1px solid #333;
+	background: #D2FF00;
+}
+
+.overflow-heading {
+	font-size: 18px;
+	font-weight: 700;
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+.overflow-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}

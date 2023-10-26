@@ -14,16 +14,10 @@ export const knownTokenScripts: TokenScriptsMeta[] = [
 		iconUrl: "/assets/tokenscript-icons/DAI.png"
 	},
 	{
-		tokenScriptId: "5-0x8c36A92536784A5C59E28311c0961Ed06e9Bca5d",
+		tokenScriptId: "137-0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe",
 		loadType: "resolve",
-		name: "Devcon Souvenir",
-		iconUrl: "/assets/tokenscript-icons/devcon-souvenir.png"
-	},
-	{
-		tokenScriptId: "5-0x82cBd60183e8255DA0638fA73A9A6dC6826b3c28",
-		loadType: "resolve",
-		name: "Devcon Referral",
-		iconUrl: "/assets/tokenscript-icons/devcon-referral.png"
+		name: "SmartCat",
+		iconUrl: "/assets/tokenscript-icons/smart-cat.png"
 	},
 ];
 

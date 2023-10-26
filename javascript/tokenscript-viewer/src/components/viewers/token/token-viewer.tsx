@@ -1,13 +1,11 @@
 import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
-import {ITokenIdContext, ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {CHAIN_MAP} from "../../../integration/constants";
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
+import {BlockChain, ITokenCollection, TokenType} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {BASE_TOKEN_DISCOVERY_URL} from "../../../integration/discoveryAdapter";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
-import {showTransactionNotification} from "../util/showTransactionNotification";
 
 @Component({
 	tag: 'token-viewer',
@@ -22,6 +20,9 @@ export class TokenViewer {
 
 	@State()
 	tokenDetails: ITokenDetail;
+
+	@State()
+	loadingTs = true;
 
 	@State()
 	tokenScript: TokenScript;
@@ -100,12 +101,22 @@ export class TokenViewer {
 
 			this.tokenDetails = {
 				attributes: tokenMeta.attributes,
-				collectionDetails: undefined,
+				collectionDetails: {
+					originId: "",
+					blockChain: "eth",
+					chainId: parseInt(query.get("chain")),
+					tokenType: tokenMeta.collectionData.contractType.toLowerCase() as TokenType,
+					contractAddress: query.get("contract"),
+					name: tokenMeta.collectionData.title as string,
+					description: tokenMeta.collectionData.description as string,
+					image: tokenMeta.collectionData.image as string,
+				},
 				collectionId: tokenMeta.collection,
 				description: tokenMeta.description,
 				image: tokenMeta.image,
 				name: tokenMeta.title,
-				tokenId: tokenMeta.tokenId
+				tokenId: tokenMeta.tokenId,
+				balance: tokenMeta.balance
 			}
 
 			this.app.hideTsLoader();
@@ -121,14 +132,26 @@ export class TokenViewer {
 
 	private async fetchTokenMetadata(chain: number, contract: string, tokenId: string){
 
-		const request = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
-		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + request);
-		const ok = response.status >= 200 && response.status <= 299
+		const collectionUrl = `/get-token-collection?chain=${CHAIN_MAP[chain]}&smartContract=${contract}&tokenId=${tokenId}`;
+		const tokenUrl = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
+
+		const responses = await Promise.all([
+			fetch(BASE_TOKEN_DISCOVERY_URL + collectionUrl),
+			await fetch(BASE_TOKEN_DISCOVERY_URL + tokenUrl)
+		]);
+
+		const ok = (
+			(responses[0].status >= 200 && responses[0].status <= 299) &&
+			(responses[1].status >= 200 && responses[0].status <= 299)
+		)
 		if (!ok) {
 			throw new Error("Failed to load token details");
 		}
 
-		return response.json();
+		return {
+			collectionData: await responses[0].json(),
+			...await responses[1].json()
+		}
 	}
 
 	private async loadTokenScript(){
@@ -163,129 +186,71 @@ export class TokenViewer {
 
 				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
 				this.tokenScript = tokenScript;
-				await this.loadCardButtons(selectedOrigin);
-
-				tokenScript.on("TOKENS_UPDATED", () => {
-					this.cardButtons = undefined;
-					this.loadCardButtons(selectedOrigin);
-				})
 			}
 
 			console.log("tokenscript loaded!!");
 
 		} catch (e){
-			console.error(e);
+			console.warn(e.message);
 		}
 
-	}
-
-	private async loadCardButtons(token: ITokenCollection){
-
-		const cardButtons: JSX.Element[] = [];
-
-		// TODO: Rework NFT/fungible interfaces so they are cross compatible
-		const context: ITokenIdContext = {
-			originId: token.originId,
-			chainId: token.chainId,
-			selectedTokenId: this.tokenDetails.tokenId
-		}
-
-		const cards = this.tokenScript.getCards(token.originId);
-
-		for (let [index, card] of cards.entries()){
-
-			let label = card.label;
-
-			if (label === "Unnamed Card")
-				label = card.type === "token" ? "Token Info" : card.type + " Card";
-
-			try {
-				const enabled = await card.isEnabledOrReason(context);
-
-				if (enabled === false)
-					continue;
-
-				cardButtons.push((
-					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}
-							onClick={() => this.showCard(card, index)}
-							disabled={enabled !== true}
-							title={enabled !== true ? enabled : label}>
-						{label}
-					</button>
-				));
-			} catch (e){
-				console.error("Failed to check if card is available", e);
-			}
-		}
-
-		this.cardButtons = cardButtons;
-	}
-
-	// TODO: This is copied from tokens-grid, dedupe required
-	private async showCard(card: Card, cardIndex: number){
-
-		window.scrollTo(0, 0);
-
-		try {
-			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
-
-				if (data.status === "started")
-					this.showLoader.emit();
-
-				if (data.status === "confirmed")
-					this.hideLoader.emit();
-
-				await showTransactionNotification(data, this.showToast);
-			});
-
-		} catch(e){
-			console.error(e);
-			this.hideLoader.emit();
-			this.showToast.emit({
-				type: 'error',
-				title: "Transaction Error",
-				description: e.message
-			});
-			return;
-		}
+		this.loadingTs = false;
 	}
 
 	render(){
 
-		//if (this.tokenDetails){
-			return (
-				<Host>
-					<div class="token-viewer">
-						{ this.tokenDetails ? (<div><div class="image-container">
-							<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
-						</div>
-						<div class="info-container">
-							<h1>{this.tokenDetails.name}</h1>
-							<p>{this.tokenDetails.description}</p>
-							<div class="attribute-container">
-								{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
-									return (
-										<div class="attribute-item">
-											<h5>{attr.trait_type}</h5>
-											<span>{attr.value}</span>
-										</div>
-									)
-								}) : ''}
+		return (
+			<Host>
+				<div class="token-viewer">
+					{ this.tokenDetails ? (
+					<div>
+						<div class="details-container">
+							<div class="image-container">
+								<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
 							</div>
-						</div></div>) : ''}
-						<div class="actions" style={{textAlign: "center"}}>
-							{this.cardButtons !== undefined ?
-								this.cardButtons :
-								<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
-							}
+							<div class="info-container">
+								<div class="main-info">
+									<h1>{this.tokenDetails.name}</h1>
+									<div class="owner-count">
+										<span style={{color: "#3D45FB"}}>
+											{
+												this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
+													("balance: " + this.tokenDetails.balance) :
+													("#" + this.tokenDetails.tokenId)
+											}
+										</span>
+									</div>
+									<div class="collection-details">
+										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>
+										<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
+										<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
+									</div>
+								</div>
+								<div class="extra-info">
+									<p>{this.tokenDetails.description}</p>
+									<div class="attribute-container">
+										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
+											return (
+												<div class="attribute-item" title={attr.trait_type + ": " + attr.value}>
+													<h5>{attr.trait_type}</h5>
+													<span>{attr.value}</span>
+												</div>
+											)
+										}) : ''}
+									</div>
+								</div>
+							</div>
 						</div>
+						<action-bar engine={this.app.tsEngine}
+									tokenDetails={this.tokenDetails}
+									tokenScript={this.tokenScript}
+									loading={this.loadingTs} />
 					</div>
-					<card-modal tokenScript={this.tokenScript}></card-modal>
-				</Host>
-			)
-		//}
-
-		//return ('');
+					) : <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> }
+				</div>
+				<card-popover tokenScript={this.tokenScript}></card-popover>
+			</Host>
+		)
 	}
 
 }

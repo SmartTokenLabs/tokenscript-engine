@@ -9,7 +9,8 @@ import {Contract, ethers} from "ethers";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
-export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org'
+export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org';
+										//'http://localhost:3000';
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
@@ -109,6 +110,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					collectionId: token.contractAddress,
 					name: tokenMeta.title,
 					description: tokenMeta.description,
+					attributes: tokenMeta.attributes ?? [],
 					image: tokenMeta.image,
 					data: tokenMeta
 				});
@@ -253,12 +255,16 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		const tokenDetails: ITokenDetail[] = [];
 
 		try {
-			const balance = BigInt(await contract.balanceOf(owner));
 
-			//console.log("Owner balance: ", balance);
+			let tokenIds;
 
-			for (let i=0; i<balance; i++){
-				const tokenId = BigInt(await contract.tokenOfOwnerByIndex(owner, i));
+			try {
+				tokenIds = await this.getTokenIdsLogs(contract, owner);
+			} catch (e){
+				tokenIds = await this.getTokenIdsEnumerable(contract, owner);
+			}
+
+			for (const tokenId of tokenIds){
 
 				let meta: any = {};
 
@@ -292,6 +298,52 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		}
 
 		return tokenDetails;
+	}
+
+	private async getTokenIdsEnumerable(contract, owner){
+
+		const tokenIds = [];
+
+		const balance = BigInt(await contract.balanceOf(owner));
+
+		for (let i=0; i<balance; i++) {
+			tokenIds.push(BigInt(await contract.tokenOfOwnerByIndex(owner, i)));
+		}
+
+		return tokenIds;
+	}
+
+	private async getTokenIdsLogs(contract, owner){
+
+		const sentLogs = await contract.queryFilter(
+			contract.filters.Transfer(owner, null),
+		);
+		const receivedLogs = await contract.queryFilter(
+			contract.filters.Transfer(null, owner),
+		);
+
+		const logs = sentLogs.concat(receivedLogs)
+			.sort(
+				(a, b) =>
+					a.blockNumber - b.blockNumber ||
+					a.transactionIndex - b.transactionIndex,
+			);
+
+		const tokenIds = new Set();
+
+		for (const { args: { from, to, tokenId } } of logs) {
+			if (this.addressEqual(to, owner)) {
+				tokenIds.add(tokenId.toString());
+			} else if (this.addressEqual(from, owner)) {
+				tokenIds.delete(tokenId.toString());
+			}
+		}
+
+		return Array.from(tokenIds.values());
+	}
+
+	private addressEqual(a, b) {
+		return a.toLowerCase() === b.toLowerCase();
 	}
 
 	private getEthersContractInstance(address: string, chainId: number){

@@ -30,12 +30,38 @@ viewer-popover .view-heading, viewer-popover .view-toolbar-buttons {
 viewer-popover .view-heading > h3 {
 	margin: 0 0 0 10px;
 	flex-shrink: 0;
+	font-weight: 600;
+	font-size: 24px;
 }
 
 viewer-popover .view-heading > button {
 	min-width: 30px;
-	font-size: 18px;
-	font-weight: bold;
-	padding-bottom: 8px;
+	font-weight: 600;
+	font-size: 24px;
 	background: none;
+}
+
+viewer-popover .meta-details {
+	margin: 0 25px;
+}
+
+viewer-popover .meta-details p {
+	color: #545454;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+viewer-popover .meta-details a {
+	font-weight: 500;
+	text-decoration: none;
+	display: flex;
+
+}
+
+viewer-popover .meta-details a:hover {
+	filter: opacity(80%);
+}
+
+viewer-popover .meta-details a img {
+	margin: 0 5px;
 }

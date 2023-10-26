@@ -16,7 +16,7 @@ export class CardView {
 						<loading-spinner/>
 					</div>
 					<iframe class="tokenscript-frame"
-							sandbox="allow-scripts allow-modals allow-forms">
+							sandbox="allow-scripts allow-modals allow-forms allow-popups">
 					</iframe>
 				</div>
 				<div class="action-bar" style={{display: "none"}}>

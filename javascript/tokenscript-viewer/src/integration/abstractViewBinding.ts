@@ -46,7 +46,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		await this.injectContentView(card);
+		await AbstractViewBinding.injectContentView(this.iframe, card);
 
 		this.setupConfirmButton(card);
 	}
@@ -66,16 +66,16 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.loader.style.display = "none";
 	}
 
-	private async injectContentView(card: Card) {
+	static async injectContentView(iframe: HTMLIFrameElement, card: Card) {
 
 		if (!card.view) {
-			this.iframe.src = "";
+			iframe.src = "";
 			return;
 		}
 
 		if (card.isUrlView) {
 
-			this.iframe.src = card.url;
+			iframe.src = card.url;
 
 		} else {
 			const html = await card.renderViewHtml();
@@ -84,11 +84,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 			const urlFragment = card.urlFragment;
 
-			this.iframe.src = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
+			iframe.src = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
 
 			// TODO: try src-doc method
 		}
-
 	}
 
 	private setupConfirmButton(card: Card) {
@@ -104,77 +103,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	abstract confirmAction();
 
 	getViewBindingJavascript() {
-		return `
-			window.addEventListener("message", (event) => {
-
-				if (event.origin !== "${document.location.origin}")
-					return;
-
-				const params = event.data?.params;
-
-				switch (event.data?.method){
-					case "tokensUpdated":
-						window.web3.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
-						break;
-
-					case "onConfirm":
-						window.onConfirm();
-						break;
-
-					case "executeCallback":
-						window.executeCallback(params.id, params.error, params.result);
-						break;
-
-					case "getUserInput":
-						sendUserInputValues();
-				}
-			});
-
-			function sendUserInputValues(){
-
-				const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id);
-
-				const values = Object.fromEntries(inputs.map((elem) => {
-					return [elem.id, elem.value];
-				}));
-
-				postMessageToEngine("putUserInput", values);
-			}
-
-			function postMessageToEngine(method, params){
-				window.parent.postMessage({method, params}, {
-					targetOrigin: "${document.location.origin}"
-				});
-			}
-
-			window.alpha = {
-				signPersonalMessage: (id, data) => {
-					postMessageToEngine("signPersonalMessage", {id, data});
-				}
-			};
-
-			window.web3.action.setProps = (params) => {
-				postMessageToEngine("putUserInput", params);
-			};
-
-			function listenForUserValueChanges(){
-				window.addEventListener('change', (evt) => {
-                    if (!evt.target.id) return;
-					sendUserInputValues();
-                });
-			}
-
-			listenForUserValueChanges();
-			/*document.addEventListener("DOMContentLoaded", function() {
-				sendUserInputValues();
-			});*/
-
-			const closing = window.close;
-  			window.close = function () {
-    			postMessageToEngine("close", undefined);
-    			closing();
-  			};
-		`;
+		return VIEW_BINDING_JAVASCRIPT;
 	}
 
 	protected postMessageToView(method: ViewEvent, params: any) {
@@ -249,3 +178,75 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		}
 	}
 }
+
+export const VIEW_BINDING_JAVASCRIPT = `
+	window.addEventListener("message", (event) => {
+
+		if (event.origin !== "${document.location.origin}")
+			return;
+
+		const params = event.data?.params;
+
+		switch (event.data?.method){
+			case "tokensUpdated":
+				window.web3.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
+				break;
+
+			case "onConfirm":
+				window.onConfirm();
+				break;
+
+			case "executeCallback":
+				window.executeCallback(params.id, params.error, params.result);
+				break;
+
+			case "getUserInput":
+				sendUserInputValues();
+		}
+	});
+
+	function sendUserInputValues(){
+
+		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id);
+
+		const values = Object.fromEntries(inputs.map((elem) => {
+			return [elem.id, elem.value];
+		}));
+
+		postMessageToEngine("putUserInput", values);
+	}
+
+	function postMessageToEngine(method, params){
+		window.parent.postMessage({method, params}, {
+			targetOrigin: "${document.location.origin}"
+		});
+	}
+
+	window.alpha = {
+		signPersonalMessage: (id, data) => {
+			postMessageToEngine("signPersonalMessage", {id, data});
+		}
+	};
+
+	window.web3.action.setProps = (params) => {
+		postMessageToEngine("putUserInput", params);
+	};
+
+	function listenForUserValueChanges(){
+		window.addEventListener('change', (evt) => {
+			if (!evt.target.id) return;
+			sendUserInputValues();
+		});
+	}
+
+	listenForUserValueChanges();
+	/*document.addEventListener("DOMContentLoaded", function() {
+		sendUserInputValues();
+	});*/
+
+	const closing = window.close;
+	window.close = function () {
+		postMessageToEngine("close", undefined);
+		closing();
+	};
+`;

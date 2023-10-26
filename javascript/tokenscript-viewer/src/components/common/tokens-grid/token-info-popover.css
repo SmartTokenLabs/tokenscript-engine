@@ -1,4 +1,28 @@
 
+.attribute-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	grid-gap: 10px;
+}
+
+.attribute-item {
+	border: 2px solid #001AFF;
+	border-radius: 5px;
+	min-height: 80px;
+	padding: 5px;
+}
+
+.attribute-item h5 {
+	margin: 2px 0 5px;
+}
+
+.attribute-item span {
+	font-size: 14px;
+}
+
+/*
+Old attribute table
+
 .token-info-attributes {
 	border-collapse: collapse;
 	width: 100%;
@@ -15,4 +39,4 @@
 .token-info-attributes th {
 	background-color: #4383FF;
 	color: white;
-}
+}*/

@@ -21,7 +21,7 @@ header {
 .header-icon {
 	height: 35px;
 	width: auto;
-	padding-left: 10px;
+	padding-left: 25px;
 }
 
 header h1 {
@@ -31,7 +31,6 @@ header h1 {
 h1 {
   font-size: 1.4rem;
   font-weight: 500;
-  color: #fff;
   padding: 0 12px;
 }
 
@@ -44,6 +43,7 @@ main {
 #ts-loader {
 	display: none;
 	position: absolute;
+	z-index: 100;
 	top: 0;
 	width: 100%;
 	height: 100%;

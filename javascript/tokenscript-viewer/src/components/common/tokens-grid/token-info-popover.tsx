@@ -1,5 +1,6 @@
-import {Component, Method, State, h} from "@stencil/core";
+import {Component, Method, State, h, Prop, Watch} from "@stencil/core";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
+import {TokenScript} from "../../../../../engine-js/src/TokenScript";
 
 
 @Component({
@@ -14,9 +15,30 @@ export class TokenInfoPopover {
 	@State()
 	private token: TokenGridContext;
 
+	@State()
+	private tsAttributes: {label: string, value: string}[] = [];
+
+	@Prop()
+	tokenScript: TokenScript
+
 	@Method()
 	async openDialog(token: TokenGridContext){
 		this.token = token;
+
+		const [contract, index] = this.token.contextId.split("-");
+		this.tokenScript.setCurrentTokenContext(contract, parseInt(index));
+
+		const newAttributes: {label: string, value: string}[] = [];
+
+		for (const attribute of this.tokenScript.getAttributes()){
+			newAttributes.push({
+				label: attribute.getLabel(),
+				value: await attribute.getCurrentValue()
+			})
+		}
+
+		this.tsAttributes = newAttributes;
+
 		await this.dialog.openDialog();
 	}
 
@@ -31,16 +53,9 @@ export class TokenInfoPopover {
 			{ this.token ?
 				<div>
 					<h4>{this.token.name}</h4>
-					<p>{this.token.description}</p>
+					<p>{this.token.description !== this.token.name ? this.token.description : ''}</p>
 					{ ("attributes" in this.token && this.token.attributes.length) ?
-						<table class="token-info-attributes">
-							<thead>
-								<tr>
-									<th>Attribute</th>
-									<th>Value</th>
-								</tr>
-							</thead>
-							<tbody>
+						<div class="attribute-container">
 							{
 								this.token.attributes.map((attr) => {
 
@@ -54,16 +69,54 @@ export class TokenInfoPopover {
 									}
 
 									return (
-										<tr>
-											<td>{attr.trait_type}</td>
-											<td>{value}</td>
-										</tr>
+										<div class="attribute-item">
+											<h5>{attr.trait_type}</h5>
+											<span>{value}</span>
+										</div>
 									)
 								})
 							}
-							</tbody>
-						</table>
+						</div>
 					: ''}
+					{ this.tsAttributes.length ?
+						<div>
+							<h4>TokenScript Attributes</h4>
+							<div class="attribute-container">
+								{
+									this.tsAttributes.map(({label, value}) => {
+
+										return (
+											<div class="attribute-item">
+												<h5>{label}</h5>
+												<span>{value.toString()}</span>
+											</div>
+										)
+									})
+								}
+							</div>
+							{/*<table class="token-info-attributes">
+								<thead>
+								<tr>
+									<th>Attribute</th>
+									<th>Value</th>
+								</tr>
+								</thead>
+								<tbody>
+								{
+									this.tsAttributes.map(({label, value}) => {
+
+										return (
+											<tr>
+												<td>{label}</td>
+												<td>{value.toString()}</td>
+											</tr>
+										)
+									})
+								}
+								</tbody>
+							</table>*/}
+						</div>
+						: ''}
 				</div>
 			: ''}
 			</popover-dialog>

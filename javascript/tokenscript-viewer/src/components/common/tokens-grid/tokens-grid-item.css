@@ -3,7 +3,8 @@
 	margin: 10px;
 	border-radius: 10px;
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-	width: 250px;
+	width: 300px;
+	max-width: 350px;
 	overflow: hidden;
 	background: #FFFEFE;
 	position: relative;
@@ -46,6 +47,13 @@
 	margin: 8px 0;
 }
 
+.more-actions-btn {
+	background: none !important;
+	border: none !important;
+	font-weight: bold;
+	color: rgb(84, 84, 84);
+}
+
 .info-btn {
 	position: absolute;
 	right: 0;
@@ -56,7 +64,12 @@
 	height: 25px !important;
 	margin: 18px 10px;
 	border-radius: 25px !important;
+	border: none !important;
 	padding: 0;
+}
+
+.info-btn img:hover {
+	filter: opacity(80%);
 }
 
 token-security-status {
