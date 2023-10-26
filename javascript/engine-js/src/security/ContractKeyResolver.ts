@@ -8,6 +8,8 @@ export interface IKeySource {
 	value: string; // Should be a valid hex encoded key or address
 }
 
+const ACCESS_CONTROL_SCRIPTS_ADMIN = "TS_SCRIPT_ADMIN";
+
 /**
  * The contract key resolver is used to resolve the owner or deployer of a smart contract
  */
@@ -79,7 +81,28 @@ export class ContractKeyResolver {
 				["bool"]
 			);
 
-			return hasRole;
+			if (hasRole) return true;
+
+			// check if address has specific scripts role
+			hasRole = await adapter.call(
+				address.chain, address.address, "hasRole", [
+					{
+						internalType: "bytes32",
+						name: "0",
+						type: "bytes32",
+						value: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
+					},
+					{
+						internalType: "address",
+						name: "1",
+						type: "address",
+						value: dSigAddress
+					}
+					],
+				["bool"]
+			);
+
+			if (hasRole) return true;
 
 		} catch (e){
 			console.error(e);
