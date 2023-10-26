@@ -81,22 +81,33 @@ export class TransferDialog {
 
 		this.showLoader.emit();
 
-		await walletProvider.sendTransaction(
-			this.tokenDetails.collectionDetails.chainId,
-			this.tokenDetails.collectionDetails.contractAddress,
-			method,
-			args,
-			[],
-			null,
-			true,
-			async (data: ITransactionStatus) => {
+		try {
+			await walletProvider.sendTransaction(
+				this.tokenDetails.collectionDetails.chainId,
+				this.tokenDetails.collectionDetails.contractAddress,
+				method,
+				args,
+				[],
+				null,
+				true,
+				async (data: ITransactionStatus) => {
 
-				if (data.status === "confirmed")
-					this.hideLoader.emit();
+					if (data.status === "confirmed")
+						this.hideLoader.emit();
 
-				await showTransactionNotification(data, this.showToast);
-			}
-		)
+					await showTransactionNotification(data, this.showToast);
+				}
+			)
+		} catch(e){
+			console.error(e);
+			this.hideLoader.emit();
+			this.showToast.emit({
+				type: 'error',
+				title: "Transaction Error",
+				description: e.message
+			});
+			return;
+		}
 
 		this.closeDialog();
 	}
