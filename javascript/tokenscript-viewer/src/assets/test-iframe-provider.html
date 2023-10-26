@@ -1,20 +1,65 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="UTF-8"/>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" integrity="sha512-FDcVY+g7vc5CXANbrTSg1K5qLyriCsGDYCE02Li1tXEYdNQPvLPHNE+rT2Mjei8N7fZbe0WLhw27j2SrGRpdMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	</head>
 	<body style="margin: 0;">
-		<div style="width: 600px; margin: 0 auto; min-height: 800px; position: relative; height: 100vh;">
-			<iframe id="frame" src="https://viewer-staging.tokenscript.org/?viewType=joyid-token&chain=11155111&contract=0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c&tokenId=1"
+		<!-- ERC1155: http://localhost:3333/?viewType=joyid-token&chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1 -->
+		<!-- ERC1155 fungible: http://localhost:3333/?viewType=joyid-token&chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=3 -->
+		<!-- devcon: http://localhost:3333/?viewType=joyid-token&chain=1&contract=0x3c7e352481f4b2fdec1e642a3f0018661c77513d&tokenId=398233297468566556333642 -->
+		<div style="max-width: 600px; width: 100%; margin: 0 auto; min-height: 700px; position: relative; height: 100vh;">
+			<iframe id="frame" src=""
 					style="border: 0; width: 100%; height: 100%;"></iframe>
 		</div>
+		<div style="padding: 10px;">
+			<button class="frame-btn" data-params="chain=11155111&contract=0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c&tokenId=1">Seplia SmartCat</button>
+			<button class="frame-btn" data-params="chain=1&contract=0x3c7e352481f4b2fdec1e642a3f0018661c77513d&tokenId=398233297468566556333642">Eth Devcon</button>
+			<button class="frame-btn" data-params="chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1">Seplia ERC1155</button>
+		</div>
 		<script>
+			// Load iframe
+			const BASE_URL = "http://localhost:3333/";
+
+			let params;
+
+			const currentParams = new URLSearchParams(document.location.search);
+
+			if (currentParams.has("chain") && currentParams.has("contract") && currentParams.has("tokenId")){
+				params = new URLSearchParams();
+				params.set("chain", currentParams.get("chain"));
+				params.set("contract", currentParams.get("contract"));
+				params.set("tokenId", currentParams.get("tokenId"));
+			} else {
+				params = new URLSearchParams("chain=11155111&contract=0xA04664f6191D9A65F5F48c6F9d6Dd81CB636E65c&tokenId=1"); // smart cat sepolia
+				//params = new URLSearchParams("chain=1&contract=0x3c7e352481f4b2fdec1e642a3f0018661c77513d&tokenId=398233297468566556333642"); // devcon
+				//params = new URLSearchParams("chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1"); // ERC1155
+			}
+
+			params.set("viewType", "joyid-token");
+
+			loadIframeUrl(BASE_URL + "?" + params.toString())
+
+			function loadIframeUrl(url){
+				document.getElementById("frame").src = url;
+			}
+
+			for (const button of document.getElementsByClassName("frame-btn")){
+				button.addEventListener("click", (evt) => {
+					const params = new URLSearchParams(evt.target.getAttribute("data-params"));
+					params.set("viewType", "joyid-token");
+					loadIframeUrl(BASE_URL + "?" + params.toString())
+				});
+			}
+		</script>
+		<script>
+			// Metamask provider
+
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
 			const iframe = document.getElementById("frame");
 
 			window.addEventListener("message", async (message) => {
-				if (message.origin !== "https://viewer-staging.tokenscript.org")
+				if (message.origin !== "http://localhost:3333")
 					return;
 
 				if (message.data.jsonrpc !== "2.0")
@@ -35,12 +80,12 @@
 						case "eth_blockNumber":
 						case "eth_estimateGas":
 						case "eth_sendTransaction":
-						case "eth_sendRawTransaction":
 						case "eth_getTransactionByHash":
 						case "eth_getTransactionReceipt":
 						case "eth_getTransactionCount":
 						case "personal_sign":
 						case "eth_signTypedData":
+						case "wallet_switchEthereumChain":
 							const result = await provider.send(message.data.method, message.data.params);
 							sendResponse(message.data, result);
 							break;
@@ -67,7 +112,7 @@
 					data.error = error;
 				}
 
-				iframe.contentWindow.postMessage(data, "https://viewer-staging.tokenscript.org");
+				iframe.contentWindow.postMessage(data, "http://localhost:3333");
 			}
 		</script>
 	</body>

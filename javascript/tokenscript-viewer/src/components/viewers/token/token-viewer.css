@@ -21,23 +21,12 @@ header {
 	flex-grow: 1;
 }
 
-.info-container h1 {
-	font-weight: bold;
-	font-size: 18px;
-	color: #000;
-	padding: 20px 0;
-}
-
 .image-container {
 	min-height: 100px;
 }
 
 .token-viewer img {
 	max-width: 100%;
-}
-
-.token-viewer .info-container {
-
 }
 
 .token-viewer .main-info {
@@ -48,6 +37,8 @@ header {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 20px;
+	margin: 16px 0 0;
+	padding: 0;
 }
 
 .extra-info {
@@ -60,6 +51,7 @@ header {
 	padding: 0 16px 16px;
 	display: flex;
 	flex-direction: column;
+	gap: 8px;
 }
 
 .main-info .collection-details {
@@ -68,8 +60,17 @@ header {
 	gap: 8px
 }
 
+.main-info .owner-count {
+	color: #3D45FB;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 14px; /* 116.667% */
+	letter-spacing: 0.24px;
+}
+
 .collection-details h4 {
 	font-size: 14px;
+	margin: 0;
 	font-weight: 600;
 	line-height: 20px;
 	flex-grow: 1;
@@ -83,6 +84,10 @@ header {
 
 .extra-info {
 	padding: 8px 16px 16px;
+}
+
+.extra-info p {
+	margin: 0 0 16px;
 }
 
 .attribute-container {
