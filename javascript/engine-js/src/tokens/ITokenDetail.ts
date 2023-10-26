@@ -13,6 +13,7 @@ export interface ITokenDetail {
 	image?: string;
 	attributes?: NFTAttribute[];
 	data?: IAttestationData | any;
+	balance?: string // For ERC1155
 }
 
 export interface NFTAttribute {

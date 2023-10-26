@@ -109,13 +109,14 @@ export class TokenViewer {
 					contractAddress: query.get("contract"),
 					name: tokenMeta.collectionData.title as string,
 					description: tokenMeta.collectionData.description as string,
-					image: tokenMeta.collectionData.image as string
+					image: tokenMeta.collectionData.image as string,
 				},
 				collectionId: tokenMeta.collection,
 				description: tokenMeta.description,
 				image: tokenMeta.image,
 				name: tokenMeta.title,
-				tokenId: tokenMeta.tokenId
+				tokenId: tokenMeta.tokenId,
+				balance: tokenMeta.balance
 			}
 
 			this.app.hideTsLoader();
@@ -211,7 +212,13 @@ export class TokenViewer {
 								<div class="main-info">
 									<h1>{this.tokenDetails.name}</h1>
 									<div class="owner-count">
-
+										<span style={{color: "#3D45FB"}}>
+											{
+												this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
+													("balance: " + this.tokenDetails.balance) :
+													("#" + this.tokenDetails.tokenId)
+											}
+										</span>
 									</div>
 									<div class="collection-details">
 										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>
