@@ -105,7 +105,7 @@ export class TokenViewer {
 					originId: "",
 					blockChain: "eth",
 					chainId: parseInt(query.get("chain")),
-					tokenType: tokenMeta.collectionData.contractType as TokenType,
+					tokenType: tokenMeta.collectionData.contractType.toLowerCase() as TokenType,
 					contractAddress: query.get("contract"),
 					name: tokenMeta.collectionData.title as string,
 					description: tokenMeta.collectionData.description as string,
@@ -190,7 +190,7 @@ export class TokenViewer {
 			console.log("tokenscript loaded!!");
 
 		} catch (e){
-			console.error(e);
+			console.warn(e.message);
 		}
 
 		this.loadingTs = false;
@@ -215,8 +215,8 @@ export class TokenViewer {
 									</div>
 									<div class="collection-details">
 										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>
-										<h4>{this.tokenDetails.collectionDetails.name}</h4>
-										<span>{this.tokenDetails.collectionDetails.tokenType}</span>
+										<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
+										<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
 									</div>
 								</div>
 								<div class="extra-info">

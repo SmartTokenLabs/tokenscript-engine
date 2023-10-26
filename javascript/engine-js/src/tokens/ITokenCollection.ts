@@ -4,7 +4,7 @@
  */
 import {ITokenDetail} from "./ITokenDetail";
 
-export type TokenType = "erc20" | "erc721" | "eas";
+export type TokenType = "erc20" | "erc721" | "erc1155" | "eas";
 
 export type BlockChain = "eth" | "offchain";
 

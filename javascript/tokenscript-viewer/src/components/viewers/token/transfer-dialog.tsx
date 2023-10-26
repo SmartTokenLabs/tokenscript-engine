@@ -24,6 +24,9 @@ export class TransferDialog {
 	@State()
 	recipient: string = "";
 
+	@State()
+	amount: number = 1;
+
 	@Event({
 		eventName: 'showToast',
 		composed: true,
@@ -79,6 +82,21 @@ export class TransferDialog {
 			}
 		];
 
+		if (this.tokenDetails.collectionDetails.tokenType === "erc1155"){
+			args.push(
+				{
+					name: "amount",
+					type: "uint256",
+					value: BigInt(this.amount)
+				},
+				{
+					name: "data",
+					type: "bytes",
+					value: "0x00"
+				},
+			);
+		}
+
 		this.showLoader.emit();
 
 		try {
@@ -123,6 +141,14 @@ export class TransferDialog {
 							<input type="text" value={this.recipient} placeholder="Ethereum address"
 								   onChange={(evt) => this.recipient = (evt.target as HTMLInputElement).value} required />
 						</div>
+						{this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
+							<div class="form-field">
+								<label>Amount</label>
+								<input type="number" value={this.amount} placeholder="Amount"
+									   onChange={(evt) => this.amount = parseInt((evt.target as HTMLInputElement).value)}
+									   required />
+							</div> : ''
+						}
 					</div>
 					<button type="submit" class="jid-btn jid-transfer-btn">Send</button>
 				</form>
