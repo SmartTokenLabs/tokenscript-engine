@@ -106,7 +106,7 @@ export class TokenViewer {
 					blockChain: "eth",
 					chainId: parseInt(query.get("chain")),
 					tokenType: tokenMeta.collectionData.contractType as TokenType,
-					contractAddress: tokenMeta.collectionData.contract,
+					contractAddress: query.get("contract"),
 					name: tokenMeta.collectionData.title as string,
 					description: tokenMeta.collectionData.description as string,
 					image: tokenMeta.collectionData.image as string
@@ -201,9 +201,9 @@ export class TokenViewer {
 		return (
 			<Host>
 				<div class="token-viewer">
-					<div class="details-container">
-						{ this.tokenDetails ? (
-						<div>
+					{ this.tokenDetails ? (
+					<div>
+						<div class="details-container">
 							<div class="image-container">
 								<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
 							</div>
@@ -224,7 +224,7 @@ export class TokenViewer {
 									<div class="attribute-container">
 										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
 											return (
-												<div class="attribute-item">
+												<div class="attribute-item" title={attr.trait_type + ": " + attr.value}>
 													<h5>{attr.trait_type}</h5>
 													<span>{attr.value}</span>
 												</div>
@@ -233,9 +233,13 @@ export class TokenViewer {
 									</div>
 								</div>
 							</div>
-						</div>) : ''}
+						</div>
+						<action-bar engine={this.app.tsEngine}
+									tokenDetails={this.tokenDetails}
+									tokenScript={this.tokenScript}
+									loading={this.loadingTs} />
 					</div>
-					<action-bar tokenScript={this.tokenScript} loading={this.loadingTs} />
+					) : <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> }
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>

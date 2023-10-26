@@ -3,6 +3,8 @@ import {ITransactionStatus, TokenScript} from "../../../../../engine-js/src/Toke
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {showTransactionNotification} from "../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../app/app";
+import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
+import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
 
 @Component({
 	tag: 'action-bar',
@@ -14,6 +16,12 @@ export class ActionBar {
 
 	private overflowDialog: HTMLActionOverflowModalElement;
 	private transferDialog: HTMLTransferDialogElement;
+
+	@Prop()
+	engine: TokenScriptEngine;
+
+	@Prop()
+	tokenDetails?: ITokenDetail;
 
 	@Prop()
 	tokenScript?: TokenScript;
@@ -136,7 +144,9 @@ export class ActionBar {
 				}
 				{ (this.loading || (this.tokenScript && this.cardButtons === undefined)) ? <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> : ''}
 				<button class="jid-btn jid-transfer-btn" onClick={() => this.transferDialog.openDialog()}>Transfer</button>
-				<transfer-dialog tokenScript={this.tokenScript} ref={(el) => this.transferDialog = el as HTMLTransferDialogElement} />
+				<transfer-dialog engine={this.engine}
+								 tokenDetails={this.tokenDetails}
+								 ref={(el) => this.transferDialog = el as HTMLTransferDialogElement} />
 			</div>
 		)
 	}

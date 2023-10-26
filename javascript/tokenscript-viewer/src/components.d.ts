@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { TokenScriptEngine } from "../../engine-js/src/Engine";
+import { ITokenDetail } from "../../engine-js/src/tokens/ITokenDetail";
 import { TokenScript } from "../../engine-js/src/TokenScript";
 import { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
 import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
@@ -19,7 +21,9 @@ export namespace Components {
     interface AboutTokenscript {
     }
     interface ActionBar {
+        "engine": TokenScriptEngine;
         "loading": boolean;
+        "tokenDetails"?: ITokenDetail;
         "tokenScript"?: TokenScript;
     }
     interface ActionOverflowModal {
@@ -145,8 +149,9 @@ export namespace Components {
     }
     interface TransferDialog {
         "closeDialog": () => Promise<void>;
+        "engine": TokenScriptEngine;
         "openDialog": () => Promise<void>;
-        "tokenScript"?: TokenScript;
+        "tokenDetails": ITokenDetail;
     }
     interface ViewStep {
         "card": Card;
@@ -191,6 +196,10 @@ export interface TokenViewerCustomEvent<T> extends CustomEvent<T> {
 export interface TokensGridCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTokensGridElement;
+}
+export interface TransferDialogCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTransferDialogElement;
 }
 export interface ViewStepCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -460,10 +469,12 @@ declare namespace LocalJSX {
     interface AboutTokenscript {
     }
     interface ActionBar {
+        "engine"?: TokenScriptEngine;
         "loading"?: boolean;
         "onHideLoader"?: (event: ActionBarCustomEvent<void>) => void;
         "onShowLoader"?: (event: ActionBarCustomEvent<void>) => void;
         "onShowToast"?: (event: ActionBarCustomEvent<ShowToastEventArgs>) => void;
+        "tokenDetails"?: ITokenDetail;
         "tokenScript"?: TokenScript;
     }
     interface ActionOverflowModal {
@@ -583,7 +594,11 @@ declare namespace LocalJSX {
     interface TokenscriptGrid {
     }
     interface TransferDialog {
-        "tokenScript"?: TokenScript;
+        "engine"?: TokenScriptEngine;
+        "onHideLoader"?: (event: TransferDialogCustomEvent<void>) => void;
+        "onShowLoader"?: (event: TransferDialogCustomEvent<void>) => void;
+        "onShowToast"?: (event: TransferDialogCustomEvent<ShowToastEventArgs>) => void;
+        "tokenDetails"?: ITokenDetail;
     }
     interface ViewStep {
         "card"?: Card;

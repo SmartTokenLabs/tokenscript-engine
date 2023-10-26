@@ -94,8 +94,9 @@ header {
 .attribute-item {
 	border-radius: 8px;
 	border: 1px solid #8D98F8;
-	min-height: 80px;
+	min-height: 64px;
 	padding: 6px 4px;
+	overflow: hidden;
 }
 
 .attribute-item h5 {
@@ -109,6 +110,7 @@ header {
 	font-size: 12px;
 	font-weight: 400;
 	line-height: 16px;
+	word-break: break-word;
 }
 
 .jid-btn {
