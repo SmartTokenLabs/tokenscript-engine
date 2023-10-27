@@ -39,7 +39,8 @@ export class TokenSecurityStatus {
 	}
 
 	private getDetailedSecurityInfo(){
-		return this.securityInfo.statusText;
+		return this.securityInfo.statusText +
+			(this.securityInfo.signingKey ? "\n\nSigner Key: " + this.securityInfo.signingKey : "");
 	}
 
 	render() {

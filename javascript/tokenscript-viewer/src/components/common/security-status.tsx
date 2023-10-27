@@ -1,6 +1,7 @@
 import {Component, h, Prop, State, Watch} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {computeAddress} from "ethers/lib/utils";
 
 @Component({
 	tag: 'security-status',
@@ -50,7 +51,8 @@ export class SecurityStatus {
 		}, []);
 
 		return "TokenScript security information\n\n" +
-			(this.securityInfo.signerPublicKey ? "Signer Key: " + this.securityInfo.signerPublicKey + "\n" : "") +
+			(this.securityInfo.authoritivePublicKey ? "Authoritive Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + " (" + this.securityInfo.authoritivePublicKey + ")\n" : "") +
+			(this.securityInfo.signerPublicKey ? "Signer Key: " + computeAddress(this.securityInfo.signerPublicKey) + "\n" : "") +
 			"Authentication: " + (authMethods.join(", "));
 	}
 

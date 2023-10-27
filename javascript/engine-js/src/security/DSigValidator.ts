@@ -9,13 +9,18 @@ const crypto = new Crypto();
 xmldsigjs.Application.setEngine("WebCryptoLiner", crypto);
 x509.cryptoProvider.set(crypto);
 
+export interface DSigKeyResult {
+	authoritiveKey: string, // If certificates are included, this is the key that issued the certificate to the signing key, otherwise it's the signing key
+	signingKey: string
+}
+
 export class DSigValidator {
 
 	/**
 	 * Extract the XML DSig signer key or root key in the certificate chain
 	 * @param tokenScript
 	 */
-	public async getSignerKey(tokenScript: TokenScript): Promise<false|string>{
+	public async getSignerKey(tokenScript: TokenScript): Promise<false|DSigKeyResult>{
 
 		const xmlStr = tokenScript.getXmlString();
 
@@ -35,18 +40,31 @@ export class DSigValidator {
 
 			const signerKey = await (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyValue) as KeyValue).exportKey();
 			const x509Data = (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyInfoX509Data) as KeyInfoX509Data);
+			const signerKeyHex = await this.keyToHex(signerKey);
+
+			//console.log("DSIG validator: signer key: ", signerKeyHex, computeAddress(signerKeyHex));
 
 			if (x509Data && x509Data.Certificates.length > 0){
 
-				const signerKeyHex = await this.keyToHex(signerKey);
+				console.info("DSIG validator: Signature includes certificate, verifying chain.");
 
 				if (x509Data.Certificates.length > 1){
-					return this.keyToHex(await this.verifyCertificateChain(x509Data.Certificates, signerKeyHex));
+
+					const masterKeyHex = await this.keyToHex(await this.verifyCertificateChain(x509Data.Certificates, signerKeyHex));
+
+					return {
+						authoritiveKey: masterKeyHex,
+						signingKey: signerKeyHex
+					};
 				} else {
 
 					const cert = new x509.X509Certificate(x509Data.Certificates[0].GetRaw());
 
 					const masterPubKey = await this.getSignerPublicKeyFromCertificate(cert);
+
+					const masterKeyHex = await this.keyToHex(masterPubKey);
+
+					//console.log("DSIG validator: master key: ", masterKeyHex, computeAddress(masterKeyHex));
 
 					if (!await cert.verify({ publicKey: masterPubKey }))
 						throw new Error("x509 certificate verification failed!");
@@ -56,12 +74,18 @@ export class DSigValidator {
 					if (cerPubKey != signerKeyHex)
 						throw new Error("Certificate subject public key does not match XML signing key");
 
-					return signerKeyHex;
+					return {
+						authoritiveKey: masterKeyHex,
+						signingKey: signerKeyHex
+					};
 				}
 
 			}
 
-			return this.keyToHex(signerKey);
+			return {
+				authoritiveKey: signerKeyHex,
+				signingKey: signerKeyHex
+			};
 
 		} else {
 			throw new Error("DSIG verification failed!");

@@ -10,6 +10,7 @@ export enum SecurityStatus {
 }
 
 export interface ISecurityInfo {
+	authoritivePublicKey?: string,
 	signerPublicKey?: string,
 	ipfsCid?: string,
 	status: SecurityStatus,
@@ -49,7 +50,8 @@ export class SecurityInfo {
 		const result = await (new DSigValidator()).getSignerKey(this.tokenScript);
 
 		if (result !== false){
-			this.securityInfo.signerPublicKey = result;
+			this.securityInfo.authoritivePublicKey = result.authoritiveKey;
+			this.securityInfo.signerPublicKey = result.signingKey;
 		}
 
 		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);

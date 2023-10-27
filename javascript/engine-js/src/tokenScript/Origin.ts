@@ -14,12 +14,14 @@ export enum AuthenticationType {
 export interface IOriginSecurityInfo {
 	type: AuthenticationType
 	status: SecurityStatus,
-	statusText: string
+	statusText: string,
+	signingKey?: string
 }
 
 export class Origin {
 
 	private securityStatus?: IOriginSecurityInfo
+	private signingKey?: string;
 
 	constructor(
 		private tokenScript: TokenScript,
@@ -35,18 +37,20 @@ export class Origin {
 
 			console.log("Validating token origin: " + this.name);
 
-			if (securityInfo.signerPublicKey)
-				await this.validateBySignerKey(securityInfo.signerPublicKey);
+			if (securityInfo.authoritivePublicKey)
+				await this.validateBySignerKey(securityInfo.authoritivePublicKey);
 
 			if (!this.securityStatus && this.type === "contract")
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
 
-			if (!this.securityStatus)
+			if (!this.securityStatus.status)
 				this.securityStatus = {
 					type: AuthenticationType.NONE,
 					status: SecurityStatus.INVALID,
-					statusText: "The TokenScript is not signed by the " + (this.type == "attestation" ? "attestation issuer" : "contract deployer")
+					statusText: "The TokenScript is not signed by the " + (this.type == "attestation" ? "attestation issuer" : "contract deployer"),
 				}
+
+			this.securityStatus.signingKey = this.signingKey;
 		}
 
 		return this.securityStatus;
@@ -79,6 +83,8 @@ export class Origin {
 					console.warn("DSIG validator: contract key does not match DSIG: ", dsigKeyOrAddress);
 				}
 
+				this.signingKey = contractKey.value;
+
 			} catch (e) {
 				console.warn(e);
 			}
@@ -86,6 +92,8 @@ export class Origin {
 		} else {
 			// Match against attestation definition public key
 			const definition = this.tokenScript.getAttestationDefinitions().getDefinition(this.name);
+
+			this.signingKey = definition.keys.join(", ");
 
 			// TODO: This will cause valid attestations to be marked as a fail, rework so status for a specific token can be fetched
 			for (const key of definition.keys){
