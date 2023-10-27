@@ -60,7 +60,7 @@
 			const iframe = document.getElementById("frame");
 
 			window.addEventListener("message", async (message) => {
-				if (message.origin !== "http://localhost:3333")
+				if (message.origin !== "https://viewer-staging.tokenscript.org")
 					return;
 
 				if (message.data.jsonrpc !== "2.0")
@@ -113,7 +113,10 @@
 					data.error = error;
 				}
 
-				iframe.contentWindow.postMessage(data, "http://localhost:3333");
+				iframe.contentWindow.postMessage(data,
+					"https://viewer-staging.tokenscript.org/"
+					//"http://localhost:3333"
+				);
 			}
 		</script>
 	</body>
