@@ -37,7 +37,13 @@ export class ViewerPopover {
 						<security-status tokenScript={this.tokenScript}/>
 						<div>
 							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
-									onClick={() => this.tokenScript.getTokenMetadata(true, true)}>↻
+									onClick={() => {
+										this.tokenScript.getCards().forEach((card) => {
+											card.getAttributes().invalidate()
+										})
+										this.tokenScript.getAttributes().invalidate()
+										this.tokenScript.getTokenMetadata(true, true)
+									}}>↻
 							</button>
 							<wallet-button></wallet-button>
 						</div>
