@@ -55,13 +55,16 @@
 	box-sizing: border-box;
 	position: absolute;
 	max-width: 500px;
+	max-height: calc(100dvh - 80px);
 	width: 100%;
 	background: #fff;
 	min-height: 300px;
 	border-radius: 8px;
 	padding: 10px;
-	top: 110vh;
+	top: 110dvh;
 	animation: slideIn 0.5s reverse;
+	display: flex;
+	flex-direction: column;
 }
 
 .close-btn {
@@ -79,6 +82,14 @@
 
 .close-btn:hover {
 	color: #cacaca;
+}
+
+.popover-inner {
+	position: relative;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
 }
 
 @media (max-width: 500px) {

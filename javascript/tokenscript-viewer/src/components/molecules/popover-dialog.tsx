@@ -37,7 +37,9 @@ export class PopoverDialog {
 							this.dismissCallback = null;
 						}
 					}}>x</button>
-					<slot/>
+					<div class="popover-inner">
+						<slot/>
+					</div>
 				</div>
 			</div>
 		);

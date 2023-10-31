@@ -22,9 +22,6 @@ export class TokenViewer {
 	tokenDetails: ITokenDetail;
 
 	@State()
-	loadingTs = true;
-
-	@State()
 	tokenScript: TokenScript;
 
 	urlRequest: URLSearchParams;
@@ -188,13 +185,9 @@ export class TokenViewer {
 				this.tokenScript = tokenScript;
 			}
 
-			console.log("tokenscript loaded!!");
-
 		} catch (e){
 			console.warn(e.message);
 		}
-
-		this.loadingTs = false;
 	}
 
 	render(){
@@ -243,8 +236,7 @@ export class TokenViewer {
 						</div>
 						<action-bar engine={this.app.tsEngine}
 									tokenDetails={this.tokenDetails}
-									tokenScript={this.tokenScript}
-									loading={this.loadingTs} />
+									tokenScript={this.tokenScript} />
 					</div>
 					) : <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> }
 				</div>

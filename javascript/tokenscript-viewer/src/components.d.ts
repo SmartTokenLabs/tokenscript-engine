@@ -22,7 +22,6 @@ export namespace Components {
     }
     interface ActionBar {
         "engine": TokenScriptEngine;
-        "loading": boolean;
         "tokenDetails"?: ITokenDetail;
         "tokenScript"?: TokenScript;
     }
@@ -470,7 +469,6 @@ declare namespace LocalJSX {
     }
     interface ActionBar {
         "engine"?: TokenScriptEngine;
-        "loading"?: boolean;
         "onHideLoader"?: (event: ActionBarCustomEvent<void>) => void;
         "onShowLoader"?: (event: ActionBarCustomEvent<void>) => void;
         "onShowToast"?: (event: ActionBarCustomEvent<ShowToastEventArgs>) => void;

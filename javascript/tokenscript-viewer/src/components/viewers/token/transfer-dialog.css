@@ -7,10 +7,12 @@
 
 .token-viewer .transfer-form > div {
 	flex-grow: 1;
+	margin: 0 10px;
 }
 
 .token-viewer .transfer-form > button {
 	flex-grow: 0;
+	margin: 0 10px 10px;
 }
 
 .token-viewer .transfer-form h3 {

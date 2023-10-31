@@ -26,9 +26,6 @@ export class ActionBar {
 	@Prop()
 	tokenScript?: TokenScript;
 
-	@Prop()
-	loading = true;
-
 	@State() cardButtons: JSX.Element[]|undefined;
 
 	@Event({
@@ -142,7 +139,6 @@ export class ActionBar {
 						</action-overflow-modal>)
 					] : ''
 				}
-				{ (this.loading || (this.tokenScript && this.cardButtons === undefined)) ? <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> : ''}
 				<button class="jid-btn jid-transfer-btn" onClick={() => this.transferDialog.openDialog()}>Transfer</button>
 				<transfer-dialog engine={this.engine}
 								 tokenDetails={this.tokenDetails}
