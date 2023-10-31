@@ -3,7 +3,7 @@ import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {CHAIN_MAP} from "../../../integration/constants";
-import {BlockChain, ITokenCollection, TokenType} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
+import {ITokenCollection, TokenType} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {BASE_TOKEN_DISCOVERY_URL} from "../../../integration/discoveryAdapter";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 
@@ -27,6 +27,8 @@ export class TokenViewer {
 	urlRequest: URLSearchParams;
 
 	@State() cardButtons: JSX.Element[]|undefined;
+
+	@State() actionsEnabled = true;
 
 	@Event({
 		eventName: 'showToast',
@@ -61,21 +63,15 @@ export class TokenViewer {
 
 			this.urlRequest = query;
 
-			try {
-				await this.processUrlLoad();
-			} catch (e){
+			await this.processUrlLoad();
 
-			}
-		} catch (e){
-			console.error(e)
-		}
-	}
-
-	async componentDidLoad(){
-		try {
-			await this.loadTokenScript();
 		} catch (e){
 			console.error(e);
+			this.showToast.emit({
+				type: 'error',
+				title: "Failed to load token details",
+				description: e.message
+			});
 		}
 	}
 
@@ -89,6 +85,9 @@ export class TokenViewer {
 		const query = new URLSearchParams(queryStr);
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
+
+			if (query.get("actionsEnabled") === "false")
+				this.actionsEnabled = false;
 
 			this.app.showTsLoader();
 
@@ -118,10 +117,10 @@ export class TokenViewer {
 
 			this.app.hideTsLoader();
 
+			this.loadTokenScript();
+
 			return true;
 		}
-
-		// TODO: Show error screen
 
 		throw new Error("Could not locate token details using the values provided in the URL");
 	}
@@ -236,9 +235,10 @@ export class TokenViewer {
 						</div>
 						<action-bar engine={this.app.tsEngine}
 									tokenDetails={this.tokenDetails}
-									tokenScript={this.tokenScript} />
+									tokenScript={this.tokenScript}
+									actionsEnabled={this.actionsEnabled} />
 					</div>
-					) : <loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} /> }
+					) : '' }
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>

@@ -3,7 +3,8 @@ import {Component, h, Method, Prop, State} from "@stencil/core";
 @Component({
 	tag: 'popover-dialog',
 	styleUrl: 'popover-dialog.css',
-	shadow: true,
+	shadow: false,
+	scoped: false
 })
 export class PopoverDialog {
 

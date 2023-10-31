@@ -26,6 +26,9 @@ export class ActionBar {
 	@Prop()
 	tokenScript?: TokenScript;
 
+	@Prop()
+	actionsEnabled?: boolean;
+
 	@State() cardButtons: JSX.Element[]|undefined;
 
 	@Event({
@@ -123,12 +126,29 @@ export class ActionBar {
 		}
 	}
 
+	private actionsAvailable(){
+		if (!this.actionsEnabled){
+			this.showToast.emit({
+				type: 'error',
+				title: "Action is not available now",
+				description: "Please try again later"
+			});
+			return false;
+		}
+
+		return true;
+	}
+
 	render(){
 		return (
 			<div class="jid-action-bar">
 				{ this.cardButtons?.length ?
 					[
-						(<button class="jid-btn jid-overflow-btn" onClick={() => this.overflowDialog.openDialog()}>
+						(<button class="jid-btn jid-overflow-btn" onClick={() => {
+							if (!this.actionsAvailable())
+								return;
+							this.overflowDialog.openDialog()
+						}}>
 							<img alt="more actions" src="/assets/icon/joyid/arrow-square-down.png"/> More
 						</button>),
 						(<action-overflow-modal ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
@@ -139,7 +159,11 @@ export class ActionBar {
 						</action-overflow-modal>)
 					] : ''
 				}
-				<button class="jid-btn jid-transfer-btn" onClick={() => this.transferDialog.openDialog()}>Transfer</button>
+				<button class="jid-btn jid-transfer-btn" onClick={() => {
+					if (!this.actionsAvailable())
+						return;
+					this.transferDialog.openDialog()
+				}}>Transfer</button>
 				<transfer-dialog engine={this.engine}
 								 tokenDetails={this.tokenDetails}
 								 ref={(el) => this.transferDialog = el as HTMLTransferDialogElement} />
