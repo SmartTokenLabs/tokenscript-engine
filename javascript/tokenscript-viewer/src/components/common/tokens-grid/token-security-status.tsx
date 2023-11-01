@@ -35,7 +35,7 @@ export class TokenSecurityStatus {
 			case TSSecurityStatus.INVALID:
 			default:
 				this.statusColor = "#ff4f4f";
-				this.statusIcon = "⚠";
+				this.statusIcon = "✗";
 				break;
 		}
 	}
