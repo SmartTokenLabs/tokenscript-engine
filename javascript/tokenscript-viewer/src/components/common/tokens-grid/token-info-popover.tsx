@@ -32,7 +32,7 @@ export class TokenInfoPopover {
 
 		for (const attribute of this.tokenScript.getAttributes()){
 			const value = await attribute.getCurrentValue();
-			if (value)
+			if (value !== undefined)
 				newAttributes.push({
 					label: attribute.getLabel(),
 					value

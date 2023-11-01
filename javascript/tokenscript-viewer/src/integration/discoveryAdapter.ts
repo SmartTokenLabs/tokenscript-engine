@@ -122,7 +122,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		} else if (tokenData.length > 0) {
 			token.name = tokenData[0].title;
-			token.balance = tokenData[0].data?.balance;
+			token.balance = tokenData[0].data?.balance ?? 0;
 			token.symbol = tokenData[0].symbol;
 			token.decimals = tokenData[0].data?.decimals;
 		} else {

@@ -45,7 +45,7 @@ export class AppRoot {
 
 		let provider;
 
-		if (viewerType === "joyid-token" || !params.has("noIframeProvider")){
+		if (viewerType === "joyid-token" && !params.has("noIframeProvider")){
 			if (!this.iframeProvider)
 				this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
 			provider = this.iframeProvider;
