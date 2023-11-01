@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/engine-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Typescript implementation if the TokenScript runtime",
   "type": "commonjs",
   "main": "./dist/lib.commonjs/index.js",
