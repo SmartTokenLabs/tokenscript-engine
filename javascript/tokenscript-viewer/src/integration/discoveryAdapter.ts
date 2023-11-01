@@ -120,12 +120,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			token.symbol = collectionData?.symbol;
 			token.decimals = 0;
 
+		// TODO: Rework this. I dunno how it got this bad but I think I was working around some inconsistencies in the discovery API
+		// 	Rework so collection data API isn't required for erc20
 		} else if (tokenData.length > 0) {
 			token.name = tokenData[0].title;
 			token.balance = tokenData[0].data?.balance ?? 0;
 			token.symbol = tokenData[0].symbol;
 			token.decimals = tokenData[0].data?.decimals;
 		} else {
+			token.name = collectionData.title;
+			token.balance = 0;
+			token.symbol = collectionData.symbol;
+			token.decimals = collectionData.decimals;
 			return token;
 		}
 
