@@ -29,3 +29,19 @@ export const showTransactionNotification = async (data: ITransactionStatus, show
 	}
 
 };
+
+export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToastEventArgs>) => {
+
+	let message = e.message;
+
+	const revertMatch = message.match(/reverted with reason string '(.*)'/);
+
+	if (revertMatch)
+		message = revertMatch[1];
+
+	showToast.emit({
+		type: 'error',
+		title: "Transaction Error",
+		description: message
+	});
+};

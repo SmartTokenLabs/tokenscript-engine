@@ -2,7 +2,7 @@ import {Component, Event, EventEmitter, h, Method, Prop, State} from "@stencil/c
 import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
 import {ITransactionStatus} from "../../../../../engine-js/src/TokenScript";
-import {showTransactionNotification} from "../util/showTransactionNotification";
+import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../app/app";
 
 @Component({
@@ -119,11 +119,7 @@ export class TransferDialog {
 		} catch(e){
 			console.error(e);
 			this.hideLoader.emit();
-			this.showToast.emit({
-				type: 'error',
-				title: "Transaction Error",
-				description: e.message
-			});
+			handleTransactionError(e, this.showToast);
 			return;
 		}
 

@@ -3,7 +3,7 @@ import {Attribute} from "../../../../../engine-js/src/tokenScript/Attribute";
 import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
 import {JSX, h, EventEmitter} from "@stencil/core";
 import {AbstractViewBinding} from "../../../integration/abstractViewBinding";
-import {showTransactionNotification} from "../util/showTransactionNotification";
+import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
 import {ShowToastEventArgs} from "../../app/app";
 
@@ -62,11 +62,7 @@ export class ViewBinding extends AbstractViewBinding {
 				await this.currentCard.executeTransaction((data: ITransactionStatus) => { showTransactionNotification(data, this.showToast); });
 			} catch (e){
 				console.error(e);
-				this.showToast.emit({
-					type: 'error',
-					title: "Transaction Error",
-					description: e.message
-				});
+				handleTransactionError(e, this.showToast);
 			}
 
 		} else {

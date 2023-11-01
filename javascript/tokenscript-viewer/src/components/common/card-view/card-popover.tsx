@@ -5,7 +5,7 @@ import {IViewBinding} from "../../../../../engine-js/src/view/IViewBinding";
 import {RequestFromView, ViewEvent} from "../../../../../engine-js/src/view/ViewController";
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {AbstractViewBinding, VIEW_BINDING_JAVASCRIPT} from "../../../integration/abstractViewBinding";
-import {showTransactionNotification} from "../../viewers/util/showTransactionNotification";
+import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
 
 
 @Component({
@@ -166,11 +166,7 @@ export class CardPopover implements IViewBinding {
 				});
 			} catch (e){
 				this.postMessageToView(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message});
-				this.showToast.emit({
-					type: 'error',
-					title: "Transaction Error",
-					description: e.message
-				});
+				handleTransactionError(e, this.showToast);
 			}
 
 		} else {

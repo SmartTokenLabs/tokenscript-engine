@@ -94,6 +94,7 @@ export class TokensGridItem {
 			details = this.token.name;
 		} else {
 			title = this.token.name;
+			details = "Balance: " + this.token.balance;
 		}
 
 		return (

@@ -6,7 +6,7 @@ import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {ShowToastEventArgs} from "../../app/app";
-import {showTransactionNotification} from "../../viewers/util/showTransactionNotification";
+import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
 
 @Component({
 	tag: 'tokens-grid',
@@ -137,11 +137,7 @@ export class TokensGrid {
 		} catch(e){
 			console.error(e);
 			this.hideLoader.emit();
-			this.showToast.emit({
-				type: 'error',
-				title: "Transaction Error",
-				description: e.message
-			});
+			handleTransactionError(e, this.showToast);
 			return;
 		}
 
