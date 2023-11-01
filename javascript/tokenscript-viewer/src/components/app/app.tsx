@@ -40,11 +40,12 @@ export class AppRoot {
 
 	async getWalletAdapter(): Promise<IWalletAdapter> {
 
-		const viewerType = new URLSearchParams(document.location.search).get("viewType");
+		const params = new URLSearchParams(document.location.search);
+		const viewerType = params.get("viewType");
 
 		let provider;
 
-		if (viewerType === "joyid-token"){
+		if (viewerType === "joyid-token" || !params.has("noIframeProvider")){
 			if (!this.iframeProvider)
 				this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
 			provider = this.iframeProvider;
