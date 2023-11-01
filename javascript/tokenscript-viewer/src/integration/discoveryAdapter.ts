@@ -257,7 +257,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 			if (token.tokenType === "erc20"){
 
-				token.balance = await contract.balanceOf(owner);
+				token.balance = BigInt(await contract.balanceOf(owner));
 
 			} else {
 

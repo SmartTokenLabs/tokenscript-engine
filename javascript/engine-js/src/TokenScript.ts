@@ -547,7 +547,7 @@ export class TokenScript {
 				description: tokenDetails?.description ?? tokenContext.description,
 				label: tokenContext.name,
 				symbol: tokenContext.symbol,
-				_count: tokenContext.balance,
+				_count: tokenContext.balance.toString(), // bigint can't be json serialized, so it must always be string
 				contractAddress: tokenContext.contractAddress,
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
