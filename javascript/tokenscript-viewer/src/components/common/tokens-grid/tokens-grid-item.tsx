@@ -114,7 +114,7 @@ export class TokensGridItem {
 							this.cardButtons :
 							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
 						}
-						{ this.overflowCardButtons ?
+						{ this.overflowCardButtons?.length ?
 							[
 								(<button class="btn more-actions-btn" onClick={() => this.overflowDialog.openDialog()}>
 									+ More actions

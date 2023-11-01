@@ -1,8 +1,8 @@
 import {ITokenDiscoveryAdapter} from "../../../engine-js/src/tokens/ITokenDiscoveryAdapter";
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
+import {ITokenCollection, TokenType} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 
 import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
-import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC721_ABI_JSON} from "./constants";
+import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC20_ABI_JSON, ERC721_ABI_JSON} from "./constants";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
 import {Contract, ethers} from "ethers";
@@ -83,15 +83,14 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		let collectionData = await this.getCollectionMeta(token, chain);
 
-
 		if (token.chainId === ChainID.HARDHAT_LOCALHOST){
 
-			const nftTokenDetails: ITokenDetail[] = await this.fetchOwnerTokensRpc(token, ownerAddress);
+			token = {
+				...token,
+				...collectionData
+			}
 
-			token.tokenDetails = nftTokenDetails;
-			token.balance = nftTokenDetails.length;
-			token.symbol = collectionData?.symbol;
-			token.decimals = 0;
+			token = await this.fetchOwnerTokensRpc(token, ownerAddress);
 
 			return token;
 		}
@@ -198,7 +197,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	private async fetchTokenMetadataRpc(token: ITokenCollection){
 
-		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId);
+		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId, token.tokenType);
 
 
 		let name, symbol, contractUri, description, image;
@@ -249,55 +248,65 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 	private async fetchOwnerTokensRpc(token: ITokenCollection,  owner: string) {
 
-		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId);
+		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId, token.tokenType);
 
 		// TODO: ERC-20 & token metadata
 		const tokenDetails: ITokenDetail[] = [];
 
 		try {
 
-			let tokenIds;
+			if (token.tokenType === "erc20"){
 
-			try {
-				tokenIds = await this.getTokenIdsLogs(contract, owner);
-			} catch (e){
-				tokenIds = await this.getTokenIdsEnumerable(contract, owner);
-			}
+				token.balance = await contract.balanceOf(owner);
 
-			for (const tokenId of tokenIds){
+			} else {
 
-				let meta: any = {};
+				let tokenIds;
 
 				try {
-					const metaUri = await contract.tokenURI(tokenId);
-
-					meta = await (await fetch(metaUri, {
-						headers: {
-							'Accept': 'text/plain'
-						}
-					})).json();
+					tokenIds = await this.getTokenIdsLogs(contract, owner);
 				} catch (e){
-					console.warn("Failed to load token metadata:", e);
+					tokenIds = await this.getTokenIdsEnumerable(contract, owner);
 				}
 
-				console.log(meta);
+				for (const tokenId of tokenIds){
 
-				tokenDetails.push({
-					collectionId: token.originId,
-					tokenId: tokenId.toString(),
-					name: meta.name ?? "Test token #" + tokenId,
-					description: meta.description ?? "",
-					image: meta.image ?? "",
-					collectionDetails: token
-				});
-				//console.log("Meta Uri: ", metaUri);
+					let meta: any = {};
+
+					try {
+						const metaUri = await contract.tokenURI(tokenId);
+
+						meta = await (await fetch(metaUri, {
+							headers: {
+								'Accept': 'text/plain'
+							}
+						})).json();
+					} catch (e){
+						console.warn("Failed to load token metadata:", e);
+					}
+
+					console.log(meta);
+
+					tokenDetails.push({
+						collectionId: token.originId,
+						tokenId: tokenId.toString(),
+						name: meta.name ?? "Test token #" + tokenId,
+						description: meta.description ?? "",
+						image: meta.image ?? "",
+						collectionDetails: token
+					});
+					//console.log("Meta Uri: ", metaUri);
+				}
+
+				token.tokenDetails = tokenDetails;
+				token.balance = tokenDetails.length;
 			}
 
 		} catch (e){
 			console.error(e);
 		}
 
-		return tokenDetails;
+		return token;
 	}
 
 	private async getTokenIdsEnumerable(contract, owner){
@@ -346,10 +355,10 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return a.toLowerCase() === b.toLowerCase();
 	}
 
-	private getEthersContractInstance(address: string, chainId: number){
+	private getEthersContractInstance(address: string, chainId: number, type: TokenType){
 		const provider = new ethers.providers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc);
 
-		return new Contract(address, ERC721_ABI_JSON, provider);
+		return new Contract(address, type === "erc20" ? ERC20_ABI_JSON : ERC721_ABI_JSON, provider);
 	}
 
 	private async fetchRequest(query: string){

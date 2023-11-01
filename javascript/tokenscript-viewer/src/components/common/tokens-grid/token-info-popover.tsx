@@ -26,7 +26,7 @@ export class TokenInfoPopover {
 		this.token = token;
 
 		const [contract, index] = this.token.contextId.split("-");
-		this.tokenScript.setCurrentTokenContext(contract, parseInt(index));
+		this.tokenScript.setCurrentTokenContext(contract, index ? parseInt(index) : null);
 
 		const newAttributes: {label: string, value: string}[] = [];
 

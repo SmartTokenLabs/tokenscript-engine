@@ -43,7 +43,7 @@ export class Origin {
 			if (!this.securityStatus && this.type === "contract")
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
 
-			if (!this.securityStatus.status)
+			if (!this.securityStatus)
 				this.securityStatus = {
 					type: AuthenticationType.NONE,
 					status: SecurityStatus.INVALID,

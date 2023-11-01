@@ -18,7 +18,7 @@ export interface ITokenCollection {
 	description?: string;
 	symbol?: string;
 	decimals?: number;
-	balance?: number;
+	balance?: number|bigint;
 	image?: string;
 	tokenDetails?: ITokenDetail[];
 	data?: any;
