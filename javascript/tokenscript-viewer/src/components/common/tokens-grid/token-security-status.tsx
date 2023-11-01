@@ -10,6 +10,8 @@ import {IOriginSecurityInfo} from "@tokenscript/engine-js/src/tokenScript/Origin
 })
 export class TokenSecurityStatus {
 
+	private dialog: HTMLPopoverDialogElement;
+
 	@Prop() tokenScript: TokenScript;
 	@Prop() originId: string;
 
@@ -39,16 +41,24 @@ export class TokenSecurityStatus {
 	}
 
 	private getDetailedSecurityInfo(){
-		return this.securityInfo.statusText +
-			(this.securityInfo.signingKey ? "\n\nSigner Key: " + this.securityInfo.signingKey : "");
+		return (this.securityInfo.signingKey ? "Signer Key: " + this.securityInfo.signingKey : "");
 	}
 
 	render() {
 		return (
 			this.securityInfo ?
-				<div class="token-security-status" style={{background: this.statusColor}}
-					 title={this.getDetailedSecurityInfo()}>
-					{this.statusIcon}
+				<div>
+					<div class="token-security-status" style={{background: this.statusColor}}
+						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
+						 onClick={() => this.dialog.openDialog()}>
+						{this.statusIcon}
+					</div>
+					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+						<h1 class="security-popover-icon" style={{color: this.statusColor}}>{this.statusIcon}</h1>
+						<strong>{this.securityInfo.statusText}</strong>
+						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
+						</p>
+					</popover-dialog>
 				</div>
 				: ''
 		)

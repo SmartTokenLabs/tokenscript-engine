@@ -118,6 +118,9 @@ export class Attribute {
 		if (throwOnUndefined && value === undefined)
 			throw new Error("Could not resolve attribute " + this.getName());
 
+		if (value === undefined)
+			return value;
+
 		return this.transformValue(value);
 	}
 
@@ -125,8 +128,8 @@ export class Attribute {
 	 * Fetches the current value, skipping value resolution except in the case of user input
 	 * This is helpful for rendering the current attribute state and avoids simultaneous requests to resolve attributes
 	 */
-	public async getCurrentValue(){
-		return this.getValue(false, true);
+	public async getCurrentValue(tokenContext: ITokenIdContext = this.tokenScript.getCurrentTokenContext()){
+		return this.getValue(false, true, false, tokenContext);
 	}
 
 	/**

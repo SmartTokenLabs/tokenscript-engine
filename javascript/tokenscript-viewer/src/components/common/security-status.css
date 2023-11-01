@@ -9,4 +9,12 @@
 	height: 36px;
 	text-align: center;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.security-popover-icon {
+	font-size: 50px;
+	margin: 0 0 10px;
 }

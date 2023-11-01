@@ -10,6 +10,8 @@ import {computeAddress} from "ethers/lib/utils";
 })
 export class SecurityStatus {
 
+	private dialog: HTMLPopoverDialogElement;
+
 	@Prop() tokenScript: TokenScript;
 
 	@State() securityInfo: Partial<ISecurityInfo>;
@@ -30,11 +32,11 @@ export class SecurityStatus {
 				break;
 			case TSSecurityStatus.WARNING:
 				this.statusColor = "#ff871d";
-				this.statusIcon = "⚠";
+				this.statusIcon = "✗";
 				break;
 			case TSSecurityStatus.INVALID:
 				this.statusColor = "#ff4f4f";
-				this.statusIcon = "⚠";
+				this.statusIcon = "✗";
 				break;
 		}
 	}
@@ -50,19 +52,27 @@ export class SecurityStatus {
 			return previous;
 		}, []);
 
-		return "TokenScript security information\n\n" +
-			(this.securityInfo.authoritivePublicKey ? "Authoritive Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + " (" + this.securityInfo.authoritivePublicKey + ")\n" : "") +
-			(this.securityInfo.signerPublicKey ? "Signer Key: " + computeAddress(this.securityInfo.signerPublicKey) + "\n" : "") +
-			"Authentication: " + (authMethods.join(", "));
+		return "TokenScript security information\n" +
+			(this.securityInfo.authoritivePublicKey ? "\nAuthoritive Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + "\n(" + this.securityInfo.authoritivePublicKey + ")" : "") +
+			(this.securityInfo.signerPublicKey ? "\nSigner Key: " + computeAddress(this.securityInfo.signerPublicKey) : "") +
+			"\nAuthentication: " + (authMethods.join(", "));
 	}
 
 	render() {
 		return (
 			this.securityInfo ?
-				<div class="security-status" style={{background: this.statusColor}}
-					title={this.securityInfo.statusText + "\n\n" +
-						this.getDetailedSecurityInfo()}>
-					{this.statusIcon}
+				<div>
+					<div class="security-status" style={{background: this.statusColor}}
+						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
+						 onClick={() => this.dialog.openDialog()}>
+						{this.statusIcon}
+					</div>
+					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+						<h1 class="security-popover-icon" style={{color: this.statusColor}}>{this.statusIcon}</h1>
+						<strong>{this.securityInfo.statusText}</strong>
+						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
+						</p>
+					</popover-dialog>
 				</div>
 			: ''
 		)

@@ -31,10 +31,12 @@ export class TokenInfoPopover {
 		const newAttributes: {label: string, value: string}[] = [];
 
 		for (const attribute of this.tokenScript.getAttributes()){
-			newAttributes.push({
-				label: attribute.getLabel(),
-				value: await attribute.getCurrentValue()
-			})
+			const value = await attribute.getCurrentValue();
+			if (value)
+				newAttributes.push({
+					label: attribute.getLabel(),
+					value
+				});
 		}
 
 		this.tsAttributes = newAttributes;

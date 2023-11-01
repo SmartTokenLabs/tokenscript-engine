@@ -14,7 +14,8 @@
 			"es2017",
 			"dom",
 			"dom.iterable",
-			"es2020.bigint"
+			"es2020.bigint",
+			"es2021.string"
 		],
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
