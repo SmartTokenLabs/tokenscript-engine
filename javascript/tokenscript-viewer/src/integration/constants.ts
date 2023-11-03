@@ -69,7 +69,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://sepolia.etherscan.io/tx/'
 	},
 	[ChainID.POLYGON]: {
-		rpc: 'https://polygon-rpc.com/',
+		rpc: 'https://polygon-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
 		explorer: 'https://polygonscan.com/tx/'
 	},
 	[ChainID.MUMBAI]: {
