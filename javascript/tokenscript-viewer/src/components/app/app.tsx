@@ -1,11 +1,10 @@
-import {Component, Element, h, Host, JSX, Listen, Method, State} from '@stencil/core';
+import {Component, Element, h, Host, JSX, Listen, Method} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
 import {TokenScript} from "../../../../engine-js/src/TokenScript";
 import {CHAIN_CONFIG} from "../../integration/constants";
 import {IWalletAdapter} from "../../../../engine-js/src/wallet/IWalletAdapter";
-import {Web3WalletProvider} from "../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 import {AttestationStorageAdapter} from "../../integration/attestationStorageAdapter";
 import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
@@ -68,7 +67,6 @@ export class AppRoot {
 	public readonly tsEngine: TokenScriptEngine;
 
 	constructor() {
-		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 
 		this.tsEngine = new TokenScriptEngine(
 			async () => this.getWalletAdapter(),
@@ -96,7 +94,7 @@ export class AppRoot {
 			}
 		} else {
 			providerFactory = async () => {
-				return (await Web3WalletProvider.getWallet(true)).provider;
+				return (await (await import("../wallet/Web3WalletProvider")).Web3WalletProvider.getWallet(true)).provider;
 			}
 		}
 
@@ -197,8 +195,11 @@ export class AppRoot {
 		//const queryStr = document.location.search.substring(1);
 		//const query = new URLSearchParams(queryStr);
 
-		if (this.viewerType !== "joyid-token" && this.viewerType !== "opensea")
+		if (this.viewerType !== "joyid-token" && this.viewerType !== "opensea"){
+			const Web3WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
+			Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 			await Web3WalletProvider.loadConnections();
+		}
 	}
 
 	render() {
