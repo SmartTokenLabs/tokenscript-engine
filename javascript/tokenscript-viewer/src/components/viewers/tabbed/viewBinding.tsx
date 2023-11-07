@@ -30,6 +30,11 @@ export class ViewBinding extends AbstractViewBinding {
 	}
 
 	async renderAttributesTable(){
+		const elem = this.view.querySelector(".attribute-table");
+
+		if (!elem)
+			return
+
 		let attrTable = "<tr><th>Attribute</th><th>Value</th></tr>";
 
 		const rowRender = async (attr: Attribute, isLocal = false) => {
@@ -44,7 +49,7 @@ export class ViewBinding extends AbstractViewBinding {
 			attrTable += await rowRender(attr, true);
 		}
 
-		this.view.querySelector(".attribute-table").innerHTML = attrTable;
+		elem.innerHTML = attrTable;
 	}
 
 	// TODO: move this logic into engine

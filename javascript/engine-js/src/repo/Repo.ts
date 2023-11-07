@@ -36,12 +36,13 @@ export class Repo {
 
 		let tokenScript;
 
-		try {
-			const tsStr = localStorage.getItem("ts-" + tsId);
-			tokenScript = JSON.parse(tsStr) as ResolveResult & { timestamp?: number };
-		} catch (e){
-			// no-op
-		}
+		if (!this.context.config.noLocalStorage)
+			try {
+				const tsStr = localStorage.getItem("ts-" + tsId);
+				tokenScript = JSON.parse(tsStr) as ResolveResult & { timestamp?: number };
+			} catch (e){
+				// no-op
+			}
 
 		if (forceRefresh || !tokenScript || !tokenScript.xml ||
 			(Date.now() > tokenScript.timestamp + (Repo.REPO_TTL * 1000))){
@@ -77,7 +78,8 @@ export class Repo {
 	 * @param tsId
 	 */
 	public deleteTokenScript(tsId: string){
-		localStorage.removeItem("ts-" + tsId);
+		if (!this.context.config.noLocalStorage)
+			localStorage.removeItem("ts-" + tsId);
 	}
 
 	/**
@@ -86,6 +88,7 @@ export class Repo {
 	 * @param tokenScript
 	 */
 	public saveTokenScript(tsId: string, tokenScript: ResolveResult & {timestamp?: number}){
-		localStorage.setItem("ts-" + tsId, JSON.stringify(tokenScript));
+		if (!this.context.config.noLocalStorage)
+			localStorage.setItem("ts-" + tsId, JSON.stringify(tokenScript));
 	}
 }

@@ -1,18 +1,22 @@
-import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
+import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
+import {ViewBinding} from "../tabbed/viewBinding";
 
 @Component({
-	tag: 'token-viewer',
-	styleUrl: 'token-viewer.css',
+	tag: 'opensea-viewer',
+	styleUrl: 'opensea-viewer.css',
 	shadow: false,
 	scoped: false
 })
-export class TokenViewer {
+export class OpenseaViewer {
+
+	@Element()
+	host: HTMLElement;
 
 	@Prop()
 	app: AppRoot;
@@ -23,11 +27,9 @@ export class TokenViewer {
 	@State()
 	tokenScript: TokenScript;
 
+	viewBinding: ViewBinding;
+
 	urlRequest: URLSearchParams;
-
-	@State() cardButtons: JSX.Element[]|undefined;
-
-	@State() actionsEnabled = true;
 
 	@Event({
 		eventName: 'showToast',
@@ -74,6 +76,11 @@ export class TokenViewer {
 		}
 	}
 
+	async componentDidLoad(){
+		this.loadTokenScript();
+		this.app.hideTsLoader();
+	}
+
 	async processUrlLoad(){
 
 		const queryStr = document.location.search.substring(1);
@@ -85,18 +92,11 @@ export class TokenViewer {
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
 
-			if (query.get("actionsEnabled") === "false")
-				this.actionsEnabled = false;
-
 			this.app.showTsLoader();
 
 			this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
 
 			console.log("Token meta loaded!", this.tokenDetails);
-
-			this.app.hideTsLoader();
-
-			this.loadTokenScript();
 
 			return true;
 		}
@@ -136,6 +136,14 @@ export class TokenViewer {
 
 				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
 				this.tokenScript = tokenScript;
+				this.viewBinding = new ViewBinding(this.host, this.showToast);
+				this.viewBinding.setTokenScript(this.tokenScript);
+				this.tokenScript.setViewBinding(this.viewBinding);
+
+				const infoCard = this.tokenScript.getCards().find((card) => card.type === "token");
+
+				if (infoCard)
+					this.tokenScript.showOrExecuteTokenCard(infoCard);
 			}
 
 		} catch (e){
@@ -147,54 +155,7 @@ export class TokenViewer {
 
 		return (
 			<Host>
-				<div class="token-viewer">
-					{ this.tokenDetails ? (
-					<div>
-						<div class="details-container">
-							<div class="image-container">
-								<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
-							</div>
-							<div class="info-container">
-								<div class="main-info">
-									<h1>{this.tokenDetails.name}</h1>
-									<div class="owner-count">
-										<span style={{color: "#3D45FB"}}>
-											{
-												this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
-													("balance: " + this.tokenDetails.balance) :
-													("#" + this.tokenDetails.tokenId)
-											}
-										</span>
-									</div>
-									<div class="collection-details">
-										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>
-										<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
-										<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
-									</div>
-								</div>
-								<div class="extra-info">
-									<p>{this.tokenDetails.description}</p>
-									<div class="attribute-container">
-										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
-											return (
-												<div class="attribute-item" title={attr.trait_type + ": " + attr.value}>
-													<h5>{attr.trait_type}</h5>
-													<span>{attr.value}</span>
-												</div>
-											)
-										}) : ''}
-									</div>
-								</div>
-							</div>
-						</div>
-						<action-bar engine={this.app.tsEngine}
-									tokenDetails={this.tokenDetails}
-									tokenScript={this.tokenScript}
-									actionsEnabled={this.actionsEnabled} />
-					</div>
-					) : '' }
-				</div>
-				<card-popover tokenScript={this.tokenScript}></card-popover>
+				<card-view></card-view>
 			</Host>
 		)
 	}

@@ -20,6 +20,34 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea";
+
+const initViewerType = (params: URLSearchParams): ViewerTypes => {
+
+	let viewerType;
+
+	switch (params.get("viewType")){
+		case "integration":
+			viewerType = "integration";
+			break;
+		case "tabbed":
+			viewerType = "tabbed";
+			break;
+		case "joyid-token":
+			viewerType = "joyid-token";
+			break;
+		case "opensea":
+			viewerType = "opensea";
+			break;
+		// Fall-through to default
+		case "new":
+		default:
+			viewerType = "new";
+	}
+
+	return viewerType
+}
+
 @Component({
 	tag: 'app-root',
 	styleUrl: 'app.css',
@@ -34,39 +62,48 @@ export class AppRoot {
 
 	private iframeProvider: ethers.providers.Web3Provider;
 
+	private params = new URLSearchParams(document.location.search);
+	private viewerType: ViewerTypes = initViewerType(this.params);
+
+	public readonly tsEngine: TokenScriptEngine;
+
 	constructor() {
 		Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
+
+		this.tsEngine = new TokenScriptEngine(
+			async () => this.getWalletAdapter(),
+			async () => this.discoveryAdapter,
+			() => this.attestationStorageAdapter,
+			{
+				noLocalStorage: this.viewerType === "opensea"
+			}
+		);
 	}
 
 	async getWalletAdapter(): Promise<IWalletAdapter> {
 
-		const params = new URLSearchParams(document.location.search);
-		const viewerType = params.get("viewType");
+		let providerFactory;
 
-		let provider;
-
-		if (viewerType === "joyid-token" && !params.has("noIframeProvider")){
-			if (!this.iframeProvider)
-				this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
-			provider = this.iframeProvider;
+		if (this.viewerType === "joyid-token" && !this.params.has("noIframeProvider")){
+			providerFactory = async () => {
+				if (!this.iframeProvider)
+					this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
+				return this.iframeProvider;
+			}
+		} else if (this.viewerType === "opensea") {
+			providerFactory = async () => {
+				throw new Error("PROVIDER DISABLED")
+			}
 		} else {
-			provider = (await Web3WalletProvider.getWallet(true)).provider;
+			providerFactory = async () => {
+				return (await Web3WalletProvider.getWallet(true)).provider;
+			}
 		}
 
-		return new EthersAdapter(async () => {
-			return provider;
-		}, CHAIN_CONFIG);
+		return new EthersAdapter(providerFactory, CHAIN_CONFIG);
 	}
 
-	tsEngine = new TokenScriptEngine(
-		this.getWalletAdapter,
-		async () => this.discoveryAdapter,
-		() => this.attestationStorageAdapter
-	);
-
 	@Element() host: HTMLElement;
-
-	@State() viewerType?: "tabbed"|"integration"|"new"|"joyid-token";
 
 	@Listen("showLoader")
 	showLoaderHandler(_event: CustomEvent<void>){
@@ -157,26 +194,10 @@ export class AppRoot {
 
 	async componentWillLoad(){
 
-		const queryStr = document.location.search.substring(1);
-		const query = new URLSearchParams(queryStr);
+		//const queryStr = document.location.search.substring(1);
+		//const query = new URLSearchParams(queryStr);
 
-		switch (query.get("viewType")){
-			case "integration":
-				this.viewerType = "integration";
-				break;
-			case "tabbed":
-				this.viewerType = "tabbed";
-				break;
-			case "joyid-token":
-				this.viewerType = "joyid-token";
-				break;
-			// Fall-through to default
-			case "new":
-			default:
-				this.viewerType = "new";
-		}
-
-		if (this.viewerType !== "joyid-token")
+		if (this.viewerType !== "joyid-token" && this.viewerType !== "opensea")
 			await Web3WalletProvider.loadConnections();
 	}
 
@@ -194,13 +215,14 @@ export class AppRoot {
 						{this.viewerType === "integration" ? <integration-viewer app={this}></integration-viewer> : ''}
 						{this.viewerType === "new" ? <new-viewer app={this}></new-viewer> : ''}
 						{this.viewerType === "joyid-token" ? <token-viewer app={this}></token-viewer> : ''}
+						{this.viewerType === "opensea" ? <opensea-viewer app={this}></opensea-viewer> : ''}
 					</main>
 
 					<div id="ts-loader">
 						<loading-spinner/>
 					</div>
 				</div>
-				{ this.viewerType !== "joyid-token" ? <wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''}
+				{ this.viewerType !== "joyid-token" && this.viewerType !== "opensea" ? <wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''}
 			</Host>
 		);
 	}

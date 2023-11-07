@@ -1,0 +1,25 @@
+
+header {
+	display: none;
+}
+
+opensea-viewer {
+	height: 100vh !important;
+	padding: 10px;
+}
+
+.opensea-viewer, card-view {
+	display: block;
+	height: 100% !important;
+}
+
+.card-container {
+	max-width: 900px !important;
+	height: 100% !important;
+	margin: 0 auto !important;
+	max-height: unset !important;
+}
+
+.tokenscript-frame {
+	border: none !important;
+}
