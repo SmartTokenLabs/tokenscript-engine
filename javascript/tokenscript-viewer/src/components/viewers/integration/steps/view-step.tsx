@@ -51,7 +51,7 @@ export class ViewStep {
 							<loading-spinner/>
 						</div>
 						<iframe class="tokenscript-frame"
-								sandbox="allow-scripts allow-modals allow-forms allow-popups">
+								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>
 					</div>
 					<div class="action-bar" style={{display: "none"}}>

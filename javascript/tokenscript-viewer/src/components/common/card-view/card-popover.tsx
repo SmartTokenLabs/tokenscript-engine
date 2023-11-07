@@ -186,7 +186,7 @@ export class CardPopover implements IViewBinding {
 					<div class="iframe-wrapper">
 						<iframe ref={(el) => this.iframe = el as HTMLIFrameElement}
 								class="tokenscript-frame"
-								sandbox="allow-scripts allow-modals allow-forms allow-popups">
+								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>
 					</div>
 					<div class="action-bar" style={{display: this.currentCard?.type == "action" && this.currentCard?.uiButton ? "block" : "none"}}>
