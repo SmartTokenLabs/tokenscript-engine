@@ -19,8 +19,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "npm"
@@ -63,7 +63,7 @@ jobs:
             echo "CLOUDFRONT_ID=E1TQIT6IOKM354" >> $GITHUB_ENV
           fi
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -71,5 +71,5 @@ jobs:
       - name: deploy
         run: |
           aws s3 sync "${PROJ_PATH}/www/" "s3://${S3_BUCKET}/" --cache-control 'max-age=31536000' --quiet \
-          && find "${PROJ_PATH}/www/" -type f -name 'index.html' -printf '%P\0' | xargs -r -0 -I'{}' aws s3 cp "s3://${S3_BUCKET}/{}" "s3://${S3_BUCKET}/{}" --cache-control 'max-age=600,s-maxage=2592000' \
+          && find "${PROJ_PATH}/www/" -type f \( -name 'index.html' -o -name 'app.css' -o -name 'app.js' -o -name 'app.esm.js' \) -printf '%P\0' | xargs -r -0 -I'{}' aws s3 cp "s3://${S3_BUCKET}/{}" "s3://${S3_BUCKET}/{}" --cache-control 'max-age=600,s-maxage=2592000' \
           && aws cloudfront create-invalidation --distribution-id "${CLOUDFRONT_ID}" --paths "/*"
