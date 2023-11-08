@@ -1,6 +1,6 @@
 
 card-popover .popover-container {
-	padding: 10px 0 !important;
+	padding: 5px 0 !important;
 }
 
 .card-container {
@@ -45,6 +45,7 @@ card-popover .popover-container {
 .action-bar {
 	height: 35px;
 	margin-top: 4px;
+	padding: 0 5px;
 }
 
 .action-btn {
