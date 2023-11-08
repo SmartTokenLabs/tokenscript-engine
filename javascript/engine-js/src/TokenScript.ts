@@ -12,9 +12,10 @@ import {Label} from "./tokenScript/Label";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {AttestationDefinitions} from "./tokenScript/attestation/AttestationDefinitions";
 import {Attestation} from "./attestation/Attestation";
-import {Origin, OriginType} from "./tokenScript/Origin";
+import {Origin} from "./tokenScript/Origin";
 import {ITokenContextData} from "./tokens/ITokenContextData";
 import {Meta} from "./tokenScript/Meta";
+import {ethers} from "ethers";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -547,7 +548,7 @@ export class TokenScript {
 				description: tokenDetails?.description ?? tokenContext.description,
 				label: tokenContext.name,
 				symbol: tokenContext.symbol,
-				_count: tokenContext.balance.toString(), // bigint can't be json serialized, so it must always be string
+				_count: tokenContext.balance ? tokenContext.balance.toString() : "1", // bigint can't be json serialized, so it must always be string
 				contractAddress: tokenContext.contractAddress,
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
@@ -594,9 +595,14 @@ export class TokenScript {
 
 	public async getCurrentOwnerAddress(){
 		// TODO: ownerAddress should probably come from token details rather than the current wallet
-		const walletProvider = await this.engine.getWalletAdapter();
+		try {
+			const walletProvider = await this.engine.getWalletAdapter();
+			return await walletProvider.getCurrentWalletAddress();
+		} catch (e) {
+			console.warn(e);
+		}
 
-		return await walletProvider.getCurrentWalletAddress();
+		return ethers.constants.AddressZero;
 	}
 
 	/**

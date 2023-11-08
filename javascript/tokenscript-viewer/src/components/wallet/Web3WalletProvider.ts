@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import {WC_DEFAULT_RPC_MAP, WC_V2_DEFAULT_CHAINS} from "./providers/WalletConnectV2Provider";
 
 declare global {
 	interface Window {
@@ -424,8 +423,8 @@ class Web3WalletProviderObj {
 					// @ts-ignore
 					connect = walletConnectV2.connect({
 						chains: [1],
-						optionalChains: preSavedWalletOptions?.walletConnectV2?.chains ?? WC_V2_DEFAULT_CHAINS,
-						rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? WC_DEFAULT_RPC_MAP,
+						optionalChains: preSavedWalletOptions?.walletConnectV2?.chains ?? walletConnectProvider.WC_V2_DEFAULT_CHAINS,
+						rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? walletConnectProvider.WC_DEFAULT_RPC_MAP,
 					})
 				}
 

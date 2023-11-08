@@ -8,11 +8,13 @@ import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapt
 import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
 
 export interface IEngineConfig {
-	ipfsGateway: string
+	ipfsGateway?: string
+	noLocalStorage?: boolean
 }
 
 const DEFAULT_CONFIG: IEngineConfig = {
-	ipfsGateway: "https://ipfs.io/ipfs/"
+	ipfsGateway: "https://ipfs.io/ipfs/",
+	noLocalStorage: false
 };
 
 export enum ScriptSourceType {
@@ -35,7 +37,7 @@ export class TokenScriptEngine {
 		public getWalletAdapter: () => Promise<IWalletAdapter>,
 		public getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>,
 		public getAttestationStorageAdapter?: () => IAttestationStorageAdapter,
-		public config?: IEngineConfig
+		public readonly config?: IEngineConfig
 	) {
 		if (this.config){
 			this.config = {

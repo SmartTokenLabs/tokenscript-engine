@@ -72,6 +72,9 @@ export namespace Components {
     interface NewViewer {
         "app": AppRoot;
     }
+    interface OpenseaViewer {
+        "app": AppRoot;
+    }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
         "dialogStyles": {[cssProp: string]: string};
@@ -189,6 +192,10 @@ export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLNewViewerElement;
 }
+export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLOpenseaViewerElement;
+}
 export interface TokenViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTokenViewerElement;
@@ -293,6 +300,12 @@ declare global {
     var HTMLNewViewerElement: {
         prototype: HTMLNewViewerElement;
         new (): HTMLNewViewerElement;
+    };
+    interface HTMLOpenseaViewerElement extends Components.OpenseaViewer, HTMLStencilElement {
+    }
+    var HTMLOpenseaViewerElement: {
+        prototype: HTMLOpenseaViewerElement;
+        new (): HTMLOpenseaViewerElement;
     };
     interface HTMLPopoverDialogElement extends Components.PopoverDialog, HTMLStencilElement {
     }
@@ -441,6 +454,7 @@ declare global {
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "new-viewer": HTMLNewViewerElement;
+        "opensea-viewer": HTMLOpenseaViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
         "security-status": HTMLSecurityStatusElement;
         "select-field": HTMLSelectFieldElement;
@@ -518,6 +532,12 @@ declare namespace LocalJSX {
     interface NewViewer {
         "app"?: AppRoot;
         "onShowToast"?: (event: NewViewerCustomEvent<ShowToastEventArgs>) => void;
+    }
+    interface OpenseaViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: OpenseaViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface PopoverDialog {
         "dialogStyles"?: {[cssProp: string]: string};
@@ -633,6 +653,7 @@ declare namespace LocalJSX {
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
         "new-viewer": NewViewer;
+        "opensea-viewer": OpenseaViewer;
         "popover-dialog": PopoverDialog;
         "security-status": SecurityStatus;
         "select-field": SelectField;
@@ -675,6 +696,7 @@ declare module "@stencil/core" {
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
+            "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
