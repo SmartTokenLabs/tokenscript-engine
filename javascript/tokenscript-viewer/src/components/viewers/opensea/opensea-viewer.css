@@ -3,21 +3,40 @@ header {
 	display: none;
 }
 
-opensea-viewer {
-	height: 100vh !important;
-	padding: 10px;
+body {
+	overflow: hidden;
 }
 
-.opensea-viewer, card-view {
-	display: block;
-	height: 100% !important;
+.opensea-header {
+	height: 30px;
+	background: #000;
+	color: #fff;
+	display: flex;
+	align-items: center;
+}
+
+.opensea-header span {
+	font-size: 12px;
+	padding-left: 10px;
+}
+
+.opensea-header .header-icon {
+	height: 20px !important;
+	padding-left: 5px;
+	padding-top: 2px;
+}
+
+opensea-viewer, .opensea-viewer, card-view, .card-container {
+	display: flex !important;
+	flex-direction: column;
+	flex-grow: 1;
 }
 
 .card-container {
 	max-width: 900px !important;
-	height: 100% !important;
 	margin: 0 auto !important;
 	max-height: unset !important;
+	width: 100%;
 }
 
 .tokenscript-frame {

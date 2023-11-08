@@ -1,7 +1,6 @@
 
-:host .popover-container {
-	max-width: 500px;
-	max-height: 700px;
+card-popover .popover-container {
+	padding: 10px 0 !important;
 }
 
 .card-container {

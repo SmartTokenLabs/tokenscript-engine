@@ -53,6 +53,10 @@ export class OpenseaViewer {
 	}) hideLoader: EventEmitter<void>;
 
 	async componentWillLoad(){
+		this.app.showTsLoader();
+	}
+
+	async componentDidLoad(){
 
 		try {
 			const query = new URLSearchParams(document.location.search.substring(1));
@@ -65,6 +69,7 @@ export class OpenseaViewer {
 			this.urlRequest = query;
 
 			await this.processUrlLoad();
+			await this.loadTokenScript();
 
 		} catch (e){
 			console.error(e);
@@ -74,10 +79,7 @@ export class OpenseaViewer {
 				description: e.message
 			});
 		}
-	}
 
-	async componentDidLoad(){
-		this.loadTokenScript();
 		this.app.hideTsLoader();
 	}
 
@@ -91,8 +93,6 @@ export class OpenseaViewer {
 		const query = new URLSearchParams(queryStr);
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
-
-			this.app.showTsLoader();
 
 			this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
 
@@ -156,6 +156,10 @@ export class OpenseaViewer {
 		return (
 			<Host>
 				<card-view></card-view>
+				<div class="opensea-header">
+					<span>Powered by</span>
+					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
+				</div>
 			</Host>
 		)
 	}
