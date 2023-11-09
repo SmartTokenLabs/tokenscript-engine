@@ -25,7 +25,7 @@
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^0.29.0",
     "@peculiar/x509": "^1.9.2",
-    "@stencil/core": "2.21.0",
+    "@stencil/core": "2.22.3",
     "@tokenscript/engine-js": "../engine-js/",
     "@toruslabs/torus-embed": "^1.41.2",
     "@walletconnect/ethereum-provider": "^2.10.2",

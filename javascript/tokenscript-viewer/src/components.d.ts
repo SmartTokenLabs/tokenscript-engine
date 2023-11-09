@@ -98,6 +98,9 @@ export namespace Components {
         "tabId": string;
         "tabView": TabbedViewer;
     }
+    interface StsViewer {
+        "app": AppRoot;
+    }
     interface TabHeaderItem {
         "closable": boolean;
         "tabId": string;
@@ -195,6 +198,10 @@ export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
 export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOpenseaViewerElement;
+}
+export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLStsViewerElement;
 }
 export interface TokenViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -337,6 +344,12 @@ declare global {
         prototype: HTMLStartTabElement;
         new (): HTMLStartTabElement;
     };
+    interface HTMLStsViewerElement extends Components.StsViewer, HTMLStencilElement {
+    }
+    var HTMLStsViewerElement: {
+        prototype: HTMLStsViewerElement;
+        new (): HTMLStsViewerElement;
+    };
     interface HTMLTabHeaderItemElement extends Components.TabHeaderItem, HTMLStencilElement {
     }
     var HTMLTabHeaderItemElement: {
@@ -460,6 +473,7 @@ declare global {
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
         "start-tab": HTMLStartTabElement;
+        "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
         "tabbed-viewer": HTMLTabbedViewerElement;
         "token-button": HTMLTokenButtonElement;
@@ -560,6 +574,12 @@ declare namespace LocalJSX {
         "tabId"?: string;
         "tabView"?: TabbedViewer;
     }
+    interface StsViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: StsViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: StsViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: StsViewerCustomEvent<ShowToastEventArgs>) => void;
+    }
     interface TabHeaderItem {
         "closable"?: boolean;
         "tabId"?: string;
@@ -659,6 +679,7 @@ declare namespace LocalJSX {
         "select-field": SelectField;
         "select-step": SelectStep;
         "start-tab": StartTab;
+        "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
         "tabbed-viewer": TabbedViewer;
         "token-button": TokenButton;
@@ -702,6 +723,7 @@ declare module "@stencil/core" {
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
+            "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;
             "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
             "token-button": LocalJSX.TokenButton & JSXBase.HTMLAttributes<HTMLTokenButtonElement>;
