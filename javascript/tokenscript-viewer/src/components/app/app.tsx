@@ -200,7 +200,7 @@ export class AppRoot {
 		//const queryStr = document.location.search.substring(1);
 		//const query = new URLSearchParams(queryStr);
 
-		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 && this.viewerType !== "opensea"){
+		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 && !this.params.has("noIframeProvider") && this.viewerType !== "opensea"){
 			const Web3WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
 			Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 			await Web3WalletProvider.loadConnections();
@@ -229,7 +229,11 @@ export class AppRoot {
 						<loading-spinner/>
 					</div>
 				</div>
-				{ IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 && this.viewerType !== "opensea" ? <wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''}
+				{ IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 &&
+					!this.params.has("noIframeProvider") &&
+					this.viewerType !== "opensea" ?
+						<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
+				}
 			</Host>
 		);
 	}
