@@ -70,6 +70,8 @@ export class Origin {
 				// const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
 
 				const dSigAddress = ethers.utils.computeAddress(publicKeyHex);
+
+				// TODO: Check signer key as well as authoritative key
 				const isAdmin = await (new ContractKeyResolver(this.tokenScript).isAdmin(contract, dSigAddress));
 
 				// console.log("DSIG validator: revolved contract deployment key: ", contractKey);
@@ -87,7 +89,7 @@ export class Origin {
 					console.warn(`DSIG validator: contract key does not match DSIG( publicKeyHex: ${publicKeyHex}, address: ${dSigAddress})`);
 				}
 
-				this.signingKey = contractKey.value;
+				this.signingKey = dSigAddress;
 
 			} catch (e) {
 				console.warn(e);

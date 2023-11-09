@@ -144,6 +144,13 @@ export class SmartTokenStoreViewer {
 				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
 				this.tokenScript = tokenScript;
 
+				// Reload cards after the token is updated
+				this.tokenScript.on("TOKENS_UPDATED", (data) => {
+					this.cardButtons = null;
+					this.overflowCardButtons = null;
+					this.loadCards();
+				}, "grid")
+
 				this.loadCards();
 			}
 
@@ -284,6 +291,9 @@ export class SmartTokenStoreViewer {
 									</action-overflow-modal>)
 								] : ''
 							}
+						</div>
+						<div style={{padding: "0 10px"}}>
+							{this.tokenScript ? <security-status tokenScript={this.tokenScript}/> : ''}
 						</div>
 					</div>
 					) : '' }
