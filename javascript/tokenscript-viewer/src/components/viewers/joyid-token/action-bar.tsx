@@ -62,6 +62,7 @@ export class ActionBar {
 		})
 	}
 
+	// TODO: This is copied from tokens-grid-item, dedupe required
 	private async loadCardButtons(){
 
 		const cardButtons: JSX.Element[] = [];
@@ -97,7 +98,7 @@ export class ActionBar {
 		this.cardButtons = cardButtons;
 	}
 
-	// TODO: This is copied from tokens-grid, dedupe required
+	// TODO: This is copied from tokens-grid-item, dedupe required
 	private async showCard(card: Card){
 
 		window.scrollTo(0, 0);
