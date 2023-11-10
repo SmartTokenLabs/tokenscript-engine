@@ -113,7 +113,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 		// TODO: add all chain URLs into some configuration.
 		const provider = stateMutability === "view" ?
-							new ethers.providers.JsonRpcProvider(this.getRpcUrl(chain), chain) :
+							new ethers.providers.StaticJsonRpcProvider(this.getRpcUrl(chain), chain) :
 							(await this.getEthersProvider()).getSigner();
 
 		return new Contract(contractAddr, [abiData], provider);
@@ -174,7 +174,7 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log("Get ethereum events. chain " + chain + "; contract " + contractAddr + "; event " + event + ";");
 		console.log(inputs);
 
-		const provider = new ethers.providers.JsonRpcProvider(this.getRpcUrl(chain));
+		const provider = new ethers.providers.StaticJsonRpcProvider(this.getRpcUrl(chain), chain);
 
 		const contract = new Contract(contractAddr, [{
 			name: event,
