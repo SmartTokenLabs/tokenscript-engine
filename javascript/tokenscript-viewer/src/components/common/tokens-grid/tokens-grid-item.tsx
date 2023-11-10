@@ -2,6 +2,7 @@ import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
 import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
+import {EthUtils} from "@tokenscript/engine-js/src/ethereum/EthUtils";
 
 @Component({
 	tag: 'tokens-grid-item',
@@ -94,7 +95,8 @@ export class TokensGridItem {
 			details = this.token.name;
 		} else {
 			title = this.token.name;
-			details = "Balance: " + this.token.balance;
+			if ("decimals" in this.token)
+				details = "Balance: " + EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals);
 		}
 
 		return (

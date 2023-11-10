@@ -150,9 +150,7 @@ export class Attribute {
 			case "e6":
 			case "e8":
 			case "e18":
-				if (!value)
-					return 0;
-				return BigInt(new BigNumber(value).multipliedBy(Math.pow(10, parseInt(this.asType.substring(1)))).toString());
+				return EthUtils.calculateIntValue(value, parseInt(this.asType.substring(1)));
 		}
 
 		return value;

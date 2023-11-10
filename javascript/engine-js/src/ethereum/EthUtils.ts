@@ -1,4 +1,5 @@
 import {ethers} from "ethers";
+import {BigNumber} from "bignumber.js";
 
 
 export interface IEthersArgument {
@@ -76,5 +77,25 @@ export class EthUtils {
 		}
 
 		return outputType;
+	}
+
+	public static calculateDecimalValue(value: string|bigint|number, decimals: number){
+		if (!value)
+			return 0;
+
+		if (typeof value !== "string")
+			value = value.toString();
+
+		return (new BigNumber(value)).dividedBy(Math.pow(10, decimals)).toString();
+	}
+
+	public static calculateIntValue(value: string|number, decimals: number){
+		if (!value)
+			return 0;
+
+		if (typeof value !== "string")
+			value = value.toString();
+
+		return BigInt(new BigNumber(value).multipliedBy(Math.pow(10, decimals)).toString());
 	}
 }
