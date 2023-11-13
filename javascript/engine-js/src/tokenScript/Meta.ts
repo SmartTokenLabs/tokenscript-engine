@@ -5,7 +5,7 @@
  */
 export class Meta {
 
-	private static META_TAGS = ["description", "aboutUrl"];
+	private static META_TAGS = ["description", "aboutUrl", "iconUrl"];
 
 	private readonly meta: {[metaTag: string]: string} = {};
 
@@ -48,5 +48,9 @@ export class Meta {
 
 	get aboutUrl(){
 		return this.getValue("aboutUrl")
+	}
+
+	get iconUrl(){
+		return this.getValue("iconUrl")
 	}
 }
