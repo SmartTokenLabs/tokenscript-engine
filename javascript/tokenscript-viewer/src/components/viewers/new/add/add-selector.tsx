@@ -59,6 +59,7 @@ export class AddSelector {
 	render(){
 		return (
 			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+				<div>
 				{
 					!this.type ?
 						<div>
@@ -70,6 +71,8 @@ export class AddSelector {
 						</div>
 					</div> : ''
 				}
+				</div>
+				<div>
 				{ this.type ?
 					<div class="form-view">
 						<div class="header">
@@ -98,6 +101,7 @@ export class AddSelector {
 						</form>
 					</div> : ''
 				}
+				</div>
 			</popover-dialog>
 		);
 	}
