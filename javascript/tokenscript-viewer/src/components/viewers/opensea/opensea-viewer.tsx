@@ -170,7 +170,9 @@ export class OpenseaViewer {
 						<div class="opensea-img-container" style={{backgroundImage: "url(" + this.tokenDetails.image + ")"}} title={this.tokenDetails.name}>
 							<div class="info-button-container">
 								{ this.tokenScript ?
-									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>?</div> :
+									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>
+										<img alt="Smart Layer" title="Token Information" src="/assets/icon/sl-icon-white.png" />
+									</div> :
 									<loading-spinner size="small" />
 								}
 							</div>
