@@ -27,6 +27,9 @@ export class OpenseaViewer {
 	@State()
 	tokenScript: TokenScript;
 
+	@State()
+	showInfoCard = false;
+
 	viewBinding: ViewBinding;
 
 	urlRequest: URLSearchParams;
@@ -69,7 +72,7 @@ export class OpenseaViewer {
 			this.urlRequest = query;
 
 			await this.processUrlLoad();
-			await this.loadTokenScript();
+			this.loadTokenScript();
 
 		} catch (e){
 			console.error(e);
@@ -140,10 +143,7 @@ export class OpenseaViewer {
 				this.viewBinding.setTokenScript(this.tokenScript);
 				this.tokenScript.setViewBinding(this.viewBinding);
 
-				const infoCard = this.tokenScript.getCards().find((card) => card.type === "token");
 
-				if (infoCard)
-					this.tokenScript.showOrExecuteTokenCard(infoCard);
 			}
 
 		} catch (e){
@@ -151,11 +151,42 @@ export class OpenseaViewer {
 		}
 	}
 
+	private displayInfoCard(){
+		const infoCard = this.tokenScript.getCards().find((card) => card.type === "token");
+
+		if (infoCard) {
+			this.tokenScript.showOrExecuteTokenCard(infoCard);
+			this.showInfoCard = true
+		}
+	}
+
 	render(){
 
 		return (
 			<Host>
-				<card-view></card-view>
+				<div class="opensea-viewer">
+				{ this.tokenDetails ?
+					[
+						<div class="opensea-img-container" style={{backgroundImage: "url(" + this.tokenDetails.image + ")"}} title={this.tokenDetails.name}>
+							<div class="info-button-container">
+								{ this.tokenScript ?
+									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>
+										<img alt="Smart Layer" title="Token Information" src="/assets/icon/sl-icon-white.png" />
+									</div> :
+									<loading-spinner size="small" />
+								}
+							</div>
+						</div>,
+						<div class="card-overlay" style={{display: (this.showInfoCard ? "flex" : "none")}}>
+							<div class="close-button" onClick={() => {
+								this.showInfoCard = false;
+								this.tokenScript.getViewController().unloadTokenCard();
+							}}>x</div>
+							<card-view></card-view>
+						</div>
+					]
+				 : ''}
+				</div>
 				<div class="opensea-header">
 					<span>Powered by</span>
 					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>

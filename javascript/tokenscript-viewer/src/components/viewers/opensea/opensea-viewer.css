@@ -26,6 +26,66 @@ body {
 	padding-top: 2px;
 }
 
+.opensea-img-container {
+	display: flex;
+	flex-grow: 1;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top;
+}
+
+.info-button, .close-button {
+	font-size: 30px;
+	background: #000;
+	color: #fff;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.info-button img {
+	width: 90%;
+}
+
+.info-button-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 30;
+	height: 40px;
+	width: 40px;
+	margin: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 50;
+	margin: 20px;
+	text-align: center;
+	display: table-cell;
+}
+
+.card-overlay {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 40;
+}
+
+opensea-viewer, .opensea-viewer {
+	position: relative;
+}
+
 opensea-viewer, .opensea-viewer, card-view, .card-container {
 	display: flex !important;
 	flex-direction: column;
@@ -33,7 +93,7 @@ opensea-viewer, .opensea-viewer, card-view, .card-container {
 }
 
 .card-container {
-	max-width: 900px !important;
+	max-width: unset !important;
 	margin: 0 auto !important;
 	max-height: unset !important;
 	width: 100%;

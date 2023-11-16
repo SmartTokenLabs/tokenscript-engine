@@ -62,6 +62,11 @@ export class ActionBar {
 		})
 	}
 
+	componentDidLoad(){
+		if (this.tokenScript)
+			this.initTokenScript();
+	}
+
 	// TODO: This is copied from tokens-grid-item, dedupe required
 	private async loadCardButtons(){
 
