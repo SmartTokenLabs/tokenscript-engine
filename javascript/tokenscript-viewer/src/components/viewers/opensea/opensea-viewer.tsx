@@ -188,8 +188,8 @@ export class OpenseaViewer {
 				 : ''}
 				</div>
 				<div class="opensea-header">
-					<span>Powered by</span>
-					<img class="header-icon" alt="TokenScript icon" src="assets/icon/tokenscript-logo.svg"/>
+					<span>XNFT by</span>
+					<img class="header-icon" alt="TokenScript icon" src="assets/icon/smart-layer-icon.png"/>
 				</div>
 			</Host>
 		)
