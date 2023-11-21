@@ -112,8 +112,14 @@ export class OpenseaViewer {
 		try {
 			const chain: number = parseInt(this.urlRequest.get("chain"));
 			const contract: string = this.urlRequest.get("contract");
-			const tsId = chain + "-" + contract;
-			const tokenScript = await this.app.loadTokenscript("resolve", tsId);
+			let tokenScript;
+
+			if (this.urlRequest.has("tokenscriptUrl")) {
+				tokenScript = await this.app.loadTokenscript("url", this.urlRequest.get("tokenscriptUrl"));
+			} else {
+				const tsId = chain + "-" + contract;
+				tokenScript = await this.app.loadTokenscript("resolve", tsId);
+			}
 
 			const origins = tokenScript.getTokenOriginData();
 			let selectedOrigin;
