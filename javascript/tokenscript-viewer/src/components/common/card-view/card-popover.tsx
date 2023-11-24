@@ -136,8 +136,8 @@ export class CardPopover implements IViewBinding {
 	async unloadTokenView() {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
-		this.iframe.src = "";
-		document.location.hash = "#";
+		this.iframe.contentWindow.location.replace("");
+		history.replaceState(undefined, undefined, "/");
 	}
 
 	viewError(error: Error) {

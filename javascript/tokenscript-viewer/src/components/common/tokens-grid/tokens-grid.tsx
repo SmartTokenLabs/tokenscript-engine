@@ -144,7 +144,7 @@ export class TokensGrid {
 		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
 		// TODO: set only card param rather than updating the whole hash query
 		if (card.view)
-			document.location.hash = "#card=" + (card.name ?? cardIndex);
+			history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex));
 	}
 
 	render() {

@@ -49,7 +49,7 @@ export class CardModal {
 		return (
 			<Host class="view-container" style={{display: "none"}}>
 				<button class="close-btn" onClick={() => {
-					document.location.hash = "#";
+					//document.location.hash = "#";
 					this.tokenScript.getViewController().unloadTokenCard();
 				}}>X
 				</button>
