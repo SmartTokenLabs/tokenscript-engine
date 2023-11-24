@@ -53,9 +53,9 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	async unloadTokenView() {
 		this.currentCard = null;
-		this.iframe.src = "";
 		this.actionBar.style.display = "none";
-		document.location.hash = "#";
+		this.iframe.contentWindow.location.replace("");
+		history.replaceState(undefined, undefined, "/");
 	}
 
 	protected showLoader() {
@@ -75,7 +75,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		if (card.isUrlView) {
 
-			iframe.src = card.url;
+			//iframe.src = card.url;
+			iframe.contentWindow.location.replace(card.url);
 
 		} else {
 			const html = await card.renderViewHtml();
@@ -84,7 +85,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 			const urlFragment = card.urlFragment;
 
-			iframe.src = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
+			const url = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
+			iframe.contentWindow.location.replace(url);
 
 			// TODO: try src-doc method
 		}
