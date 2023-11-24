@@ -54,7 +54,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	async unloadTokenView() {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
-		this.iframe.contentWindow.location.replace("");
+		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		history.replaceState(undefined, undefined, "/");
 	}
 
