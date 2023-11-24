@@ -61,7 +61,7 @@ export class CardPopover implements IViewBinding {
 
 	protected handlePostMessageFromView(event: MessageEvent) {
 
-		if (!this.iframe || !this.iframe.src)
+		if (!this.iframe)
 			return;
 
 		if (event.source !== this.iframe.contentWindow) {

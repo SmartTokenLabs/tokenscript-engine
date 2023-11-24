@@ -114,7 +114,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	protected handlePostMessageFromView(event: MessageEvent) {
 
-		if (!this.iframe.src)
+		if (!this.iframe)
 			return;
 
 		if (event.source !== this.iframe.contentWindow) {
