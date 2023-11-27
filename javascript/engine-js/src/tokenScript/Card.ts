@@ -63,6 +63,13 @@ export class Card {
 	}
 
 	/**
+	 * The button class of the card, used to determine the styles to apply to the card button
+	 */
+	get buttonClass(){
+		return this.cardDef.getAttribute("buttonClass");
+	}
+
+	/**
 	 * The HTML web content associated with the card
 	 */
 	get view(): Element {

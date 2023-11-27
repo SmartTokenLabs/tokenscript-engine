@@ -127,7 +127,7 @@ header {
 	border-radius: 16px;
 	gap: 10px;
 	flex: 1 0 0;
-	border: 1px solid #333;
+	border: 1px solid #333 !important;
 	background: #FFF;
 	font-size: 14px;
 	font-weight: 700;

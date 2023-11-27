@@ -88,7 +88,7 @@ export class ActionBar {
 					continue;
 
 				cardButtons.push((
-					<button class="jid-btn"
+					<button class={"jid-btn " + this.getCardButtonClass(card, index)}
 							onClick={() => this.showCard(card)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
@@ -101,6 +101,20 @@ export class ActionBar {
 		}
 
 		this.cardButtons = cardButtons;
+	}
+
+	private getCardButtonClass(card: Card, index: number){
+
+		switch (card.buttonClass){
+			case "featured":
+				return "btn-featured";
+			case "primary":
+				return "btn-primary";
+			case "secondary":
+				return "jid-btn-secondary";
+			default:
+				return card.type === "token" || index === 0 ? "btn-primary" : "jid-btn-secondary";
+		}
 	}
 
 	// TODO: This is copied from tokens-grid-item, dedupe required

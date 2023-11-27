@@ -7,6 +7,7 @@ import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDi
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
+import {getCardButtonClass} from "../util/getCardButtonClass";
 
 @Component({
 	tag: 'sts-viewer',
@@ -181,7 +182,7 @@ export class SmartTokenStoreViewer {
 					continue;
 
 				const cardElem = (
-					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}
+					<button class={"btn " + getCardButtonClass(card, index)}
 							onClick={() => this.showCard(card)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>

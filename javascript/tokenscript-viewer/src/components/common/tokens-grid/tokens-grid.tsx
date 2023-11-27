@@ -46,9 +46,13 @@ export class TokensGrid {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
-	@Watch("tokenScript")
-	async componentDidLoad() {
 
+	async componentDidLoad() {
+		await this.initTokenScript();
+	}
+
+	@Watch("tokenScript")
+	private async initTokenScript(){
 		await this.populateTokens(await this.tokenScript.getTokenMetadata());
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
