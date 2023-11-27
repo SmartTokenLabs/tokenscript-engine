@@ -59,10 +59,11 @@ export class TokenViewData {
 
 		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
 
+		const currentTokenInstance = JSON.parse(`${JSON.stringify(tokenData).replace("^\\'", "\\'").replace(/[\u0000-\u001F]/g, "")}`);
+
 		return `
 
-		const _currentTokenInstance = JSON.parse('${JSON.stringify(tokenData).replace("^\\'", "\\'").replace(/[\u0000-\u001F]/g, "")}');
-
+		const _currentTokenInstance = ${currentTokenInstance};
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
 		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
