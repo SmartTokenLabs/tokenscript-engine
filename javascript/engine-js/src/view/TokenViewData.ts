@@ -59,7 +59,7 @@ export class TokenViewData {
 
 		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
 
-		const currentTokenInstance = JSON.parse(`${JSON.stringify(tokenData).replace("^\\'", "\\'").replace(/[\u0000-\u001F]/g, "")}`);
+		const currentTokenInstance = JSON.parse(`${JSON.stringify(tokenData).replace("^\\'", "\\'")}`);
 
 		return `
 
