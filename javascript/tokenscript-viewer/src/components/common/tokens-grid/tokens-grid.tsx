@@ -46,9 +46,13 @@ export class TokensGrid {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
-	@Watch("tokenScript")
-	async componentDidLoad() {
 
+	async componentDidLoad() {
+		await this.initTokenScript();
+	}
+
+	@Watch("tokenScript")
+	private async initTokenScript(){
 		await this.populateTokens(await this.tokenScript.getTokenMetadata());
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
@@ -144,7 +148,7 @@ export class TokensGrid {
 		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
 		// TODO: set only card param rather than updating the whole hash query
 		if (card.view)
-			document.location.hash = "#card=" + (card.name ?? cardIndex);
+			history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex));
 	}
 
 	render() {

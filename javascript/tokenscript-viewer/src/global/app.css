@@ -76,6 +76,21 @@ select:hover {
 	pointer-events: auto !important;
 }
 
+.btn-featured {
+	color: #fff;
+	border: 2px solid #FF6B00;
+	background: linear-gradient(0deg, #FF6B00 0%, #FF6B00 100%);
+}
+
+.btn-featured:hover {
+	border: 2px solid rgba(255, 107, 0, 0.90);
+	background: linear-gradient(0deg, rgba(255, 107, 0, 0.90) 0%, rgba(255, 107, 0, 0.90) 100%);
+}
+
+.btn-featured:disabled {
+	background: linear-gradient(0deg, rgba(255, 107, 0, 0.6) 0%, rgba(255, 107, 0, 0.6) 100%), #8A9CB8; !important;
+}
+
 a {
 	color: #001AFF;
 	text-decoration: underline;

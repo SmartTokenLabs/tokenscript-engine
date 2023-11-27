@@ -1,8 +1,9 @@
-import {Component, h, Host, JSX, Prop, State} from "@stencil/core";
+import {Component, h, Host, JSX, Prop, State, Watch} from "@stencil/core";
 import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {EthUtils} from "@tokenscript/engine-js/src/ethereum/EthUtils";
+import {getCardButtonClass} from "../../viewers/util/getCardButtonClass";
 
 @Component({
 	tag: 'tokens-grid-item',
@@ -25,6 +26,11 @@ export class TokensGridItem {
 	private overflowDialog: HTMLActionOverflowModalElement;
 
 	async componentDidLoad() {
+		await this.loadCardButtons();
+	}
+
+	@Watch("tokenScript")
+	private async loadCardButtons(){
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
@@ -52,7 +58,7 @@ export class TokensGridItem {
 					continue;
 
 				const cardElem = (
-					<button class={"btn " + (index === 0 ? "btn-primary" : "btn-secondary")}
+					<button class={"btn " + getCardButtonClass(card, index)}
 							onClick={() => this.showCard(card, this.token, index)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
@@ -73,6 +79,8 @@ export class TokensGridItem {
 		this.cardButtons = cardButtons;
 		this.overflowCardButtons = overflowCardButtons;
 	}
+
+
 
 	private showTokenInfo(token: TokenGridContext){
 		(document.getElementById("token-info-popover") as HTMLTokenInfoPopoverElement).openDialog(token);

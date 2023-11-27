@@ -225,7 +225,9 @@ export class TokenScriptEngine {
 	}
 
 	public async getScriptUri(chain: string, contractAddr: string) {
-		const provider = await this.getWalletAdapter();
+
+		// Direct RPC gets too hammered by opensea view (that doesn't allow localStorage to cache XML)
+		/*const provider = await this.getWalletAdapter();
 		let uri: string|string[]|null;
 
 		try {
@@ -237,6 +239,11 @@ export class TokenScriptEngine {
 		if (uri && Array.isArray(uri))
 			uri = uri.length ? uri[0] : null
 
-		return <string>uri;
+		return <string>uri;*/
+
+		const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
+		const scriptUris = await res.json();
+
+		return <string>scriptUris[0];
 	}
 }

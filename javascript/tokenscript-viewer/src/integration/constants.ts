@@ -57,7 +57,7 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
-		rpc: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
+		rpc: 'https://mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
 		explorer: 'https://etherscan.com/tx/'
 	},
 	[ChainID.GOERLI]: {

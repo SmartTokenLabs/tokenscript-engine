@@ -61,7 +61,7 @@ export class CardPopover implements IViewBinding {
 
 	protected handlePostMessageFromView(event: MessageEvent) {
 
-		if (!this.iframe || !this.iframe.src)
+		if (!this.iframe)
 			return;
 
 		if (event.source !== this.iframe.contentWindow) {
@@ -136,8 +136,8 @@ export class CardPopover implements IViewBinding {
 	async unloadTokenView() {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
-		this.iframe.src = "";
-		document.location.hash = "#";
+		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
+		history.replaceState(undefined, undefined, "/");
 	}
 
 	viewError(error: Error) {

@@ -72,7 +72,7 @@ export class NewViewer {
 				// Import completed successfully, add tokenscript to myTokenScripts
 				tsMeta = await this.addFormSubmit("url", {tsId: tokenScript.getSourceInfo().tsId, image: definition.meta.image});
 
-				document.location.hash = "";
+				//document.location.hash = "";
 				window.history.replaceState({}, document.title, "/");
 
 				this.showToast.emit({
