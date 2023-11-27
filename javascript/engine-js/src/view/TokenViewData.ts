@@ -1,5 +1,5 @@
-import {TokenScript} from "../TokenScript";
-import {Card} from "../tokenScript/Card";
+import { TokenScript } from "../TokenScript";
+import { Card } from "../tokenScript/Card";
 
 /**
  * TokenView data contains helper functions for
@@ -13,7 +13,7 @@ export class TokenViewData {
 
 	}
 
-	public async getCurrentTokenData(bypassLocks = false){
+	public async getCurrentTokenData(bypassLocks = false) {
 
 		const attrsData = {};
 
@@ -22,7 +22,7 @@ export class TokenViewData {
 		for (let attr of attrs) {
 			try {
 				attrsData[attr.getName()] = await attr.getJsonSafeValue(bypassLocks);
-			} catch (e){
+			} catch (e) {
 				console.warn(e);
 			}
 		}
@@ -39,18 +39,18 @@ export class TokenViewData {
 
 		const tokenContextData = await this.tokenScript.getTokenContextData();
 
-		return {...attrsData, ...tokenContextData};
+		return { ...attrsData, ...tokenContextData };
 	}
 
-	public getViewDataId(){
-		if (!this.viewContainerId){
+	public getViewDataId() {
+		if (!this.viewContainerId) {
 			this.viewContainerId = "token-card-" + this.tokenScript.getCurrentTokenContext()?.selectedTokenId;
 		}
 
 		return this.viewContainerId;
 	}
 
-	public async getTokenJavascript(){
+	public async getTokenJavascript() {
 
 		const tokenData = await this.getCurrentTokenData();
 
@@ -61,7 +61,7 @@ export class TokenViewData {
 
 		return `
 
-		const _currentTokenInstance = JSON.parse('${JSON.stringify(tokenData).replace("^\\'", "\\'")}');
+		const _currentTokenInstance = JSON.parse('${JSON.stringify(tokenData).replace("^\\'", "\\'").replace(/[\u0000-\u001F]/g, "")}');
 
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
