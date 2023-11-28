@@ -55,7 +55,9 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
 		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
-		history.replaceState(undefined, undefined, "/");
+		const newUrl = new URL(document.location.href);
+		newUrl.hash = "";
+		history.replaceState(undefined, undefined, newUrl);
 	}
 
 	protected showLoader() {

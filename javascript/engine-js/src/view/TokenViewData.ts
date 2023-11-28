@@ -61,7 +61,7 @@ export class TokenViewData {
 
 		return `
 
-		const _currentTokenInstance = JSON.parse('${JSON.stringify(tokenData).replace("^\\'", "\\'")}');
+		const _currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replaceAll("`", "")}\`);
 
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";

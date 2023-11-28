@@ -137,7 +137,9 @@ export class CardPopover implements IViewBinding {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
 		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
-		history.replaceState(undefined, undefined, "/");
+		const newUrl = new URL(document.location.href);
+		newUrl.hash = "";
+		history.replaceState(undefined, undefined, newUrl);
 	}
 
 	viewError(error: Error) {
