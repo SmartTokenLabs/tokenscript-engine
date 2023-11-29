@@ -19,7 +19,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		const resultTokens: ITokenCollection[] = [];
 
 		if (!Web3WalletProvider.isWalletConnected()){
-			Web3WalletProvider.getWallet(true);
+			//Web3WalletProvider.getWallet(true);
 			return [];
 		}
 

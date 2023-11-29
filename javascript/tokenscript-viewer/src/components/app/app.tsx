@@ -195,7 +195,7 @@ export class AppRoot {
 		});
 	}
 
-	async componentWillLoad(){
+	async componentDidLoad(){
 
 		//const queryStr = document.location.search.substring(1);
 		//const query = new URLSearchParams(queryStr);
