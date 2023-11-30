@@ -48,6 +48,14 @@ body {
 	cursor: pointer;
 }
 
+.info-button {
+	animation: borderFlash 3s infinite;
+}
+
+@keyframes borderFlash {
+	50% {box-shadow: 0 0 20px #001AFF;}
+}
+
 .info-button img {
 	width: 90%;
 }
