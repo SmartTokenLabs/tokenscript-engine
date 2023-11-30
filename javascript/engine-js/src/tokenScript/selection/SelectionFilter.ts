@@ -13,6 +13,9 @@ export class SelectionFilter {
 
 	constructor(private tokenScript: TokenScript, filter: string) {
 
+		// Decode entity references
+		filter = unescape(filter.replace(/&#x(\w{4});/g, '%u$1'));
+
 		const matches = filter.match(/([a-zA-Z0-9]*)([=<>]*)([a-zA-Z0-9]*)/);
 
 		if (matches.length < 4)

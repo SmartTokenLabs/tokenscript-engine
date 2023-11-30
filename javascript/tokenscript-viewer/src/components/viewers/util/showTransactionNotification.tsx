@@ -1,6 +1,7 @@
 import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
 import {EventEmitter, h} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
+import de from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/de";
 
 
 export const showTransactionNotification = async (data: ITransactionStatus, showToast: EventEmitter<ShowToastEventArgs>) => {
@@ -36,8 +37,21 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 
 	const revertMatch = message.match(/reverted with reason string '(.*)'/);
 
-	if (revertMatch)
+	if (revertMatch){
 		message = revertMatch[1];
+	} else {
+		const regex = /"message": "(.*)"/g;
+		let match;
+		const detailedMessages = [];
+
+		while (match = regex.exec(message)){
+			if (detailedMessages.indexOf(match[1]) === -1)
+				detailedMessages.push(match[1]);
+		}
+
+		if (detailedMessages.length)
+			message = detailedMessages.join("\n");
+	}
 
 	showToast.emit({
 		type: 'error',
