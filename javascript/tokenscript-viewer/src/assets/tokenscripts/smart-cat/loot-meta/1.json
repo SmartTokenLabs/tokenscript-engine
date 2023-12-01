@@ -1,0 +1,28 @@
+{
+	"image": "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/loot-meta/1.png",
+	"attributes": [
+		{
+			"trait_type": "Collection",
+			"value": "SmartCatsLoot"
+		},
+		{
+			"trait_type": "TokenId",
+			"value": "1"
+		},
+		{
+			"trait_type": "Background",
+			"value": "Meme Background 2"
+		},
+		{
+			"trait_type": "Wand",
+			"value": "Awesome"
+		},
+		{
+			"trait_type": "Feather",
+			"value": "Rainbow"
+		}
+	],
+	"description": "SmartCat Loot test token",
+	"name": "SmartCatLoot #1",
+	"animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=3803829543"
+}
