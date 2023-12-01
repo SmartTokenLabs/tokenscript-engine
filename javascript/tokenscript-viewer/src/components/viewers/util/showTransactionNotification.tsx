@@ -1,7 +1,6 @@
 import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
 import {EventEmitter, h} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
-import de from "@walletconnect/qrcode-modal/dist/cjs/browser/languages/de";
 
 
 export const showTransactionNotification = async (data: ITransactionStatus, showToast: EventEmitter<ShowToastEventArgs>) => {
