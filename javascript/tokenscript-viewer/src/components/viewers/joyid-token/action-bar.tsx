@@ -54,7 +54,7 @@ export class ActionBar {
 
 	@Watch("tokenScript")
 	private async initTokenScript (){
-		await this.loadCardButtons();
+		this.loadCardButtons();
 
 		this.tokenScript.on("TOKENS_UPDATED", () => {
 			this.cardButtons = undefined;
@@ -158,7 +158,7 @@ export class ActionBar {
 	render(){
 		return (
 			<div class="jid-action-bar">
-				{ this.cardButtons?.length ?
+				{ this.tokenScript ?
 					[
 						(<button class="jid-btn jid-overflow-btn" onClick={() => {
 							if (!this.actionsAvailable())
@@ -170,7 +170,7 @@ export class ActionBar {
 						(<action-overflow-modal ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
 							<h2 class="overflow-heading">More actions</h2>
 							<div class="overflow-buttons">
-								{this.cardButtons}
+								{this.cardButtons ? this.cardButtons : <loading-spinner color={"#595959"}/>}
 							</div>
 						</action-overflow-modal>)
 					] : ''
