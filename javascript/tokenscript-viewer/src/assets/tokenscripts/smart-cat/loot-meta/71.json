@@ -1,0 +1,35 @@
+{
+  "name": "SmartCatLoot #71",
+  "description": "SmartCat Loot",
+  "image": "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/loot-meta/71.png",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "SmartCatsLoot"
+    },
+    {
+      "trait_type": "TokenId",
+      "value": 71
+    },
+    {
+      "trait_type": "Loot Type"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Baby Blue"
+    },
+    {
+      "trait_type": "Cat",
+      "value": "Wonder"
+    },
+    {
+      "trait_type": "Feather",
+      "value": "Magic"
+    },
+    {
+      "trait_type": "Handle",
+      "value": "Ball"
+    }
+  ],
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=71"
+}

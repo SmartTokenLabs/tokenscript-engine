@@ -1,0 +1,36 @@
+{
+  "name": "SmartCatLoot #59",
+  "description": "SmartCat Loot",
+  "image": "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/loot-meta/59.png",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "SmartCatsLoot"
+    },
+    {
+      "trait_type": "TokenId",
+      "value": 59
+    },
+    {
+      "trait_type": "Loot Type",
+      "value": "Tree"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Green"
+    },
+    {
+      "trait_type": "Head",
+      "value": "Viking"
+    },
+    {
+      "trait_type": "Left",
+      "value": "Flower"
+    },
+    {
+      "trait_type": "Right",
+      "value": "Yarn Ball"
+    }
+  ],
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=59"
+}

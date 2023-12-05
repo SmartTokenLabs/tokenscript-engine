@@ -1,0 +1,36 @@
+{
+  "name": "SmartCatLoot #33",
+  "description": "SmartCat Loot",
+  "image": "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/loot-meta/33.png",
+  "attributes": [
+    {
+      "trait_type": "Collection",
+      "value": "SmartCatsLoot"
+    },
+    {
+      "trait_type": "TokenId",
+      "value": 33
+    },
+    {
+      "trait_type": "Loot Type",
+      "value": "Mouse"
+    },
+    {
+      "trait_type": "Background",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Ears",
+      "value": "Triangle"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Angry"
+    },
+    {
+      "trait_type": "Tail",
+      "value": "Standard"
+    }
+  ],
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=33"
+}
