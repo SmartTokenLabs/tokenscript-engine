@@ -87,7 +87,7 @@ export class Attribute {
 			} else {
 				// User entry values are never cached internally within this object
 				if (origin.tagName === "ts:user-entry") {
-					value = this.tokenScript.getViewController().getUserEntryValue(this.getName());
+					value = this.tokenScript.getViewController().getUserEntryValue(this.getName(), scopeId);
 				} else {
 
 					// TODO: This can probably be improved - it's only here to fix an issue with the ENS renewal screen
@@ -309,7 +309,7 @@ export class Attribute {
 	private getValueScopeId(tokenContext: ITokenIdContext){
 		let scope = "-1";
 
-		if (this.getDependsOnTokenId()){
+		if (this.getDependsOnTokenIdOrIsUserEntry()){
 			if (tokenContext?.selectedTokenId)
 				scope = tokenContext.selectedTokenId;
 		}
@@ -318,15 +318,36 @@ export class Attribute {
 	}
 
 	/**
-	 * Determines whether the attribute depends on tokenId.
+	 * Determines whether the attribute depends on tokenId or user input.
 	 * This value is cached to prevent unnecessary recalculation of the attribute dependency tree.
 	 * @private
 	 */
-	private getDependsOnTokenId(){
+	private getDependsOnTokenIdOrIsUserEntry(){
+
+		if (this.isUserEntry())
+			return true;
+
 		if (this.dependsOnTokenId === undefined){
-			this.dependsOnTokenId = this.isDependentOn(["tokenId"])
+
+			const userEntryAttrNames = [];
+
+			for (const attr of this.tokenScript.getAttributes()){
+				if (attr.isUserEntry())
+					userEntryAttrNames.push(attr.getName());
+			}
+
+			this.dependsOnTokenId = this.isDependentOn(["tokenId", ...userEntryAttrNames])
 		}
 		return this.dependsOnTokenId;
+	}
+
+	/**
+	 * Returns true if the attribute is a user-entry attribute
+	 */
+	public isUserEntry(){
+		const origins = this.getOrigins();
+		const origin = origins[0];
+		return origin.tagName === "ts:user-entry";
 	}
 
 	/**

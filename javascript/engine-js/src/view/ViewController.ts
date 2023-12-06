@@ -25,7 +25,7 @@ export enum RequestFromView {
 export class ViewController {
 
 	private currentCard?: Card;
-	private userEntryValues: {[key: string]: any} = {};
+	private userEntryValues: {[scopeId: string]: {[key: string]: any}} = {};
 
 	constructor(private tokenScript: TokenScript, private viewAdapter: IViewBinding) {
 
@@ -69,12 +69,13 @@ export class ViewController {
 	/**
 	 * Gets a specific user-entry value that has been set by the token card Javascript
 	 * @param key
+	 * @param scopeId
 	 */
-	getUserEntryValue(key: string){
-		if (!this.userEntryValues[key])
+	getUserEntryValue(key: string, scopeId: string){
+		if (!this.userEntryValues[scopeId]?.[key])
 			return undefined;
 
-		return this.userEntryValues[key];
+		return this.userEntryValues[scopeId][key];
 	}
 
 	/**
@@ -87,14 +88,19 @@ export class ViewController {
 
 		let shouldRefresh = false;
 
+		const scopeId = this.tokenScript.getCurrentTokenContext().selectedTokenId ?? "-1";
+
+		if (!this.userEntryValues[scopeId])
+			this.userEntryValues[scopeId] = {};
+
 		for (let key in userEntryValues){
 
-			if (this.userEntryValues[key] &&
-				this.userEntryValues[key] === userEntryValues[key]){
+			if (this.userEntryValues[scopeId][key] &&
+				this.userEntryValues[scopeId][key] === userEntryValues[key]){
 				continue;
 			}
 
-			if (!this.userEntryValues[key] && userEntryValues[key] === "")
+			if (!this.userEntryValues[scopeId][key] && userEntryValues[key] === "")
 				continue;
 
 			const attr = this.findAttribute(key);
@@ -105,10 +111,10 @@ export class ViewController {
 			if (!attr && !shouldRefresh)
 				shouldRefresh = true;
 
-			console.log("User input '" + key + "' changed (" + this.userEntryValues[key] + " -> " + userEntryValues[key] + ")");
+			console.log("User input '" + key + "' changed (" + this.userEntryValues[scopeId][key] + " -> " + userEntryValues[key] + ")");
 			// Invalidate attributes that depend on changed user entry value
 			changedKeys.push(key);
-			this.userEntryValues[key] = userEntryValues[key];
+			this.userEntryValues[scopeId][key] = userEntryValues[key];
 		}
 
 		if (changedKeys.length > 0) {
