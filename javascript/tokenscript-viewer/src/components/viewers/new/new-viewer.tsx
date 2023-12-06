@@ -43,10 +43,19 @@ export class NewViewer {
 	}) showToast: EventEmitter<ShowToastEventArgs>;
 
 	componentWillLoad(){
-		this.init();
+		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
+			for (const id in this.myTokenScripts){
+				if (walletConnection){
+					this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
+				} else {
+					this.myTokenScripts[id].tokenScript.setTokenMetadata([]);
+				}
+			}
+		})
 	}
 
-	componentDidLoad(){
+	async componentDidLoad(){
+		this.init();
 		this.processUrlLoad();
 	}
 
@@ -166,16 +175,6 @@ export class NewViewer {
 		this.scriptsLoading = false;
 
 		// this.app.hideTsLoader();
-
-		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
-			for (const id in this.myTokenScripts){
-				if (walletConnection){
-					this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
-				} else {
-					this.myTokenScripts[id].tokenScript.setTokenMetadata([]);
-				}
-			}
-		})
 	}
 
 	@Watch("myTokenScripts")
