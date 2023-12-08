@@ -2,7 +2,6 @@ import {ITokenIdContext, TokenScript} from "../TokenScript";
 import {Arguments} from "./data/function/Arguments";
 import {Attributes} from "./Attributes";
 import {EthUtils} from "../ethereum/EthUtils";
-import {BigNumber} from "bignumber.js";
 import {FilterQuery} from "./data/event/FilterQuery";
 import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
 import {Label} from "./Label";
