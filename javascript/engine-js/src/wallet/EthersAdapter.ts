@@ -64,8 +64,10 @@ export class EthersAdapter implements IWalletAdapter {
 			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
 		} catch (e: any){
 			const decodedError = decodeError(e, errorAbi);
+			console.error(e);
 			console.log("Decoded error: ", decodedError);
-			e.message = "Transaction reverted: " + decodedError.error;
+			if (decodedError.type > 0)
+				e.message = ("Contract execution failed: ") + decodedError.error;
 			throw e;
 		}
 

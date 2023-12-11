@@ -773,8 +773,6 @@ export class TokenScript {
 
 		} catch (e){
 
-			console.error(e);
-
 			const matches = e.message.match(/reason="([^"]*)"/);
 
 			if (matches?.length > 1)
