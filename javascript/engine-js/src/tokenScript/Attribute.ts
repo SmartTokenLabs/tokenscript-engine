@@ -5,6 +5,7 @@ import {EthUtils} from "../ethereum/EthUtils";
 import {FilterQuery} from "./data/event/FilterQuery";
 import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
 import {Label} from "./Label";
+import LodashGet from "lodash/get";
 
 interface TokenAttributeValue {
 	[tokenId: string]: any
@@ -187,7 +188,8 @@ export class Attribute {
 
 				console.log("Resolving attribute: " + this.getName() + " for token context " + tokenContext?.selectedTokenId);
 
-				const contract = this.tokenScript.getContractByName(origin.getAttribute("contract"));
+				const contractName = origin.getAttribute("contract")
+				const contract = this.tokenScript.getContractByName(contractName);
 				const wallet = await this.tokenScript.getEngine().getWalletAdapter();
 				const chain = tokenContext?.chainId ?? await wallet.getChain();
 				const contractAddr = contract.getAddressByChain(chain, true);
@@ -199,6 +201,20 @@ export class Attribute {
 					const func = origin.getAttribute("function");
 
 					let outputType = EthUtils.tokenScriptOutputToEthers(this.asType);
+					let outputTypes;
+
+					if (outputType === "abi"){
+
+						const abi = contract.getAbi("function", func);
+
+						if (!abi.length){
+							throw new Error("'as' XML attribute specifies abi but the abi for " + contractName + ":" + func + " is not defined");
+						}
+
+						outputTypes = abi[0].outputs;
+					} else {
+						outputTypes = [outputType];
+					}
 
 					const args = new Arguments(this.tokenScript, origin, this.localAttrContext).getArguments();
 
@@ -208,7 +224,7 @@ export class Attribute {
 						ethParams.push(await args[i].getEthersArgument(tokenContext, i.toString()))
 					}
 
-					res = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, [outputType]);
+					res = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);
 
 					console.log("Call result: ", res);
 
@@ -251,7 +267,7 @@ export class Attribute {
 					console.log("Event result: ", res);
 				}
 
-				if (res instanceof Object) {
+				if (res instanceof Object && res._isBigNumber) {
 					resultValue = BigInt(res);
 				} else {
 					resultValue = res;
@@ -267,7 +283,32 @@ export class Attribute {
 					throw new Error("Attribute ts:data origin does not support more than one element");
 				}
 
-				resultValue = data[0].textContent;
+				if (origin.hasAttribute("ref")){
+
+					// TODO: prevent single attribute references (i.e. must be path)? Maybe not if this code gets shared for transaction argument resolution
+
+					// Check for path reference and extract attribute name
+					const ref = origin.getAttribute("ref");
+					const firstElem = ref.match(/\.|\[/)?.[0];
+					const attrName = firstElem ? ref.split(firstElem)[0] : ref;
+					let path = firstElem ? ref.substring(ref.indexOf(firstElem)) : "";
+
+					if (path.charAt(0) === ".")
+						path = path.substring(1);
+
+					//console.log("Resolving attribute data reference, attribute:", attrName, " path:", path);
+
+					const attribute = this.tokenScript.getAttributes().getAttribute(attrName);
+
+					const value = await attribute.getValue(true, false, false, tokenContext);
+
+					if (path) {
+						resultValue = LodashGet(value, path);
+					}
+
+				} else {
+					resultValue = data[0].textContent;
+				}
 
 				break;
 

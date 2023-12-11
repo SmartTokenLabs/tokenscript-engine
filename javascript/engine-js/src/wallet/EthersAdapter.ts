@@ -32,7 +32,7 @@ export class EthersAdapter implements IWalletAdapter {
 		return await ethersProvider.getSigner().signMessage(data);
 	}
 
-	async call(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], errorAbi: any[] = []){
+	async call(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]|any[], errorAbi: any[] = []){
 
 		console.log("Call ethereum method. chain " + chain + "; contract " + contractAddr + "; method " + method + ";");
 		//console.log(args);
@@ -106,22 +106,22 @@ export class EthersAdapter implements IWalletAdapter {
 		return tx;
 	}
 
-	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], stateMutability: string, errorAbi: any[] = []){
+	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]|any[], stateMutability: string, errorAbi: any[] = []){
 
 		const abiData = {
 			name: method,
 			inputs: args,
-			outputs: outputTypes.map((value, index) => {
+			outputs: typeof outputTypes[0] === "string" ? outputTypes.map((value, index) => {
 
 				// Converted value
 				const convertedType = value === "uint" ? "uint256" : value;
 
 				return {
-					name: index.toString(),
+					name: value.name ?? index.toString(),
 					type: convertedType,
 					internalType: convertedType
 				}
-			}),
+			}) : outputTypes,
 			stateMutability: stateMutability,
 			type: "function"
 		};

@@ -12,7 +12,7 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		method: string,
 		args: any[],
-		outputTypes: string[],
+		outputTypes: any[]|string[],
 		errorAbi?: any[]
 	): Promise<any>;
 	getEvents(

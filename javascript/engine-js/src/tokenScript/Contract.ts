@@ -35,7 +35,6 @@ export class Contract {
 		if (abiXml.length){
 			try {
 				this.abi = JSON.parse(abiXml[0].innerHTML);
-				console.log(this.abi);
 			} catch (e){
 				console.warn("Failed to parse contract ABI", e);
 			}
