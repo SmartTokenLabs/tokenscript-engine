@@ -194,8 +194,6 @@ export class Attribute {
 				const chain = tokenContext?.chainId ?? await wallet.getChain();
 				const contractAddr = contract.getAddressByChain(chain, true);
 
-				let res;
-
 				if (origin.tagName === "ethereum:call") {
 
 					const func = origin.getAttribute("function");
@@ -224,9 +222,9 @@ export class Attribute {
 						ethParams.push(await args[i].getEthersArgument(tokenContext, i.toString()))
 					}
 
-					res = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);
+					resultValue = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);
 
-					console.log("Call result: ", res);
+					console.log("Call result: ", resultValue);
 
 				} else {
 
@@ -262,15 +260,9 @@ export class Attribute {
 					if (events.length === 0)
 						break;
 
-					res = events[0].args[fieldToSelect];
+					resultValue = events[0].args[fieldToSelect];
 
-					console.log("Event result: ", res);
-				}
-
-				if (res instanceof Object && res._isBigNumber) {
-					resultValue = BigInt(res);
-				} else {
-					resultValue = res;
+					console.log("Event result: ", resultValue);
 				}
 
 				break;
@@ -293,18 +285,16 @@ export class Attribute {
 					const attrName = firstElem ? ref.split(firstElem)[0] : ref;
 					let path = firstElem ? ref.substring(ref.indexOf(firstElem)) : "";
 
-					if (path.charAt(0) === ".")
+					if (path.length && path.charAt(0) === ".")
 						path = path.substring(1);
 
-					//console.log("Resolving attribute data reference, attribute:", attrName, " path:", path);
+					console.log("Resolving attribute data reference, attribute:", attrName, " path:", path);
 
 					const attribute = this.tokenScript.getAttributes().getAttribute(attrName);
 
 					const value = await attribute.getValue(true, false, false, tokenContext);
 
-					if (path) {
-						resultValue = LodashGet(value, path);
-					}
+					resultValue = path ? LodashGet(value, path) : value;
 
 				} else {
 					resultValue = data[0].textContent;
@@ -314,6 +304,11 @@ export class Attribute {
 
 			default:
 				throw new Error("Attribute origin type " + origin.tagName + " is not implemented");
+		}
+
+		// Cleanup ethers big numbers
+		if (resultValue instanceof Object && resultValue._isBigNumber) {
+			resultValue = BigInt(resultValue);
 		}
 
 		this.setScopedValue(resultValue, scope);
