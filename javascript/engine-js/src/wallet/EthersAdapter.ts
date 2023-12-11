@@ -65,8 +65,8 @@ export class EthersAdapter implements IWalletAdapter {
 		} catch (e: any){
 			const decodedError = decodeError(e, errorAbi);
 			console.log("Decoded error: ", decodedError);
-			e.message += decodedError.error;
-			throw new e;
+			e.message = "Transaction reverted: " + decodedError.error;
+			throw e;
 		}
 
 		console.log("Transaction submitted: " + tx.hash);
