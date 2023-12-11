@@ -759,6 +759,7 @@ export class TokenScript {
 			const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
 
 			const contract = transInfo.contract.getAddressByChain(chain, true);
+			const errorAbi = transInfo.contract.getAbi("error");
 
 			const ethParams = [];
 
@@ -768,7 +769,7 @@ export class TokenScript {
 
 			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
-			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener);
+			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
 
 		} catch (e){
 

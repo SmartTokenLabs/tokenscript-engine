@@ -12,7 +12,8 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		method: string,
 		args: any[],
-		outputTypes: string[]
+		outputTypes: string[],
+		errorAbi?: any[]
 	): Promise<any>;
 	getEvents(
 		chain: number,
@@ -28,7 +29,8 @@ export interface IWalletAdapter {
 		outputTypes: string[],
 		value?: BigInt,
 		waitForConfirmation?: boolean,
-		listener?: ITransactionListener
+		listener?: ITransactionListener,
+		errorAbi?: any[]
 	): Promise<any>;
 	getChain(): Promise<number>;
 	getRpcUrl(chainId: number): string;

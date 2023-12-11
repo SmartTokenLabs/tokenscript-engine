@@ -1,6 +1,7 @@
 import {IWalletAdapter} from "./IWalletAdapter";
 import {Contract, ContractTransaction, ethers} from "ethers";
 import {ITransactionListener} from "../TokenScript";
+import {decodeError} from "ethers-decode-error";
 
 export interface IChainConfig {
 	rpc: string,
@@ -31,34 +32,42 @@ export class EthersAdapter implements IWalletAdapter {
 		return await ethersProvider.getSigner().signMessage(data);
 	}
 
-	async call(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]){
+	async call(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], errorAbi: any[] = []){
 
 		console.log("Call ethereum method. chain " + chain + "; contract " + contractAddr + "; method " + method + ";");
 		//console.log(args);
 
-		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, "view");
+		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, "view", errorAbi);
 
 		return await contract[method](...(args.map((arg: any) => arg.value))) as ContractTransaction;
 	}
 
-	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener){
+	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
 
-		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value);
-		console.log(args);
+		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
 
 		await this.switchChain(chain);
 
 		// TODO: if no method is set, send raw transaction? Is this allowed?
 		// TODO: handle no-method transaction
 
-		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, value ? "payable" : "nonpayable");
+		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, value ? "payable" : "nonpayable", errorAbi);
 
 		const overrides: any = {};
 
 		if (value)
 			overrides.value = value;
 
-		const tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
+		let tx;
+
+		try {
+			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
+		} catch (e: any){
+			const decodedError = decodeError(e, errorAbi);
+			console.log("Decoded error: ", decodedError);
+			e.message += decodedError.error;
+			throw new e;
+		}
 
 		console.log("Transaction submitted: " + tx.hash);
 
@@ -89,7 +98,7 @@ export class EthersAdapter implements IWalletAdapter {
 		return tx;
 	}
 
-	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], stateMutability: string){
+	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], stateMutability: string, errorAbi: any[] = []){
 
 		const abiData = {
 			name: method,
@@ -116,7 +125,7 @@ export class EthersAdapter implements IWalletAdapter {
 							new ethers.providers.StaticJsonRpcProvider(this.getRpcUrl(chain), chain) :
 							(await this.getEthersProvider()).getSigner();
 
-		return new Contract(contractAddr, [abiData], provider);
+		return new Contract(contractAddr, [abiData, ...errorAbi], provider);
 	}
 
 	public getRpcUrl(chainId: number){
