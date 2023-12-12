@@ -12,7 +12,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "preinstall": "npm i patch-package",
     "postinstall": "patch-package",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "bundle-sdk": "node scripts/bundleSDK.js"
   },
   "author": "",
   "license": "ISC",

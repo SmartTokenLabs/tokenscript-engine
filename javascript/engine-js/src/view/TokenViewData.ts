@@ -1,5 +1,6 @@
 import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
+import {CARD_SDK_V1} from "./sdk/v1";
 
 /**
  * TokenView data contains helper functions for
@@ -68,7 +69,7 @@ export class TokenViewData {
 		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
 		const chainID = "${tokenData.chainId}";
 
-		window.web3CallBacks = {}
+		/*window.web3CallBacks = {}
 
 		function executeCallback (id, error, value) {
 			console.debug('Execute callback: ' + id + ' ' + value)
@@ -100,7 +101,11 @@ export class TokenViewData {
 			}
 		}
 
-		web3.tokens.data.currentInstance = _currentTokenInstance
+		web3.tokens.data.currentInstance = _currentTokenInstance*/
+
+		${CARD_SDK_V1}
+
+		window.tokenscript.setInstanceData(_currentTokenInstance);
 
 		function refresh() {
 		   web3.tokens.dataChanged('test', web3.tokens.data, '${this.getViewDataId()}') //TODO: Cache previous value of token to feed into first arg

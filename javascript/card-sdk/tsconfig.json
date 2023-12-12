@@ -4,7 +4,7 @@
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
 		"rootDir": "./src/",
-		"outDir": "./dist/lib.esm",
+		"outDir": "./dist/",
 		"module": "esnext",
 		"target": "es2017",
 		"allowJs": true,
@@ -16,14 +16,15 @@
 			"es2017",
 			"dom",
 			"dom.iterable",
-			"es2020.bigint",
-			"es2021.string"
+			"es2020.bigint"
 		],
+		"typeRoots": ["src/"],
+		"types": ["global.d.ts"],
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"skipLibCheck": true,
 		"composite": true,
-		"declarationMap": true
+		"declarationMap": true,
 	},
 	"include": [
 		"src/**/*"
