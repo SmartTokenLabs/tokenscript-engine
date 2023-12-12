@@ -65,14 +65,6 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
 
 }
 
-declare global {
-    interface Window {
-        web3: IWeb3LegacySDK
-        tokenscript: ITokenScriptSDK
-        ethers: typeof ethers
-    }
-}
-
 //window.ethers = ethers;
 window.web3 = new TokenScriptSDK();
 window.tokenscript = window.web3;
