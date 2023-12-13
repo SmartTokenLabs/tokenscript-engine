@@ -26,6 +26,7 @@
     "@peculiar/x509": "^1.9.2",
     "bignumber.js": "^9.1.1",
     "ethers": "^5.6.8",
+    "ethers-decode-error": "^1.0.0",
     "ipfs-only-hash": "^4.0.0",
     "jsdom": "^22.1.0",
     "pako": "^2.1.0",

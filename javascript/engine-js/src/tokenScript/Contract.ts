@@ -6,6 +6,7 @@ export class Contract {
 	private name?;
 	private interface?;
 	private addresses: {[key: string]: IContractAddress} = {};
+	private abi = [];
 
 	constructor(
 		private contractDef: Element
@@ -28,6 +29,17 @@ export class Contract {
 				chain: chain
 			};
 		}
+
+		const abiXml = contractDef.getElementsByTagName("ts:abi");
+
+		if (abiXml.length){
+			try {
+				this.abi = JSON.parse(abiXml[0].innerHTML);
+				console.log(this.abi);
+			} catch (e){
+				console.warn("Failed to parse contract ABI", e);
+			}
+		}
 	}
 
 	/**
@@ -49,6 +61,25 @@ export class Contract {
 	 */
 	public getAddresses(){
 		return this.addresses;
+	}
+
+	/**
+	 * Gets ABI items, optionally filtered by type & name
+	 */
+	public getAbi(type?: string, name?: string){
+
+		if (!type && !name)
+			return this.abi;
+
+		let items = this.abi;
+
+		if (type)
+			items = items.filter((item) => type === item.type);
+
+		if (name)
+			items = items.filter((item) => name === item.name);
+
+		return items;
 	}
 
 	/**
