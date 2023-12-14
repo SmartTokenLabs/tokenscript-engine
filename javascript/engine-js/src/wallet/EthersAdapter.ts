@@ -66,8 +66,14 @@ export class EthersAdapter implements IWalletAdapter {
 			const decodedError = decodeError(e, errorAbi);
 			console.error(e);
 			console.log("Decoded error: ", decodedError);
-			if (decodedError.type > 0)
-				e.message = ("Contract execution failed: ") + decodedError.error;
+			if (decodedError.type > 0) {
+				const decodedMessage = ("Contract execution failed: ") + decodedError.error;
+				if (typeof e === "string"){
+					e = new Error(decodedMessage);
+				} else {
+					e.message = decodedMessage;
+				}
+			}
 			throw e;
 		}
 
