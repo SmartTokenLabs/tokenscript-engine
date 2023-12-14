@@ -380,7 +380,7 @@ var bh=Object.defineProperty;var vh=(s,t,e)=&gt;t in s?bh(s,t,{enumerable:!0,con
 					
 @font-face {
 	font-family: 'ClassicComic';
-	src: url('http://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/fonts/ClassicComic.woff') format("woff2-variations");
+	src: url('https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/fonts/ClassicComic.woff') format("woff2-variations");
 }
 
 .mint-container * {
@@ -869,4 +869,4 @@ p.light {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>6e2fviCLtl9b5fJzo2TSUpUF4v5mddvMqsPEBrXugus=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>KnJOncxrCs1L9T3SGqHxDY/gUEjLGXu2i/UK7HeDNlX2Ku0b0R2x1i+j13Pd/NyrLf6Z0XtimYnB13Y/kY0CWQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>xfPZ6MbcepBuf2GlU0RCTkGoYiR6IVzFwmsbCHDp7oU=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>E5an4jv82oxJbsGhgDySoCPUL26h5rfBbkrm/PWquBOZHdmQU7fKN2SgOBs3iBJpbxtq3mKZ9UmNXA8ipSpKkA==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
