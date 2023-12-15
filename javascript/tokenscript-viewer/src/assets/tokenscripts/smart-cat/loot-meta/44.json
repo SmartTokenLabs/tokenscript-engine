@@ -17,7 +17,7 @@
     },
     {
       "trait_type": "Background",
-      "value": "Pink"
+      "value": "Green"
     },
     {
       "trait_type": "Tail",
@@ -29,12 +29,12 @@
     },
     {
       "trait_type": "Beak",
-      "value": "Hook"
+      "value": "Colibri"
     },
     {
       "trait_type": "Eyes",
-      "value": "Regular"
+      "value": "Owl"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=44"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=44"
 }

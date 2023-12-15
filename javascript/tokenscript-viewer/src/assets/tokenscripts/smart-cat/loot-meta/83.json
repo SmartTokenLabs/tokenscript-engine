@@ -13,28 +13,24 @@
     },
     {
       "trait_type": "Loot Type",
-      "value": "Bird Plushie"
+      "value": "Bouncing Ball"
     },
     {
       "trait_type": "Background",
-      "value": "Orange"
+      "value": "Indigo"
     },
     {
-      "trait_type": "Tail",
-      "value": "Sleek"
-    },
-    {
-      "trait_type": "Feathers",
+      "trait_type": "Color",
       "value": "Blue"
     },
     {
-      "trait_type": "Beak",
-      "value": "Birdie"
+      "trait_type": "Type",
+      "value": "Four Way"
     },
     {
-      "trait_type": "Eyes",
-      "value": "Gold Eyes"
+      "trait_type": "Detail",
+      "value": "Leaf"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=83"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=83"
 }

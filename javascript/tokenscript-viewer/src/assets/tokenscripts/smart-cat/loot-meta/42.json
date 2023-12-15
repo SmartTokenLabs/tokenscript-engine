@@ -17,11 +17,11 @@
     },
     {
       "trait_type": "Background",
-      "value": "Green"
+      "value": "Orange"
     },
     {
       "trait_type": "Tail",
-      "value": "Gold"
+      "value": "Long"
     },
     {
       "trait_type": "Feathers",
@@ -29,12 +29,12 @@
     },
     {
       "trait_type": "Beak",
-      "value": "Colibri"
+      "value": "Pointy"
     },
     {
       "trait_type": "Eyes",
-      "value": "Candy"
+      "value": "Glass"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=42"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=42"
 }

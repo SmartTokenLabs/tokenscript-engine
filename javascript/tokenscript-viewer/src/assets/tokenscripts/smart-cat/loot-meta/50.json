@@ -17,7 +17,7 @@
     },
     {
       "trait_type": "Background",
-      "value": "Tan"
+      "value": "Blue"
     },
     {
       "trait_type": "Tail",
@@ -29,12 +29,12 @@
     },
     {
       "trait_type": "Beak",
-      "value": "Toucan"
+      "value": "Gold Birdie"
     },
     {
       "trait_type": "Eyes",
       "value": "Gold Eyes"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=50"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=50"
 }

@@ -17,7 +17,7 @@
     },
     {
       "trait_type": "Background",
-      "value": "Indigo"
+      "value": "Pink"
     },
     {
       "trait_type": "Color",
@@ -25,12 +25,12 @@
     },
     {
       "trait_type": "Type",
-      "value": "Wave"
+      "value": "Four Way"
     },
     {
       "trait_type": "Detail",
-      "value": "Feather"
+      "value": "Gold Feather"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=95"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=95"
 }

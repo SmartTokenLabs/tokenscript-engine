@@ -17,7 +17,7 @@
     },
     {
       "trait_type": "Background",
-      "value": "Magenta"
+      "value": "Tan"
     },
     {
       "trait_type": "Color",
@@ -25,12 +25,12 @@
     },
     {
       "trait_type": "Type",
-      "value": "Catch 'em"
+      "value": "Confetti"
     },
     {
       "trait_type": "Detail",
-      "value": "Mouse"
+      "value": "Leaf"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=91"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=91"
 }

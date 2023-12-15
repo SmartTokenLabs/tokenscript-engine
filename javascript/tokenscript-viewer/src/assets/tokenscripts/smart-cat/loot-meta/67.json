@@ -25,16 +25,16 @@
     },
     {
       "trait_type": "Feathers",
-      "value": "Gold"
+      "value": "Blue"
     },
     {
       "trait_type": "Beak",
-      "value": "Hook"
+      "value": "Toucan"
     },
     {
       "trait_type": "Eyes",
-      "value": "Candy"
+      "value": "White"
     }
   ],
-  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=137&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=67"
+  "animation_url": "https://viewer-staging.tokenscript.org/?viewType=opensea&chain=80001&contract=0x3F1108368CBa706990590d15ce7ADDEE8224203B&tokenId=67"
 }
