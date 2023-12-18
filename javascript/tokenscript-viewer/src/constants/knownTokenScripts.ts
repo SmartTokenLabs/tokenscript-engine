@@ -19,6 +19,12 @@ export const knownTokenScripts: TokenScriptsMeta[] = [
 		name: "SmartCat",
 		iconUrl: "/assets/tokenscript-icons/smart-cat.png"
 	},
+	{
+		tokenScriptId: "137-0x0D86C720e1Eb8CAb197707fDCFF9D7B218612a60",
+		loadType: "resolve",
+		name: "SmartCat Loot",
+		iconUrl: "/assets/tokenscripts/smart-cat/loot-meta/contract.png"
+	},
 ];
 
 export const getKnownTokenScriptMetaById = (tsId: string) => {
