@@ -35,6 +35,9 @@ export namespace Components {
         "onFormSubmit": (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
         "openDialog": () => Promise<void>;
     }
+    interface AlphawalletViewer {
+        "app": AppRoot;
+    }
     interface AppRoot {
         "loadTokenscript": (source: TokenScriptSource, tsId?: string, file?: File | string) => Promise<TokenScript>;
         "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
@@ -183,6 +186,10 @@ export interface ActionBarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLActionBarElement;
 }
+export interface AlphawalletViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLAlphawalletViewerElement;
+}
 export interface CardModalCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCardModalElement;
@@ -247,6 +254,12 @@ declare global {
     var HTMLAddSelectorElement: {
         prototype: HTMLAddSelectorElement;
         new (): HTMLAddSelectorElement;
+    };
+    interface HTMLAlphawalletViewerElement extends Components.AlphawalletViewer, HTMLStencilElement {
+    }
+    var HTMLAlphawalletViewerElement: {
+        prototype: HTMLAlphawalletViewerElement;
+        new (): HTMLAlphawalletViewerElement;
     };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
@@ -457,6 +470,7 @@ declare global {
         "action-bar": HTMLActionBarElement;
         "action-overflow-modal": HTMLActionOverflowModalElement;
         "add-selector": HTMLAddSelectorElement;
+        "alphawallet-viewer": HTMLAlphawalletViewerElement;
         "app-root": HTMLAppRootElement;
         "attribute-table": HTMLAttributeTableElement;
         "card-modal": HTMLCardModalElement;
@@ -509,6 +523,12 @@ declare namespace LocalJSX {
     }
     interface AddSelector {
         "onFormSubmit"?: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
+    }
+    interface AlphawalletViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: AlphawalletViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: AlphawalletViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: AlphawalletViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface AppRoot {
     }
@@ -663,6 +683,7 @@ declare namespace LocalJSX {
         "action-bar": ActionBar;
         "action-overflow-modal": ActionOverflowModal;
         "add-selector": AddSelector;
+        "alphawallet-viewer": AlphawalletViewer;
         "app-root": AppRoot;
         "attribute-table": AttributeTable;
         "card-modal": CardModal;
@@ -707,6 +728,7 @@ declare module "@stencil/core" {
             "action-bar": LocalJSX.ActionBar & JSXBase.HTMLAttributes<HTMLActionBarElement>;
             "action-overflow-modal": LocalJSX.ActionOverflowModal & JSXBase.HTMLAttributes<HTMLActionOverflowModalElement>;
             "add-selector": LocalJSX.AddSelector & JSXBase.HTMLAttributes<HTMLAddSelectorElement>;
+            "alphawallet-viewer": LocalJSX.AlphawalletViewer & JSXBase.HTMLAttributes<HTMLAlphawalletViewerElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
             "attribute-table": LocalJSX.AttributeTable & JSXBase.HTMLAttributes<HTMLAttributeTableElement>;
             "card-modal": LocalJSX.CardModal & JSXBase.HTMLAttributes<HTMLCardModalElement>;
