@@ -25,6 +25,8 @@ export class TokenViewer {
 
 	urlRequest: URLSearchParams;
 
+	private viewerPopover: HTMLViewerPopoverElement;
+
 	@State() cardButtons: JSX.Element[]|undefined;
 
 	@State() actionsEnabled = true;
@@ -101,12 +103,12 @@ export class TokenViewer {
 			return true;
 		}
 
-		if (query.get("sln") === "true" && query.has("issuer") && query.has("uid")){
+		if (query.has("issuer") && query.has("uid")){
 			this.app.showTsLoader();
 
 			//TODO: load attestation from SLN-A
 			const attestation =
-				"eNrFU0uOWzEMu0vWQaG_rGUzmV6i6MKWrAMULdDj18kV3mIEwwvDpCSC_HmDb2S3OyKqnut-g38fZB79eLKXCo_xsSX4Bz4frkzwJLaNA3XfXp9NtvkMyzF8e8ps0C4sbZqxKpVwjK00snBMkBG1Vu2QSBTTepPgqExWYCWyFtdCYHIFclvaEXtgdPOEUc1wYORCTi172-YzCfmLZ7vh57I9KJ6fErXnA2AggTMnfrJ-z3Z_Pt5NQ3pOI4yzVQzF1dFDlHRO75ilZq62rSrnZJGNonMvEqQcKf0m8bZeEGuvs6YVLCLe0agkFIYYo4oNgHBRRrvOHB4J7cNy9nv9o74DhR-Q3-H98Of33_2ih0s1rsEhL-KBLqHxanvAl_RfWMrIxMxyvP0FJXhOZmCOEwldy2mdgXrJ5lUA3GC9JV-G112MuDnp5GUe10fa4NCTsTYq0xPZsmN_rNCxpSQbzQ9R1tF5UbHPuTRhNIWsxK0y86KFbnf49R_KlwhT";
+				"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
 
 			console.log("Attestation loaded!");
 
@@ -115,6 +117,7 @@ export class TokenViewer {
 			const params = new URLSearchParams();
 			params.set("attestation", attestation);
 			params.set("type", "eas");
+			params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/attestation.tsml");
 
 			this.loadAttestationAndTokenScript(params);
 
@@ -173,6 +176,8 @@ export class TokenViewer {
     });
 
     this.tokenScript = tokenScript;
+
+    this.viewerPopover.open(this.tokenScript)
   }
 
 	render(){
@@ -227,6 +232,7 @@ export class TokenViewer {
 					) : '' }
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
+				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
 			</Host>
 		)
 	}
