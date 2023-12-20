@@ -6,6 +6,7 @@ import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollecti
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 
+const SLN_CHAIN_IDS = ["82459", "5169"]
 @Component({
 	tag: 'token-viewer',
 	styleUrl: 'token-viewer.css',
@@ -86,40 +87,42 @@ export class TokenViewer {
 		const query = new URLSearchParams(queryStr);
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
+			const chain = query.get("chain")
+			const contract = query.get("contract")
+			const tokenId = query.get("tokenId")
 
-			if (query.get("actionsEnabled") === "false")
-				this.actionsEnabled = false;
+			if (SLN_CHAIN_IDS.includes(chain)) {
+				this.app.showTsLoader();
 
-			this.app.showTsLoader();
+				//TODO: load attestation from SLN-A
+				const attestation =
+					"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
 
-			this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
+				console.log("Attestation loaded!");
 
-			console.log("Token meta loaded!", this.tokenDetails);
+				this.app.hideTsLoader();
 
-			this.app.hideTsLoader();
+				const params = new URLSearchParams();
+				params.set("attestation", attestation);
+				params.set("type", "eas");
+				// TODO: only for testing, remove later this as SLN attestation will embed scriptURI
+				params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/attestation.tsml");
 
-			this.loadTokenScript();
+				this.loadAttestationAndTokenScript(params);
+			} else {
+				if (query.get("actionsEnabled") === "false")
+					this.actionsEnabled = false;
 
-			return true;
-		}
+				this.app.showTsLoader();
 
-		if (query.has("issuer") && query.has("uid")){
-			this.app.showTsLoader();
+				this.tokenDetails = await getSingleTokenMetadata(parseInt(chain), contract, tokenId);
 
-			//TODO: load attestation from SLN-A
-			const attestation =
-				"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
+				console.log("Token meta loaded!", this.tokenDetails);
 
-			console.log("Attestation loaded!");
+				this.app.hideTsLoader();
 
-			this.app.hideTsLoader();
-
-			const params = new URLSearchParams();
-			params.set("attestation", attestation);
-			params.set("type", "eas");
-			params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/attestation.tsml");
-
-			this.loadAttestationAndTokenScript(params);
+				this.loadTokenScript();
+			}
 
 			return true;
 		}
@@ -167,17 +170,10 @@ export class TokenViewer {
 	}
 
   private async loadAttestationAndTokenScript(params: URLSearchParams) {
-    const { definition, tokenScript } = await this.app.tsEngine.importAttestationUsingTokenScript(params);
-
-    this.showToast.emit({
-      type: 'success',
-      title: 'Attestation imported',
-      description: 'Successfully imported ' + definition.meta.name,
-    });
-
+    const { tokenScript } = await this.app.tsEngine.importAttestationUsingTokenScript(params);
     this.tokenScript = tokenScript;
 
-    this.viewerPopover.open(this.tokenScript)
+		this.viewerPopover.open(this.tokenScript)
   }
 
 	render(){
