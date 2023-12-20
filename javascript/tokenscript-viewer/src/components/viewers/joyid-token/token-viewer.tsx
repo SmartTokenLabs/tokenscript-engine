@@ -4,9 +4,11 @@ import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
+import {SLNAdapter} from "../../../integration/slnAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
+import {zipAndEncodeToBase64} from "@tokenscript/engine-js/src/attestation/AttestationUrl";
 
-const SLN_CHAIN_IDS = ["82459", "5169"]
+const SLN_CHAIN_IDS = [82459, 5169]
 @Component({
 	tag: 'token-viewer',
 	styleUrl: 'token-viewer.css',
@@ -87,16 +89,19 @@ export class TokenViewer {
 		const query = new URLSearchParams(queryStr);
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
-			const chain = query.get("chain")
+			const chain = parseInt(query.get("chain"))
 			const contract = query.get("contract")
 			const tokenId = query.get("tokenId")
 
 			if (SLN_CHAIN_IDS.includes(chain)) {
 				this.app.showTsLoader();
 
-				//TODO: load attestation from SLN-A
-				const attestation =
-					"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
+				const slnAdapter = new SLNAdapter(chain)
+				const slnAttestation = await slnAdapter.getAttestation(contract, tokenId)
+				const attestation = zipAndEncodeToBase64({ sig: slnAttestation.rawData, signer: slnAttestation.attester})
+				// Test attestation
+				// const attestation =
+				// 	"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
 
 				console.log("Attestation loaded!");
 
@@ -115,7 +120,7 @@ export class TokenViewer {
 
 				this.app.showTsLoader();
 
-				this.tokenDetails = await getSingleTokenMetadata(parseInt(chain), contract, tokenId);
+				this.tokenDetails = await getSingleTokenMetadata(chain, contract, tokenId);
 
 				console.log("Token meta loaded!", this.tokenDetails);
 
