@@ -41,6 +41,12 @@ export class Attribute {
 		return this.attributeDef.getAttribute("name");
 	}
 
+	public getAsType(){
+		const origins = this.getOrigins();
+		const origin = origins[0];
+		return origin.getAttribute("as");
+	}
+
 	/**
 	 * The label for the attribute
 	 */
