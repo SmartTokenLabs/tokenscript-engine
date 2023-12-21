@@ -24,11 +24,12 @@ export class TokenViewer {
 	tokenDetails: ITokenDetail;
 
 	@State()
+	isAttestation: boolean
+
+	@State()
 	tokenScript: TokenScript;
 
 	urlRequest: URLSearchParams;
-
-	private viewerPopover: HTMLViewerPopoverElement;
 
 	@State() cardButtons: JSX.Element[]|undefined;
 
@@ -94,6 +95,8 @@ export class TokenViewer {
 			const tokenId = query.get("tokenId")
 
 			if (SLN_CHAIN_IDS.includes(chain)) {
+				this.isAttestation = true
+
 				this.app.showTsLoader();
 
 				const slnAdapter = new SLNAdapter(chain)
@@ -115,6 +118,8 @@ export class TokenViewer {
 
 				this.loadAttestationAndTokenScript(params);
 			} else {
+				this.isAttestation = false
+
 				if (query.get("actionsEnabled") === "false")
 					this.actionsEnabled = false;
 
@@ -177,65 +182,77 @@ export class TokenViewer {
   private async loadAttestationAndTokenScript(params: URLSearchParams) {
     const { tokenScript } = await this.app.tsEngine.importAttestationUsingTokenScript(params);
     this.tokenScript = tokenScript;
-
-		this.viewerPopover.open(this.tokenScript)
   }
 
 	render(){
 
 		return (
-			<Host>
-				<div class="token-viewer">
-					{ this.tokenDetails ? (
-					<div>
-						<div class="details-container">
-							<div class="image-container">
-								<token-icon style={{minHeight: "100px;"}} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
-							</div>
-							<div class="info-container">
-								<div class="main-info">
-									<h1>{this.tokenDetails.name}</h1>
-									<div class="owner-count">
-										<span style={{color: "#3D45FB"}}>
-											{
-												this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
-													("balance: " + this.tokenDetails.balance) :
-													("#" + this.tokenDetails.tokenId)
-											}
-										</span>
-									</div>
-									<div class="collection-details">
-										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>
-										<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
-										<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
-									</div>
+      <Host>
+        <div class="token-viewer">
+          {(!this.isAttestation && this.tokenDetails) && (
+            <div>
+              <div class="details-container">
+                <div class="image-container">
+                  <token-icon style={{ minHeight: '100px;' }} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
+                </div>
+                <div class="info-container">
+                  <div class="main-info">
+                    <h1>{this.tokenDetails.name}</h1>
+                    <div class="owner-count">
+                      <span style={{ color: '#3D45FB' }}>
+                        {this.tokenDetails.collectionDetails.tokenType === 'erc1155' ? 'balance: ' + this.tokenDetails.balance : '#' + this.tokenDetails.tokenId}
+                      </span>
+                    </div>
+                    <div class="collection-details">
+                      <token-icon
+                        style={{ width: '24px', borderRadius: '4px' }}
+                        src={this.tokenDetails.collectionDetails.image}
+                        imageTitle={this.tokenDetails.collectionDetails.name}
+                      />
+                      <h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
+                      <span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
+                    </div>
+                  </div>
+                  <div class="extra-info">
+                    <p>{this.tokenDetails.description}</p>
+                    <div class="attribute-container">
+                      {this.tokenDetails.attributes?.length
+                        ? this.tokenDetails.attributes.map(attr => {
+                            return (
+                              <div class="attribute-item" title={attr.trait_type + ': ' + attr.value}>
+                                <h5>{attr.trait_type}</h5>
+                                <span>{attr.value}</span>
+                              </div>
+                            );
+                          })
+                        : ''}
+                    </div>
+                  </div>
 								</div>
-								<div class="extra-info">
-									<p>{this.tokenDetails.description}</p>
-									<div class="attribute-container">
-										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
-											return (
-												<div class="attribute-item" title={attr.trait_type + ": " + attr.value}>
-													<h5>{attr.trait_type}</h5>
-													<span>{attr.value}</span>
-												</div>
-											)
-										}) : ''}
-									</div>
-								</div>
 							</div>
-						</div>
-						<action-bar engine={this.app.tsEngine}
-									tokenDetails={this.tokenDetails}
-									tokenScript={this.tokenScript}
-									actionsEnabled={this.actionsEnabled} />
-					</div>
-					) : '' }
-				</div>
-				<card-popover tokenScript={this.tokenScript}></card-popover>
-				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
-			</Host>
-		)
+              <action-bar engine={this.app.tsEngine} tokenDetails={this.tokenDetails} tokenScript={this.tokenScript} actionsEnabled={this.actionsEnabled} />
+            </div>
+          )}
+					{(this.isAttestation && this.tokenScript) && (
+            <div>
+              <div class="meta-details">
+                {this.tokenScript.getMetadata().description ? <p>{this.tokenScript.getMetadata().description}</p> : ''}
+                {this.tokenScript.getMetadata().aboutUrl ? (
+                  <a href={this.tokenScript.getMetadata().aboutUrl} target="_blank">
+                    {'Discover how it works'}
+                    <img alt="about" src="/assets/icon/question.svg" />
+                  </a>
+                ) : (
+                  ''
+                )}
+              </div>
+              <tokens-grid tokenScript={this.tokenScript}></tokens-grid>
+            </div>
+          )}
+        </div>
+        <card-popover tokenScript={this.tokenScript}></card-popover>
+      </Host>
+    );
 	}
 
 }
