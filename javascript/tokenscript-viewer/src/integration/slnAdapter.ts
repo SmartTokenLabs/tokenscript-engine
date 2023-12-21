@@ -4,7 +4,10 @@ export class SLNAdapter implements ISLNAdapter {
   private url: string;
 
   constructor(chain: number) {
-    this.url = chain === 5169 ? 'TBD' : 'https://sln-nodes-server.autographnft.io/';
+    this.url =
+      chain === 5169
+        ? 'TBD' // mainnet
+        : 'https://sln-nodes-server.autographnft.io/'; // testnet [1337, 82459]
   }
 
   async getAttestation(attester: string, tokenId: string): Promise<ISLNAttestation> {

@@ -8,7 +8,7 @@ import {SLNAdapter} from "../../../integration/slnAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {zipAndEncodeToBase64} from "@tokenscript/engine-js/src/attestation/AttestationUrl";
 
-const SLN_CHAIN_IDS = [82459, 5169]
+const SLN_CHAIN_IDS = [1337, 82459, 5169]
 @Component({
 	tag: 'token-viewer',
 	styleUrl: 'token-viewer.css',
