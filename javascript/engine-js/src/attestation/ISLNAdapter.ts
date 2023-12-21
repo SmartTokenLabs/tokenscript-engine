@@ -1,12 +1,6 @@
 import { SignedOffchainAttestation } from '@ethereum-attestation-service/eas-sdk';
 
 export interface ISLNAttestation {
-  uid: string;
-  attester: string;
-  subject: string;
-  schema: string;
-  decoded: unknown;
-  createdAt: number;
   rawData: SignedOffchainAttestation;
 }
 

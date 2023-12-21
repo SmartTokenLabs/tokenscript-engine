@@ -11,7 +11,7 @@ export class SLNAdapter implements ISLNAdapter {
   }
 
   async getAttestation(attester: string, tokenId: string): Promise<ISLNAttestation> {
-    const path = `attestations/${attester}/${tokenId}`;
+    const path = `attestations/${attester}/${tokenId}/rawdata`;
 
     return this.fetchRequest(path);
   }
