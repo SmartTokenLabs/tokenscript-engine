@@ -114,9 +114,9 @@ export class TokenViewer {
 				params.set("attestation", attestation);
 				params.set("type", "eas");
 				// TODO: only for testing, remove later this as SLN attestation will embed scriptURI
-				params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/attestation.tsml");
+				params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/sln-attestation.tsml");
 
-				this.loadAttestationAndTokenScript(params);
+				this.loadAttestationAndTokenScript(params, chain);
 			} else {
 				this.isAttestation = false
 
@@ -179,8 +179,23 @@ export class TokenViewer {
 		}
 	}
 
-  private async loadAttestationAndTokenScript(params: URLSearchParams) {
+  private async loadAttestationAndTokenScript(params: URLSearchParams, chain: number) {
     const { tokenScript } = await this.app.tsEngine.importAttestationUsingTokenScript(params);
+
+		const tokenMetadata = await tokenScript.getTokenMetadata();
+		const updatedTokenMetadata = []
+		for (const [attName, metadata] of Object.entries(tokenMetadata)) {
+			if (attName === 'SLNAttestation') {
+				updatedTokenMetadata.push({
+					...metadata,
+					chainId: chain
+				})
+			} else {
+				updatedTokenMetadata.push(metadata)
+			}
+		}
+		tokenScript.setTokenMetadata(updatedTokenMetadata);
+
     this.tokenScript = tokenScript;
   }
 

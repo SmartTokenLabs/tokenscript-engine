@@ -19,6 +19,9 @@ export enum ChainID {
 	FANTOM = 250,
 	KLAYTN = 8217,
 	BAOBAB = 1001,
+	SLN_TESTNET = 1337,
+	SLN_TESTNET_NEW = 82459,
+	SLN = 5169,
 	HARDHAT_LOCALHOST = 31337
 }
 
@@ -36,6 +39,9 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.FANTOM]: "fantom",
 	[ChainID.KLAYTN]: "cypress",
 	[ChainID.BAOBAB]: "baobab",
+	[ChainID.SLN_TESTNET]: "sln-testnet",
+	[ChainID.SLN_TESTNET_NEW]: "sln-testnet-new",
+	[ChainID.SLN]: "sln",
 	[ChainID.HARDHAT_LOCALHOST]: "hardhat-localhost"
 };
 
@@ -52,6 +58,9 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.FANTOM]: "Fantom",
 	[ChainID.KLAYTN]: "Cypress (Klaytn Mainnet)",
 	[ChainID.BAOBAB]: "Baobab (Klaytn Testnet)",
+	[ChainID.SLN_TESTNET]: "SLN (Testnet)",
+	[ChainID.SLN_TESTNET_NEW]: "SLN (Testnet New)",
+	[ChainID.SLN]: "SLN",
 	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)"
 };
 
@@ -109,6 +118,18 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'https://public-node-api.klaytnapi.com/v1/baobab',
 		explorer: 'https://baobab.scope.klaytn.com/tx/'
 	},
+	[ChainID.SLN_TESTNET]: {
+		rpc: 'https://sln-nodes-server.autographnft.io/json-rpc',
+		explorer: ''
+	},
+	[ChainID.SLN_TESTNET_NEW]: {
+		rpc: 'https://sln-nodes-server.autographnft.io/json-rpc',
+		explorer: ''
+	},
+	// [ChainID.SLN]: {
+	// 	rpc: 'TBD',
+	// 	explorer: ''
+	// },
 	[ChainID.HARDHAT_LOCALHOST]: {
 		rpc: 'http://127.0.0.1:8545/',
 		explorer: ''
