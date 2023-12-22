@@ -259,7 +259,7 @@ export class Parser {
 	}
 
 	private async getAttributeValue(key: string){
-		if (!this.values){
+		if (!this.values[key]){
 			this.values[key] = {
 				type: this.attributes[key].getAsType(),
 				value: await this.attributes[key].getValue(false) // TODO: Maybe this should throw?
@@ -357,7 +357,7 @@ export class Parser {
 		const attributeValue = attribute ? await this.getAttributeValue(attribute) : {value: undefined, type: undefined};
 
 		const operatorToken = this.tokens.shift();
-		const operator = operatorToken?.binaryOperatorValue ? Operator[operatorToken.binaryOperatorValue as keyof typeof Operator] : undefined;
+		const operator = operatorToken?.binaryOperatorValue as Operator;
 
 		const valueToken = this.tokens.shift();
 		const value = valueToken?.valueValue;
