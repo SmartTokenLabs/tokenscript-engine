@@ -274,9 +274,9 @@ export class Parser {
 		this.attributes = attributes;
 	}
 
-	private isExpected(expectedToken: TokenType): boolean {
+	private isExpected(expectedToken: Token): boolean {
 		const token = this.tokens.shift();
-		return token && token.type === expectedToken;
+		return token && token.type == expectedToken.type && token.value === expectedToken.value;
 	}
 
 	private lookAhead(): Token | undefined {
@@ -294,9 +294,16 @@ export class Parser {
 	}
 
 	private async parseFilter(): Promise<boolean | undefined> {
-		if (!this.isExpected(TokenType.Reserved)) return undefined;
 
-		return this.parseFilterComp();
+		if (!this.isExpected(new Token(TokenType.Reserved, "(")))
+			return undefined;
+
+		const result = await this.parseFilterComp();
+
+		if (!this.isExpected(new Token(TokenType.Reserved, ")")))
+			return undefined;
+
+		return result;
 	}
 
 	private async parseFilterComp(): Promise<boolean | undefined> {
@@ -314,24 +321,22 @@ export class Parser {
 	}
 
 	private async parseAnd(): Promise<boolean | undefined> {
-		if (!this.isExpected(TokenType.Reserved)) return undefined;
+		if (!this.isExpected(new Token(TokenType.Reserved, "&"))) return undefined;
 		const resultsOfOptionals: boolean[] | undefined = await this.parseFilterList();
 		if (!resultsOfOptionals) return undefined;
-		const results = resultsOfOptionals.filter(Boolean) as boolean[];
-		return results.length === resultsOfOptionals.length ? results.every(result => result) : false;
+		return resultsOfOptionals.length ? resultsOfOptionals.every(result => result) : false;
 	}
 
 	private async parseOr(): Promise<boolean | undefined> {
-		if (!this.isExpected(TokenType.Reserved)) return undefined;
+		if (!this.isExpected(new Token(TokenType.Reserved, "|"))) return undefined;
 		const resultsOfOptionals: boolean[] | undefined = await this.parseFilterList();
 		if (!resultsOfOptionals) return undefined;
-		const results = resultsOfOptionals.filter(Boolean) as boolean[];
-		return results.length === resultsOfOptionals.length ? results.some(result => result) : false;
+		return resultsOfOptionals.length ? resultsOfOptionals.some(result => result) : false;
 	}
 
-	private parseNot(): boolean | undefined {
-		if (!this.isExpected(TokenType.Reserved)) return undefined;
-		const result = this.parseFilter();
+	private async parseNot(): Promise<boolean | undefined> {
+		if (!this.isExpected(new Token(TokenType.Reserved, "!"))) return undefined;
+		const result = await this.parseFilter();
 		return result !== undefined ? !result : undefined;
 	}
 
