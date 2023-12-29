@@ -70,7 +70,7 @@ export class AttestationDefinition {
 	 * @deprecated in favour of collection fields
 	 */
 	get eventId(): string {
-		return this.elem.getElementsByTagName("ts:eventId")?.[0].innerHTML ?? null
+		return this.elem.getElementsByTagName("ts:eventId")?.[0]?.innerHTML ?? null
 	}
 
 	get collectionFields(): {name: string, value}[] {

@@ -56,7 +56,7 @@ export class TokenViewer {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
-	async componentDidLoad(){
+	async componentWillLoad(){
 
 		try {
 			const query = new URLSearchParams(document.location.search.substring(1));
