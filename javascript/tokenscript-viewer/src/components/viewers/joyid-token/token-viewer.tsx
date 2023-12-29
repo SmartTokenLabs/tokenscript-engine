@@ -102,9 +102,6 @@ export class TokenViewer {
 				const slnAdapter = new SLNAdapter(chain)
 				const slnAttestation = await slnAdapter.getAttestation(contract, tokenId)
 				const attestation = zipAndEncodeToBase64({ sig: slnAttestation.rawData, signer: contract})
-				// Test attestation
-				// const attestation =
-				// 	"eNrFVEmuVDEMvMtbt5CneFjSvz-XQCzsDAdAIHF83H2FlsCKsnBc5dhJ-fsFX0ivGyKO0dvtgj8fpBbn_mBbQ9j9Y0vwN3zcbTDBg1g3Oo59PYORMMIGGloYnfKFbqm6DSahh8bR2mvr8FVDPGfxjOnpQnVkvEhgnWnZCJcaKiY1VWZhsu3K5BWyIyqGZd9oJYDjTp-oMzQrrxvZk2eb4mfpdorHp8TaeX-GEhjzxE8eX-cxe9xfSdcIlhLhBF0rU1IO6TprbyKWITa16yzKsWaXQHoGjy41SNiIXiR29BRE7UJ3XVAN3XFwkFAoYvharADUPDOOjZxuMeGY68yzniTdfQMKUwe5wcvx6-fv_WrMW-bvwWG-iQd6C43vpgdT0WGqrEf38xn-sQ1GJmYWHvAfTLDXqf7BniWnci3BUqs6NVf7W5uco5WftPrfbmxtVwT6ma7RHVNBmsIlFl7uszz2WbaKds-CFnSPgVZDn83O0hKaNg7a2YBHZBfwexVcN_jxF-QuCZ4=";
 
 				console.log("Attestation loaded!");
 
