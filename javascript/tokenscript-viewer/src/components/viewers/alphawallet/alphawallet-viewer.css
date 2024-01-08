@@ -8,9 +8,10 @@ header {
 	color: #333;
 }
 
-.token-viewer {
+.aw-viewer {
 	max-width: 650px;
 	width: 100%;
+	height: 100vh;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
@@ -20,109 +21,29 @@ header {
 	flex-grow: 1;
 }
 
-.image-container {
-	min-height: 100px;
-}
-
-.token-viewer img {
-	max-width: 100%;
-}
-
-.token-viewer .main-info {
-	border-bottom: 1px solid #F7F6F0;
-}
-
-.main-info h1 {
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 20px;
-	margin: 16px 0 0;
-	padding: 0;
-}
-
-.extra-info {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-}
-
-.main-info {
-	padding: 0 16px 16px;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.main-info .collection-details {
-	display: flex;
-	align-items: center;
-	gap: 8px
-}
-
-.main-info .owner-count {
-	color: #3D45FB;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 14px; /* 116.667% */
-	letter-spacing: 0.24px;
-}
-
-.collection-details h4 {
-	font-size: 14px;
-	margin: 0;
-	font-weight: 600;
-	line-height: 20px;
-	flex-grow: 1;
-}
-
-.collection-details span {
-	font-size: 12px;
-	font-weight: 600;
-	line-height: 20px;
-}
-
-.extra-info {
-	padding: 8px 16px 16px;
-}
-
-.extra-info p {
-	margin: 0 0 16px;
-}
-
-.attribute-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-	grid-gap: 10px;
-}
-
-.attribute-item {
-	border-radius: 8px;
-	border: 1px solid #8D98F8;
-	min-height: 64px;
-	padding: 6px 4px;
-	overflow: hidden;
-}
-
-.attribute-item h5 {
-	font-size: 12px;
-	font-weight: 500;
-	line-height: 16px;
-	margin: 0;
-}
-
-.attribute-item span {
-	font-size: 12px;
-	font-weight: 400;
-	line-height: 16px;
-	word-break: break-word;
-}
-
 .popover-container {
 	max-height: calc(100dvh - 50px) !important;
 }
 
+card-view, .card-container {
+	display: flex !important;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
 .card-container {
-	height: calc(100dvh - 50px) !important;
+	max-width: unset !important;
+	margin: 0 auto !important;
+	max-height: unset !important;
+	width: 100%;
+}
+
+card-popover .card-container {
+	max-height: 700px !important;
+}
+
+card-view .card-container {
+	height: unset !important;
 }
 
 .actions {

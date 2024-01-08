@@ -213,8 +213,12 @@ export class TokenScript {
 	/**
 	 * The view controller exposes methods that can be used to interact with the UI of the TokenScript
 	 * - via view binding methods that are implemented by the user-agent.
+	 * @param viewBinding - An optional view binding can be supplied to enable the use of multiple views
 	 */
-	public getViewController(){
+	public getViewController(viewBinding?: IViewBinding){
+
+		if (viewBinding)
+			return new ViewController(this, viewBinding);
 
 		if (!this.viewController){
 

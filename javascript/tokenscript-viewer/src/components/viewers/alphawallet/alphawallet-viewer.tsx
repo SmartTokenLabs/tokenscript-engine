@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
+import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
@@ -7,6 +7,8 @@ import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDi
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
+import {getCardButtonClass} from "../util/getCardButtonClass";
+import {ViewBinding} from "../tabbed/viewBinding";
 
 @Component({
 	tag: 'alphawallet-viewer',
@@ -27,11 +29,15 @@ export class SmartTokenStoreViewer {
 
 	urlRequest: URLSearchParams;
 
-	//@State() cardButtons: JSX.Element[]|undefined;
+	@State() cardButtons: JSX.Element[]|undefined;
 
-	//@State() overflowCardButtons: JSX.Element[];
+	@State() overflowCardButtons: JSX.Element[];
 
-	//private overflowDialog: HTMLActionOverflowModalElement;
+	private overflowDialog: HTMLActionOverflowModalElement;
+
+	private infoCard?: Card;
+
+	private infoCardView: HTMLElement;
 
 	@Event({
 		eventName: 'showToast',
@@ -146,12 +152,12 @@ export class SmartTokenStoreViewer {
 
 				// Reload cards after the token is updated
 				this.tokenScript.on("TOKENS_UPDATED", (data) => {
-					//this.cardButtons = null;
-					//this.overflowCardButtons = null;
-					//this.loadCards();
+					this.cardButtons = null;
+					this.overflowCardButtons = null;
+					this.loadCards();
 				}, "grid")
 
-				//this.loadCards();
+				this.loadCards();
 			}
 
 		} catch (e){
@@ -160,7 +166,7 @@ export class SmartTokenStoreViewer {
 	}
 
 	// TODO: Deduplicate logic in common/tokens-grid-item.tsx & viewers/joyid-token/action-bar.tsx
-	/*private async loadCards(){
+	private async loadCards(){
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
@@ -170,6 +176,15 @@ export class SmartTokenStoreViewer {
 		for (let [index, card] of cards.entries()){
 
 			let label = card.label;
+
+			if (card.type === "token" && !this.infoCard){
+				// Show first info card
+				this.infoCard = card;
+				const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
+				const viewController = this.tokenScript.getViewController(infoViewBinding);
+				viewController.showOrExecuteCard(this.infoCard, undefined);
+				continue;
+			}
 
 			if (label === "Unnamed Card")
 				label = card.type === "token" ? "Token Info" : card.type + " Card";
@@ -201,7 +216,7 @@ export class SmartTokenStoreViewer {
 
 		this.cardButtons = cardButtons;
 		this.overflowCardButtons = overflowCardButtons;
-	}*/
+	}
 
 	// TODO: This is copied from tokens-grid-item, dedupe required
 	private async showCard(card: Card){
@@ -232,6 +247,29 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
+				<div class="aw-viewer">
+					<card-view style={{display: (this.infoCard ? "block" : "none")}} ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
+					<div class="actions">
+						{this.cardButtons ?
+							this.cardButtons :
+							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
+						}
+						{this.overflowCardButtons?.length ?
+							[
+								(<button class="btn more-actions-btn"
+										 onClick={() => this.overflowDialog.openDialog()}>
+									+ More actions
+								</button>),
+								(<action-overflow-modal
+									ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
+									<div class="actions">
+										{this.overflowCardButtons}
+									</div>
+								</action-overflow-modal>)
+							] : ''
+						}
+					</div>
+				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>
 		)
