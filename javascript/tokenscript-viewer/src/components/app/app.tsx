@@ -1,3 +1,5 @@
+import "../../integration/rum"
+
 import {Component, Element, h, Host, JSX, Listen, Method} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
