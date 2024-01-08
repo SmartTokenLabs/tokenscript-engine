@@ -336,8 +336,8 @@ describe('TokenScriptFilterParserTests', () => {
 		const date = new Date();
 
 		const values = {
-			expiry: new MockAttribute('generalisedTime', date),
-			today: new MockAttribute("generalisedTime", new Date(date.getTime()))
+			expiry: new MockAttribute('generalisedTime', date.getTime()),
+			today: new MockAttribute("generalisedTime", date.getTime())
 		};
 
 		const parser = new Parser(tokens, values);
@@ -349,7 +349,7 @@ describe('TokenScriptFilterParserTests', () => {
 
 		const tokens = lexer.tokenize('expiry>2023');
 		const values = {
-			expiry: new MockAttribute('generalisedTime', new Date('20230405111234+0000')),
+			expiry: new MockAttribute('generalisedTime', new Date('20230405111234+0000').getTime()),
 		};
 
 		const parser = new Parser(tokens, values);
