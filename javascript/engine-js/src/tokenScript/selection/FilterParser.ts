@@ -73,6 +73,22 @@ export interface AttributeWrapper {
 	getValue: (throwOnUndefined: boolean) => Promise<any>
 }
 
+export class ImplicitAttribute implements AttributeWrapper {
+
+	constructor(
+		private type: string,
+		private value: any) {
+	}
+
+	getAsType(): string {
+		return this.type;
+	}
+
+	getValue(throwOnUndefined: boolean): Promise<any> {
+		return this.value;
+	}
+}
+
 export class FilterParser {
 	private expression: string;
 
@@ -244,18 +260,20 @@ export class Parser {
 	private tokens: Token[];
 
 	public static valuesWithImplicitValues(values: { [key: string]: AttributeWrapper }, ownerAddress: string, symbol: string, fungibleBalance?: bigint): { [key: string]: AttributeWrapper } {
-		const todayString = (new Date()).toISOString(); // TODO: Confirm format
-		/*const implicitValues: { [key in AttributeId]: AssetAttributeSyntaxValue } = {
-			"symbol": new AssetAttributeSyntaxValue('directoryString', new AssetAttributeValue('string', symbol)),
-			"today": new AssetAttributeSyntaxValue('directoryString', new AssetAttributeValue('string', todayString)),
-			"ownerAddress": new AssetAttributeSyntaxValue('directoryString', new AssetAttributeValue('address', ownerAddress)),
+
+		//const todayString = (new Date()).toISOString(); // TODO: Confirm format
+
+		const implicitValues = {
+			"symbol": new ImplicitAttribute('string', symbol),
+			"today": new ImplicitAttribute('generalisedTime', (new Date()).getTime()),
+			"ownerAddress": new ImplicitAttribute('string', ownerAddress),
 		};
 
 		if (fungibleBalance !== undefined) {
-			implicitValues["balance"] = new AssetAttributeSyntaxValue('integer', new AssetAttributeValue('uint', fungibleBalance));
-		}*/
+			implicitValues["balance"] = new ImplicitAttribute('integer', fungibleBalance);
+		}
 
-		return { ...values, /*...implicitValues*/ };
+		return { ...values, ...implicitValues };
 	}
 
 	private async getAttributeValue(key: string){
@@ -454,7 +472,7 @@ export class Parser {
 			case 'uint':
 				return attributeValue.value.toString();
 			case 'generalisedTime':
-				return (new Date(Number(attributeValue.value))).toISOString();
+				return (new Date(attributeValue.value)).toISOString();
 			default:
 				return '';
 		}
