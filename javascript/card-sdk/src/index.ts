@@ -1,5 +1,5 @@
 
-import type {ethers} from "ethers";
+//import {ethers} from "ethers";
 
 export interface IWeb3LegacySDK {
     tokens: {
@@ -8,6 +8,7 @@ export interface IWeb3LegacySDK {
         },
         dataChanged: (prevTokens: any, newTokens: any, id: string) => void
     }
+    executeCallback: (id: number, error: string, value: any) => void
     action: {
         setProps: (data: any) => void,
     }
@@ -28,7 +29,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         this.tokens.data.currentInstance = _currentTokenInstance;
     }
 
-    public executeCallback (id, error, value) {
+    public executeCallback (id: number, error: string, value: any) {
         console.debug('Execute callback: ' + id + ' ' + value)
         this.web3CallBacks[id](error, value)
         delete this.web3CallBacks[id]
@@ -68,4 +69,5 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
 //window.ethers = ethers;
 window.web3 = new TokenScriptSDK();
 window.tokenscript = window.web3;
+window.executeCallback = (id: number, error: string, value: any) => window.web3.executeCallback(id, error, value);
 
