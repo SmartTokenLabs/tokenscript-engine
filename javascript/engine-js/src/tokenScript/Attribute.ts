@@ -6,6 +6,7 @@ import {FilterQuery} from "./data/event/FilterQuery";
 import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
 import {Label} from "./Label";
 import LodashGet from "lodash/get";
+import {AttributeReference} from "./data/AttributeReference";
 
 interface TokenAttributeValue {
 	[tokenId: string]: any
@@ -19,7 +20,7 @@ interface TokenAttributeValue {
  */
 export class Attribute {
 
-	private static NO_DEPENDENCY_ORIGINS = ["ts:user-entry", "ts:data"];
+	private static NO_DEPENDENCY_ORIGINS = ["ts:user-entry"];
 
 	private label?: Label;
 	private asType?: string;
@@ -364,9 +365,6 @@ export class Attribute {
 		if (this.isUserEntry())
 			return true;
 
-		if (this.getOrigins()[0].getAttribute("ref"))
-			return true;
-
 		if (this.dependsOnTokenId === undefined){
 
 			const userEntryAttrNames = [];
@@ -477,6 +475,10 @@ export class Attribute {
 		} else if (origin.tagName === "ethereum:event") {
 			const filter = origin.getAttribute("filter");
 			dependencies = new FilterQuery(this.tokenScript, filter, this.localAttrContext).getDynamicFilterValues();
+		} else if (origin.tagName === "ts:data" && origin.getAttribute("ref")){
+			dependencies = [new AttributeReference(this.tokenScript, origin, this.localAttrContext)];
+		} else {
+			return false;
 		}
 
 		return dependencies;
