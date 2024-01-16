@@ -311,6 +311,8 @@ export class Attribute {
 			resultValue = BigInt(resultValue);
 		}
 
+		console.log("Saving scope value: ", scope);
+
 		this.setScopedValue(resultValue, scope);
 
 		return resultValue;
@@ -360,6 +362,9 @@ export class Attribute {
 	private getDependsOnTokenIdOrIsUserEntry(){
 
 		if (this.isUserEntry())
+			return true;
+
+		if (this.getOrigins()[0].getAttribute("ref"))
 			return true;
 
 		if (this.dependsOnTokenId === undefined){
