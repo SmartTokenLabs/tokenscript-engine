@@ -30,6 +30,12 @@ export class ScriptURI implements SourceInterface {
 
 		console.log("Resolved ScriptURI: " + uri);
 
+		// TODO: Remove this fix once AlphaWallet is updated to support embedded TS viewer for newer schema versions
+		if (uri === "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-prod.tsml"){
+			console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
+			uri = "/assets/tokenscripts/smart-cat-prod-2024-01.tsml";
+		}
+
 		uri = this.context.processIpfsUrl(uri);
 
 		let response = await fetch(uri, {
