@@ -1,4 +1,4 @@
-import {Component, h, Prop, State, Watch} from "@stencil/core";
+import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {computeAddress} from "ethers/lib/utils";
@@ -19,7 +19,7 @@ export class SecurityStatus {
 	@State() statusColor: string;
 	@State() statusIcon: string;
 
-	async componentDidLoad() {
+	async componentWillLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
 	}
 
@@ -61,7 +61,7 @@ export class SecurityStatus {
 	render() {
 		return (
 			this.securityInfo ?
-				<div>
+				<Host>
 					<div class="security-status" style={{background: this.statusColor}}
 						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
 						 onClick={() => this.dialog.openDialog()}>
@@ -73,7 +73,7 @@ export class SecurityStatus {
 						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
 						</p>
 					</popover-dialog>
-				</div>
+				</Host>
 			: ''
 		)
 	}
