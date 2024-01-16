@@ -79,6 +79,81 @@ export class EthUtils {
 		return outputType;
 	}
 
+	/**
+	 * Since ethers.js returns structs as an array with additional object properties,
+	 * we need to convert it to a normal object for JSON encoding to work for alphanumeric keys.
+	 * Otherwise, the card Javascript only receives numeric keys
+	 * @param arrayObject
+	 */
+	public static convertFunctionResult(arrayObject: any){
+
+		if (arrayObject instanceof Object && arrayObject._isBigNumber) {
+			return BigInt(arrayObject);
+		}
+
+		if (!Array.isArray(arrayObject)) {
+			return arrayObject;
+		}
+
+		// If this is an array return we won't find any alphanumeric keys
+		let hasAlpha = false;
+		for (let i in arrayObject){
+			if (i.match(/[a-zA-Z]+/g)){
+				hasAlpha = true;
+				break;
+			}
+		}
+
+		if (!hasAlpha) {
+			const converted = [];
+
+			for (let i=0; i<arrayObject.length; i++){
+				converted.push(this.convertFunctionResult(arrayObject[i]));
+			}
+
+			return converted;
+		}
+
+		const converted = {};
+
+		for (let i in arrayObject){
+			converted[i] = this.convertFunctionResult(arrayObject[i]);
+		}
+
+		return converted;
+	}
+
+	/**
+	 * Convert bigint and other illegal JSON types to JSON compatible values.
+	 * @param data
+	 */
+	public static bigIntsToString(data: any){
+
+		if (typeof data === "bigint")
+			return data.toString();
+
+		if (typeof data !== "object")
+			return data;
+
+		if (Array.isArray(data)){
+			const res = [];
+
+			for (let i=0; i<data.length; i++){
+				res.push(this.bigIntsToString(data[i]))
+			}
+
+			return res;
+		}
+
+		const res = {};
+
+		for (let i in data){
+			res[i] = this.bigIntsToString(data[i]);
+		}
+
+		return res;
+	}
+
 	public static calculateDecimalValue(value: string|bigint|number, decimals: number){
 		if (!value)
 			return 0;

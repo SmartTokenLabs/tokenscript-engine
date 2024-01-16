@@ -163,10 +163,7 @@ export class Attribute {
 	public async getJsonSafeValue(bypassLocks?: boolean){
 		const value = await this.getValue(false, false, bypassLocks);
 
-		if (typeof value === "bigint")
-			return value.toString();
-
-		return value;
+		return EthUtils.bigIntsToString(value);
 	}
 
 	/**
@@ -223,6 +220,9 @@ export class Attribute {
 					}
 
 					resultValue = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);
+
+					if (outputType === "abi")
+						resultValue = EthUtils.convertFunctionResult(resultValue);
 
 					console.log("Call result: ", resultValue);
 
