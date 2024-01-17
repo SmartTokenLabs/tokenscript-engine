@@ -62,7 +62,7 @@ export class TokenViewData {
 
 		return `
 
-		const _currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replaceAll("`", "")}\`);
+		const _currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
 
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";

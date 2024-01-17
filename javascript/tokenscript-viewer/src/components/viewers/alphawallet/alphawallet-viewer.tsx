@@ -154,6 +154,7 @@ export class SmartTokenStoreViewer {
 				this.tokenScript.on("TOKENS_UPDATED", (data) => {
 					this.cardButtons = null;
 					this.overflowCardButtons = null;
+					this.infoCard = null;
 					this.loadCards();
 				}, "grid")
 
@@ -181,6 +182,7 @@ export class SmartTokenStoreViewer {
 				// Show first info card
 				this.infoCard = card;
 				const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
+				infoViewBinding.setTokenScript(this.tokenScript);
 				const viewController = this.tokenScript.getViewController(infoViewBinding);
 				viewController.showOrExecuteCard(this.infoCard, undefined);
 				continue;
@@ -248,7 +250,7 @@ export class SmartTokenStoreViewer {
 		return (
 			<Host>
 				<div class="aw-viewer">
-					<card-view style={{display: (this.infoCard ? "block" : "none")}} ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
+					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					<div class="actions">
 						{this.cardButtons ?
 							this.cardButtons :

@@ -213,6 +213,9 @@ export const VIEW_BINDING_JAVASCRIPT = `
 
 		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id);
 
+		if (!inputs.length)
+			return;
+
 		const values = Object.fromEntries(inputs.map((elem) => {
 			return [elem.id, elem.value];
 		}));

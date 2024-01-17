@@ -105,11 +105,9 @@ export class AppRoot {
 		} else if (this.viewerType === "alphawallet") {
 			// Automatically connect to injected web3 provider
 			providerFactory = async () => {
-				console.log("connecting to injected provider...");
 				const WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
 				if (!WalletProvider.isWalletConnected())
 					await WalletProvider.connectWith("MetaMask");
-				console.log("connected!");
 				return (await WalletProvider.getWallet(true)).provider;
 			}
 		} else {

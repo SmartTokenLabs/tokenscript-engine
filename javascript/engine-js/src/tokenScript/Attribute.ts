@@ -312,7 +312,7 @@ export class Attribute {
 			resultValue = BigInt(resultValue);
 		}
 
-		console.log("Saving scope value: ", scope);
+		//console.log("Saving scope value: ", scope);
 
 		this.setScopedValue(resultValue, scope);
 
