@@ -39,17 +39,23 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 	if (revertMatch){
 		message = revertMatch[1];
 	} else {
-		const regex = /"message": "(.*)"/g;
-		let match;
-		const detailedMessages = [];
+		const revertMatch = message.match(/execution reverted: (.*)\n/);
 
-		while (match = regex.exec(message)){
-			if (detailedMessages.indexOf(match[1]) === -1)
-				detailedMessages.push(match[1]);
+		if (revertMatch){
+			message = revertMatch[1];
+		} else {
+			const regex = /"message": "(.*)"/g;
+			let match;
+			const detailedMessages = [];
+
+			while (match = regex.exec(message)){
+				if (detailedMessages.indexOf(match[1]) === -1)
+					detailedMessages.push(match[1]);
+			}
+
+			if (detailedMessages.length)
+				message = detailedMessages.join("\n");
 		}
-
-		if (detailedMessages.length)
-			message = detailedMessages.join("\n");
 	}
 
 	showToast.emit({
