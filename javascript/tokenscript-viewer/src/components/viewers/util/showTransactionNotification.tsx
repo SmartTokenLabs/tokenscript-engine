@@ -39,7 +39,7 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 	if (revertMatch){
 		message = revertMatch[1];
 	} else {
-		const revertMatch = message.match(/execution reverted: (.*)\n/);
+		const revertMatch = message.match(/Details: (.*)\\n/);
 
 		if (revertMatch){
 			message = revertMatch[1];
