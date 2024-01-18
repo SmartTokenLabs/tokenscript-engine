@@ -777,11 +777,6 @@ export class TokenScript {
 
 		} catch (e){
 
-			const matches = e.message.match(/reason="([^"]*)"/);
-
-			if (matches?.length > 1)
-				throw new Error(matches[1]);
-
 			if (e.message.indexOf("ACTION_REJECTED") > -1)
 				throw new Error("Transaction rejected");
 
