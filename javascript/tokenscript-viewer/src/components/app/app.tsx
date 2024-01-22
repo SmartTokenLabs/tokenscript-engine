@@ -83,7 +83,14 @@ export class AppRoot {
 			async () => this.discoveryAdapter,
 			() => this.attestationStorageAdapter,
 			{
-				noLocalStorage: this.viewerType === "opensea"
+				noLocalStorage: this.viewerType === "opensea",
+				trustedKeys: [
+					{
+						issuerName: "Smart Token Labs",
+						valueType: "ethAddress",
+						value: "0x1c18e4eF0C9740e258835Dbb26E6C5fB4684C7a0"
+					}
+				]
 			}
 		);
 	}

@@ -53,6 +53,7 @@ export class SecurityStatus {
 		}, []);
 
 		return "TokenScript security information\n" +
+			(this.securityInfo.trustedKey ? "\nIssued by: " + this.securityInfo.trustedKey.issuerName + "\n" : "") +
 			(this.securityInfo.authoritivePublicKey ? "\nAuthoritative Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + "\n(" + this.securityInfo.authoritivePublicKey + ")" : "") +
 			(this.securityInfo.signerPublicKey ? "\nSigner Key: " + computeAddress(this.securityInfo.signerPublicKey) : "") +
 			"\nAuthentication: " + (authMethods.join(", "));

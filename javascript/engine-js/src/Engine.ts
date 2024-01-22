@@ -6,15 +6,18 @@ import {IViewBinding} from "./view/IViewBinding";
 import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
 import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
+import {TrustedKey} from "./security/TrustedKeyResolver";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
 	noLocalStorage?: boolean
+	trustedKeys?: TrustedKey[] // Define signing keys which are always valid
 }
 
 const DEFAULT_CONFIG: IEngineConfig = {
 	ipfsGateway: "https://ipfs.io/ipfs/",
-	noLocalStorage: false
+	noLocalStorage: false,
+	trustedKeys: []
 };
 
 export enum ScriptSourceType {

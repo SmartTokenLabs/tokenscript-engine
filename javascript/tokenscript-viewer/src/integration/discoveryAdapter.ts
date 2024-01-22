@@ -53,8 +53,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
-			collectionId: initialTokenDetails.contractAddress,
-			ownerAddress
+			collectionId: initialTokenDetails.contractAddress.toLowerCase(),
+			ownerAddress: ownerAddress.toLowerCase()
 		}).first();
 
 		if (token && Date.now() < token.dt + (TOKEN_CACHE_TTL * 1000))
@@ -67,8 +67,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokens.put({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
-			ownerAddress,
+			collectionId: token.contractAddress.toLowerCase(),
+			ownerAddress: ownerAddress.toLowerCase(),
 			data: token,
 			dt: Date.now()
 		});
@@ -164,7 +164,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
+			collectionId: token.contractAddress.toLowerCase(),
 		}).first();
 
 		if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
@@ -177,7 +177,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
+			collectionId: token.contractAddress.toLowerCase(),
 			data,
 			dt: Date.now()
 		});
