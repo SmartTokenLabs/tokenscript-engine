@@ -39,6 +39,9 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, "view", errorAbi);
 
+		// Function properties without arguments may collide with in-built Javascript functions (i.e. Object.valueOf), so we should always include arguments
+		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
+
 		return await contract[method](...(args.map((arg: any) => arg.value))) as ContractTransaction;
 	}
 
