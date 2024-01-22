@@ -36,11 +36,11 @@ class TSViewerDb extends Dexie {
 	constructor() {
 		super("TSViewer");
 
-		this.version(3).stores({
-			tokens: `[chainId+collectionId+ownerAddress], dt`,
-			tokenMeta: `[chainId+collectionId], dt`,
-			myTokenScripts: `tokenScriptId`,
-			attestations: `[collectionId+tokenId]`
+		this.version(4).stores({
+			tokens: `&[chainId+collectionId+ownerAddress], dt`,
+			tokenMeta: `&[chainId+collectionId], dt`,
+			myTokenScripts: `&tokenScriptId`,
+			attestations: `&[collectionId+tokenId]`
 		});
 	}
 }

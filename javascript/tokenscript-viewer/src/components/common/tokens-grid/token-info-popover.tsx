@@ -85,7 +85,7 @@ export class TokenInfoPopover {
 							<h4>TokenScript Attributes</h4>
 							<div class="attribute-container">
 								{
-									this.tsAttributes.map(({label, value}) => {
+									this.tsAttributes.filter(({label, value}) => label && typeof value !== "object").map(({label, value}) => {
 
 										return (
 											<div class="attribute-item">

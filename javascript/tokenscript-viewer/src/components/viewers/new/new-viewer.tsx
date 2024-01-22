@@ -52,9 +52,6 @@ export class NewViewer {
 				}
 			}
 		})
-	}
-
-	async componentDidLoad(){
 		this.init();
 		this.processUrlLoad();
 	}

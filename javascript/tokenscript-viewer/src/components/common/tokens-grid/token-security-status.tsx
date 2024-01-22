@@ -41,7 +41,8 @@ export class TokenSecurityStatus {
 	}
 
 	private getDetailedSecurityInfo(){
-		return (this.securityInfo.signingKey ? "Signer Key: " + this.securityInfo.signingKey : "");
+		return (this.securityInfo.trustedKey ? "Issued by: " + this.securityInfo.trustedKey.issuerName + "\n\n" + "Signer key: " + this.securityInfo.trustedKey.value : "") +
+		(this.securityInfo.signingKey ? "Signer Key: " + this.securityInfo.signingKey : "");
 	}
 
 	render() {
