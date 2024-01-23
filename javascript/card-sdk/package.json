@@ -2,7 +2,7 @@
   "name": "@tokenscript/card-sdk",
   "version": "1.0.0",
   "description": "Provides common code and types for interacting from the TokenScript engine from a card view",
-  "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "webpack build",

@@ -1,6 +1,7 @@
 import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
 import {ITransactionListener, TokenScript} from "../TokenScript";
+import {RpcResponse} from "../wallet/IWalletAdapter";
 
 export enum ViewEvent {
 	TOKENS_UPDATED = "tokensUpdated",
@@ -13,7 +14,8 @@ export enum ViewEvent {
 export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
-	CLOSE = "close"
+	CLOSE = "close",
+	ETH_RPC = "ethRpc"
 }
 
 /**
@@ -151,6 +153,14 @@ export class ViewController {
 	 */
 	dispatchViewEvent(event: ViewEvent, data: any, id: string){
 		return this.viewAdapter.dispatchViewEvent(event, data, id);
+	}
+
+	/**
+	 * Dispatch an event to the token card Javascript
+	 * @param response RpcResponse
+	 */
+	dispatchRpcResult(response: RpcResponse){
+		return this.viewAdapter.dispatchRpcResult(response);
 	}
 
 	/**

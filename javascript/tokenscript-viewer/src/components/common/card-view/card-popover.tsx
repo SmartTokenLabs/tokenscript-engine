@@ -6,6 +6,7 @@ import {RequestFromView, ViewEvent} from "../../../../../engine-js/src/view/View
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {AbstractViewBinding, VIEW_BINDING_JAVASCRIPT} from "../../../integration/abstractViewBinding";
 import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
+import {RpcResponse} from "../../../../../engine-js/src/wallet/IWalletAdapter";
 
 
 @Component({
@@ -76,10 +77,15 @@ export class CardPopover implements IViewBinding {
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
 
+		console.log("Request from view: ", method, params);
+
 		switch (method) {
 
+			case RequestFromView.ETH_RPC:
+				this.currentCard.rpcProxy(params);
+				break;
+
 			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				console.log("Event from view: Sign personal message");
 				this.currentCard.signPersonalMessage(params.id, params.data);
 				break;
 
@@ -122,6 +128,10 @@ export class CardPopover implements IViewBinding {
 
 	protected postMessageToView(method: ViewEvent, params: any) {
 		this.iframe.contentWindow.postMessage({method, params}, "*");
+	}
+
+	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
+		return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
 	async showTokenView(card: Card, tsId?: string) {

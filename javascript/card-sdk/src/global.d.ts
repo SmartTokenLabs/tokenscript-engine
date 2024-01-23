@@ -1,10 +1,12 @@
+import {Eip1193Provider} from "ethers";
+
 type IWeb3LegacySDK = import('./index').IWeb3LegacySDK;
 type ITokenScriptSDK = import('./index').ITokenScriptSDK;
-//type ethers = typeof import('ethers').ethers;
+type ethers = typeof import('ethers').ethers;
 
 export declare global {
 	interface Window {
-		//ethers: ethers
+		ethers: ethers
 		web3: IWeb3LegacySDK,
 		tokenscript: ITokenScriptSDK,
 		executeCallback: (id: number, error: string, value: any) => void
@@ -12,4 +14,5 @@ export declare global {
 	//var ethers: ethers
 	var web3: IWeb3LegacySDK;
 	var tokenscript: ITokenScriptSDK
+	var ethereum: Eip1193Provider
 }

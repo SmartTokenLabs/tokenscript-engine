@@ -1,4 +1,4 @@
-import {IWalletAdapter} from "./IWalletAdapter";
+import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
 import {Contract, ContractTransaction, ethers} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {decodeError} from "ethers-decode-error";
@@ -205,5 +205,10 @@ export class EthersAdapter implements IWalletAdapter {
 		const values = inputs.map((input) => input.value);
 
 		return await contract.queryFilter(contract.filters[event](...values));
+	}
+
+	// TODO: Handle chain switching
+	async rpcProxy(request: RpcRequest): Promise<any> {
+		return (await this.getEthersProvider()).provider.request(request);
 	}
 }

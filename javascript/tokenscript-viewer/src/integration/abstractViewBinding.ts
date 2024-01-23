@@ -2,6 +2,7 @@ import {IViewBinding} from "../../../engine-js/src/view/IViewBinding";
 import {Card} from "../../../engine-js/src/tokenScript/Card";
 import {TokenScript} from "../../../engine-js/src/TokenScript";
 import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {RpcResponse} from "../../../engine-js/src/wallet/IWalletAdapter";
 
 export abstract class AbstractViewBinding implements IViewBinding {
 
@@ -114,6 +115,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
+	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
+		return this.iframe.contentWindow.postMessage(response, "*");
+	}
+
 	protected handlePostMessageFromView(event: MessageEvent) {
 
 		if (!this.iframe)
@@ -137,7 +142,13 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
 
+		console.log("Request from view: ", method, params);
+
 		switch (method) {
+
+			case RequestFromView.ETH_RPC:
+				this.currentCard.rpcProxy(params);
+				break;
 
 			case RequestFromView.SIGN_PERSONAL_MESSAGE:
 				console.log("Event from view: Sign personal message");

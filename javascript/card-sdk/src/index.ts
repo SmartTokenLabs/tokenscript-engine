@@ -1,5 +1,8 @@
 
-//import {ethers} from "ethers";
+import {ethers} from "ethers";
+import {IFrameEthereumProvider} from "./IframeEthereumProvider";
+
+type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
 
 export interface IWeb3LegacySDK {
     tokens: {
@@ -13,7 +16,7 @@ export interface IWeb3LegacySDK {
         setProps: (data: any) => void,
     }
     personal: {
-        sign: (msgParams: {data: string}, callback: (error, data) => void) => void
+        sign: SignPersonalFunc
     }
 }
 
@@ -35,7 +38,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         delete this.web3CallBacks[id]
     }
 
-    public personal = {
+    public readonly personal = {
         sign: (msgParams: {data: string, id: number}, cb: (error, data) => void) => {
             const { data } = msgParams;
             const { id = 8888 } = msgParams;
@@ -45,7 +48,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         }
     };
 
-    public tokens = {
+    public readonly tokens = {
         data: {
             currentInstance: {},
         },
@@ -54,7 +57,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         }
     }
 
-    public action = {
+    public readonly action = {
         setProps: function (msgParams) {
             // @ts-ignore
             alpha.setValues(JSON.stringify(msgParams));
@@ -66,8 +69,9 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
 
 }
 
-//window.ethers = ethers;
-window.web3 = new TokenScriptSDK();
-window.tokenscript = window.web3;
+window.ethers = ethers;
+window.tokenscript = new TokenScriptSDK();
+window.web3 = window.tokenscript;
+window.ethereum = new IFrameEthereumProvider();
 window.executeCallback = (id: number, error: string, value: any) => window.web3.executeCallback(id, error, value);
 
