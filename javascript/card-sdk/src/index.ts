@@ -1,31 +1,8 @@
 
 import {ethers} from "ethers";
-import {IFrameEthereumProvider} from "./IframeEthereumProvider";
-import type {ITokenContextData} from "../../engine-js/dist/lib.esm/tokens/ITokenContextData"
+import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 
-type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
-
-export interface ITokenData {
-    currentInstance: ITokenContextData|{}
-}
-
-export interface IWeb3LegacySDK {
-    tokens: {
-        data: ITokenData,
-        dataChanged: (prevTokens: any, newTokens: ITokenData, id: string) => void
-    }
-    executeCallback: (id: number, error: string, value: any) => void
-    action: {
-        setProps: (data: any) => void,
-    }
-    personal: {
-        sign: SignPersonalFunc
-    }
-}
-
-export interface ITokenScriptSDK extends IWeb3LegacySDK {
-
-}
+import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
 
 class Web3LegacySDK implements IWeb3LegacySDK {
 

@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/card-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides common code and types for interacting from the TokenScript engine from a card view",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,6 +11,7 @@
   "author": "Michael B Wallace <miccy@smarttokenlabs.com>",
   "license": "MIT",
   "devDependencies": {
+    "@tokenscript/engine-js": "^1.0.4",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
