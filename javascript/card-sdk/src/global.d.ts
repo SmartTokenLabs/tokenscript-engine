@@ -10,9 +10,9 @@ export declare global {
 		web3: IWeb3LegacySDK,
 		tokenscript: ITokenScriptSDK,
 		executeCallback: (id: number, error: string, value: any) => void
+		ethereum: Eip1193Provider
 	}
 	//var ethers: ethers
 	var web3: IWeb3LegacySDK;
 	var tokenscript: ITokenScriptSDK
-	var ethereum: Eip1193Provider
 }

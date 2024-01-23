@@ -1,15 +1,18 @@
 
 import {ethers} from "ethers";
 import {IFrameEthereumProvider} from "./IframeEthereumProvider";
+import type {ITokenContextData} from "../../engine-js/dist/lib.esm/tokens/ITokenContextData"
 
 type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
 
+export interface ITokenData {
+    currentInstance: ITokenContextData|{}
+}
+
 export interface IWeb3LegacySDK {
     tokens: {
-        data: {
-            currentInstance: any
-        },
-        dataChanged: (prevTokens: any, newTokens: any, id: string) => void
+        data: ITokenData,
+        dataChanged: (prevTokens: any, newTokens: ITokenData, id: string) => void
     }
     executeCallback: (id: number, error: string, value: any) => void
     action: {
@@ -28,7 +31,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
     private web3CallBacks = {}
 
-    setInstanceData(_currentTokenInstance?: any) {
+    setInstanceData(_currentTokenInstance?: ITokenContextData) {
         this.tokens.data.currentInstance = _currentTokenInstance;
     }
 
@@ -50,9 +53,9 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
     public readonly tokens = {
         data: {
-            currentInstance: {},
+            currentInstance: <ITokenContextData>{},
         },
-        dataChanged: (prevTokens: any, newTokens: any, id: string) => {
+        dataChanged: (prevTokens: any, newTokens: ITokenData, id: string) => {
             console.log('web3.tokens.data changed.');
         }
     }
