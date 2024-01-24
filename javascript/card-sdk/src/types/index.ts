@@ -1,4 +1,4 @@
-import type {ITokenContextData} from "@tokenscript/engine-js/dist/lib.esm/tokens/ITokenContextData.d.ts";
+import {ITokenContextData} from "./tokenData";
 export {ITokenContextData};
 
 export type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;

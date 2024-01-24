@@ -18,6 +18,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.4.0",
     "ethers": "^6.9.0"
   }
 }
