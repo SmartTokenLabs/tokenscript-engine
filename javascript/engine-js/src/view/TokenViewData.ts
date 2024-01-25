@@ -1,6 +1,6 @@
 import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
-import {CARD_SDK_V1} from "./sdk/v1";
+import CARD_SDK_V1 from "./sdk/v1.txt";
 
 /**
  * TokenView data contains helper functions for

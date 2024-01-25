@@ -1,5 +1,6 @@
 import {Card} from "../tokenScript/Card";
 import {RequestFromView, ViewEvent} from "./ViewController";
+import {RpcResponse} from "../wallet/IWalletAdapter";
 
 /**
  * IViewBinding is the interface the user-agent implements to provide a UI adapter than the engine uses to display TS cards
@@ -22,6 +23,11 @@ export interface IViewBinding {
 	 * @param id
 	 */
 	dispatchViewEvent(event: ViewEvent, data: any, id: string): Promise<void>|void
+	/**
+	 * Dispatch an event
+	 * @param response RpcResponse
+	 */
+	dispatchRpcResult(response: RpcResponse): Promise<void>|void
 	/**
 	 * Handle an engine request from the view
 	 * @param event

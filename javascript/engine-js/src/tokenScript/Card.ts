@@ -4,6 +4,7 @@ import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
 import {ViewEvent} from "../view/ViewController";
 import {Label} from "./Label";
+import {RpcRequest} from "../wallet/IWalletAdapter";
 
 export class Card {
 
@@ -310,16 +311,35 @@ export class Card {
 		try {
 			let res = await this.tokenScript.getEngine().signPersonalMessage(data);
 
-			//this.iframe.contentWindow.executeCallback(id, null, res);
 			if (this.tokenScript.hasViewBinding())
 				this.tokenScript.getViewController()
 					.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: null, result: res}, id);
 
 		} catch (e){
-			//this.iframe.contentWindow.executeCallback(id, e.message, null);
+			console.error(e);
 			if (this.tokenScript.hasViewBinding())
 				this.tokenScript.getViewController()
 					.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: e.message, result: null}, id);
 		}
+	}
+
+	/**
+	 *
+	 * @param request
+	 */
+	async rpcProxy(request: RpcRequest){
+
+		try {
+			let res = await (await this.tokenScript.getEngine().getWalletAdapter()).rpcProxy(request);
+
+			if (this.tokenScript.hasViewBinding())
+				this.tokenScript.getViewController().dispatchRpcResult({jsonrpc: "2.0", id: request.id, result: res});
+
+		} catch (e){
+			console.error(e);
+			if (this.tokenScript.hasViewBinding())
+				this.tokenScript.getViewController().dispatchRpcResult({jsonrpc: "2.0", id: request.id, error: e.valueOf()});
+		}
+
 	}
 }
