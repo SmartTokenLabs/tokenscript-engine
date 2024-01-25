@@ -12,6 +12,7 @@ import {AttestationStorageAdapter} from "../../integration/attestationStorageAda
 import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
 import {ethers} from "ethers";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
+import {dbProvider} from "../../providers/databaseProvider";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -77,6 +78,8 @@ export class AppRoot {
 	public readonly tsEngine: TokenScriptEngine;
 
 	constructor() {
+
+		dbProvider.checkCompatibility();
 
 		this.tsEngine = new TokenScriptEngine(
 			async () => this.getWalletAdapter(),

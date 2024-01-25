@@ -43,6 +43,57 @@ class TSViewerDb extends Dexie {
 			attestations: `&[collectionId+tokenId]`
 		});
 	}
+
+	async checkCompatibility(){
+		try {
+			await this.open();
+		} catch (e){
+			console.warn("Dexie database open error, initializing new DB");
+			await this.cloneDatabase(this.name, `${this.name}-backup-${Date.now()}`);
+			await this.delete();
+		}
+	}
+
+	async cloneDatabase(sourceName, destinationName) {
+		//
+		// Open source database
+		//
+		const origDb = new Dexie(sourceName);
+		return origDb.open().then(()=> {
+			// Create the destination database
+			const destDb = new Dexie(destinationName);
+
+			//
+			// Clone Schema
+			//
+			const schema = origDb.tables.reduce((result,table)=>{
+				result[table.name] = [table.schema.primKey]
+					.concat(table.schema.indexes)
+					.map(indexSpec => indexSpec.src).join(",");
+				return result;
+			}, {});
+			destDb.version(this.verno).stores(schema);
+
+			//
+			// Clone Data
+			//
+			return origDb.tables.reduce(
+
+				(prev, table) => prev
+					.then(() => table.toArray())
+					.then(rows => destDb.table(table.name).bulkAdd(rows)),
+
+				Promise.resolve(1)
+
+			).then(()=>{
+				//
+				// Finally close the databases
+				//
+				origDb.close();
+				destDb.close();
+			});
+		});
+	}
 }
 
 export const dbProvider = new TSViewerDb();
