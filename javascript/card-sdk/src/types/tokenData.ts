@@ -11,7 +11,7 @@ export interface ITokenContextData {
 	_count?: string;
 	contractAddress?: string;
 	chainId: number;
-	tokenId?: number | string;
+	tokenId?: string;
 	ownerAddress: string;
 	image_preview_url?: string;
 	[attributeName: string]: any;

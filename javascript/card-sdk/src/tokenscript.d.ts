@@ -10,9 +10,13 @@ export declare global {
 		web3: IWeb3LegacySDK,
 		tokenscript: ITokenScriptSDK,
 		executeCallback: (id: number, error: string, value: any) => void
+		onConfirm?: () => void|Promise<void>
 		ethereum: Eip1193Provider
 	}
 	var ethers: ethers
 	var web3: IWeb3LegacySDK;
 	var tokenscript: ITokenScriptSDK
+	var chainID: string
+	var rpcURL: string
+	var walletAddress: string
 }
