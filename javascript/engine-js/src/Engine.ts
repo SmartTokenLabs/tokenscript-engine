@@ -244,9 +244,24 @@ export class TokenScriptEngine {
 
 		return <string>uri;*/
 
-		const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
-		const scriptUris = await res.json();
+		// TODO: Add support for selecting a specific index or URL?
+		// const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
+		// const scriptUris = await res.json();
+		//return <string>scriptUris[0];
 
-		return <string>scriptUris[0];
+		// i.e. https://store-backend.smartlayer.network/tokenscript/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/chain/137/script-uri
+		const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr}/chain/${chain}/script-uri`);
+		const data = await res.json();
+
+		if (!data.scriptURI)
+			return null;
+
+		if (data.scriptURI.erc5169?.length)
+			return <string>data.scriptURI.erc5169[0];
+
+		if (data.scriptURI.offchain?.length)
+			return <string>data.scriptURI.offchain[0];
+
+		return null;
 	}
 }
