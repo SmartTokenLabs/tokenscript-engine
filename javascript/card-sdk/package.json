@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "webpack build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "webpack build"
   },
   "author": "Michael B Wallace <miccy@smarttokenlabs.com>",
   "license": "MIT",
