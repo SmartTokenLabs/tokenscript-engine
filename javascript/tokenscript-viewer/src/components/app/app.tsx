@@ -13,6 +13,7 @@ import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
 import {ethers} from "ethers";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {dbProvider} from "../../providers/databaseProvider";
+import {showToastNotification} from "../viewers/util/showToast";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -211,16 +212,7 @@ export class AppRoot {
 
 	@Method()
 	async showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = document.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
+		return showToastNotification(type, title, description);
 	}
 
 	async componentDidLoad(){

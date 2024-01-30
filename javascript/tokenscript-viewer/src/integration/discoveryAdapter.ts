@@ -6,6 +6,7 @@ import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC20_ABI_JSON, ERC721_ABI_JSON} from 
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
 import {Contract, ethers} from "ethers";
+import {showToastNotification} from "../components/viewers/util/showToast";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
@@ -38,7 +39,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				resultTokens.push(cachedToken);
 
 			} catch (e){
-				console.error(e);
+				await showToastNotification("error", "Token Discovery Error", e.message);
 			}
 		}
 
@@ -368,18 +369,12 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private async fetchRequest(query: string){
-
-		try {
-			const response = await fetch(BASE_TOKEN_DISCOVERY_URL + query)
-			const ok = response.status >= 200 && response.status <= 299
-			if (!ok) {
-				console.warn('token api request failed: ', query)
-				return null;
-			}
-
-			return response.json();
-		} catch (msg: any) {
-			return null;
+		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + query)
+		const ok = response.status >= 200 && response.status <= 299
+		if (!ok) {
+			throw new Error("Failed to load tokens, please try again shortly: " + response.statusText);
 		}
+
+		return response.json();
 	}
 }

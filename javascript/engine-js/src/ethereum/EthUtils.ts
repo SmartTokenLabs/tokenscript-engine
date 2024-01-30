@@ -171,6 +171,8 @@ export class EthUtils {
 		if (typeof value !== "string")
 			value = value.toString();
 
-		return BigInt(new BigNumber(value).multipliedBy(Math.pow(10, decimals)).toString());
+		const convertedString = new BigNumber(value).multipliedBy(Math.pow(10, decimals)).integerValue().toString(10);
+
+		return BigInt(convertedString);
 	}
 }
