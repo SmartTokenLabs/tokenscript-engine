@@ -250,7 +250,7 @@ export class TokenScriptEngine {
 		//return <string>scriptUris[0];
 
 		// i.e. https://store-backend.smartlayer.network/tokenscript/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/chain/137/script-uri
-		const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr}/chain/${chain}/script-uri`);
+		const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr.toLowerCase()}/chain/${chain}/script-uri`);
 		const data = await res.json();
 
 		if (!data.scriptURI)
