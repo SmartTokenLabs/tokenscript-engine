@@ -73,7 +73,7 @@ export class TokenInfoPopover {
 									return (
 										<div class="attribute-item">
 											<h5>{attr.trait_type}</h5>
-											<span>{value}</span>
+											<span title={value}>{value}</span>
 										</div>
 									)
 								})
@@ -90,7 +90,7 @@ export class TokenInfoPopover {
 										return (
 											<div class="attribute-item">
 												<h5>{label}</h5>
-												<span>{value.toString()}</span>
+												<span title={value.toString()}>{value.toString()}</span>
 											</div>
 										)
 									})
