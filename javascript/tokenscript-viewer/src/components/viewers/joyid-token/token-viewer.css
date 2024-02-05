@@ -163,7 +163,7 @@ header {
 }
 
 .popover-inner {
-	margin-top: 20px !important;
+	margin-top: 40px !important;
 }
 
 .popover-container {
@@ -172,6 +172,10 @@ header {
 
 .card-container {
 	height: calc(100dvh - 50px) !important;
+}
+
+.tokenscript-frame, .card-container, .iframe-wrapper {
+	border-radius: 0 !important;
 }
 
 action-bar {
