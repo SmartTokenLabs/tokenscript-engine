@@ -1,14 +1,11 @@
 import {
+	decodeBase64ZippedBase64,
 	EAS,
 	Offchain, OFFCHAIN_ATTESTATION_TYPES, SchemaEncoder, SchemaRecord,
 	SchemaRegistry,
 	SignedOffchainAttestation
 } from "@ethereum-attestation-service/eas-sdk";
-import {
-	decodeBase64ZippedBase64,
-} from "./AttestationUrl";
-import {BigNumber, ethers} from "ethers";
-import {defaultAbiCoder, joinSignature, keccak256} from "ethers/lib/utils";
+import {ethers, Network, keccak256} from "ethers";
 import {IAttestationData} from "./IAttestationStorageAdapter";
 import {AttestationDefinition} from "../tokenScript/attestation/AttestationDefinition";
 
@@ -46,27 +43,28 @@ export class Attestation {
 		this.attestation = decoded.sig as SignedOffchainAttestation;
 
 		const domain = this.attestation.domain;
+		const chainIdStr = domain.chainId.toString();
 
-		if (!EAS_RPC_CONFIG[domain.chainId])
+		if (!EAS_RPC_CONFIG[chainIdStr])
 			throw new Error(`EAS chain ID ${domain.chainId} is not supported`);
 
 		// TODO: Add all contract versions
-		if (!EAS_REGISTRY_CONFIG[domain.chainId])
+		if (!EAS_REGISTRY_CONFIG[chainIdStr])
 			throw new Error(`EAS schema registry address not available for chain ID ${domain.chainId}`);
 
 		this.offChain = new Offchain({
 			version: domain.version,
 			address: domain.verifyingContract,
 			chainId: domain.chainId
-		}, 1);
+		}, this.attestation.version, this.eas);
 
-		const provider = new ethers.providers.StaticJsonRpcProvider(EAS_RPC_CONFIG[domain.chainId], domain.chainId);
+		const provider = new ethers.JsonRpcProvider(EAS_RPC_CONFIG[chainIdStr], domain.chainId, { staticNetwork: new Network(domain.chainId.toString(), domain.chainId)});
 
 		this.eas = new EAS(domain.verifyingContract, {
 			signerOrProvider: provider
 		})
 
-		this.schemaRegistry = new SchemaRegistry(EAS_REGISTRY_CONFIG[domain.chainId], {
+		this.schemaRegistry = new SchemaRegistry(EAS_REGISTRY_CONFIG[chainIdStr], {
 			signerOrProvider: provider
 		})
 
@@ -75,10 +73,10 @@ export class Attestation {
 
 	private recoverSignerInfo(){
 
-		const hash = ethers.utils._TypedDataEncoder.hash(this.offChain.getDomainTypedData(), {Attest: OFFCHAIN_ATTESTATION_TYPES[0].types}, this.attestation.message);
+		const hash = ethers.TypedDataEncoder.hash(this.offChain.getDomainTypedData(), OFFCHAIN_ATTESTATION_TYPES[this.attestation.version][0].types, this.attestation.message);
 
-		this.signerPublicKey = ethers.utils.recoverPublicKey(hash, this.attestation.signature);
-		this.signerAddress = ethers.utils.recoverAddress(hash, this.attestation.signature);
+		this.signerPublicKey = ethers.SigningKey.recoverPublicKey(hash, this.attestation.signature);
+		this.signerAddress = ethers.recoverAddress(hash, this.attestation.signature);
 
 		console.log("Signer key: ", this.signerPublicKey)
 	}
@@ -114,7 +112,7 @@ export class Attestation {
 
 		const revoked = await this.eas.getRevocationOffchain(this.signerAddress, this.attestation.uid);
 
-		if (BigNumber.from(revoked).gt(0)) {
+		if (BigInt(revoked) > 0) {
 			const msg = "Attestation has been revoked :-(";
 			//alert(msg);
 			throw new Error(msg);
@@ -210,17 +208,17 @@ export class Attestation {
 
 	public static getAbiEncodedEasAttestation(signedAttestation: SignedOffchainAttestation){
 
-		const attestation = defaultAbiCoder.encode(
+		const attestation = ethers.AbiCoder.defaultAbiCoder().encode(
 			signedAttestation.types.Attest.map((field) => field.type),
 			signedAttestation.types.Attest.map((field) => signedAttestation.message[field.name])
 		);
 
-		const domain = defaultAbiCoder.encode(
+		const domain = ethers.AbiCoder.defaultAbiCoder().encode(
 			["string", "uint256", "address"],
 			[signedAttestation.domain.version, signedAttestation.domain.chainId, signedAttestation.domain.verifyingContract]
 		);
 
-		return {attestation, domain, signature: joinSignature(signedAttestation.signature)}
+		return {attestation, domain, signature: ethers.Signature.from(signedAttestation.signature).serialized}
 	}
 
 }

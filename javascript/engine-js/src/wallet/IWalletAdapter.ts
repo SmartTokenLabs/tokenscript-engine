@@ -1,4 +1,4 @@
-import {Event} from "ethers";
+import {EventLog, Log} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 
 export interface RpcRequest {
@@ -34,7 +34,7 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		type: string,
 		inputs: any[]
-	): Promise<Event[]>;
+	): Promise<Array<EventLog>>;
 	sendTransaction(
 		chain: number,
 		contractAddr: string,

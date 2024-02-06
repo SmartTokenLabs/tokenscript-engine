@@ -5,7 +5,7 @@ import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC20_ABI_JSON, ERC721_ABI_JSON} from "./constants";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
-import {Contract, ethers} from "ethers";
+import {Contract, ethers, Network} from "ethers";
 import {showToastNotification} from "../components/viewers/util/showToast";
 
 const COLLECTION_CACHE_TTL = 86400;
@@ -363,7 +363,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private getEthersContractInstance(address: string, chainId: number, type: TokenType){
-		const provider = new ethers.providers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc);
+		const provider = new ethers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc, chainId, { staticNetwork: new Network(chainId.toString(), chainId)});
 
 		return new Contract(address, type === "erc20" ? ERC20_ABI_JSON : ERC721_ABI_JSON, provider);
 	}

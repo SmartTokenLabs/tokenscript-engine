@@ -48,7 +48,7 @@ export class EthUtils {
 
 		if (type.indexOf("byte") === 0){
 			if (value && (typeof value !== "string" || value.indexOf("0x") !== 0))
-				value = ethers.utils.hexlify(value);
+				value = ethers.hexlify(value);
 			return value;
 		}
 

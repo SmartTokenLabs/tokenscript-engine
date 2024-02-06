@@ -73,7 +73,7 @@ export class AppRoot {
 	attestationStorageAdapter = new AttestationStorageAdapter();
 	tsLocalStorageAdapter = new LocalStorageAdapter();
 
-	private iframeProvider: ethers.providers.Web3Provider;
+	private iframeProvider: ethers.BrowserProvider;
 
 	private params = new URLSearchParams(document.location.search);
 	private viewerType: ViewerTypes = initViewerType(this.params);
@@ -114,7 +114,7 @@ export class AppRoot {
 		if (this.shouldUseIframeProvider()){
 			providerFactory = async () => {
 				if (!this.iframeProvider)
-					this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
+					this.iframeProvider = new ethers.BrowserProvider(new IFrameEthereumProvider(), "any");
 				return this.iframeProvider;
 			}
 		} else if (this.viewerType === "opensea") {

@@ -26,8 +26,8 @@ export class TrustedKeyResolver {
 		if (!trustedKeys)
 			return null;
 
-		const authEthAddress = ethers.utils.computeAddress(authPubKey);
-		const signerEthAddress = ethers.utils.computeAddress(signerPubKey);
+		const authEthAddress = ethers.computeAddress(authPubKey);
+		const signerEthAddress = ethers.computeAddress(signerPubKey);
 
 		for (const trustedKey of trustedKeys){
 
@@ -81,7 +81,7 @@ export class TrustedKeyResolver {
 						name: "0",
 						type: "bytes32",
 						// 0x00000... its Admin Role for Openzeppelin AccessControl
-						value: ethers.constants.HashZero
+						value: ethers.ZeroHash
 					},
 					{
 						internalType: "address",
@@ -102,7 +102,7 @@ export class TrustedKeyResolver {
 						internalType: "bytes32",
 						name: "0",
 						type: "bytes32",
-						value: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
+						value: ethers.keccak256(ethers.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
 					},
 					{
 						internalType: "address",

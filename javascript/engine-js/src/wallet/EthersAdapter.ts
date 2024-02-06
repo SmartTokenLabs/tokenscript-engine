@@ -1,7 +1,7 @@
 import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
-import {Contract, ContractTransaction, ethers} from "ethers";
+import {Contract, ContractTransaction, ethers, EventLog, Network} from "ethers";
 import {ITransactionListener} from "../TokenScript";
-import {decodeError} from "ethers-decode-error";
+import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 
 export interface IChainConfig {
 	rpc: string,
@@ -13,9 +13,9 @@ export interface IChainConfig {
  */
 export class EthersAdapter implements IWalletAdapter {
 
-	private ethersProvider: ethers.providers.Web3Provider
+	private ethersProvider: ethers.BrowserProvider
 
-	constructor(public getWalletEthersProvider: () => Promise<ethers.providers.Web3Provider>, private chainConfig: {[key: number]: IChainConfig}) {
+	constructor(public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>, private chainConfig: {[key: number]: IChainConfig}) {
 
 	}
 
@@ -29,7 +29,7 @@ export class EthersAdapter implements IWalletAdapter {
 	async signPersonalMessage(data){
 		const ethersProvider = await this.getEthersProvider();
 
-		return await ethersProvider.getSigner().signMessage(data);
+		return (await ethersProvider.getSigner()).signMessage(data);
 	}
 
 	async call(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]|any[], errorAbi: any[] = []){
@@ -66,12 +66,13 @@ export class EthersAdapter implements IWalletAdapter {
 		try {
 			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
 		} catch (e: any){
-			const decodedError = decodeError(e, errorAbi);
+			const errDecoder = ErrorDecoder.create(errorAbi)
+			const decodedError = await errDecoder.decode(e);
 			console.error(e);
 			console.log("Decoded error: ", decodedError);
-			if (decodedError.type > 0) {
-				const decodedMessage = decodedError.type === 4 && typeof e === "string" ? e :
-					("Contract execution failed: " + (typeof decodedError.error === "object" ? JSON.stringify(decodedError.error) : decodedError.error));
+			if (decodedError.type != ErrorType.EmptyError && decodedError.type != ErrorType.UnknownError) {
+				const decodedMessage = decodedError.type === ErrorType.UserRejectError && typeof e === "string" ? e :
+					("Contract execution failed: " + (typeof decodedError.reason === "object" ? JSON.stringify(decodedError.reason) : decodedError.reason));
 				if (typeof e === "string"){
 					e = new Error(decodedMessage);
 				} else {
@@ -134,8 +135,8 @@ export class EthersAdapter implements IWalletAdapter {
 
 		// TODO: add all chain URLs into some configuration.
 		const provider = stateMutability === "view" ?
-							new ethers.providers.StaticJsonRpcProvider(this.getRpcUrl(chain), chain) :
-							(await this.getEthersProvider()).getSigner();
+							new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) }) :
+							(await this.getEthersProvider());
 
 		return new Contract(contractAddr, [abiData, ...errorAbi], provider);
 	}
@@ -157,7 +158,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const network = await ethersProvider.getNetwork();
 
-		return network.chainId;
+		return Number(network.chainId);
 	}
 
 	private async switchChain(chain: number){
@@ -187,15 +188,15 @@ export class EthersAdapter implements IWalletAdapter {
 			throw new Error("Wallet could not connect or there is no accounts created");
 		}
 
-		return accounts[0];
+		return accounts[0].address;
 	}
 
-	async getEvents(chain: number, contractAddr: string, event: string, inputs: any[]) {
+	async getEvents(chain: number, contractAddr: string, event: string, inputs: any[]): Promise<Array<EventLog>> {
 
 		console.log("Get ethereum events. chain " + chain + "; contract " + contractAddr + "; event " + event + ";");
 		console.log(inputs);
 
-		const provider = new ethers.providers.StaticJsonRpcProvider(this.getRpcUrl(chain), chain);
+		const provider = new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) });
 
 		const contract = new Contract(contractAddr, [{
 			name: event,
@@ -205,11 +206,11 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const values = inputs.map((input) => input.value);
 
-		return await contract.queryFilter(contract.filters[event](...values));
+		return await contract.queryFilter(contract.filters[event](...values)) as Array<EventLog>;
 	}
 
 	// TODO: Handle chain switching
 	async rpcProxy(request: RpcRequest): Promise<any> {
-		return (await this.getEthersProvider()).provider.request(request);
+		return (await this.getEthersProvider()).send(request.method, request.data);
 	}
 }

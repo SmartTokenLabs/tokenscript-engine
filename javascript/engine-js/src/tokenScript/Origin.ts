@@ -80,7 +80,7 @@ export class Origin {
 				// transform tokenscript signing key into address if required
 				// const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
 
-				const dSigAddress = ethers.utils.computeAddress(authPubKey);
+				const dSigAddress = ethers.computeAddress(authPubKey);
 
 				// TODO: Check signer key as well as authoritative key
 				const isAdmin = await (new TrustedKeyResolver(this.tokenScript).isAdmin(contract, dSigAddress));

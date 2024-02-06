@@ -1,7 +1,7 @@
 import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {computeAddress} from "ethers/lib/utils";
+import {computeAddress} from "ethers";
 
 @Component({
 	tag: 'security-status',

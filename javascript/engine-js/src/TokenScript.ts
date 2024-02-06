@@ -628,7 +628,7 @@ export class TokenScript {
 			console.warn(e);
 		}
 
-		return ethers.constants.AddressZero;
+		return ethers.ZeroAddress;
 	}
 
 	/**
