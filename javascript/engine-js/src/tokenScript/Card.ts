@@ -301,45 +301,4 @@ export class Card {
 		}
 	}
 
-	/**
-	 * Signs a personal message with the provided data and returns the result to the token view.
-	 * @param id
-	 * @param data
-	 */
-	async signPersonalMessage(id, data){
-
-		try {
-			let res = await this.tokenScript.getEngine().signPersonalMessage(data);
-
-			if (this.tokenScript.hasViewBinding())
-				this.tokenScript.getViewController()
-					.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: null, result: res}, id);
-
-		} catch (e){
-			console.error(e);
-			if (this.tokenScript.hasViewBinding())
-				this.tokenScript.getViewController()
-					.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: e.message, result: null}, id);
-		}
-	}
-
-	/**
-	 *
-	 * @param request
-	 */
-	async rpcProxy(request: RpcRequest){
-
-		try {
-			let res = await (await this.tokenScript.getEngine().getWalletAdapter()).rpcProxy(request);
-
-			if (this.tokenScript.hasViewBinding())
-				this.tokenScript.getViewController().dispatchRpcResult({jsonrpc: "2.0", id: request.id, result: res});
-
-		} catch (e){
-			console.error(e);
-			if (this.tokenScript.hasViewBinding())
-				this.tokenScript.getViewController().dispatchRpcResult({jsonrpc: "2.0", id: request.id, error: e.valueOf()});
-		}
-
-	}
 }

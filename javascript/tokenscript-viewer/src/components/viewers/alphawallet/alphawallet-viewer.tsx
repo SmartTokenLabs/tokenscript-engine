@@ -182,8 +182,8 @@ export class SmartTokenStoreViewer {
 				// Show first info card
 				this.infoCard = card;
 				const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
-				infoViewBinding.setTokenScript(this.tokenScript);
 				const viewController = this.tokenScript.getViewController(infoViewBinding);
+				infoViewBinding.setViewController(viewController);
 				viewController.showOrExecuteCard(this.infoCard, undefined);
 				continue;
 			}

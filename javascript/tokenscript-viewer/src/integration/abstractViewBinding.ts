@@ -1,7 +1,7 @@
 import {IViewBinding} from "../../../engine-js/src/view/IViewBinding";
 import {Card} from "../../../engine-js/src/tokenScript/Card";
 import {TokenScript} from "../../../engine-js/src/TokenScript";
-import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {RequestFromView, ViewController, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
 import {RpcResponse} from "../../../engine-js/src/wallet/IWalletAdapter";
 
 export abstract class AbstractViewBinding implements IViewBinding {
@@ -14,6 +14,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	loader: HTMLDivElement;
 
 	protected tokenScript: TokenScript
+	protected viewController: ViewController;
 
 	constructor(protected view: HTMLElement) {
 
@@ -30,8 +31,21 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		}
 	}
 
+	// TODO: This can probably be accessed via view controller
 	setTokenScript(tokenScript: TokenScript) {
 		this.tokenScript = tokenScript;
+	}
+
+	setViewController(viewController: ViewController){
+		this.viewController = viewController;
+		this.tokenScript = viewController.tokenScript;
+	}
+
+	getViewController(){
+		if (!this.viewController)
+			return this.tokenScript.getViewController();
+
+		return this.viewController;
 	}
 
 	viewLoading() {
@@ -141,31 +155,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-
-		console.log("Request from view: ", method, params);
-
-		switch (method) {
-
-			case RequestFromView.ETH_RPC:
-				this.currentCard.rpcProxy(params);
-				break;
-
-			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				console.log("Event from view: Sign personal message");
-				this.currentCard.signPersonalMessage(params.id, params.data);
-				break;
-
-			case RequestFromView.PUT_USER_INPUT:
-				await this.tokenScript.getViewController().setUserEntryValues(params);
-				break;
-
-			case RequestFromView.CLOSE:
-				this.unloadTokenView()
-				break;
-
-			default:
-				throw new Error("TokenScript view API method: " + method + " is not implemented.");
-		}
+		await this.getViewController().handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {

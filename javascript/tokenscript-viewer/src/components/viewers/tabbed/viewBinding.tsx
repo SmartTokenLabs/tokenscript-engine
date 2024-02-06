@@ -52,27 +52,17 @@ export class ViewBinding extends AbstractViewBinding {
 		elem.innerHTML = attrTable;
 	}
 
-	// TODO: move this logic into engine
 	async confirmAction(){
-
-		const transaction = this.currentCard.getTransaction();
 
 		this.showLoader();
 
-		if (transaction){
-
-			console.log(transaction.getTransactionInfo());
-
-			try {
-				await this.currentCard.executeTransaction((data: ITransactionStatus) => { showTransactionNotification(data, this.showToast); });
-			} catch (e){
-				console.error(e);
-				handleTransactionError(e, this.showToast);
-			}
-
-		} else {
-			// this.iframe.contentWindow.onConfirm();
-			this.postMessageToView(ViewEvent.ON_CONFIRM, {});
+		try {
+			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+				showTransactionNotification(data, this.showToast);
+			});
+		} catch (e){
+			console.error(e);
+			handleTransactionError(e, this.showToast);
 		}
 
 		this.hideLoader();
