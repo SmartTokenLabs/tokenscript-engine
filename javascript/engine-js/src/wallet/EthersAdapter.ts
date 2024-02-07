@@ -42,7 +42,7 @@ export class EthersAdapter implements IWalletAdapter {
 		// Function properties without arguments may collide with in-built Javascript functions (i.e. Object.valueOf), so we should always include arguments
 		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
 
-		return await contract[method](...(args.map((arg: any) => arg.value))) as ContractTransaction;
+		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
 	}
 
 	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
@@ -62,6 +62,9 @@ export class EthersAdapter implements IWalletAdapter {
 			overrides.value = value;
 
 		let tx;
+
+		// Function properties without arguments may collide with in-built Javascript functions (i.e. Object.valueOf), so we should always include arguments
+		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
 
 		try {
 			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
@@ -122,7 +125,7 @@ export class EthersAdapter implements IWalletAdapter {
 				const convertedType = value === "uint" ? "uint256" : value;
 
 				return {
-					name: value.name ?? index.toString(),
+					name: value.name ?? "",
 					type: convertedType,
 					internalType: convertedType
 				}

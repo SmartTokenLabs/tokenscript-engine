@@ -83,44 +83,33 @@ export class EthUtils {
 	 * Since ethers.js returns structs as an array with additional object properties,
 	 * we need to convert it to a normal object for JSON encoding to work for alphanumeric keys.
 	 * Otherwise, the card Javascript only receives numeric keys
-	 * @param arrayObject
+	 * @param resultObject
 	 */
-	public static convertFunctionResult(arrayObject: any){
+	public static convertFunctionResult(resultObject: any){
 
-		if (arrayObject instanceof Object && arrayObject._isBigNumber) {
-			return BigInt(arrayObject);
-		}
+		if (typeof resultObject !== "object" || !("toObject" in resultObject))
+			return resultObject;
 
-		if (!Array.isArray(arrayObject)) {
-			return arrayObject;
-		}
+		try {
+			const converted = {};
 
-		// If this is an array return we won't find any alphanumeric keys
-		let hasAlpha = false;
-		for (let i in arrayObject){
-			if (i.match(/[a-zA-Z]+/g)){
-				hasAlpha = true;
-				break;
+			for (let i in resultObject.toObject()){
+				converted[i] = this.convertFunctionResult(resultObject[i]);
 			}
-		}
 
-		if (!hasAlpha) {
+			return converted;
+
+		} catch (e){
+
 			const converted = [];
+			const resultArray = resultObject.toArray();
 
-			for (let i=0; i<arrayObject.length; i++){
-				converted.push(this.convertFunctionResult(arrayObject[i]));
+			for (let i=0; i<resultArray.length; i++){
+				converted.push(this.convertFunctionResult(resultArray[i]));
 			}
 
 			return converted;
 		}
-
-		const converted = {};
-
-		for (let i in arrayObject){
-			converted[i] = this.convertFunctionResult(arrayObject[i]);
-		}
-
-		return converted;
 	}
 
 	/**

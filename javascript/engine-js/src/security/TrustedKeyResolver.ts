@@ -78,14 +78,14 @@ export class TrustedKeyResolver {
 				address.chain, address.address, "hasRole", [
 					{
 						internalType: "bytes32",
-						name: "0",
+						name: "",
 						type: "bytes32",
 						// 0x00000... its Admin Role for Openzeppelin AccessControl
 						value: ethers.ZeroHash
 					},
 					{
 						internalType: "address",
-						name: "1",
+						name: "",
 						type: "address",
 						value: dSigAddress
 					}
@@ -100,13 +100,13 @@ export class TrustedKeyResolver {
 				address.chain, address.address, "hasRole", [
 					{
 						internalType: "bytes32",
-						name: "0",
+						name: "",
 						type: "bytes32",
 						value: ethers.keccak256(ethers.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
 					},
 					{
 						internalType: "address",
-						name: "1",
+						name: "",
 						type: "address",
 						value: dSigAddress
 					}
