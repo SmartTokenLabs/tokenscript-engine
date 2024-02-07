@@ -17,6 +17,18 @@ import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
+export { TokenScriptEngine } from "../../engine-js/src/Engine";
+export { ITokenDetail } from "../../engine-js/src/tokens/ITokenDetail";
+export { TokenScript } from "../../engine-js/src/TokenScript";
+export { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
+export { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
+export { JSX } from "@stencil/core";
+export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
+export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
+export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
+export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
+export { TokenGridContext } from "./components/viewers/util/getTokensFlat";
+export { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AboutTokenscript {
     }
@@ -39,7 +51,7 @@ export namespace Components {
         "app": AppRoot;
     }
     interface AppRoot {
-        "loadTokenscript": (source: TokenScriptSource, tsId?: string, file?: File | string) => Promise<TokenScript>;
+        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string) => Promise<TokenScript>;
         "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
     }
     interface AttributeTable {
@@ -238,7 +250,20 @@ declare global {
         prototype: HTMLAboutTokenscriptElement;
         new (): HTMLAboutTokenscriptElement;
     };
+    interface HTMLActionBarElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLActionBarElement extends Components.ActionBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLActionBarElementEventMap>(type: K, listener: (this: HTMLActionBarElement, ev: ActionBarCustomEvent<HTMLActionBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLActionBarElementEventMap>(type: K, listener: (this: HTMLActionBarElement, ev: ActionBarCustomEvent<HTMLActionBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLActionBarElement: {
         prototype: HTMLActionBarElement;
@@ -256,7 +281,20 @@ declare global {
         prototype: HTMLAddSelectorElement;
         new (): HTMLAddSelectorElement;
     };
+    interface HTMLAlphawalletViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLAlphawalletViewerElement extends Components.AlphawalletViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLAlphawalletViewerElementEventMap>(type: K, listener: (this: HTMLAlphawalletViewerElement, ev: AlphawalletViewerCustomEvent<HTMLAlphawalletViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLAlphawalletViewerElementEventMap>(type: K, listener: (this: HTMLAlphawalletViewerElement, ev: AlphawalletViewerCustomEvent<HTMLAlphawalletViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLAlphawalletViewerElement: {
         prototype: HTMLAlphawalletViewerElement;
@@ -274,13 +312,35 @@ declare global {
         prototype: HTMLAttributeTableElement;
         new (): HTMLAttributeTableElement;
     };
+    interface HTMLCardModalElementEventMap {
+        "showToast": ShowToastEventArgs;
+    }
     interface HTMLCardModalElement extends Components.CardModal, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCardModalElementEventMap>(type: K, listener: (this: HTMLCardModalElement, ev: CardModalCustomEvent<HTMLCardModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCardModalElementEventMap>(type: K, listener: (this: HTMLCardModalElement, ev: CardModalCustomEvent<HTMLCardModalElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCardModalElement: {
         prototype: HTMLCardModalElement;
         new (): HTMLCardModalElement;
     };
+    interface HTMLCardPopoverElementEventMap {
+        "showToast": ShowToastEventArgs;
+    }
     interface HTMLCardPopoverElement extends Components.CardPopover, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLCardPopoverElementEventMap>(type: K, listener: (this: HTMLCardPopoverElement, ev: CardPopoverCustomEvent<HTMLCardPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLCardPopoverElementEventMap>(type: K, listener: (this: HTMLCardPopoverElement, ev: CardPopoverCustomEvent<HTMLCardPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLCardPopoverElement: {
         prototype: HTMLCardPopoverElement;
@@ -316,13 +376,37 @@ declare global {
         prototype: HTMLLoadingSpinnerElement;
         new (): HTMLLoadingSpinnerElement;
     };
+    interface HTMLNewViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+    }
     interface HTMLNewViewerElement extends Components.NewViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLNewViewerElementEventMap>(type: K, listener: (this: HTMLNewViewerElement, ev: NewViewerCustomEvent<HTMLNewViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLNewViewerElementEventMap>(type: K, listener: (this: HTMLNewViewerElement, ev: NewViewerCustomEvent<HTMLNewViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLNewViewerElement: {
         prototype: HTMLNewViewerElement;
         new (): HTMLNewViewerElement;
     };
+    interface HTMLOpenseaViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLOpenseaViewerElement extends Components.OpenseaViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLOpenseaViewerElementEventMap>(type: K, listener: (this: HTMLOpenseaViewerElement, ev: OpenseaViewerCustomEvent<HTMLOpenseaViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLOpenseaViewerElementEventMap>(type: K, listener: (this: HTMLOpenseaViewerElement, ev: OpenseaViewerCustomEvent<HTMLOpenseaViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLOpenseaViewerElement: {
         prototype: HTMLOpenseaViewerElement;
@@ -358,7 +442,20 @@ declare global {
         prototype: HTMLStartTabElement;
         new (): HTMLStartTabElement;
     };
+    interface HTMLStsViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLStsViewerElement extends Components.StsViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLStsViewerElementEventMap>(type: K, listener: (this: HTMLStsViewerElement, ev: StsViewerCustomEvent<HTMLStsViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLStsViewerElementEventMap>(type: K, listener: (this: HTMLStsViewerElement, ev: StsViewerCustomEvent<HTMLStsViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLStsViewerElement: {
         prototype: HTMLStsViewerElement;
@@ -400,13 +497,39 @@ declare global {
         prototype: HTMLTokenSecurityStatusElement;
         new (): HTMLTokenSecurityStatusElement;
     };
+    interface HTMLTokenViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLTokenViewerElement extends Components.TokenViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTokenViewerElementEventMap>(type: K, listener: (this: HTMLTokenViewerElement, ev: TokenViewerCustomEvent<HTMLTokenViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTokenViewerElementEventMap>(type: K, listener: (this: HTMLTokenViewerElement, ev: TokenViewerCustomEvent<HTMLTokenViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLTokenViewerElement: {
         prototype: HTMLTokenViewerElement;
         new (): HTMLTokenViewerElement;
     };
+    interface HTMLTokensGridElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLTokensGridElement extends Components.TokensGrid, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTokensGridElementEventMap>(type: K, listener: (this: HTMLTokensGridElement, ev: TokensGridCustomEvent<HTMLTokensGridElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTokensGridElementEventMap>(type: K, listener: (this: HTMLTokensGridElement, ev: TokensGridCustomEvent<HTMLTokensGridElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLTokensGridElement: {
         prototype: HTMLTokensGridElement;
@@ -430,13 +553,37 @@ declare global {
         prototype: HTMLTokenscriptGridElement;
         new (): HTMLTokenscriptGridElement;
     };
+    interface HTMLTransferDialogElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLTransferDialogElement extends Components.TransferDialog, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTransferDialogElementEventMap>(type: K, listener: (this: HTMLTransferDialogElement, ev: TransferDialogCustomEvent<HTMLTransferDialogElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTransferDialogElementEventMap>(type: K, listener: (this: HTMLTransferDialogElement, ev: TransferDialogCustomEvent<HTMLTransferDialogElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLTransferDialogElement: {
         prototype: HTMLTransferDialogElement;
         new (): HTMLTransferDialogElement;
     };
+    interface HTMLViewStepElementEventMap {
+        "showToast": ShowToastEventArgs;
+    }
     interface HTMLViewStepElement extends Components.ViewStep, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLViewStepElementEventMap>(type: K, listener: (this: HTMLViewStepElement, ev: ViewStepCustomEvent<HTMLViewStepElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLViewStepElementEventMap>(type: K, listener: (this: HTMLViewStepElement, ev: ViewStepCustomEvent<HTMLViewStepElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLViewStepElement: {
         prototype: HTMLViewStepElement;
@@ -448,7 +595,18 @@ declare global {
         prototype: HTMLViewerPopoverElement;
         new (): HTMLViewerPopoverElement;
     };
+    interface HTMLViewerTabElementEventMap {
+        "showToast": ShowToastEventArgs;
+    }
     interface HTMLViewerTabElement extends Components.ViewerTab, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLViewerTabElementEventMap>(type: K, listener: (this: HTMLViewerTabElement, ev: ViewerTabCustomEvent<HTMLViewerTabElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLViewerTabElementEventMap>(type: K, listener: (this: HTMLViewerTabElement, ev: ViewerTabCustomEvent<HTMLViewerTabElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLViewerTabElement: {
         prototype: HTMLViewerTabElement;
