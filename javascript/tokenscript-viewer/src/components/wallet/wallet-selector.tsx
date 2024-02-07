@@ -65,7 +65,7 @@ export class WalletSelector {
 								}
 							}>
 								<div class="wallet-icon" innerHTML={provider.imgBig}></div>
-								<div class="wallet-name">{provider.name}</div>
+								<div class="wallet-name">{provider.label}</div>
 							</button>
 						)
 					})
