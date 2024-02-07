@@ -790,7 +790,7 @@ export class TokenScript {
 			const ethParams = [];
 
 			for (let i in transInfo.args){
-				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), i.toString()))
+				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
 			}
 
 			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
