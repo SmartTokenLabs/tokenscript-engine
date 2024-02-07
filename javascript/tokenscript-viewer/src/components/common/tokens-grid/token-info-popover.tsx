@@ -1,6 +1,7 @@
 import {Component, Method, State, h, Prop, Watch} from "@stencil/core";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {TokenScript} from "../../../../../engine-js/src/TokenScript";
+import {getHardcodedDescription} from "../../viewers/util/getHardcodedDescription";
 
 
 @Component({
@@ -17,6 +18,9 @@ export class TokenInfoPopover {
 
 	@State()
 	private tsAttributes: {label: string, value: string}[] = [];
+
+	@State()
+	description: string = "";
 
 	@Prop()
 	tokenScript: TokenScript
@@ -40,6 +44,7 @@ export class TokenInfoPopover {
 		}
 
 		this.tsAttributes = newAttributes;
+		this.description = "attributes" in this.token ? await getHardcodedDescription(this.tokenScript, this.token) : this.token.description;
 
 		await this.dialog.openDialog();
 	}
@@ -55,7 +60,7 @@ export class TokenInfoPopover {
 			{ this.token ?
 				<div>
 					<h4>{this.token.name}</h4>
-					<p>{this.token.description !== this.token.name ? this.token.description : ''}</p>
+					<p innerHTML={this.description !== this.token.name ? this.description.replace(/\n/g, "<br/>") : ''}></p>
 					{ ("attributes" in this.token && this.token.attributes.length) ?
 						<div class="attribute-container">
 							{

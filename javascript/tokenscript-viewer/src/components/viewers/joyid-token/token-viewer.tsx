@@ -5,6 +5,7 @@ import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
+import {getHardcodedDescription} from "../util/getHardcodedDescription";
 
 @Component({
 	tag: 'token-viewer',
@@ -22,6 +23,9 @@ export class TokenViewer {
 
 	@State()
 	tokenScript: TokenScript;
+
+	@State()
+	description: string = "";
 
 	urlRequest: URLSearchParams;
 
@@ -136,10 +140,12 @@ export class TokenViewer {
 
 				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
 				this.tokenScript = tokenScript;
+				this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
 			}
 
 		} catch (e){
 			console.warn(e.message);
+			this.description = this.tokenDetails.description;
 		}
 	}
 
@@ -173,7 +179,7 @@ export class TokenViewer {
 									</div>
 								</div>
 								<div class="extra-info">
-									<p>{this.tokenDetails.description}</p>
+									<p innerHTML={this.description.replace(/\n/g, "<br/>")}></p>
 									<div class="attribute-container">
 										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
 											return (

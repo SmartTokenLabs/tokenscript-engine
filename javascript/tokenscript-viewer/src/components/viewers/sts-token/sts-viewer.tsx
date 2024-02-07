@@ -8,6 +8,7 @@ import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {getCardButtonClass} from "../util/getCardButtonClass";
+import {getHardcodedDescription} from "../util/getHardcodedDescription";
 
 @Component({
 	tag: 'sts-viewer',
@@ -25,6 +26,9 @@ export class SmartTokenStoreViewer {
 
 	@State()
 	tokenScript: TokenScript;
+
+	@State()
+	description: string = "";
 
 	urlRequest: URLSearchParams;
 
@@ -202,6 +206,7 @@ export class SmartTokenStoreViewer {
 
 		this.cardButtons = cardButtons;
 		this.overflowCardButtons = overflowCardButtons;
+		this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
 	}
 
 	// TODO: This is copied from tokens-grid-item, dedupe required
@@ -259,7 +264,7 @@ export class SmartTokenStoreViewer {
 									</div>
 								</div>
 								<div class="extra-info">
-									<p>{this.tokenDetails.description}</p>
+									<p innerHTML={this.description.replace(/\n/g, "<br/>")}></p>
 									<div class="attribute-container">
 										{this.tokenDetails.attributes?.length ? this.tokenDetails.attributes.map((attr) => {
 											return (
