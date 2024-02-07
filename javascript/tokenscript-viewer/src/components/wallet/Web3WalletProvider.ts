@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import {Eip1193Provider, ethers} from 'ethers'
 
 declare global {
 	interface Window {
@@ -277,13 +277,13 @@ class Web3WalletProviderObj {
 		providerType: SupportedWalletProviders,
 		provider: ethers.BrowserProvider,
 		blockchain: SupportedBlockchainsParam,
+		eip1193Provider: any
 	) {
 
 		this.connections = {};
-		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain, ethers }
+		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain, ethers };
 
-		// @ts-ignore
-		provider.provider.on('accountsChanged', (accounts) => {
+		eip1193Provider.on('accountsChanged', (accounts) => {
 
 			if (Object.keys(this.connections).length === 0)
 				return;
@@ -314,17 +314,15 @@ class Web3WalletProviderObj {
 			//this.client.enrichTokenLookupDataOnChainTokens()
 		})
 
-		// @ts-ignore
-		provider.provider.on('chainChanged', (_chainId: any) => {
-			this.registerNewWalletAddress(address, _chainId, providerType, provider, 'evm')
+		eip1193Provider.on('chainChanged', (_chainId: any) => {
+			this.registerNewWalletAddress(address, _chainId, providerType, provider, 'evm', eip1193Provider)
 
 			this.saveConnections()
 
 			//this.emitNetworkChange(_chainId)
 		})
 
-		// @ts-ignore
-		provider.provider.on('disconnect', (reason: any) => {
+		eip1193Provider.on('disconnect', (reason: any) => {
 			if (reason?.message && reason.message.indexOf('MetaMask: Disconnected from chain') > -1) return
 			/**
 			 * TODO do we need to disconnect all wallets?
@@ -335,7 +333,7 @@ class Web3WalletProviderObj {
 		})
 	}
 
-	private async registerEvmProvider(provider: ethers.BrowserProvider, providerName: SupportedWalletProviders) {
+	private async registerEvmProvider(provider: ethers.BrowserProvider, providerName: SupportedWalletProviders, injectedProvider: any) {
 		const accounts = await provider.listAccounts()
 		const chainId = (await provider.getNetwork()).chainId
 
@@ -345,7 +343,7 @@ class Web3WalletProviderObj {
 
 		let curAccount = accounts[0]
 
-		this.registerNewWalletAddress(curAccount.address, parseInt(chainId.toString(10)), providerName, provider, 'evm')
+		this.registerNewWalletAddress(curAccount.address, parseInt(chainId.toString(10)), providerName, provider, 'evm', injectedProvider)
 
 		return curAccount
 	}
@@ -357,7 +355,7 @@ class Web3WalletProviderObj {
 
 			const provider = new ethers.BrowserProvider(window.ethereum, 'any')
 
-			return this.registerEvmProvider(provider, SupportedWalletProviders.MetaMask)
+			return this.registerEvmProvider(provider, SupportedWalletProviders.MetaMask, window.ethereum);
 		} else {
 			throw new Error('MetaMask is not available. Please check the extension is supported and active.')
 		}
@@ -433,7 +431,7 @@ class Web3WalletProviderObj {
 					.then(() => {
 						QRCodeModal?.close()
 						const provider = new ethers.BrowserProvider(walletConnectV2, 'any')
-						resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnectV2))
+						resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnectV2, walletConnectV2))
 					})
 					.catch((e) => {
 						QRCodeModal?.close()
@@ -454,7 +452,7 @@ class Web3WalletProviderObj {
 
 		const provider = new ethers.BrowserProvider(torus.provider, 'any')
 
-		return this.registerEvmProvider(provider, SupportedWalletProviders.Torus)
+		return this.registerEvmProvider(provider, SupportedWalletProviders.Torus, torus.provider)
 	}
 }
 
