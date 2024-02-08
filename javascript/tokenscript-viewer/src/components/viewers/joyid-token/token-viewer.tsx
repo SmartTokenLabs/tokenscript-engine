@@ -162,15 +162,22 @@ export class TokenViewer {
 							</div>
 							<div class="info-container">
 								<div class="main-info">
-									<h1>{this.tokenDetails.name}</h1>
-									<div class="owner-count">
-										<span style={{color: "#3D45FB"}}>
-											{
-												this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
-													("balance: " + this.tokenDetails.balance) :
-													("#" + this.tokenDetails.tokenId)
-											}
-										</span>
+									<div class="title-row">
+										<div class="title-container">
+											<h1>{this.tokenDetails.name}</h1>
+											<div class="owner-count">
+												<span style={{color: "#3D45FB"}}>
+													{
+														this.tokenDetails.collectionDetails.tokenType === "erc1155" ?
+															("balance: " + this.tokenDetails.balance) :
+															("#" + this.tokenDetails.tokenId)
+													}
+												</span>
+											</div>
+										</div>
+										<div class="security-wrapper">
+											{this.tokenScript ? <security-status tokenScript={this.tokenScript} size="small" /> : ''}
+										</div>
 									</div>
 									<div class="collection-details">
 										<token-icon style={{width: "24px", borderRadius: "4px"}} src={this.tokenDetails.collectionDetails.image} imageTitle={this.tokenDetails.collectionDetails.name}/>

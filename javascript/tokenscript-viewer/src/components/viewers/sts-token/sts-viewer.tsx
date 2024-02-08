@@ -298,7 +298,7 @@ export class SmartTokenStoreViewer {
 								] : ''
 							}
 						</div>
-						<div style={{padding: "0 10px"}}>
+						<div style={{padding: "0 10px 10px 10px"}}>
 							{this.tokenScript ? <security-status tokenScript={this.tokenScript}/> : ''}
 						</div>
 					</div>

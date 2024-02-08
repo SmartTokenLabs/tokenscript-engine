@@ -84,6 +84,7 @@ export namespace Components {
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
+        "size": "large"|"small";
         "tokenScript": TokenScript1;
     }
     interface SelectField {
@@ -577,6 +578,7 @@ declare namespace LocalJSX {
         "dialogStyles"?: {[cssProp: string]: string};
     }
     interface SecurityStatus {
+        "size"?: "large"|"small";
         "tokenScript"?: TokenScript1;
     }
     interface SelectField {
