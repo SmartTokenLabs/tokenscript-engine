@@ -108,7 +108,7 @@ export class AppRoot {
 
 		let providerFactory;
 
-		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) > -1 && !this.params.has("noIframeProvider")){
+		if (this.shouldUseIframeProvider()){
 			providerFactory = async () => {
 				if (!this.iframeProvider)
 					this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
@@ -133,6 +133,10 @@ export class AppRoot {
 		}
 
 		return new EthersAdapter(providerFactory, CHAIN_CONFIG);
+	}
+
+	private shouldUseIframeProvider(){
+		return IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) > -1 && !this.params.has("noIframeProvider")
 	}
 
 	@Element() host: HTMLElement;
@@ -220,7 +224,7 @@ export class AppRoot {
 		//const queryStr = document.location.search.substring(1);
 		//const query = new URLSearchParams(queryStr);
 
-		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 && !this.params.has("noIframeProvider") && this.viewerType !== "opensea"){
+		if (!this.shouldUseIframeProvider() && this.viewerType !== "opensea"){
 			const Web3WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
 			Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 			await Web3WalletProvider.loadConnections();
@@ -250,9 +254,7 @@ export class AppRoot {
 						<loading-spinner/>
 					</div>
 				</div>
-				{ IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 &&
-					!this.params.has("noIframeProvider") &&
-					this.viewerType !== "opensea" ?
+				{ !this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 						<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
 			</Host>
