@@ -1,5 +1,5 @@
 import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
-import {Contract, ContractTransaction, ethers, EventLog, Network} from "ethers";
+import {Contract, ContractRunner, ContractTransaction, ethers, EventLog, Network} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 
@@ -39,7 +39,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, "view", errorAbi);
 
-		// Function properties without arguments may collide with in-built Javascript functions (i.e. Object.valueOf), so we should always include arguments
+		// Getting a function only by name could be ambiguous, so we use the full signature
 		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
 
 		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
@@ -63,7 +63,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 		let tx;
 
-		// Function properties without arguments may collide with in-built Javascript functions (i.e. Object.valueOf), so we should always include arguments
+		// Getting a function only by name could be ambiguous, so we use the full signature
 		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
 
 		try {
@@ -136,10 +136,15 @@ export class EthersAdapter implements IWalletAdapter {
 
 		console.log(abiData);
 
-		// TODO: add all chain URLs into some configuration.
-		const provider = stateMutability === "view" ?
-							new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) }) :
-							(await this.getEthersProvider());
+		// @ts-ignore
+		const useBrowserProvider = stateMutability !== "view" || (window.ethereum.isMetaMask && (await this.getChain()) === chain);
+
+		if (stateMutability === "view" && useBrowserProvider)
+			console.log("Using wallet RPC for view call!");
+
+		const provider = useBrowserProvider ?
+							await (await this.getEthersProvider()).getSigner() as ContractRunner :
+							new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) });
 
 		return new Contract(contractAddr, [abiData, ...errorAbi], provider);
 	}
@@ -154,8 +159,8 @@ export class EthersAdapter implements IWalletAdapter {
 
 	async getChain(){
 
-		if (!this.ethersProvider)
-			return 1;
+		//if (!this.ethersProvider)
+			//return 1;
 
 		const ethersProvider = await this.getEthersProvider();
 
