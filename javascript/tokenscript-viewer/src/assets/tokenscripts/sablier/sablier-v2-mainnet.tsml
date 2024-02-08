@@ -28,6 +28,12 @@
 		<ts:ethereum contract="Sablier"/>
 	</ts:origins>
 
+	<ts:selection filter="withdrawableAmount=0" name="nothingToWithdraw">
+		<ts:label>
+			<ts:string xml:lang="en">Nothing to withdraw yet</ts:string>
+		</ts:label>
+	</ts:selection>
+
 	<ts:cards>
 		<ts:viewContent xmlns="http://www.w3.org/1999/xhtml" name="common">
 			
@@ -18857,44 +18863,45 @@ function create_if_block$1(ctx) {
   ) + "";
   let t22;
   let t23;
+  let t24;
   let div26;
   let div25;
   let div21;
-  let t24;
+  let t25;
   let div24;
   let div22;
-  let t26;
+  let t27;
   let div23;
   let p2;
-  let t27_value = (
+  let t28_value = (
     /*token*/
     ctx[0].stream.isCancelable ? "Can" : "Cannot"
   );
-  let t27;
   let t28;
   let t29;
+  let t30;
   let div37;
   let div36;
   let div28;
-  let t30;
+  let t31;
   let div35;
   let div29;
-  let t32;
+  let t33;
   let div34;
   let div33;
   let div31;
-  let t33;
+  let t34;
   let div32;
   let p3;
-  let t34_value = getChainDetails(
+  let t35_value = getChainDetails(
     /*token*/
     ctx[0].chainId
   ).displayName + "";
-  let t34;
   let t35;
+  let t36;
   let div40;
   let a;
-  let t36;
+  let t37;
   let a_href_value;
   let current;
   assetdetails = new AssetDetails({
@@ -18924,6 +18931,11 @@ function create_if_block$1(ctx) {
       )
     }
   });
+  let if_block = (
+    /*token*/
+    ctx[0].stream.cliffTime &gt; /*token*/
+    ctx[0].stream.startTime &amp;&amp; create_if_block_1(ctx)
+  );
   return {
     c() {
       div0 = element("div");
@@ -18984,41 +18996,44 @@ function create_if_block$1(ctx) {
       p1 = element("p");
       t22 = text(t22_value);
       t23 = space();
+      if (if_block)
+        if_block.c();
+      t24 = space();
       div26 = element("div");
       div25 = element("div");
       div21 = element("div");
       div21.innerHTML = `&lt;div class="icon-wrapper svelte-19asrba" data-component="icon" data-purpose="heroicon"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15m.002 0h-.002"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;`;
-      t24 = space();
+      t25 = space();
       div24 = element("div");
       div22 = element("div");
       div22.innerHTML = `&lt;label&gt;Cancellability&lt;/label&gt;`;
-      t26 = space();
+      t27 = space();
       div23 = element("div");
       p2 = element("p");
-      t27 = text(t27_value);
-      t28 = text(" be canceled");
-      t29 = space();
+      t28 = text(t28_value);
+      t29 = text(" be canceled");
+      t30 = space();
       div37 = element("div");
       div36 = element("div");
       div28 = element("div");
       div28.innerHTML = `&lt;div class="icon-wrapper svelte-19asrba" data-component="icon" data-purpose="heroicon"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;`;
-      t30 = space();
+      t31 = space();
       div35 = element("div");
       div29 = element("div");
       div29.innerHTML = `&lt;label&gt;Chain&lt;/label&gt;`;
-      t32 = space();
+      t33 = space();
       div34 = element("div");
       div33 = element("div");
       div31 = element("div");
       div31.innerHTML = `&lt;div class="sc-6b5b8381-1 iHjNjb"&gt;&lt;/div&gt;`;
-      t33 = space();
+      t34 = space();
       div32 = element("div");
       p3 = element("p");
-      t34 = text(t34_value);
-      t35 = space();
+      t35 = text(t35_value);
+      t36 = space();
       div40 = element("div");
       a = element("a");
-      t36 = text("View on Sablier");
+      t37 = text("View on Sablier");
       attr(div0, "class", "info-panel");
       attr(div1, "class", "info-panel");
       attr(div2, "class", "score-box");
@@ -19159,36 +19174,39 @@ function create_if_block$1(ctx) {
       append(div16, p1);
       append(p1, t22);
       append(div38, t23);
+      if (if_block)
+        if_block.m(div38, null);
+      append(div38, t24);
       append(div38, div26);
       append(div26, div25);
       append(div25, div21);
-      append(div25, t24);
+      append(div25, t25);
       append(div25, div24);
       append(div24, div22);
-      append(div24, t26);
+      append(div24, t27);
       append(div24, div23);
       append(div23, p2);
-      append(p2, t27);
       append(p2, t28);
-      append(div38, t29);
+      append(p2, t29);
+      append(div38, t30);
       append(div38, div37);
       append(div37, div36);
       append(div36, div28);
-      append(div36, t30);
+      append(div36, t31);
       append(div36, div35);
       append(div35, div29);
-      append(div35, t32);
+      append(div35, t33);
       append(div35, div34);
       append(div34, div33);
       append(div33, div31);
-      append(div33, t33);
+      append(div33, t34);
       append(div33, div32);
       append(div32, p3);
-      append(p3, t34);
-      insert(target, t35, anchor);
+      append(p3, t35);
+      insert(target, t36, anchor);
       insert(target, div40, anchor);
       append(div40, a);
-      append(a, t36);
+      append(a, t37);
       current = true;
     },
     p(ctx2, dirty) {
@@ -19276,16 +19294,32 @@ function create_if_block$1(ctx) {
         ctx2[0].stream.endTime
       ) + ""))
         set_data(t22, t22_value);
+      if (
+        /*token*/
+        ctx2[0].stream.cliffTime &gt; /*token*/
+        ctx2[0].stream.startTime
+      ) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+        } else {
+          if_block = create_if_block_1(ctx2);
+          if_block.c();
+          if_block.m(div38, t24);
+        }
+      } else if (if_block) {
+        if_block.d(1);
+        if_block = null;
+      }
       if ((!current || dirty &amp; /*token*/
-      1) &amp;&amp; t27_value !== (t27_value = /*token*/
+      1) &amp;&amp; t28_value !== (t28_value = /*token*/
       ctx2[0].stream.isCancelable ? "Can" : "Cannot"))
-        set_data(t27, t27_value);
+        set_data(t28, t28_value);
       if ((!current || dirty &amp; /*token*/
-      1) &amp;&amp; t34_value !== (t34_value = getChainDetails(
+      1) &amp;&amp; t35_value !== (t35_value = getChainDetails(
         /*token*/
         ctx2[0].chainId
       ).displayName + ""))
-        set_data(t34, t34_value);
+        set_data(t35, t35_value);
       if (!current || dirty &amp; /*token*/
       1 &amp;&amp; a_href_value !== (a_href_value = `https://app.sablier.com/stream/LL2-${/*token*/
       ctx2[0].chainId}-${/*token*/
@@ -19314,11 +19348,81 @@ function create_if_block$1(ctx) {
         detach(div5);
         detach(t13);
         detach(div39);
-        detach(t35);
+        detach(t36);
         detach(div40);
       }
       destroy_component(assetdetails);
       destroy_component(streamprogress);
+      if (if_block)
+        if_block.d();
+    }
+  };
+}
+function create_if_block_1(ctx) {
+  let div6;
+  let div5;
+  let div1;
+  let t0;
+  let div4;
+  let div2;
+  let t2;
+  let div3;
+  let p;
+  let t3_value = formatTime(
+    /*token*/
+    ctx[0].stream.cliffTime
+  ) + "";
+  let t3;
+  return {
+    c() {
+      div6 = element("div");
+      div5 = element("div");
+      div1 = element("div");
+      div1.innerHTML = `&lt;div class="icon-wrapper svelte-19asrba" data-component="icon" data-purpose="heroicon"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;`;
+      t0 = space();
+      div4 = element("div");
+      div2 = element("div");
+      div2.innerHTML = `&lt;label&gt;Cliff time&lt;/label&gt;`;
+      t2 = space();
+      div3 = element("div");
+      p = element("p");
+      t3 = text(t3_value);
+      attr(div1, "data-component", "frame");
+      attr(div1, "class", "icon-box svelte-19asrba");
+      attr(div2, "class", "label svelte-19asrba");
+      attr(div2, "data-component", "label");
+      attr(div2, "data-icon-last", "true");
+      attr(div3, "data-component", "value");
+      attr(div3, "class", "value svelte-19asrba");
+      attr(div4, "data-component", "content");
+      attr(div4, "class", "details-box svelte-19asrba");
+      attr(div5, "class", "grid-item svelte-19asrba");
+      attr(div6, "class", "grid-column svelte-19asrba");
+    },
+    m(target, anchor) {
+      insert(target, div6, anchor);
+      append(div6, div5);
+      append(div5, div1);
+      append(div5, t0);
+      append(div5, div4);
+      append(div4, div2);
+      append(div4, t2);
+      append(div4, div3);
+      append(div3, p);
+      append(p, t3);
+    },
+    p(ctx2, dirty) {
+      if (dirty &amp; /*token*/
+      1 &amp;&amp; t3_value !== (t3_value = formatTime(
+        /*token*/
+        ctx2[0].stream.cliffTime
+      ) + ""))
+        set_data(t3, t3_value);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div6);
+      }
     }
   };
 }
@@ -20128,7 +20232,7 @@ p.light {
 			</ts:view>
 		</ts:card>
 
-		<ts:card name="Withdraw" type="action">
+		<ts:card exclude="nothingToWithdraw" name="Withdraw" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Withdraw</ts:string>
 			</ts:label>
@@ -20186,8 +20290,12 @@ p.light {
 			<ts:string xml:lang="en">Withdrawable Amount</ts:string>
 		</ts:label>
 		<ts:origins>
-			<ts:user-entry as="uint"/>
+			<ethereum:call as="uint" contract="Sablier" function="withdrawableAmountOf">
+				<ts:data>
+					<ts:uint256 ref="tokenId"/>
+				</ts:data>
+			</ethereum:call>
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>/NdMjE0DOZohAbvDoEWyG7qzdNXzAKjxTbbjrFXLFqI=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>vmzNGhNvMwgiByEOQaDgCoNa6k26opV5+WSuuN9VkfJs9lsuQciJQe8w9sMsSZBCvexIR+BcNw9g1QmAWSmPCw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>IjBgvE/HWhimITFhbB8JmXkVdWmsMsBnBigyiAujVew=</ecdsa:X><ecdsa:Y>sTU7GyY1G1JIpeQkmSHDxJhfwHxdhp0vZOxvUsyBRV8=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>gjLzqBJZRNXvvnISUtJCzJl7TRA4k3q0D7+yPBBvbRA=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>r3tIBFcg2B3C7N27aJZklNcS2MMsVRMqWBQ9AR8EUrPtb8HHFSIjsi6utxWp0mfpaJBNb3DFtTHuP4eLw3Ilaw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>IjBgvE/HWhimITFhbB8JmXkVdWmsMsBnBigyiAujVew=</ecdsa:X><ecdsa:Y>sTU7GyY1G1JIpeQkmSHDxJhfwHxdhp0vZOxvUsyBRV8=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
