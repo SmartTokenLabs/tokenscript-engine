@@ -3,7 +3,7 @@ import {ITokenScriptSDK} from "../types";
 
 export class PostMessageAdapter implements IEngineAdapter {
 
-	constructor(private sdk: ITokenScriptSDK, private origin: string) {
+	constructor(private sdk: ITokenScriptSDK) {
 
 		window.addEventListener("message", this.handleMessageResponse);
 
@@ -28,7 +28,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 	private handleMessageResponse(event: MessageEvent){
 
-		if (event.origin !== this.origin)
+		if (event.origin !== this.sdk.instanceData.engineOrigin)
 			return;
 
 		const params = event.data?.params;
@@ -67,7 +67,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 	private postMessageToEngine(method, params){
 		window.parent.postMessage({method, params}, {
-			targetOrigin: this.origin
+			targetOrigin: this.sdk.instanceData.engineOrigin
 		});
 	}
 

@@ -15,7 +15,8 @@ export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
 	CLOSE = "close",
-	ETH_RPC = "ethRpc"
+	ETH_RPC = "ethRpc",
+	LOCAL_STORAGE = "localStorage"
 }
 
 /**

@@ -1,9 +1,9 @@
 import {ethers} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
-
 import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
 import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
+import {LocalStorageAdapter} from "./storage/localStorageAdapter";
 
 export interface IInstanceData {
     currentTokenInstance: ITokenContextData,
@@ -12,13 +12,26 @@ export interface IInstanceData {
 
 class Web3LegacySDK implements IWeb3LegacySDK {
 
+    public readonly engineAdapter: IEngineAdapter;
+
+    private readonly localStorageAdapter: LocalStorageAdapter;
+
+    private _instanceData: IInstanceData;
+
     private web3CallBacks = {};
 
-    private engineAdapter: IEngineAdapter;
+    public get instanceData () {
+        return this._instanceData;
+    }
 
-    setInstanceData(instanceData: IInstanceData) {
-        this.tokens.data.currentInstance = instanceData.currentTokenInstance;
-        this.engineAdapter = new PostMessageAdapter(this, instanceData.engineOrigin);
+    constructor() {
+        this.localStorageAdapter = new LocalStorageAdapter(this);
+        this.engineAdapter = new PostMessageAdapter(this);
+    }
+
+    public setInstanceData(instanceData: IInstanceData) {
+        this._instanceData = instanceData
+        this.tokens.data.currentInstance = this.instanceData.currentTokenInstance;
     }
 
     public executeCallback (id: number, error: string, value: any) {
