@@ -62,18 +62,20 @@ export class TokenViewData {
 
 		return `
 
-		const _currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
+		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
 
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
 		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
 		const chainID = "${tokenData.chainId}";
+		const engineOrigin = "${document.location.origin}";
 
 		// Injected card SDK
 		${CARD_SDK_V1}
 
-		window.tokenscript.setInstanceData(_currentTokenInstance);
+		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin});
 
+		// TODO: Move to SDK
 		// Extra initialisation
 		function refresh() {
 		   web3.tokens.dataChanged('test', web3.tokens.data, '${this.getViewDataId()}') //TODO: Cache previous value of token to feed into first arg

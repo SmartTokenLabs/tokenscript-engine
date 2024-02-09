@@ -1,15 +1,24 @@
-
 import {ethers} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 
 import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
+import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
+import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
+
+export interface IInstanceData {
+    currentTokenInstance: ITokenContextData,
+    engineOrigin: string
+}
 
 class Web3LegacySDK implements IWeb3LegacySDK {
 
-    private web3CallBacks = {}
+    private web3CallBacks = {};
 
-    setInstanceData(_currentTokenInstance?: ITokenContextData) {
-        this.tokens.data.currentInstance = _currentTokenInstance;
+    private engineAdapter: IEngineAdapter;
+
+    setInstanceData(instanceData: IInstanceData) {
+        this.tokens.data.currentInstance = instanceData.currentTokenInstance;
+        this.engineAdapter = new PostMessageAdapter(this, instanceData.engineOrigin);
     }
 
     public executeCallback (id: number, error: string, value: any) {
@@ -23,8 +32,11 @@ class Web3LegacySDK implements IWeb3LegacySDK {
             const { data } = msgParams;
             const { id = 8888 } = msgParams;
             this.web3CallBacks[id] = cb;
+
+            this.engineAdapter.request(RequestFromView.SIGN_PERSONAL_MESSAGE, msgParams);
+
             // @ts-ignore
-            alpha.signPersonalMessage(id, data);
+            //alpha.signPersonalMessage(id, data);
         }
     };
 
@@ -39,9 +51,10 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
     public readonly action = {
         setProps: function (msgParams) {
+            this.engineAdapter.request(RequestFromView.PUT_USER_INPUT, msgParams);
             // @ts-ignore
-            alpha.setValues(JSON.stringify(msgParams));
-        }
+            // alpha.setValues(JSON.stringify(msgParams));
+        }.bind(this)
     }
 }
 
