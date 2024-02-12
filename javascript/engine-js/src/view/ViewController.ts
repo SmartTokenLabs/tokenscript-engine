@@ -2,6 +2,8 @@ import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
 import {ITransactionListener, ITransactionStatus, TokenScript} from "../TokenScript";
 import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
+import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
+import {TokenViewData} from "./TokenViewData";
 
 export enum ViewEvent {
 	TOKENS_UPDATED = "tokensUpdated",
@@ -28,10 +30,12 @@ export enum RequestFromView {
 export class ViewController {
 
 	private currentCard?: Card;
+	private _tokenViewData?: TokenViewData;
 	private userEntryValues: {[scopeId: string]: {[key: string]: any}} = {};
+	private localStorageProxy: LocalStorageProxy;
 
 	constructor(public readonly tokenScript: TokenScript, private viewAdapter: IViewBinding) {
-
+		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
 	}
 
 	/**
@@ -48,10 +52,15 @@ export class ViewController {
 
 		//this.userEntryValues = {};
 		this.currentCard = card;
+		this._tokenViewData = new TokenViewData(this.tokenScript, this.currentCard);
 
 		this.viewAdapter.viewLoading();
 
 		await this.viewAdapter.showTokenView(this.currentCard);
+	}
+
+	public get tokenViewData () {
+		return this._tokenViewData;
 	}
 
 	async executeTransaction(card: Card, transactionListener?: ITransactionListener){
@@ -192,6 +201,10 @@ export class ViewController {
 				this.unloadTokenCard()
 				break;
 
+			case RequestFromView.LOCAL_STORAGE:
+				this.localStorageProxy.handleLocalStorageRequest(params as LocalStorageRequest);
+				break;
+
 			default:
 				throw new Error("TokenScript view API method: " + method + " is not implemented.");
 		}
@@ -256,6 +269,6 @@ export class ViewController {
 	async updateCardData(){
 		this.viewAdapter.viewLoading();
 
-		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.currentCard.tokenViewData.getCurrentTokenData(true), this.currentCard.tokenViewData.getViewDataId());
+		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), this.tokenViewData.getViewDataId());
 	}
 }

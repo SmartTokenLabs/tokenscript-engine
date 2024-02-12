@@ -3,7 +3,7 @@ import Dexie from "dexie";
 import {TokenScriptSource} from "../components/app/app";
 import {IAttestationData} from "@tokenscript/engine-js/src/attestation/IAttestationStorageAdapter";
 
-interface TSTokenCacheTokens {
+export interface TSTokenCacheTokens {
 	chainId: number,
 	collectionId: string,
 	ownerAddress: string,
@@ -11,7 +11,7 @@ interface TSTokenCacheTokens {
 	dt: number
 }
 
-interface TSTokenCacheMeta {
+export interface TSTokenCacheMeta {
 	chainId: number,
 	collectionId: string,
 	data: any,
@@ -26,21 +26,29 @@ export interface TokenScriptsMeta {
 	xml?: string,
 }
 
+export interface TokenScriptLocalStorage {
+	tokenScriptId: string,
+	key: string,
+	value: string,
+}
+
 class TSViewerDb extends Dexie {
 
 	tokens!: Dexie.Table<TSTokenCacheTokens, string>;
 	tokenMeta!: Dexie.Table<TSTokenCacheMeta, string>;
 	myTokenScripts!: Dexie.Table<TokenScriptsMeta, string>;
 	attestations!: Dexie.Table<IAttestationData, string>;
+	tsLocalStorage!: Dexie.Table<TokenScriptLocalStorage, string>;
 
 	constructor() {
 		super("TSViewer");
 
-		this.version(4).stores({
+		this.version(5).stores({
 			tokens: `&[chainId+collectionId+ownerAddress], dt`,
 			tokenMeta: `&[chainId+collectionId], dt`,
 			myTokenScripts: `&tokenScriptId`,
-			attestations: `&[collectionId+tokenId]`
+			attestations: `&[collectionId+tokenId]`,
+			tsLocalStorage: `&[tokenScriptId+key], tokenScriptId`
 		});
 	}
 

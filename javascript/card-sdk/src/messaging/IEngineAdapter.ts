@@ -16,7 +16,7 @@ export enum RequestFromView {
 }
 
 export interface IEngineAdapter {
-	//constructor(sdk: ITokenScriptSDK, origin: string): IEngineAdapter;
+	// TODO: Overload for each RequestFromView to provide params type
 	request(method: RequestFromView, params: any): void;
 }
 

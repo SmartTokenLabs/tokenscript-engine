@@ -1,19 +1,13 @@
 import {ITokenIdContext, ITransactionListener, TokenScript} from "../TokenScript";
-import {TokenViewData} from "../view/TokenViewData";
 import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
-import {ViewEvent} from "../view/ViewController";
 import {Label} from "./Label";
-import {RpcRequest} from "../wallet/IWalletAdapter";
 
 export class Card {
 
 	private _label?: Label;
 	private transaction?: Transaction;
 	private attributes?: Attributes;
-	//private selections?: Selections;
-
-	public tokenViewData = new TokenViewData(this.tokenScript, this);
 
 	constructor(
 		private tokenScript: TokenScript,
@@ -101,95 +95,6 @@ export class Card {
 	 */
 	get url(){
 		return this.view.getAttribute("url");
-	}
-
-	/**
-	 * Returns the full view content to be loaded into the webview or iframe.
-	 * This function prepends in-built engine scripts, as well as parsing and processing
-	 * the view content to inject common viewContent data and ensure correct formatting.
-	 */
-	public async renderViewHtml(){
-
-		let body = "";
-
-		body += '<div id="' + this.tokenViewData.getViewDataId() + '" class="token-card"></div>' +
-				'<script type="text/javascript">' + await this.tokenViewData.getTokenJavascript() + '</script>';
-
-		const viewChildren = this.view.children;
-
-		for (let x=0; x<viewChildren.length; x++){
-
-			const part = viewChildren[x];
-
-			if (part.nodeName == "#text")
-				continue;
-
-			if (part.nodeName === "ts:viewContent"){
-
-				const name = part.getAttribute("name");
-
-				const commonElems = this.tokenScript.getViewContent(name);
-
-				if (!commonElems){
-					console.error("Could not find viewContent element with " + name);
-					continue;
-				}
-
-				for (let i=0; i<commonElems.length; i++) {
-					body = this.processTags(commonElems[i], body);
-				}
-
-				continue;
-			}
-
-			body = this.processTags(part, body);
-		}
-
-		return `
-			<!DOCTYPE html>
-				<html lang="en">
-				<head>
-					<title>TokenScript</title>
-					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-				</head>
-				<body>
-					${body}
-				</body>
-			</html>
-		`;
-	}
-
-	/**
-	 * Process tags to ensure the correct HTML formatting for styles & scripts, reverting entity escaping where necessary.
-	 * @param part
-	 * @param body
-	 * @private
-	 */
-	private processTags(part: Element, body: string){
-
-		if (part.localName == "script"){
-
-			let scriptContent;
-
-			if (part.innerHTML.indexOf("<![CDATA[") === -1) {
-				// If the view content is not within a CData tag, then we need to decode HTML entities.
-				const textElem = document.createElement("textarea");
-				textElem.innerHTML = part.innerHTML;
-				scriptContent = textElem.value;
-			} else {
-				scriptContent = part.innerHTML;
-			}
-
-			body += '<script ' + (part.getAttribute("type") === "module" ? 'type="module" crossorigin=""' : 'text/javascript') + '>' + scriptContent + '</script>';
-
-		} else if (part.localName === "style") {
-			body += '<style>' + part.innerHTML + '</style>';
-		} else {
-			if (part.outerHTML)
-				body += part.outerHTML;
-		}
-
-		return body;
 	}
 
 	/**

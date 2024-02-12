@@ -118,7 +118,7 @@ export class CardPopover implements IViewBinding {
 		await this.dialog.openDialog(() => this.unloadTokenView());
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
 	}
 
 	async unloadTokenView() {

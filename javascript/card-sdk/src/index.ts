@@ -7,7 +7,8 @@ import {LocalStorageAdapter} from "./storage/localStorageAdapter";
 
 export interface IInstanceData {
     currentTokenInstance: ITokenContextData,
-    engineOrigin: string
+    engineOrigin: string,
+    localStorageData: {[key: string]: string}
 }
 
 class Web3LegacySDK implements IWeb3LegacySDK {

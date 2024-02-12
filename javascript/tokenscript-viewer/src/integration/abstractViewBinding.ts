@@ -61,7 +61,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.viewController);
 
 		this.setupConfirmButton(card);
 	}
@@ -83,7 +83,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.loader.style.display = "none";
 	}
 
-	static async injectContentView(iframe: HTMLIFrameElement, card: Card) {
+	static async injectContentView(iframe: HTMLIFrameElement, card: Card, viewController: ViewController) {
 
 		if (!card.view) {
 			iframe.src = "";
@@ -96,7 +96,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			iframe.contentWindow.location.replace(card.url);
 
 		} else {
-			const html = await card.renderViewHtml();
+			const html = await viewController.tokenViewData.renderViewHtml();
 
 			const blob = new Blob([html], {type: "text/html"});
 
