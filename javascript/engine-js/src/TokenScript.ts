@@ -422,8 +422,29 @@ export class TokenScript {
 
 			this.tokenMetadata = {};
 
-			for (let token of tokenMeta){
-				this.tokenMetadata[token.originId] = token;
+			const tsMeta = this.getMetadata();
+
+			for (let collection of tokenMeta){
+
+				if (this.meta) {
+
+					if (!collection.image && tsMeta.iconUrl && tsMeta.iconUrl.trim())
+						collection.image = tsMeta.iconUrl;
+
+					if (!collection.description && tsMeta.description && tsMeta.description.trim())
+						collection.description = tsMeta.description;
+
+					if (collection.tokenDetails)
+						for (let token of collection.tokenDetails) {
+							if (!token.image && tsMeta.iconUrl && tsMeta.iconUrl.trim())
+								token.image = tsMeta.iconUrl;
+
+							if (!token.description && tsMeta.description && tsMeta.description.trim())
+								token.description = tsMeta.description;
+						}
+				}
+
+				this.tokenMetadata[collection.originId] = collection;
 			}
 
 			for (const definition of this.getAttestationDefinitions()){
