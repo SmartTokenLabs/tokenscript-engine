@@ -5,7 +5,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 	constructor(private sdk: ITokenScriptSDK) {
 
-		window.addEventListener("message", this.handleMessageResponse);
+		window.addEventListener("message", this.handleMessageResponse.bind(this));
 
 		// TODO: Move into SDK - this class should only me for messaging, not logic
 		const closing = window.close;

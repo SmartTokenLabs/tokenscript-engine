@@ -35,6 +35,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         this.tokens.data.currentInstance = this.instanceData.currentTokenInstance;
     }
 
+    // TODO: Move to postMessage adapter
     public executeCallback (id: number, error: string, value: any) {
         console.debug('Execute callback: ' + id + ' ' + value)
         this.web3CallBacks[id](error, value)
@@ -42,10 +43,12 @@ class Web3LegacySDK implements IWeb3LegacySDK {
     }
 
     public readonly personal = {
-        sign: (msgParams: {data: string, id: number}, cb: (error, data) => void) => {
-            const { data } = msgParams;
-            const { id = 8888 } = msgParams;
-            this.web3CallBacks[id] = cb;
+        sign: (msgParams: {data: string, id?: number}, cb: (error, data) => void) => {
+
+            if (!msgParams.id)
+                msgParams.id = Date.now();
+
+            this.web3CallBacks[msgParams.id] = cb;
 
             this.engineAdapter.request(RequestFromView.SIGN_PERSONAL_MESSAGE, msgParams);
 
