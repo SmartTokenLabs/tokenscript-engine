@@ -15,7 +15,7 @@ export interface IEngineConfig {
 }
 
 const DEFAULT_CONFIG: IEngineConfig = {
-	ipfsGateway: "https://ipfs.io/ipfs/",
+	ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
 	noLocalStorage: false,
 	trustedKeys: []
 };
