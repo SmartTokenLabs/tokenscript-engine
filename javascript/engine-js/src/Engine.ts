@@ -7,6 +7,7 @@ import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
 import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
 import {TrustedKey} from "./security/TrustedKeyResolver";
+import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
@@ -40,6 +41,7 @@ export class TokenScriptEngine {
 		public getWalletAdapter: () => Promise<IWalletAdapter>,
 		public getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>,
 		public getAttestationStorageAdapter?: () => IAttestationStorageAdapter,
+		public getLocalStorageAdapter?: () => ILocalStorageAdapter,
 		public readonly config?: IEngineConfig
 	) {
 		if (this.config){

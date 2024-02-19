@@ -1,7 +1,7 @@
 import {IViewBinding} from "../../../engine-js/src/view/IViewBinding";
 import {Card} from "../../../engine-js/src/tokenScript/Card";
 import {TokenScript} from "../../../engine-js/src/TokenScript";
-import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {RequestFromView, ViewController, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
 import {RpcResponse} from "../../../engine-js/src/wallet/IWalletAdapter";
 
 export abstract class AbstractViewBinding implements IViewBinding {
@@ -14,6 +14,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	loader: HTMLDivElement;
 
 	protected tokenScript: TokenScript
+	protected viewController: ViewController;
 
 	constructor(protected view: HTMLElement) {
 
@@ -30,8 +31,21 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		}
 	}
 
+	// TODO: This can probably be accessed via view controller
 	setTokenScript(tokenScript: TokenScript) {
 		this.tokenScript = tokenScript;
+	}
+
+	setViewController(viewController: ViewController){
+		this.viewController = viewController;
+		this.tokenScript = viewController.tokenScript;
+	}
+
+	getViewController(){
+		if (!this.viewController)
+			return this.tokenScript.getViewController();
+
+		return this.viewController;
 	}
 
 	viewLoading() {
@@ -47,7 +61,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.viewController);
 
 		this.setupConfirmButton(card);
 	}
@@ -69,7 +83,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.loader.style.display = "none";
 	}
 
-	static async injectContentView(iframe: HTMLIFrameElement, card: Card) {
+	static async injectContentView(iframe: HTMLIFrameElement, card: Card, viewController: ViewController) {
 
 		if (!card.view) {
 			iframe.src = "";
@@ -82,7 +96,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			iframe.contentWindow.location.replace(card.url);
 
 		} else {
-			const html = await card.renderViewHtml();
+			const html = await viewController.tokenViewData.renderViewHtml();
 
 			const blob = new Blob([html], {type: "text/html"});
 
@@ -141,31 +155,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-
-		console.log("Request from view: ", method, params);
-
-		switch (method) {
-
-			case RequestFromView.ETH_RPC:
-				this.currentCard.rpcProxy(params);
-				break;
-
-			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				console.log("Event from view: Sign personal message");
-				this.currentCard.signPersonalMessage(params.id, params.data);
-				break;
-
-			case RequestFromView.PUT_USER_INPUT:
-				await this.tokenScript.getViewController().setUserEntryValues(params);
-				break;
-
-			case RequestFromView.CLOSE:
-				this.unloadTokenView()
-				break;
-
-			default:
-				throw new Error("TokenScript view API method: " + method + " is not implemented.");
-		}
+		await this.getViewController().handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
@@ -194,77 +184,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 }
 
+// Note: This formerly had post message logic for the card to interact with the engine
+// It has since been moved into the card SDK: javascript/card-sdk/src/messaging/PostMessageAdapter.ts
 export const VIEW_BINDING_JAVASCRIPT = `
-	window.addEventListener("message", (event) => {
 
-		if (event.origin !== "${document.location.origin}")
-			return;
-
-		const params = event.data?.params;
-
-		switch (event.data?.method){
-			case "tokensUpdated":
-				window.web3.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
-				break;
-
-			case "onConfirm":
-				window.onConfirm();
-				break;
-
-			case "executeCallback":
-				window.executeCallback(params.id, params.error, params.result);
-				break;
-
-			case "getUserInput":
-				sendUserInputValues();
-		}
-	});
-
-	function sendUserInputValues(){
-
-		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id);
-
-		if (!inputs.length)
-			return;
-
-		const values = Object.fromEntries(inputs.map((elem) => {
-			return [elem.id, elem.value];
-		}));
-
-		postMessageToEngine("putUserInput", values);
-	}
-
-	function postMessageToEngine(method, params){
-		window.parent.postMessage({method, params}, {
-			targetOrigin: "${document.location.origin}"
-		});
-	}
-
-	window.alpha = {
-		signPersonalMessage: (id, data) => {
-			postMessageToEngine("signPersonalMessage", {id, data});
-		}
-	};
-
-	window.web3.action.setProps = (params) => {
-		postMessageToEngine("putUserInput", params);
-	};
-
-	function listenForUserValueChanges(){
-		window.addEventListener('change', (evt) => {
-			if (!evt.target.id) return;
-			sendUserInputValues();
-		});
-	}
-
-	listenForUserValueChanges();
-	/*document.addEventListener("DOMContentLoaded", function() {
-		sendUserInputValues();
-	});*/
-
-	const closing = window.close;
-	window.close = function () {
-		postMessageToEngine("close", undefined);
-		closing();
-	};
 `;

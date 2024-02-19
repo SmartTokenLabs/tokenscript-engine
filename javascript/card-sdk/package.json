@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/card-sdk",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Provides common code and types for interacting from the TokenScript engine from a card view",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",

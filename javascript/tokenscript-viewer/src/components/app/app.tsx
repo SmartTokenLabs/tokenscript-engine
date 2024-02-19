@@ -14,6 +14,7 @@ import {ethers} from "ethers";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {dbProvider} from "../../providers/databaseProvider";
 import {showToastNotification} from "../viewers/util/showToast";
+import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -70,6 +71,7 @@ export class AppRoot {
 
 	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter()
 	attestationStorageAdapter = new AttestationStorageAdapter();
+	tsLocalStorageAdapter = new LocalStorageAdapter();
 
 	private iframeProvider: ethers.providers.Web3Provider;
 
@@ -86,6 +88,7 @@ export class AppRoot {
 			async () => this.getWalletAdapter(),
 			async () => this.discoveryAdapter,
 			() => this.attestationStorageAdapter,
+			() => this.tsLocalStorageAdapter,
 			{
 				noLocalStorage: this.viewerType === "opensea",
 				trustedKeys: [

@@ -235,6 +235,7 @@ export class TokenScript {
 	 * Show a card in the UI
 	 * @param card The card object to display
 	 * @param transactionListener For transaction-only cards, supply a listener to get transaction status
+	 * @deprecated In-favor of accessing view controller method directly
 	 */
 	public async showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener){
 		await this.getViewController().showOrExecuteCard(card, transactionListener);

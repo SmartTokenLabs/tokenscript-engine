@@ -76,30 +76,7 @@ export class CardPopover implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-
-		console.log("Request from view: ", method, params);
-
-		switch (method) {
-
-			case RequestFromView.ETH_RPC:
-				this.currentCard.rpcProxy(params);
-				break;
-
-			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				this.currentCard.signPersonalMessage(params.id, params.data);
-				break;
-
-			case RequestFromView.PUT_USER_INPUT:
-				await this.tokenScript.getViewController().setUserEntryValues(params);
-				break;
-
-			case RequestFromView.CLOSE:
-				this.unloadTokenView()
-				break;
-
-			default:
-				throw new Error("TokenScript view API method: " + method + " is not implemented.");
-		}
+		await this.tokenScript.getViewController().handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
@@ -121,6 +98,7 @@ export class CardPopover implements IViewBinding {
 			case ViewEvent.EXECUTE_CALLBACK:
 			case ViewEvent.GET_USER_INPUT:
 			case ViewEvent.ON_CONFIRM:
+			case ViewEvent.TRANSACTION_EVENT:
 				this.postMessageToView(event, {...data, id});
 				return;
 		}
@@ -140,7 +118,7 @@ export class CardPopover implements IViewBinding {
 		await this.dialog.openDialog(() => this.unloadTokenView());
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
 	}
 
 	async unloadTokenView() {
@@ -160,29 +138,16 @@ export class CardPopover implements IViewBinding {
 		this.loading = true;
 	}
 
-	// TODO: move this logic into engine
 	async confirmAction(){
-
-		const transaction = this.currentCard.getTransaction();
 
 		this.loading = true;
 
-		if (transaction){
-
-			console.log(transaction.getTransactionInfo());
-
-			try {
-				await this.currentCard.executeTransaction((data: ITransactionStatus) => {
-					this.postMessageToView(ViewEvent.TRANSACTION_EVENT, data);
-					showTransactionNotification(data, this.showToast);
-				});
-			} catch (e){
-				this.postMessageToView(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message});
-				handleTransactionError(e, this.showToast);
-			}
-
-		} else {
-			this.postMessageToView(ViewEvent.ON_CONFIRM, {});
+		try {
+			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+				showTransactionNotification(data, this.showToast);
+			});
+		} catch (e){
+			handleTransactionError(e, this.showToast);
 		}
 
 		this.loading = false

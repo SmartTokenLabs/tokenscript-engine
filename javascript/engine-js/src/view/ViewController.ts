@@ -1,7 +1,9 @@
 import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
-import {ITransactionListener, TokenScript} from "../TokenScript";
-import {RpcResponse} from "../wallet/IWalletAdapter";
+import {ITransactionListener, ITransactionStatus, TokenScript} from "../TokenScript";
+import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
+import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
+import {TokenViewData} from "./TokenViewData";
 
 export enum ViewEvent {
 	TOKENS_UPDATED = "tokensUpdated",
@@ -15,7 +17,8 @@ export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
 	CLOSE = "close",
-	ETH_RPC = "ethRpc"
+	ETH_RPC = "ethRpc",
+	LOCAL_STORAGE = "localStorage"
 }
 
 /**
@@ -27,10 +30,12 @@ export enum RequestFromView {
 export class ViewController {
 
 	private currentCard?: Card;
+	private _tokenViewData?: TokenViewData;
 	private userEntryValues: {[scopeId: string]: {[key: string]: any}} = {};
+	private localStorageProxy: LocalStorageProxy;
 
-	constructor(private tokenScript: TokenScript, private viewAdapter: IViewBinding) {
-
+	constructor(public readonly tokenScript: TokenScript, private viewAdapter: IViewBinding) {
+		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
 	}
 
 	/**
@@ -47,10 +52,39 @@ export class ViewController {
 
 		//this.userEntryValues = {};
 		this.currentCard = card;
+		this._tokenViewData = new TokenViewData(this.tokenScript, this.currentCard);
 
 		this.viewAdapter.viewLoading();
 
 		await this.viewAdapter.showTokenView(this.currentCard);
+	}
+
+	public get tokenViewData () {
+		return this._tokenViewData;
+	}
+
+	async executeTransaction(card: Card, transactionListener?: ITransactionListener){
+
+		const transaction = this.currentCard.getTransaction();
+
+		if (transaction){
+
+			console.log(transaction.getTransactionInfo());
+
+			try {
+				await this.currentCard.executeTransaction((data: ITransactionStatus) => {
+					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, "0");
+					if (transactionListener)
+						transactionListener(data);
+				});
+			} catch (e){
+				this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message}, "0");
+				throw e;
+			}
+
+		} else {
+			this.dispatchViewEvent(ViewEvent.ON_CONFIRM, {}, "0");
+		}
 	}
 
 	/**
@@ -145,6 +179,72 @@ export class ViewController {
 		return null;
 	}
 
+	async handleMessageFromView(method: RequestFromView, params: any){
+
+		console.log("Request from view: ", method, params);
+
+		switch (method) {
+
+			case RequestFromView.ETH_RPC:
+				this.rpcProxy(params);
+				break;
+
+			case RequestFromView.SIGN_PERSONAL_MESSAGE:
+				this.signPersonalMessage(params.id, params.data);
+				break;
+
+			case RequestFromView.PUT_USER_INPUT:
+				await this.setUserEntryValues(params);
+				break;
+
+			case RequestFromView.CLOSE:
+				this.unloadTokenCard()
+				break;
+
+			case RequestFromView.LOCAL_STORAGE:
+				this.localStorageProxy.handleLocalStorageRequest(params as LocalStorageRequest);
+				break;
+
+			default:
+				throw new Error("TokenScript view API method: " + method + " is not implemented.");
+		}
+	}
+
+	/**
+	 * Signs a personal message with the provided data and returns the result to the token view.
+	 * @param id
+	 * @param data
+	 */
+	private async signPersonalMessage(id, data){
+
+		try {
+			let res = await this.tokenScript.getEngine().signPersonalMessage(data);
+
+			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: null, result: res}, id);
+
+		} catch (e){
+			console.error(e);
+			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: e.message, result: null}, id);
+		}
+	}
+
+	/**
+	 *
+	 * @param request
+	 */
+	private async rpcProxy(request: RpcRequest){
+
+		try {
+			let res = await (await this.tokenScript.getEngine().getWalletAdapter()).rpcProxy(request);
+
+			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, result: res});
+
+		} catch (e){
+			console.error(e);
+			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, error: e.valueOf()});
+		}
+	}
+
 	/**
 	 * Dispatch an event to the token card Javascript
 	 * @param event
@@ -169,6 +269,6 @@ export class ViewController {
 	async updateCardData(){
 		this.viewAdapter.viewLoading();
 
-		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.currentCard.tokenViewData.getCurrentTokenData(true), this.currentCard.tokenViewData.getViewDataId());
+		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), this.tokenViewData.getViewDataId());
 	}
 }
