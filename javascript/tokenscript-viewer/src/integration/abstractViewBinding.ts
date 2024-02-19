@@ -69,7 +69,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	async unloadTokenView() {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
-		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
+		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
 		history.replaceState(undefined, undefined, newUrl);
@@ -96,16 +97,19 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			iframe.contentWindow.location.replace(card.url);
 
 		} else {
-			const html = await viewController.tokenViewData.renderViewHtml();
+
+			// Moved to using srcdoc, since blob URLs are restricted in many wallets DApp browser
+			// To support URL fragment, we set document.location.hash in the cards Javascript
+			/*const html = await viewController.tokenViewData.renderViewHtml();
 
 			const blob = new Blob([html], {type: "text/html"});
 
 			const urlFragment = card.urlFragment;
 
 			const url = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
-			iframe.contentWindow.location.replace(url);
+			iframe.contentWindow.location.replace(url);*/
 
-			// TODO: try src-doc method
+			iframe.srcdoc = await viewController.tokenViewData.renderViewHtml();
 		}
 	}
 

@@ -58,7 +58,11 @@ export class SecurityInfo {
 			this.securityInfo.trustedKey = keyResolver.getTrustedPublicKey(this.securityInfo.authoritivePublicKey, this.securityInfo.signerPublicKey);
 		}
 
-		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);
+		try {
+			this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);
+		} catch (e){
+			console.error("Failed to calculate IPFS hash: ", e);
+		}
 
 		await this.verifyOrigins();
 	}

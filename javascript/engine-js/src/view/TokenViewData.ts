@@ -64,6 +64,9 @@ export class TokenViewData {
 				<head>
 					<title>TokenScript</title>
 					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+					<script>
+						document.location.hash = '${(this.card.urlFragment ? "#" + this.card.urlFragment : "")}';
+					</script>
 				</head>
 				<body>
 					${body}
