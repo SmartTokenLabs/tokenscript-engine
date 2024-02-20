@@ -73,7 +73,15 @@ export class Attestation {
 
 	private recoverSignerInfo(){
 
-		const hash = ethers.TypedDataEncoder.hash(this.offChain.getDomainTypedData(), OFFCHAIN_ATTESTATION_TYPES[this.attestation.version][0].types, this.attestation.message);
+		let types;
+
+		if (this.attestation.version > 0){
+			types = OFFCHAIN_ATTESTATION_TYPES[this.attestation.version][0].types;
+		} else {
+			types = OFFCHAIN_ATTESTATION_TYPES[0][1].types;
+		}
+
+		const hash = ethers.TypedDataEncoder.hash(this.offChain.getDomainTypedData(), types, this.attestation.message);
 
 		this.signerPublicKey = ethers.SigningKey.recoverPublicKey(hash, this.attestation.signature);
 		this.signerAddress = ethers.recoverAddress(hash, this.attestation.signature);
