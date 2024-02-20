@@ -74,8 +74,20 @@ export class EthersAdapter implements IWalletAdapter {
 			console.error(e);
 			console.log("Decoded error: ", decodedError);
 			if (decodedError.type != ErrorType.EmptyError && decodedError.type != ErrorType.UnknownError) {
-				const decodedMessage = decodedError.type === ErrorType.UserRejectError && typeof e === "string" ? e :
-					("Contract execution failed: " + (typeof decodedError.reason === "object" ? JSON.stringify(decodedError.reason) : decodedError.reason));
+
+				let decodedMessage;
+
+				if (decodedError.type === ErrorType.UserRejectError && typeof e === "string"){
+					decodedMessage = e;
+				} else {
+					decodedMessage = "Contract execution failed: ";
+					if (decodedError.reason === "could not coalesce error" && e.message){
+						decodedMessage += e.message;
+					} else {
+						decodedMessage += (typeof decodedError.reason === "object" ? JSON.stringify(decodedError.reason) : decodedError.reason);
+					}
+				}
+
 				if (typeof e === "string"){
 					e = new Error(decodedMessage);
 				} else {
@@ -137,10 +149,10 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log(abiData);
 
 		// @ts-ignore
-		const useBrowserProvider = stateMutability !== "view" || (window.ethereum.isMetaMask && (await this.getChain()) === chain);
+		const useBrowserProvider = stateMutability !== "view" /*|| (window.ethereum.isMetaMask && (await this.getChain()) === chain);*/
 
-		if (stateMutability === "view" && useBrowserProvider)
-			console.log("Using wallet RPC for view call!");
+		//if (stateMutability === "view" && useBrowserProvider)
+			//console.log("Using wallet RPC for view call!");
 
 		const provider = useBrowserProvider ?
 							await (await this.getEthersProvider()).getSigner() as ContractRunner :
