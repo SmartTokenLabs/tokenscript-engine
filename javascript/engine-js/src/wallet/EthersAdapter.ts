@@ -164,7 +164,8 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const ethersProvider = await this.getEthersProvider();
 
-		const network = await ethersProvider.getNetwork();
+		// We must use _detectNetwork instead of getNetwork since the latter does not detect change from wallet
+		const network = await ethersProvider._detectNetwork();
 
 		return Number(network.chainId);
 	}
