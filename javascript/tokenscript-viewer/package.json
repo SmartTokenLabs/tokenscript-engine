@@ -28,6 +28,7 @@
     "@peculiar/x509": "^1.9.2",
     "@stencil/core": "4.12.1",
     "@tokenscript/engine-js": "../engine-js/",
+    "@tokenscript/xmldsigjs": "^2.5.1",
     "@toruslabs/torus-embed": "^1.41.2",
     "@walletconnect/ethereum-provider": "^2.10.2",
     "@walletconnect/qrcode-modal": "^1.8.0",
@@ -39,14 +40,14 @@
     "ipfs-only-hash": "^4.0.0",
     "jsdom": "^22.1.0",
     "lodash": "^4.17.21",
-    "pako": "^2.1.0",
-    "typescript-memoize": "^1.1.1",
-    "webcrypto-liner": "^1.4.2",
-    "xmldsigjs": "^2.5.1"
+    "webcrypto-liner": "^1.4.2"
   },
   "overrides": {
     "xml-core": {
       "@xmldom/xmldom": "^0.9.0-beta.6"
+    },
+    "xmldsigjs": {
+      "pkijs": "3.0.11"
     }
   }
 }

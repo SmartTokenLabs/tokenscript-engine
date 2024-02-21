@@ -1,6 +1,6 @@
 import {TokenScript} from "../TokenScript";
-import * as xmldsigjs from "xmldsigjs";
-import {KeyInfoX509Data, KeyValue, X509Certificate} from "xmldsigjs";
+import * as xmldsigjs from "@tokenscript/xmldsigjs";
+import {KeyInfoX509Data, KeyValue, X509Certificate} from "@tokenscript/xmldsigjs";
 import * as x509 from "@peculiar/x509";
 import {uint8tohex} from "../utils";
 import {Crypto, CryptoKey} from "webcrypto-liner/build";
