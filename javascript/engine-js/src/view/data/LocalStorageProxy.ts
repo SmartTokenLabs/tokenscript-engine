@@ -16,7 +16,7 @@ export class LocalStorageProxy {
 
 	public handleLocalStorageRequest(request: LocalStorageRequest){
 
-		if (!this.tokenscript.getEngine().getLocalStorageAdapter){
+		if (this.tokenscript.getEngine().config.noLocalStorage || !this.tokenscript.getEngine().getLocalStorageAdapter){
 			console.warn("LocalStorage adapter not provided, no persistence available");
 			return;
 		}
@@ -37,8 +37,8 @@ export class LocalStorageProxy {
 	}
 
 	public async getLocalStorageDictionary(){
-		if (!this.tokenscript.getEngine().getLocalStorageAdapter){
-			console.warn("LocalStorage adapter not provided, no persistence available");
+		if (this.tokenscript.getEngine().config.noLocalStorage || !this.tokenscript.getEngine().getLocalStorageAdapter){
+			console.warn("LocalStorage disabled or adapter not provided, no persistence available");
 			return {};
 		}
 
