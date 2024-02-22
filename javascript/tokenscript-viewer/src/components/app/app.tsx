@@ -82,7 +82,8 @@ export class AppRoot {
 
 	constructor() {
 
-		dbProvider.checkCompatibility();
+		if (this.viewerType !== "opensea")
+			dbProvider.checkCompatibility();
 
 		this.tsEngine = new TokenScriptEngine(
 			async () => this.getWalletAdapter(),
