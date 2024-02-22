@@ -14,7 +14,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	loader: HTMLDivElement;
 
 	protected tokenScript: TokenScript
-	protected viewController: ViewController;
+	protected _viewController: ViewController;
 
 	constructor(protected view: HTMLElement) {
 
@@ -37,15 +37,15 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 
 	setViewController(viewController: ViewController){
-		this.viewController = viewController;
+		this._viewController = viewController;
 		this.tokenScript = viewController.tokenScript;
 	}
 
-	getViewController(){
-		if (!this.viewController)
+	get viewController() {
+		if (!this._viewController)
 			return this.tokenScript.getViewController();
 
-		return this.viewController;
+		return this._viewController;
 	}
 
 	viewLoading() {
@@ -159,7 +159,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-		await this.getViewController().handleMessageFromView(method, params);
+		await this.viewController.handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
