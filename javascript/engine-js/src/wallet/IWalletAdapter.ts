@@ -1,5 +1,6 @@
 import {EventLog, Log} from "ethers";
 import {ITransactionListener} from "../TokenScript";
+import {IChainConfig} from "./EthersAdapter";
 
 export interface RpcRequest {
 	jsonrpc: "2.0";
@@ -19,6 +20,7 @@ export interface RpcResponse {
  * The interface for integrating wallet connecton from the user-agent
  */
 export interface IWalletAdapter {
+	readonly chainConfig: {[key: number]: IChainConfig};
 	getCurrentWalletAddress(): Promise<string>;
 	signPersonalMessage(message: string): Promise<string>;
 	call(
@@ -47,6 +49,6 @@ export interface IWalletAdapter {
 		errorAbi?: any[]
 	): Promise<any>;
 	getChain(): Promise<number>;
-	getRpcUrl(chainId: number): string;
+	getRpcUrls(chainId: number): string[];
 	rpcProxy(request: RpcRequest): Promise<any>;
 }

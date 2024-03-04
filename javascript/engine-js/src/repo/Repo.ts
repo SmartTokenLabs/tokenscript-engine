@@ -88,7 +88,13 @@ export class Repo {
 	 * @param tokenScript
 	 */
 	public saveTokenScript(tsId: string, tokenScript: ResolveResult & {timestamp?: number}){
-		if (!this.context.config.noLocalStorage)
-			localStorage.setItem("ts-" + tsId, JSON.stringify(tokenScript));
+		if (!this.context.config.noLocalStorage) {
+			localStorage.removeItem("ts-" + tsId);
+			try {
+				localStorage.setItem("ts-" + tsId, JSON.stringify(tokenScript));
+			} catch (e: any){
+				console.warn("Failed to store tokenscript definition: ", e.message);
+			}
+		}
 	}
 }
