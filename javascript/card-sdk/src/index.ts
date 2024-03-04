@@ -1,21 +1,25 @@
-import {ethers} from "ethers";
+import {ethers, Network} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
 import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
 import {LocalStorageAdapter} from "./storage/localStorageAdapter";
 
+export interface IChainConfig {
+    rpc: string|string[],
+    explorer: string
+}
+
 export interface IInstanceData {
     currentTokenInstance: ITokenContextData,
     engineOrigin: string,
-    localStorageData: {[key: string]: string}
+    localStorageData: {[key: string]: string},
+    chainConfig: {[key: string]: IChainConfig}
 }
 
 class Web3LegacySDK implements IWeb3LegacySDK {
 
     public readonly engineAdapter: IEngineAdapter;
-
-    private readonly localStorageAdapter: LocalStorageAdapter;
 
     private _instanceData: IInstanceData;
 
@@ -26,7 +30,6 @@ class Web3LegacySDK implements IWeb3LegacySDK {
     }
 
     constructor() {
-        this.localStorageAdapter = new LocalStorageAdapter(this);
         this.engineAdapter = new PostMessageAdapter(this);
     }
 
@@ -77,6 +80,39 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
 class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
 
+    private readonly localStorageAdapter: LocalStorageAdapter;
+
+    constructor() {
+        super();
+        this.localStorageAdapter = new LocalStorageAdapter(this);
+    }
+
+    public getRpcProvider(chain: number){
+
+        const rpcUrls = this.getRpcUrls(chain);
+
+        if (rpcUrls.length > 1){
+            const providers = [];
+            for (const url of rpcUrls){
+                providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
+            }
+            return new ethers.FallbackProvider(providers, chain, {
+
+            });
+        } else {
+            return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
+        }
+    }
+
+    public getRpcUrls(chainId: number){
+
+        if (!this.instanceData.chainConfig[chainId])
+            throw new Error("RPC URL is not configured for ethereum chain: " + chainId);
+
+        const rpc = this.instanceData.chainConfig[chainId].rpc;
+
+        return typeof rpc === "string" ? [rpc]: rpc;
+    }
 }
 
 window.ethers = ethers;

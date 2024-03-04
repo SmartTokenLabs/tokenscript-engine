@@ -153,21 +153,23 @@ export class TokenViewData {
 		console.log(tokenData);
 
 		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
+		const rpcURLs = walletAdapter.getRpcUrls(tokenData.chainId);
 
 		return `
 
 		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
 		const localStorageData = JSON.parse(String.raw \`${JSON.stringify(await this.localStorageProxy.getLocalStorageDictionary()).replace(/`/g, "")}\`);
+		const rpcURLs = JSON.parse(String.raw \`${JSON.stringify(walletAdapter.chainConfig).replace(/`/g, "")}\`);
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
-		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
+		const rpcURL = "${rpcURLs[0]}";
 		const chainID = "${tokenData.chainId}";
 		const engineOrigin = "${document.location.origin}";
 
 		// Injected card SDK
 		${CARD_SDK_V1}
 
-		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin, localStorageData});
+		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin, localStorageData, rpcURLs});
 
 		// TODO: Move to SDK
 		// Extra initialisation
