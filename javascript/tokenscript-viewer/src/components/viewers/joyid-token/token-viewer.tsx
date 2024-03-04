@@ -145,6 +145,11 @@ export class TokenViewer {
 
 		} catch (e){
 			console.warn(e.message);
+			this.showToast.emit({
+				type: 'error',
+				title: "Failed to load TokenScript",
+				description: e.message
+			});
 			this.description = this.tokenDetails.description;
 		}
 	}
