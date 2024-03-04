@@ -232,6 +232,6 @@ export class EthersAdapter implements IWalletAdapter {
 
 	// TODO: Handle chain switching
 	async rpcProxy(request: RpcRequest): Promise<any> {
-		return (await this.getEthersProvider()).send(request.method, request.data);
+		return (await this.getEthersProvider()).send(request.method, request.params);
 	}
 }

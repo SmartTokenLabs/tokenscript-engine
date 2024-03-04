@@ -20,7 +20,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 	// TODO: Move into SDK - this class should only me for messaging, not logic
 	private listenForUserValueChanges(){
 		window.addEventListener('change', (evt) => {
-			if (!("id" in evt.target) || !evt.target.id)
+			if (!("id" in evt.target) || !evt.target.id || evt.target.getAttribute("data-ts-prop") === "false")
 				return;
 			this.sendUserInputValues();
 		});

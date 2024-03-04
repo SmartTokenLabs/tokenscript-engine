@@ -5,7 +5,7 @@ export interface RpcRequest {
 	jsonrpc: "2.0";
 	id: number;
 	method: string;
-	data: any[];
+	params: any[];
 }
 
 export interface RpcResponse {
