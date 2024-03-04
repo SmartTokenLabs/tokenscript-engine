@@ -1,9 +1,9 @@
 import {IEngineAdapter, RequestFromView, ViewEvent} from "./IEngineAdapter";
-import {ITokenScriptSDK} from "../types";
+import {ITokenScriptSDK, IWeb3LegacySDK} from "../types";
 
 export class PostMessageAdapter implements IEngineAdapter {
 
-	constructor(private sdk: ITokenScriptSDK) {
+	constructor(private sdk: IWeb3LegacySDK) {
 
 		window.addEventListener("message", this.handleMessageResponse.bind(this));
 
@@ -20,7 +20,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 	// TODO: Move into SDK - this class should only me for messaging, not logic
 	private listenForUserValueChanges(){
 		window.addEventListener('change', (evt) => {
-			if (!("id" in evt.target) || !evt.target.id || evt.target.getAttribute("data-ts-prop") === "false")
+			if (!("id" in evt.target) || !evt.target.id || (evt.target as HTMLElement).getAttribute("data-ts-prop") === "false")
 				return;
 			this.sendUserInputValues();
 		});

@@ -363,7 +363,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private getEthersContractInstance(address: string, chainId: number, type: TokenType){
-		const provider = new ethers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc, chainId, { staticNetwork: new Network(chainId.toString(), chainId)});
+		const urls = CHAIN_CONFIG[chainId].rpc;
+		const provider = new ethers.JsonRpcProvider(typeof urls === "string" ? urls : urls[0], chainId, { staticNetwork: new Network(chainId.toString(), chainId)});
 
 		return new Contract(address, type === "erc20" ? ERC20_ABI_JSON : ERC721_ABI_JSON, provider);
 	}

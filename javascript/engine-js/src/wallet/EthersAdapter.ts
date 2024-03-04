@@ -1,10 +1,10 @@
 import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
-import {Contract, ContractRunner, ContractTransaction, ethers, EventLog, Network} from "ethers";
+import {Contract, ContractRunner, ContractTransaction, ethers, EventLog, FetchRequest, Network} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 
 export interface IChainConfig {
-	rpc: string,
+	rpc: string|string[],
 	explorer: string
 }
 
@@ -15,7 +15,10 @@ export class EthersAdapter implements IWalletAdapter {
 
 	private ethersProvider: ethers.BrowserProvider
 
-	constructor(public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>, private chainConfig: {[key: number]: IChainConfig}) {
+	constructor(
+		public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>,
+		public readonly chainConfig: {[key: number]: IChainConfig}
+	) {
 
 	}
 
@@ -156,17 +159,19 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const provider = useBrowserProvider ?
 							await (await this.getEthersProvider()).getSigner() as ContractRunner :
-							new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) });
+							this.getRpcProvider(chain);
 
 		return new Contract(contractAddr, [abiData, ...errorAbi], provider);
 	}
 
-	public getRpcUrl(chainId: number){
+	public getRpcUrls(chainId: number){
 
 		if (!this.chainConfig[chainId])
 			throw new Error("RPC URL is not configured for ethereum chain: " + chainId);
 
-		return this.chainConfig[chainId].rpc;
+		const rpc = this.chainConfig[chainId].rpc;
+
+		return typeof rpc === "string" ? [rpc]: rpc;
 	}
 
 	async getChain(){
@@ -217,7 +222,7 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log("Get ethereum events. chain " + chain + "; contract " + contractAddr + "; event " + event + ";");
 		console.log(inputs);
 
-		const provider = new ethers.JsonRpcProvider(this.getRpcUrl(chain), chain, { staticNetwork: new Network(chain.toString(), chain) });
+		const provider= this.getRpcProvider(chain);
 
 		const contract = new Contract(contractAddr, [{
 			name: event,
@@ -228,6 +233,23 @@ export class EthersAdapter implements IWalletAdapter {
 		const values = inputs.map((input) => input.value);
 
 		return await contract.queryFilter(contract.filters[event](...values)) as Array<EventLog>;
+	}
+
+	private getRpcProvider(chain: number){
+
+		const rpcUrls = this.getRpcUrls(chain);
+
+		if (rpcUrls.length > 1){
+			const providers = [];
+			for (const url of rpcUrls){
+				providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
+			}
+			return new ethers.FallbackProvider(providers, chain, {
+
+			});
+		} else {
+			return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
+		}
 	}
 
 	// TODO: Handle chain switching
