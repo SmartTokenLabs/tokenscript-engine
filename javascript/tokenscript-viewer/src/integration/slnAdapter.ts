@@ -7,10 +7,13 @@ export class SLNAdapter implements ISLNAdapter {
     this.url =
       chain === 5169
         ? 'TBD' // mainnet
-        : 'https://sln-nodes-server.autographnft.io/'; // testnet [1337, 82459]
+        : 'https://d2sc5n1wf6rato.cloudfront.net/'; // testnet [1337, 82459]
+    //'https://d3tm4hby53qtu1.cloudfront.net/';
   }
 
-  async getAttestation(attester: string, tokenId: string): Promise<ISLNAttestation> {
+  async getAttestation(attester: string, tokenId: string, chain: string): Promise<ISLNAttestation> {
+    //todo add signature /rawdata?message=${message}&signature=${signature}`
+
     const path = `attestations/${attester}/${tokenId}/rawdata`;
 
     return this.fetchRequest(path);

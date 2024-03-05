@@ -1,207 +1,281 @@
-import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
-import {AppRoot, ShowToastEventArgs} from "../../app/app";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
-import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
-import {SLNAdapter} from "../../../integration/slnAdapter";
-import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
-import {zipAndEncodeToBase64} from "@tokenscript/engine-js/src/attestation/AttestationUrl";
+import { Component, Event, EventEmitter, h, Host, JSX, Prop, State } from '@stencil/core';
+import { AppRoot, ShowToastEventArgs } from '../../app/app';
+import { TokenScript } from '@tokenscript/engine-js/src/TokenScript';
+import { ITokenDetail } from '@tokenscript/engine-js/src/tokens/ITokenDetail';
+import { ITokenCollection } from '@tokenscript/engine-js/src/tokens/ITokenCollection';
+import { ITokenDiscoveryAdapter } from '@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter';
+import { SLNAdapter } from '../../../integration/slnAdapter';
+import { zipAndEncodeToBase64 } from '@tokenscript/engine-js/src/attestation/AttestationUrl';
+import { ISLNAttestation } from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
+import { ethers } from 'ethers';
+import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
+import { IFrameProvider } from './iframe-provider';
 
-const SLN_CHAIN_IDS = [1337, 82459, 5169]
+const SLN_CHAIN_IDS = [1337, 82459, 5169];
 @Component({
-	tag: 'token-viewer',
-	styleUrl: 'token-viewer.css',
-	shadow: false,
-	scoped: false
+  tag: 'token-viewer',
+  styleUrl: 'token-viewer.css',
+  shadow: false,
+  scoped: false,
 })
 export class TokenViewer {
+  @Prop()
+  app: AppRoot;
 
-	@Prop()
-	app: AppRoot;
+  @State()
+  tokenDetails: ITokenDetail;
 
-	@State()
-	tokenDetails: ITokenDetail;
+  @State()
+  BASE_URL: string;
 
-	@State()
-	isAttestation: boolean
+  @State()
+  isAttestation: boolean;
 
-	@State()
-	tokenScript: TokenScript;
+  @State()
+  slnAttestation: ISLNAttestation;
 
-	urlRequest: URLSearchParams;
+  @State()
+  decoded: any;
 
-	@State() cardButtons: JSX.Element[]|undefined;
+  @State()
+  tokenScript: TokenScript;
 
-	@State() actionsEnabled = true;
+  @State()
+  iframeProvider: IFrameProvider;
 
-	@Event({
-		eventName: 'showToast',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) showToast: EventEmitter<ShowToastEventArgs>;
+  urlRequest: URLSearchParams;
 
-	@Event({
-		eventName: 'showLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) showLoader: EventEmitter<void>;
+  @State() cardButtons: JSX.Element[] | undefined;
 
-	@Event({
-		eventName: 'hideLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) hideLoader: EventEmitter<void>;
+  @State() actionsEnabled = true;
 
-	async componentWillLoad(){
+  @Event({
+    eventName: 'showToast',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  showToast: EventEmitter<ShowToastEventArgs>;
 
-		try {
-			const query = new URLSearchParams(document.location.search.substring(1));
-			const hashQuery = new URLSearchParams(document.location.hash.substring(1));
+  @Event({
+    eventName: 'showLoader',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  showLoader: EventEmitter<void>;
 
-			for (const [key, param] of hashQuery.entries()){
-				query.set(key, param);
-			}
+  @Event({
+    eventName: 'hideLoader',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  hideLoader: EventEmitter<void>;
 
-			this.urlRequest = query;
+  async componentWillLoad() {
+    try {
+      const query = new URLSearchParams(document.location.search.substring(1));
+      const hashQuery = new URLSearchParams(document.location.hash.substring(1));
 
-			await this.processUrlLoad();
+      for (const [key, param] of hashQuery.entries()) {
+        query.set(key, param);
+      }
 
-		} catch (e){
-			console.error(e);
-			this.showToast.emit({
-				type: 'error',
-				title: "Failed to load token details",
-				description: e.message
-			});
-		}
-	}
+      this.urlRequest = query;
 
-	async processUrlLoad(){
+      await this.processUrlLoad();
+    } catch (e) {
+      console.error(e);
+      this.showToast.emit({
+        type: 'error',
+        title: 'Failed to load token details',
+        description: e.message,
+      });
+    }
+  }
 
-		const queryStr = document.location.search.substring(1);
+  async processUrlLoad() {
+    const queryStr = document.location.search.substring(1);
 
-		if (!queryStr)
-			return false;
+    if (!queryStr) return false;
 
-		const query = new URLSearchParams(queryStr);
+    const query = new URLSearchParams(queryStr);
 
-		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
-			const chain = parseInt(query.get("chain"))
-			const contract = query.get("contract")
-			const tokenId = query.get("tokenId")
+    if (query.has('chain') && query.has('contract') && query.has('tokenId')) {
+      const chain = parseInt(query.get('chain'));
+      const contract = query.get('contract');
+      const tokenId = query.get('tokenId');
 
-			if (SLN_CHAIN_IDS.includes(chain)) {
-				this.isAttestation = true
+      if (SLN_CHAIN_IDS.includes(chain)) {
+        this.isAttestation = true;
 
-				this.app.showTsLoader();
+        this.app.showTsLoader();
 
-				const slnAdapter = new SLNAdapter(chain)
-				const slnAttestation = await slnAdapter.getAttestation(contract, tokenId)
-				const attestation = zipAndEncodeToBase64({ sig: slnAttestation.rawData, signer: contract})
+        const slnAdapter = new SLNAdapter(chain);
+        this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString());
 
-				console.log("Attestation loaded!");
+        if (!this.slnAttestation) {
+          console.log('No Attestation!');
+          return;
+        }
+        console.log(this.slnAttestation.rawData);
+        const rawData = this.slnAttestation.rawData;
+        const attestation = zipAndEncodeToBase64({ sig: rawData, signer: contract });
 
-				this.app.hideTsLoader();
+        console.log('Attestation loaded!');
 
-				const params = new URLSearchParams();
-				params.set("attestation", attestation);
-				params.set("type", "eas");
-				// TODO: only for testing, remove later this as SLN attestation will embed scriptURI
-				params.set("scriptURI", "http://localhost:3333/assets/tokenscripts/sln-attestation.tsml");
+        this.app.hideTsLoader();
 
-				this.loadAttestationAndTokenScript(params, chain);
-			} else {
-				this.isAttestation = false
+        const params = new URLSearchParams();
+        params.set('attestation', attestation);
+        params.set('type', 'eas');
+        console.log('rawData.uid--', rawData.uid);
+        this.decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema), rawData.message.data);
+        console.log(this.decoded.formatted.scriptURI);
 
-				if (query.get("actionsEnabled") === "false")
-					this.actionsEnabled = false;
+        // TODO: only for testing, remove later this as SLN attestation will embed scriptURI
 
-				this.app.showTsLoader();
+        //params.set('scriptURI', 'http://localhost:3333/assets/tokenscripts/tokenscript.tsml');
+        this.BASE_URL = new URL(this.decoded.formatted.scriptURI).origin;
+        this.loadIframe(this.decoded.formatted.scriptURI);
+      } else {
+        this.isAttestation = false;
 
-				this.tokenDetails = await getSingleTokenMetadata(chain, contract, tokenId);
+        console.log('####');
+        if (query.get('actionsEnabled') === 'false') this.actionsEnabled = false;
 
-				console.log("Token meta loaded!", this.tokenDetails);
+        this.app.showTsLoader();
 
-				this.app.hideTsLoader();
+        // this.tokenDetails = await getSingleTokenMetadata(chain, contract, tokenId);
 
-				this.loadTokenScript();
-			}
+        console.log('Token meta loaded!', this.tokenDetails);
 
-			return true;
-		}
+        this.app.hideTsLoader();
 
-		throw new Error("Could not locate token details using the values provided in the URL");
-	}
+        this.loadTokenScript();
+      }
 
-	private async loadTokenScript(){
+      return true;
+    }
 
-		try {
-			const chain: number = parseInt(this.urlRequest.get("chain"));
-			const contract: string = this.urlRequest.get("contract");
-			const tsId = chain + "-" + contract;
-			const tokenScript = await this.app.loadTokenscript("resolve", tsId);
+    throw new Error('Could not locate token details using the values provided in the URL');
+  }
 
-			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin;
+  provider = new ethers.providers.Web3Provider(window.ethereum);
 
-			for (const origin of origins){
-				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					selectedOrigin = origin;
-					origin.tokenDetails = [this.tokenDetails];
-					break;
-				}
-			}
+  schemaReg: SchemaRegistry = new SchemaRegistry('0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797');
 
-			if (selectedOrigin){
-				tokenScript.setTokenMetadata(origins);
+  private async getSchemaSignature(uid: string) {
+    this.schemaReg.connect(this.provider);
+    const schema = await this.schemaReg.getSchema({ uid });
+    return schema.schema;
+  }
 
-				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
-					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve(origins);
-					}
-				}
+  private decodeData(schema: string, data: string) {
+    const schemaEncoder = new SchemaEncoder(schema);
+    const decoded = schemaEncoder.decodeData(data);
+    // Assumption: one layer only, no embedded schema
+    const formatted: { [key: string]: any } = {};
+    const itemSchema: { [key: string]: SchemaDecodedItem } = {};
+    decoded.forEach(item => {
+      formatted[item.name] = item.value.value;
+      itemSchema[item.name] = item;
+    });
+    return { formatted, raw: itemSchema };
+  }
 
-				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
+  private async loadTokenScript() {
+    try {
+      const chain: number = parseInt(this.urlRequest.get('chain'));
+      const contract: string = this.urlRequest.get('contract');
+      const tsId = chain + '-' + contract;
+      const tokenScript = await this.app.loadTokenscript('resolve', tsId);
 
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
-				this.tokenScript = tokenScript;
-			}
+      const origins = tokenScript.getTokenOriginData();
+      let selectedOrigin;
 
-		} catch (e){
-			console.warn(e.message);
-		}
-	}
+      for (const origin of origins) {
+        if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()) {
+          selectedOrigin = origin;
+          origin.tokenDetails = [this.tokenDetails];
+          break;
+        }
+      }
+
+      if (selectedOrigin) {
+        tokenScript.setTokenMetadata(origins);
+
+        class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
+          getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
+            return Promise.resolve(origins);
+          }
+        }
+
+        this.app.discoveryAdapter = new StaticDiscoveryAdapter();
+
+        tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
+        this.tokenScript = tokenScript;
+      }
+    } catch (e) {
+      console.warn(e.message);
+    }
+  }
+
+  private async loadIframe(url: string) {
+    setTimeout(() => {
+      const iFrame = document.getElementById('frame');
+      if (iFrame) {
+        (document.getElementById('frame') as any).src = url;
+        //this.handleMessage();
+        console.log('####', iFrame);
+        this.iframeProvider = new IFrameProvider({
+          iframeRef: iFrame as HTMLIFrameElement,
+          provider: new ethers.providers.Web3Provider(window.ethereum),
+          type: 'ethereum',
+          targetOrigin: this.BASE_URL,
+        });
+        console.log;
+      }
+    }, 1000);
+  }
 
   private async loadAttestationAndTokenScript(params: URLSearchParams, chain: number) {
     const { tokenScript } = await this.app.tsEngine.importAttestationUsingTokenScript(params);
 
-		const tokenMetadata = await tokenScript.getTokenMetadata();
-		const updatedTokenMetadata = []
-		for (const [attName, metadata] of Object.entries(tokenMetadata)) {
-			if (attName === 'SLNAttestation') {
-				updatedTokenMetadata.push({
-					...metadata,
-					chainId: chain
-				})
-			} else {
-				updatedTokenMetadata.push(metadata)
-			}
-		}
-		tokenScript.setTokenMetadata(updatedTokenMetadata);
+    const tokenMetadata = await tokenScript.getTokenMetadata();
+    const updatedTokenMetadata = [];
+    for (const [attName, metadata] of Object.entries(tokenMetadata)) {
+      if (attName === 'SLNAttestation') {
+        updatedTokenMetadata.push({
+          ...metadata,
+          chainId: chain,
+        });
+      } else {
+        updatedTokenMetadata.push(metadata);
+      }
+    }
+    tokenScript.setTokenMetadata(updatedTokenMetadata);
 
     this.tokenScript = tokenScript;
   }
 
-	render(){
+  iframeLoadListener(attestation: ISLNAttestation, decoded: any) {
+    console.log('##load', attestation.rawData, window.parent);
+    const src = (document.getElementById('frame') as any).src;
+    console.log('src', src, this.iframeProvider);
+    if (src && this.iframeProvider) {
+      console.log('this.iframeProvider--', this.iframeProvider);
+      this.iframeProvider.sendResponse({ attestation: attestation.rawData, type: 'attestation' }, null, {});
+      this.iframeProvider.sendResponse(decoded.formatted, null, {});
+    }
+  }
 
-		return (
+  render() {
+    return (
       <Host>
         <div class="token-viewer">
-          {(!this.isAttestation && this.tokenDetails) && (
+          {!this.isAttestation && this.tokenDetails && (
             <div>
               <div class="details-container">
                 <div class="image-container">
@@ -240,12 +314,12 @@ export class TokenViewer {
                         : ''}
                     </div>
                   </div>
-								</div>
-							</div>
+                </div>
+              </div>
               <action-bar engine={this.app.tsEngine} tokenDetails={this.tokenDetails} tokenScript={this.tokenScript} actionsEnabled={this.actionsEnabled} />
             </div>
           )}
-					{(this.isAttestation && this.tokenScript) && (
+          {this.isAttestation && this.tokenScript && (
             <div>
               <div class="meta-details">
                 {this.tokenScript.getMetadata().description ? <p>{this.tokenScript.getMetadata().description}</p> : ''}
@@ -261,10 +335,12 @@ export class TokenViewer {
               <tokens-grid tokenScript={this.tokenScript}></tokens-grid>
             </div>
           )}
+          {this.isAttestation && !this.tokenScript && (
+            <iframe src="" class="iframe-viewer" id="frame" onLoad={() => this.iframeLoadListener(this.slnAttestation, this.decoded)} frameBorder={0} />
+          )}
         </div>
         <card-popover tokenScript={this.tokenScript}></card-popover>
       </Host>
     );
-	}
-
+  }
 }
