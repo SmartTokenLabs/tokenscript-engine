@@ -5,5 +5,5 @@ export interface ISLNAttestation {
 }
 
 export interface ISLNAdapter {
-  getAttestation(attester: string, uid: string): Promise<ISLNAttestation>;
+  getAttestation(attester: string, tokenId: string, chain: string): Promise<ISLNAttestation>;
 }
