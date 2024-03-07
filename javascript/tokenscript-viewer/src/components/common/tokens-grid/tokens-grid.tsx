@@ -88,6 +88,7 @@ export class TokensGrid {
 			return;
 
 		const action = params.get("card");
+		const tokenIdParam = params.get("tokenId");
 
 		const cardRes = findCardByUrlParam(action, this.tokenScript);
 
@@ -102,13 +103,19 @@ export class TokensGrid {
 
 		for (let token of this.currentTokensFlat){
 
+			const tokenId = ("tokenId" in token) ? token.tokenId : undefined;
+
 			const context: ITokenIdContext = {
 				originId: token.originId,
 				chainId: ("chainId" in token) ? token.chainId : token.collectionDetails.chainId,
-				selectedTokenId: ("tokenId" in token) ? token.tokenId : undefined
+				selectedTokenId: tokenId
 			}
 
-			if (cardRes.card.isAvailableForOrigin(token.originId) && await cardRes.card.isEnabledOrReason(context) === true) {
+			if (
+				(!tokenIdParam || tokenIdParam === tokenId.toString()) &&
+				cardRes.card.isAvailableForOrigin(token.originId) &&
+				await cardRes.card.isEnabledOrReason(context) === true
+			) {
 				this.showCard(cardRes.card, token, cardRes.index);
 				return;
 			}
@@ -150,7 +157,7 @@ export class TokensGrid {
 		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
 		// TODO: set only card param rather than updating the whole hash query
 		if (card.view)
-			history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex));
+			history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + (("tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
 	}
 
 	render() {
