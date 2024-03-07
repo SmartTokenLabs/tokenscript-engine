@@ -24,7 +24,7 @@ object TestHttp {
             }
         }
 
-        return httpClient.get("https://testnets-api.opensea.io/api/v1/asset/0xf19c56362cfdf66f7080e4a58bf199064e57e07c/0/") {
+        return httpClient.get("https://testnets-api.marketplace.io/api/v1/asset/0xf19c56362cfdf66f7080e4a58bf199064e57e07c/0/") {
             this.header("Accept", "application/json")
         }
     }
@@ -41,7 +41,7 @@ object TestHttp {
         }
 
 
-        return httpClient.get("https://testnets-api.opensea.io/api/v1/asset/0xf19c56362cfdf66f7080e4a58bf199064e57e07c/0/") {
+        return httpClient.get("https://testnets-api.marketplace.io/api/v1/asset/0xf19c56362cfdf66f7080e4a58bf199064e57e07c/0/") {
             this.header("Accept", "application/json")
         }
     }

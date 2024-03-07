@@ -7,7 +7,7 @@ body {
 	overflow: hidden;
 }
 
-.opensea-header {
+.marketplace-header {
 	height: 30px;
 	background: #000;
 	color: #fff;
@@ -15,19 +15,19 @@ body {
 	align-items: center;
 }
 
-.opensea-header span {
+.marketplace-header span {
 	font-size: 12px;
 	padding-left: 10px;
 	font-weight: bold;
 }
 
-.opensea-header .header-icon {
+.marketplace-header .header-icon {
 	height: 20px !important;
 	padding-left: 5px;
 	padding-top: 2px;
 }
 
-.opensea-img-container {
+.marketplace-img-container {
 	display: flex;
 	flex-grow: 1;
 	background-size: cover;
@@ -91,11 +91,11 @@ body {
 	z-index: 40;
 }
 
-opensea-viewer, .opensea-viewer {
+marketplace-viewer, .marketplace-viewer {
 	position: relative;
 }
 
-opensea-viewer, .opensea-viewer, card-view, .card-container {
+marketplace-viewer, .marketplace-viewer, card-view, .card-container {
 	display: flex !important;
 	flex-direction: column;
 	flex-grow: 1;

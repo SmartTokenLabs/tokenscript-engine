@@ -44,7 +44,7 @@ export namespace Components {
     }
     interface AddSelector {
         "closeDialog": () => Promise<void>;
-        "onFormSubmit": (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
+        "onFormSubmit": (type: TokenScriptSource, data: { tsId?: string, xml?: File }) => Promise<void>;
         "openDialog": () => Promise<void>;
     }
     interface AlphawalletViewer {
@@ -82,27 +82,27 @@ export namespace Components {
     }
     interface LoadingSpinner {
         "color": string;
-        "size": "large"|"small";
+        "size": "large" | "small";
     }
     interface NewViewer {
         "app": AppRoot;
     }
-    interface OpenseaViewer {
+    interface MarketplaceViewer {
         "app": AppRoot;
     }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
-        "dialogStyles": {[cssProp: string]: string};
+        "dialogStyles": { [cssProp: string]: string };
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
-        "size": "large"|"small";
+        "size": "large" | "small";
         "tokenScript": TokenScript1;
     }
     interface SelectField {
         "label": string;
         "name": string;
-        "options": {label: string, value: string}[];
+        "options": { label: string, value: string }[];
         "value": string;
     }
     interface SelectStep {
@@ -215,9 +215,9 @@ export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLNewViewerElement;
 }
-export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
+export interface MarketplaceViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
-    target: HTMLOpenseaViewerElement;
+    target: HTMLMarketplaceViewerElement;
 }
 export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -248,7 +248,7 @@ declare global {
     }
     var HTMLAboutTokenscriptElement: {
         prototype: HTMLAboutTokenscriptElement;
-        new (): HTMLAboutTokenscriptElement;
+        new(): HTMLAboutTokenscriptElement;
     };
     interface HTMLActionBarElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -267,19 +267,19 @@ declare global {
     }
     var HTMLActionBarElement: {
         prototype: HTMLActionBarElement;
-        new (): HTMLActionBarElement;
+        new(): HTMLActionBarElement;
     };
     interface HTMLActionOverflowModalElement extends Components.ActionOverflowModal, HTMLStencilElement {
     }
     var HTMLActionOverflowModalElement: {
         prototype: HTMLActionOverflowModalElement;
-        new (): HTMLActionOverflowModalElement;
+        new(): HTMLActionOverflowModalElement;
     };
     interface HTMLAddSelectorElement extends Components.AddSelector, HTMLStencilElement {
     }
     var HTMLAddSelectorElement: {
         prototype: HTMLAddSelectorElement;
-        new (): HTMLAddSelectorElement;
+        new(): HTMLAddSelectorElement;
     };
     interface HTMLAlphawalletViewerElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -298,19 +298,19 @@ declare global {
     }
     var HTMLAlphawalletViewerElement: {
         prototype: HTMLAlphawalletViewerElement;
-        new (): HTMLAlphawalletViewerElement;
+        new(): HTMLAlphawalletViewerElement;
     };
     interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {
     }
     var HTMLAppRootElement: {
         prototype: HTMLAppRootElement;
-        new (): HTMLAppRootElement;
+        new(): HTMLAppRootElement;
     };
     interface HTMLAttributeTableElement extends Components.AttributeTable, HTMLStencilElement {
     }
     var HTMLAttributeTableElement: {
         prototype: HTMLAttributeTableElement;
-        new (): HTMLAttributeTableElement;
+        new(): HTMLAttributeTableElement;
     };
     interface HTMLCardModalElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -327,7 +327,7 @@ declare global {
     }
     var HTMLCardModalElement: {
         prototype: HTMLCardModalElement;
-        new (): HTMLCardModalElement;
+        new(): HTMLCardModalElement;
     };
     interface HTMLCardPopoverElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -344,37 +344,37 @@ declare global {
     }
     var HTMLCardPopoverElement: {
         prototype: HTMLCardPopoverElement;
-        new (): HTMLCardPopoverElement;
+        new(): HTMLCardPopoverElement;
     };
     interface HTMLCardViewElement extends Components.CardView, HTMLStencilElement {
     }
     var HTMLCardViewElement: {
         prototype: HTMLCardViewElement;
-        new (): HTMLCardViewElement;
+        new(): HTMLCardViewElement;
     };
     interface HTMLConfirmStepElement extends Components.ConfirmStep, HTMLStencilElement {
     }
     var HTMLConfirmStepElement: {
         prototype: HTMLConfirmStepElement;
-        new (): HTMLConfirmStepElement;
+        new(): HTMLConfirmStepElement;
     };
     interface HTMLInputFieldElement extends Components.InputField, HTMLStencilElement {
     }
     var HTMLInputFieldElement: {
         prototype: HTMLInputFieldElement;
-        new (): HTMLInputFieldElement;
+        new(): HTMLInputFieldElement;
     };
     interface HTMLIntegrationViewerElement extends Components.IntegrationViewer, HTMLStencilElement {
     }
     var HTMLIntegrationViewerElement: {
         prototype: HTMLIntegrationViewerElement;
-        new (): HTMLIntegrationViewerElement;
+        new(): HTMLIntegrationViewerElement;
     };
     interface HTMLLoadingSpinnerElement extends Components.LoadingSpinner, HTMLStencilElement {
     }
     var HTMLLoadingSpinnerElement: {
         prototype: HTMLLoadingSpinnerElement;
-        new (): HTMLLoadingSpinnerElement;
+        new(): HTMLLoadingSpinnerElement;
     };
     interface HTMLNewViewerElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -391,56 +391,56 @@ declare global {
     }
     var HTMLNewViewerElement: {
         prototype: HTMLNewViewerElement;
-        new (): HTMLNewViewerElement;
+        new(): HTMLNewViewerElement;
     };
-    interface HTMLOpenseaViewerElementEventMap {
+    interface HTMLMarketplaceViewerElementEventMap {
         "showToast": ShowToastEventArgs;
         "showLoader": void;
         "hideLoader": void;
     }
-    interface HTMLOpenseaViewerElement extends Components.OpenseaViewer, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLOpenseaViewerElementEventMap>(type: K, listener: (this: HTMLOpenseaViewerElement, ev: OpenseaViewerCustomEvent<HTMLOpenseaViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+    interface HTMLMarketplaceViewerElement extends Components.MarketplaceViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMarketplaceViewerElementEventMap>(type: K, listener: (this: HTMLMarketplaceViewerElement, ev: MarketplaceViewerCustomEvent<HTMLMarketplaceViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLOpenseaViewerElementEventMap>(type: K, listener: (this: HTMLOpenseaViewerElement, ev: OpenseaViewerCustomEvent<HTMLOpenseaViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMarketplaceViewerElementEventMap>(type: K, listener: (this: HTMLMarketplaceViewerElement, ev: MarketplaceViewerCustomEvent<HTMLMarketplaceViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
-    var HTMLOpenseaViewerElement: {
-        prototype: HTMLOpenseaViewerElement;
-        new (): HTMLOpenseaViewerElement;
+    var HTMLMarketplaceViewerElement: {
+        prototype: HTMLMarketplaceViewerElement;
+        new(): HTMLMarketplaceViewerElement;
     };
     interface HTMLPopoverDialogElement extends Components.PopoverDialog, HTMLStencilElement {
     }
     var HTMLPopoverDialogElement: {
         prototype: HTMLPopoverDialogElement;
-        new (): HTMLPopoverDialogElement;
+        new(): HTMLPopoverDialogElement;
     };
     interface HTMLSecurityStatusElement extends Components.SecurityStatus, HTMLStencilElement {
     }
     var HTMLSecurityStatusElement: {
         prototype: HTMLSecurityStatusElement;
-        new (): HTMLSecurityStatusElement;
+        new(): HTMLSecurityStatusElement;
     };
     interface HTMLSelectFieldElement extends Components.SelectField, HTMLStencilElement {
     }
     var HTMLSelectFieldElement: {
         prototype: HTMLSelectFieldElement;
-        new (): HTMLSelectFieldElement;
+        new(): HTMLSelectFieldElement;
     };
     interface HTMLSelectStepElement extends Components.SelectStep, HTMLStencilElement {
     }
     var HTMLSelectStepElement: {
         prototype: HTMLSelectStepElement;
-        new (): HTMLSelectStepElement;
+        new(): HTMLSelectStepElement;
     };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
     var HTMLStartTabElement: {
         prototype: HTMLStartTabElement;
-        new (): HTMLStartTabElement;
+        new(): HTMLStartTabElement;
     };
     interface HTMLStsViewerElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -459,43 +459,43 @@ declare global {
     }
     var HTMLStsViewerElement: {
         prototype: HTMLStsViewerElement;
-        new (): HTMLStsViewerElement;
+        new(): HTMLStsViewerElement;
     };
     interface HTMLTabHeaderItemElement extends Components.TabHeaderItem, HTMLStencilElement {
     }
     var HTMLTabHeaderItemElement: {
         prototype: HTMLTabHeaderItemElement;
-        new (): HTMLTabHeaderItemElement;
+        new(): HTMLTabHeaderItemElement;
     };
     interface HTMLTabbedViewerElement extends Components.TabbedViewer, HTMLStencilElement {
     }
     var HTMLTabbedViewerElement: {
         prototype: HTMLTabbedViewerElement;
-        new (): HTMLTabbedViewerElement;
+        new(): HTMLTabbedViewerElement;
     };
     interface HTMLTokenButtonElement extends Components.TokenButton, HTMLStencilElement {
     }
     var HTMLTokenButtonElement: {
         prototype: HTMLTokenButtonElement;
-        new (): HTMLTokenButtonElement;
+        new(): HTMLTokenButtonElement;
     };
     interface HTMLTokenIconElement extends Components.TokenIcon, HTMLStencilElement {
     }
     var HTMLTokenIconElement: {
         prototype: HTMLTokenIconElement;
-        new (): HTMLTokenIconElement;
+        new(): HTMLTokenIconElement;
     };
     interface HTMLTokenInfoPopoverElement extends Components.TokenInfoPopover, HTMLStencilElement {
     }
     var HTMLTokenInfoPopoverElement: {
         prototype: HTMLTokenInfoPopoverElement;
-        new (): HTMLTokenInfoPopoverElement;
+        new(): HTMLTokenInfoPopoverElement;
     };
     interface HTMLTokenSecurityStatusElement extends Components.TokenSecurityStatus, HTMLStencilElement {
     }
     var HTMLTokenSecurityStatusElement: {
         prototype: HTMLTokenSecurityStatusElement;
-        new (): HTMLTokenSecurityStatusElement;
+        new(): HTMLTokenSecurityStatusElement;
     };
     interface HTMLTokenViewerElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -514,7 +514,7 @@ declare global {
     }
     var HTMLTokenViewerElement: {
         prototype: HTMLTokenViewerElement;
-        new (): HTMLTokenViewerElement;
+        new(): HTMLTokenViewerElement;
     };
     interface HTMLTokensGridElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -533,25 +533,25 @@ declare global {
     }
     var HTMLTokensGridElement: {
         prototype: HTMLTokensGridElement;
-        new (): HTMLTokensGridElement;
+        new(): HTMLTokensGridElement;
     };
     interface HTMLTokensGridItemElement extends Components.TokensGridItem, HTMLStencilElement {
     }
     var HTMLTokensGridItemElement: {
         prototype: HTMLTokensGridItemElement;
-        new (): HTMLTokensGridItemElement;
+        new(): HTMLTokensGridItemElement;
     };
     interface HTMLTokenscriptButtonElement extends Components.TokenscriptButton, HTMLStencilElement {
     }
     var HTMLTokenscriptButtonElement: {
         prototype: HTMLTokenscriptButtonElement;
-        new (): HTMLTokenscriptButtonElement;
+        new(): HTMLTokenscriptButtonElement;
     };
     interface HTMLTokenscriptGridElement extends Components.TokenscriptGrid, HTMLStencilElement {
     }
     var HTMLTokenscriptGridElement: {
         prototype: HTMLTokenscriptGridElement;
-        new (): HTMLTokenscriptGridElement;
+        new(): HTMLTokenscriptGridElement;
     };
     interface HTMLTransferDialogElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -570,7 +570,7 @@ declare global {
     }
     var HTMLTransferDialogElement: {
         prototype: HTMLTransferDialogElement;
-        new (): HTMLTransferDialogElement;
+        new(): HTMLTransferDialogElement;
     };
     interface HTMLViewStepElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -587,13 +587,13 @@ declare global {
     }
     var HTMLViewStepElement: {
         prototype: HTMLViewStepElement;
-        new (): HTMLViewStepElement;
+        new(): HTMLViewStepElement;
     };
     interface HTMLViewerPopoverElement extends Components.ViewerPopover, HTMLStencilElement {
     }
     var HTMLViewerPopoverElement: {
         prototype: HTMLViewerPopoverElement;
-        new (): HTMLViewerPopoverElement;
+        new(): HTMLViewerPopoverElement;
     };
     interface HTMLViewerTabElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -610,19 +610,19 @@ declare global {
     }
     var HTMLViewerTabElement: {
         prototype: HTMLViewerTabElement;
-        new (): HTMLViewerTabElement;
+        new(): HTMLViewerTabElement;
     };
     interface HTMLWalletButtonElement extends Components.WalletButton, HTMLStencilElement {
     }
     var HTMLWalletButtonElement: {
         prototype: HTMLWalletButtonElement;
-        new (): HTMLWalletButtonElement;
+        new(): HTMLWalletButtonElement;
     };
     interface HTMLWalletSelectorElement extends Components.WalletSelector, HTMLStencilElement {
     }
     var HTMLWalletSelectorElement: {
         prototype: HTMLWalletSelectorElement;
-        new (): HTMLWalletSelectorElement;
+        new(): HTMLWalletSelectorElement;
     };
     interface HTMLElementTagNameMap {
         "about-tokenscript": HTMLAboutTokenscriptElement;
@@ -640,7 +640,7 @@ declare global {
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
         "new-viewer": HTMLNewViewerElement;
-        "opensea-viewer": HTMLOpenseaViewerElement;
+        "marketplace-viewer": HTMLMarketplaceViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
         "security-status": HTMLSecurityStatusElement;
         "select-field": HTMLSelectFieldElement;
@@ -681,7 +681,7 @@ declare namespace LocalJSX {
     interface ActionOverflowModal {
     }
     interface AddSelector {
-        "onFormSubmit"?: (type: TokenScriptSource, data: {tsId?: string, xml?: File}) => Promise<void>;
+        "onFormSubmit"?: (type: TokenScriptSource, data: { tsId?: string, xml?: File }) => Promise<void>;
     }
     interface AlphawalletViewer {
         "app"?: AppRoot;
@@ -720,29 +720,29 @@ declare namespace LocalJSX {
     }
     interface LoadingSpinner {
         "color"?: string;
-        "size"?: "large"|"small";
+        "size"?: "large" | "small";
     }
     interface NewViewer {
         "app"?: AppRoot;
         "onShowToast"?: (event: NewViewerCustomEvent<ShowToastEventArgs>) => void;
     }
-    interface OpenseaViewer {
+    interface MarketplaceViewer {
         "app"?: AppRoot;
-        "onHideLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
-        "onShowLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
-        "onShowToast"?: (event: OpenseaViewerCustomEvent<ShowToastEventArgs>) => void;
+        "onHideLoader"?: (event: MarketplaceViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: MarketplaceViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: MarketplaceViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface PopoverDialog {
-        "dialogStyles"?: {[cssProp: string]: string};
+        "dialogStyles"?: { [cssProp: string]: string };
     }
     interface SecurityStatus {
-        "size"?: "large"|"small";
+        "size"?: "large" | "small";
         "tokenScript"?: TokenScript1;
     }
     interface SelectField {
         "label"?: string;
         "name"?: string;
-        "options"?: {label: string, value: string}[];
+        "options"?: { label: string, value: string }[];
         "value"?: string;
     }
     interface SelectStep {
@@ -854,7 +854,7 @@ declare namespace LocalJSX {
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
         "new-viewer": NewViewer;
-        "opensea-viewer": OpenseaViewer;
+        "marketplace-viewer": MarketplaceViewer;
         "popover-dialog": PopoverDialog;
         "security-status": SecurityStatus;
         "select-field": SelectField;
@@ -899,7 +899,7 @@ declare module "@stencil/core" {
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
-            "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
+            "marketplace-viewer": LocalJSX.MarketplaceViewer & JSXBase.HTMLAttributes<HTMLMarketplaceViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;

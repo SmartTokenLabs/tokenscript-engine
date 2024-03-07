@@ -1,13 +1,13 @@
-import {Repo} from "./repo/Repo";
-import {TokenScript} from "./TokenScript";
-import {IWalletAdapter} from "./wallet/IWalletAdapter";
-import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
-import {IViewBinding} from "./view/IViewBinding";
-import {AttestationManager} from "./attestation/AttestationManager";
-import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
-import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
-import {TrustedKey} from "./security/TrustedKeyResolver";
-import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
+import { Repo } from "./repo/Repo";
+import { TokenScript } from "./TokenScript";
+import { IWalletAdapter } from "./wallet/IWalletAdapter";
+import { ITokenDiscoveryAdapter } from "./tokens/ITokenDiscoveryAdapter";
+import { IViewBinding } from "./view/IViewBinding";
+import { AttestationManager } from "./attestation/AttestationManager";
+import { IAttestationStorageAdapter } from "./attestation/IAttestationStorageAdapter";
+import { AttestationDefinition } from "./tokenScript/attestation/AttestationDefinition";
+import { TrustedKey } from "./security/TrustedKeyResolver";
+import { ILocalStorageAdapter } from "./view/data/ILocalStorageAdapter";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
@@ -44,7 +44,7 @@ export class TokenScriptEngine {
 		public getLocalStorageAdapter?: () => ILocalStorageAdapter,
 		public readonly config?: IEngineConfig
 	) {
-		if (this.config){
+		if (this.config) {
 			this.config = {
 				...DEFAULT_CONFIG,
 				...this.config
@@ -57,14 +57,14 @@ export class TokenScriptEngine {
 			this.attestationManager = new AttestationManager(this, this.getAttestationStorageAdapter());
 	}
 
-	public getAttestationManager(){
+	public getAttestationManager() {
 		if (!this.attestationManager)
 			throw new Error("Attestation storage adapter not provided");
 
 		return this.attestationManager;
 	}
 
-	public async importAttestationUsingTokenScript(urlParams: URLSearchParams): Promise<{definition: AttestationDefinition, tokenScript: TokenScript}> {
+	public async importAttestationUsingTokenScript(urlParams: URLSearchParams): Promise<{ definition: AttestationDefinition, tokenScript: TokenScript }> {
 
 		// const url = new URL(magicLink);
 		// const urlParams = new URLSearchParams(url.hash.substring(1) ?? url.search.substring(1));
@@ -74,12 +74,12 @@ export class TokenScriptEngine {
 
 		let scriptUri;
 
-		if (urlParams.has("scriptURI")){
+		if (urlParams.has("scriptURI")) {
 			scriptUri = urlParams.get("scriptURI");
 		} else {
 			const attestData = await attestation.getAttestationData();
 
-			if (attestData.scriptURI){
+			if (attestData.scriptURI) {
 				scriptUri = attestData.scriptURI;
 			} else {
 				throw new Error("scriptURI parameter not provided");
@@ -96,7 +96,7 @@ export class TokenScriptEngine {
 		const attestationDefs = tokenScript.getAttestationDefinitions();
 
 		// Read through attestation definitions and find the one that matches the attestation
-		for (const definition of attestationDefs){
+		for (const definition of attestationDefs) {
 
 			const collectionHash = await attestation.getCollectionHash(definition);
 			const collectionHashes = definition.calculateAttestationCollectionHashes();
@@ -110,7 +110,7 @@ export class TokenScriptEngine {
 			// Match found, store attestation
 			await this.attestationManager.saveAttestation(definition, attestation);
 
-			return {definition, tokenScript}
+			return { definition, tokenScript }
 		}
 
 		throw new Error("The provided TokenScript does not contain an attestation definition for the included attestation.");
@@ -122,7 +122,7 @@ export class TokenScriptEngine {
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 * @param forceRefresh Bypass cache and re-resolve the TokenScript XML
 	 */
-	public async getTokenScript(tsId: string, viewBinding?: IViewBinding, forceRefresh?: true){
+	public async getTokenScript(tsId: string, viewBinding?: IViewBinding, forceRefresh?: true) {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
@@ -134,12 +134,12 @@ export class TokenScriptEngine {
 	 * @param url Source URL for the TokenScript
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 */
-	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
+	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding) {
 
 		// TODO: Add caching for URL loaded tokenscripts, add URL source to repo
 		const res = await fetch(url);
 
-		if (res.status < 200 || res.status > 399){
+		if (res.status < 200 || res.status > 399) {
 			throw new Error("Failed to load URL: " + res.statusText);
 		}
 
@@ -170,19 +170,19 @@ export class TokenScriptEngine {
 	 * @param viewBinding
 	 * @private
 	 */
-	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding){
+	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding) {
 		try {
 			let parser
-			if ((typeof process !== 'undefined') && (process.release.name === 'node')){
-				const {JSDOM} = await import("jsdom");
+			if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
+				const { JSDOM } = await import("jsdom");
 				const jsdom = new JSDOM();
 				parser = new jsdom.window.DOMParser();
 			} else {
 				parser = new DOMParser();
 			}
-			let tokenXml = parser.parseFromString(xml,"text/xml");
+			let tokenXml = parser.parseFromString(xml, "text/xml");
 			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding);
-		} catch (e){
+		} catch (e) {
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}
 	}
@@ -195,7 +195,7 @@ export class TokenScriptEngine {
 
 		try {
 			return await (await this.getWalletAdapter()).signPersonalMessage(data);
-		} catch (e){
+		} catch (e) {
 			throw new Error("Signing failed: " + e.message);
 		}
 	}
@@ -212,15 +212,15 @@ export class TokenScriptEngine {
 		"https://gateway.pinata.cloud/ipfs/"
 	];
 
-	public processIpfsUrl(uri: string){
+	public processIpfsUrl(uri: string) {
 
-		for (let gateway of this.IPFS_REPLACE_GATEWAYS){
+		for (let gateway of this.IPFS_REPLACE_GATEWAYS) {
 
-			if (this.config.ipfsGateway.indexOf(gateway) === 0){
+			if (this.config.ipfsGateway.indexOf(gateway) === 0) {
 				continue;
 			}
 
-			if (uri.indexOf(gateway) === 0){
+			if (uri.indexOf(gateway) === 0) {
 				uri = uri.replace(gateway, this.config.ipfsGateway);
 				break;
 			}
@@ -231,7 +231,7 @@ export class TokenScriptEngine {
 
 	public async getScriptUri(chain: string, contractAddr: string) {
 
-		// Direct RPC gets too hammered by opensea view (that doesn't allow localStorage to cache XML)
+		// Direct RPC gets too hammered by opensea/marketplace view (that doesn't allow localStorage to cache XML)
 		/*const provider = await this.getWalletAdapter();
 		let uri: string|string[]|null;
 

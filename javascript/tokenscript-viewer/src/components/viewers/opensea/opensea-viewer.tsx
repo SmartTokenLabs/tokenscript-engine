@@ -1,204 +1,201 @@
-import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
-import {AppRoot, ShowToastEventArgs} from "../../app/app";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
-import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
-import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
-import {ViewBinding} from "../tabbed/viewBinding";
+import { Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State } from '@stencil/core';
+import { AppRoot, ShowToastEventArgs } from '../../app/app';
+import { TokenScript } from '@tokenscript/engine-js/src/TokenScript';
+import { ITokenDetail } from '@tokenscript/engine-js/src/tokens/ITokenDetail';
+import { ITokenCollection } from '@tokenscript/engine-js/src/tokens/ITokenCollection';
+import { ITokenDiscoveryAdapter } from '@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter';
+import { getSingleTokenMetadata } from '../util/getSingleTokenMetadata';
+import { ViewBinding } from '../tabbed/viewBinding';
 
 @Component({
-	tag: 'opensea-viewer',
-	styleUrl: 'opensea-viewer.css',
-	shadow: false,
-	scoped: false
+  tag: 'marketplace-viewer',
+  styleUrl: 'marketplace-viewer.css',
+  shadow: false,
+  scoped: false,
 })
-export class OpenseaViewer {
+export class MarketplaceViewer {
+  @Element()
+  host: HTMLElement;
 
-	@Element()
-	host: HTMLElement;
+  @Prop()
+  app: AppRoot;
 
-	@Prop()
-	app: AppRoot;
+  @State()
+  tokenDetails: ITokenDetail;
 
-	@State()
-	tokenDetails: ITokenDetail;
+  @State()
+  tokenScript: TokenScript;
 
-	@State()
-	tokenScript: TokenScript;
+  @State()
+  showInfoCard = false;
 
-	@State()
-	showInfoCard = false;
+  viewBinding: ViewBinding;
 
-	viewBinding: ViewBinding;
+  urlRequest: URLSearchParams;
 
-	urlRequest: URLSearchParams;
+  @Event({
+    eventName: 'showToast',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  showToast: EventEmitter<ShowToastEventArgs>;
 
-	@Event({
-		eventName: 'showToast',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) showToast: EventEmitter<ShowToastEventArgs>;
+  @Event({
+    eventName: 'showLoader',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  showLoader: EventEmitter<void>;
 
-	@Event({
-		eventName: 'showLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) showLoader: EventEmitter<void>;
+  @Event({
+    eventName: 'hideLoader',
+    composed: true,
+    cancelable: true,
+    bubbles: true,
+  })
+  hideLoader: EventEmitter<void>;
 
-	@Event({
-		eventName: 'hideLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) hideLoader: EventEmitter<void>;
+  async componentWillLoad() {
+    this.app.showTsLoader();
+  }
 
-	async componentWillLoad(){
-		this.app.showTsLoader();
-	}
+  async componentDidLoad() {
+    try {
+      const query = new URLSearchParams(document.location.search.substring(1));
+      const hashQuery = new URLSearchParams(document.location.hash.substring(1));
 
-	async componentDidLoad(){
+      for (const [key, param] of hashQuery.entries()) {
+        query.set(key, param);
+      }
 
-		try {
-			const query = new URLSearchParams(document.location.search.substring(1));
-			const hashQuery = new URLSearchParams(document.location.hash.substring(1));
+      this.urlRequest = query;
 
-			for (const [key, param] of hashQuery.entries()){
-				query.set(key, param);
-			}
+      await this.processUrlLoad();
+      this.loadTokenScript();
+    } catch (e) {
+      console.error(e);
+      this.showToast.emit({
+        type: 'error',
+        title: 'Failed to load token details',
+        description: e.message,
+      });
+    }
 
-			this.urlRequest = query;
+    this.app.hideTsLoader();
+  }
 
-			await this.processUrlLoad();
-			this.loadTokenScript();
+  async processUrlLoad() {
+    const queryStr = document.location.search.substring(1);
 
-		} catch (e){
-			console.error(e);
-			this.showToast.emit({
-				type: 'error',
-				title: "Failed to load token details",
-				description: e.message
-			});
-		}
+    if (!queryStr) return false;
 
-		this.app.hideTsLoader();
-	}
+    const query = new URLSearchParams(queryStr);
 
-	async processUrlLoad(){
+    if (query.has('chain') && query.has('contract') && query.has('tokenId')) {
+      this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get('chain')), query.get('contract'), query.get('tokenId'));
 
-		const queryStr = document.location.search.substring(1);
+      console.log('Token meta loaded!', this.tokenDetails);
 
-		if (!queryStr)
-			return false;
+      return true;
+    }
 
-		const query = new URLSearchParams(queryStr);
+    throw new Error('Could not locate token details using the values provided in the URL');
+  }
 
-		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
+  private async loadTokenScript() {
+    try {
+      const chain: number = parseInt(this.urlRequest.get('chain'));
+      const contract: string = this.urlRequest.get('contract');
+      let tokenScript;
 
-			this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
+      if (this.urlRequest.has('tokenscriptUrl')) {
+        tokenScript = await this.app.loadTokenscript('url', this.urlRequest.get('tokenscriptUrl'));
+      } else {
+        const tsId = chain + '-' + contract;
+        tokenScript = await this.app.loadTokenscript('resolve', tsId);
+      }
 
-			console.log("Token meta loaded!", this.tokenDetails);
+      const origins = tokenScript.getTokenOriginData();
+      let selectedOrigin;
 
-			return true;
-		}
+      for (const origin of origins) {
+        if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()) {
+          selectedOrigin = origin;
+          origin.tokenDetails = [this.tokenDetails];
+          break;
+        }
+      }
 
-		throw new Error("Could not locate token details using the values provided in the URL");
-	}
+      if (selectedOrigin) {
+        tokenScript.setTokenMetadata(origins);
 
-	private async loadTokenScript(){
+        class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
+          getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
+            return Promise.resolve(origins);
+          }
+        }
 
-		try {
-			const chain: number = parseInt(this.urlRequest.get("chain"));
-			const contract: string = this.urlRequest.get("contract");
-			let tokenScript;
+        this.app.discoveryAdapter = new StaticDiscoveryAdapter();
 
-			if (this.urlRequest.has("tokenscriptUrl")) {
-				tokenScript = await this.app.loadTokenscript("url", this.urlRequest.get("tokenscriptUrl"));
-			} else {
-				const tsId = chain + "-" + contract;
-				tokenScript = await this.app.loadTokenscript("resolve", tsId);
-			}
+        tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
+        this.tokenScript = tokenScript;
+        this.viewBinding = new ViewBinding(this.host, this.showToast);
+        this.viewBinding.setTokenScript(this.tokenScript);
+        this.tokenScript.setViewBinding(this.viewBinding);
+      }
+    } catch (e) {
+      console.warn(e.message);
+    }
+  }
 
-			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin;
+  private displayInfoCard() {
+    const infoCard = this.tokenScript.getCards().find(card => card.type === 'token');
 
-			for (const origin of origins){
-				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					selectedOrigin = origin;
-					origin.tokenDetails = [this.tokenDetails];
-					break;
-				}
-			}
+    if (infoCard) {
+      this.tokenScript.showOrExecuteTokenCard(infoCard);
+      this.showInfoCard = true;
+    }
+  }
 
-			if (selectedOrigin){
-				tokenScript.setTokenMetadata(origins);
-
-				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
-					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve(origins);
-					}
-				}
-
-				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
-
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
-				this.tokenScript = tokenScript;
-				this.viewBinding = new ViewBinding(this.host, this.showToast);
-				this.viewBinding.setTokenScript(this.tokenScript);
-				this.tokenScript.setViewBinding(this.viewBinding);
-
-
-			}
-
-		} catch (e){
-			console.warn(e.message);
-		}
-	}
-
-	private displayInfoCard(){
-		const infoCard = this.tokenScript.getCards().find((card) => card.type === "token");
-
-		if (infoCard) {
-			this.tokenScript.showOrExecuteTokenCard(infoCard);
-			this.showInfoCard = true
-		}
-	}
-
-	render(){
-
-		return (
-			<Host>
-				<div class="opensea-viewer">
-				{ this.tokenDetails ?
-					[
-						<div class="opensea-img-container" style={{backgroundImage: "url(" + this.tokenDetails.image + ")"}} title={this.tokenDetails.name}>
-							<div class="info-button-container">
-								{ this.tokenScript ?
-									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>
-										<img alt="Smart Layer" title="Token Information" src="/assets/icon/sl-icon-white.png" />
-									</div> :
-									<loading-spinner size="small" />
-								}
-							</div>
-						</div>,
-						<div class="card-overlay" style={{display: (this.showInfoCard ? "flex" : "none")}}>
-							<div class="close-button" onClick={() => {
-								this.showInfoCard = false;
-								this.tokenScript.getViewController().unloadTokenCard();
-							}}>x</div>
-							<card-view></card-view>
-						</div>
-					]
-				 : ''}
-				</div>
-				<div class="opensea-header">
-					<span>XNFT by</span>
-					<img class="header-icon" alt="TokenScript icon" src="assets/icon/smart-layer-icon.png"/>
-				</div>
-			</Host>
-		)
-	}
-
+  render() {
+    return (
+      <Host>
+        <div class="marketplace-viewer">
+          {this.tokenDetails
+            ? [
+                <div class="marketplace-img-container" style={{ backgroundImage: 'url(' + this.tokenDetails.image + ')' }} title={this.tokenDetails.name}>
+                  <div class="info-button-container">
+                    {this.tokenScript ? (
+                      <div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>
+                        <img alt="Smart Layer" title="Token Information" src="/assets/icon/sl-icon-white.png" />
+                      </div>
+                    ) : (
+                      <loading-spinner size="small" />
+                    )}
+                  </div>
+                </div>,
+                <div class="card-overlay" style={{ display: this.showInfoCard ? 'flex' : 'none' }}>
+                  <div
+                    class="close-button"
+                    onClick={() => {
+                      this.showInfoCard = false;
+                      this.tokenScript.getViewController().unloadTokenCard();
+                    }}
+                  >
+                    x
+                  </div>
+                  <card-view></card-view>
+                </div>,
+              ]
+            : ''}
+        </div>
+        <div class="marketplace-header">
+          <span>XNFT by</span>
+          <img class="header-icon" alt="TokenScript icon" src="assets/icon/smart-layer-icon.png" />
+        </div>
+      </Host>
+    );
+  }
 }
