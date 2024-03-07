@@ -6,6 +6,8 @@ import {AbstractViewBinding} from "../../../integration/abstractViewBinding";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
 import {ShowToastEventArgs} from "../../app/app";
+import {CHAIN_CONFIG} from "../../../integration/constants";
+import {showToastNotification} from "../util/showToast";
 
 export class ViewBinding extends AbstractViewBinding {
 
@@ -70,7 +72,27 @@ export class ViewBinding extends AbstractViewBinding {
 
 	async handleMessageFromView(method: RequestFromView, params: any){
 
-		await super.handleMessageFromView(method, params);
+		switch (method){
+			case RequestFromView.SET_LOADER:
+				if (params.show == true){
+					this.showLoader();
+				} else {
+					this.hideLoader();
+				}
+				break;
+			case RequestFromView.SHOW_TX_TOAST:
+				showTransactionNotification({
+					status: params.status,
+					txLink: CHAIN_CONFIG[params?.chain].explorer ?  CHAIN_CONFIG[params?.chain].explorer + params.txHash : null,
+					txNumber: params.txHash
+				}, this.showToast)
+				break;
+			case RequestFromView.SHOW_TOAST:
+				showToastNotification(params.type, params.title, params.description);
+				break;
+			default:
+				await super.handleMessageFromView(method, params);
+		}
 
 		if (method === RequestFromView.PUT_USER_INPUT)
 			this.renderAttributesTable();

@@ -7,6 +7,8 @@ import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {AbstractViewBinding, VIEW_BINDING_JAVASCRIPT} from "../../../integration/abstractViewBinding";
 import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
 import {RpcResponse} from "../../../../../engine-js/src/wallet/IWalletAdapter";
+import {showToastNotification} from "../../viewers/util/showToast";
+import {CHAIN_CONFIG} from "../../../integration/constants";
 
 
 @Component({
@@ -76,7 +78,30 @@ export class CardPopover implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-		await this.tokenScript.getViewController().handleMessageFromView(method, params);
+
+		console.log("Request from view: ", method, params);
+
+		switch (method){
+			case RequestFromView.SET_LOADER:
+				if (params.show == true){
+					this.loading = true;
+				} else {
+					this.hideLoader();
+				}
+				break;
+			case RequestFromView.SHOW_TX_TOAST:
+				showTransactionNotification({
+					status: params.status,
+					txLink: CHAIN_CONFIG[params?.chain].explorer ?  CHAIN_CONFIG[params?.chain].explorer + params.txHash : null,
+					txNumber: params.txHash
+				}, this.showToast)
+				break;
+			case RequestFromView.SHOW_TOAST:
+				showToastNotification(params.type, params.title, params.description);
+				break;
+			default:
+				await this.tokenScript.getViewController().handleMessageFromView(method, params);
+		}
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {

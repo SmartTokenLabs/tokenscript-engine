@@ -74,7 +74,19 @@ class Web3LegacySDK implements IWeb3LegacySDK {
             this.engineAdapter.request(RequestFromView.PUT_USER_INPUT, msgParams);
             // @ts-ignore
             // alpha.setValues(JSON.stringify(msgParams));
-        }.bind(this)
+        }.bind(this),
+        showLoader: () => {
+            this.engineAdapter.request(RequestFromView.SET_LOADER, { show: true });
+        },
+        hideLoader:() => {
+            this.engineAdapter.request(RequestFromView.SET_LOADER, { show: false });
+        },
+        showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => {
+            this.engineAdapter.request(RequestFromView.SHOW_TX_TOAST, { status, chain, txHash });
+        },
+        showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => {
+            this.engineAdapter.request(RequestFromView.SHOW_TOAST, { type, title, description });
+        }
     }
 }
 
@@ -87,31 +99,32 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
         this.localStorageAdapter = new LocalStorageAdapter(this);
     }
 
-    public getRpcProvider(chain: number){
+    public readonly eth = {
+        getRpcProvider: (chain: number) => {
 
-        const rpcUrls = this.getRpcUrls(chain);
+            const rpcUrls = this.eth.getRpcUrls(chain);
 
-        if (rpcUrls.length > 1){
-            const providers = [];
-            for (const url of rpcUrls){
-                providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
+            if (rpcUrls.length > 1){
+                const providers = [];
+                for (const url of rpcUrls){
+                    providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
+                }
+                return new ethers.FallbackProvider(providers, chain, {
+
+                });
+            } else {
+                return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
             }
-            return new ethers.FallbackProvider(providers, chain, {
+        },
+        getRpcUrls: (chainId: number) => {
 
-            });
-        } else {
-            return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
+            if (!this.instanceData.chainConfig[chainId])
+                throw new Error("RPC URL is not configured for ethereum chain: " + chainId);
+
+            const rpc = this.instanceData.chainConfig[chainId].rpc;
+
+            return typeof rpc === "string" ? [rpc]: rpc;
         }
-    }
-
-    public getRpcUrls(chainId: number){
-
-        if (!this.instanceData.chainConfig[chainId])
-            throw new Error("RPC URL is not configured for ethereum chain: " + chainId);
-
-        const rpc = this.instanceData.chainConfig[chainId].rpc;
-
-        return typeof rpc === "string" ? [rpc]: rpc;
     }
 }
 
