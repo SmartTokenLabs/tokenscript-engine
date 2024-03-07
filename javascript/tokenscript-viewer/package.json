@@ -23,28 +23,31 @@
     "typescript": "^4.7.2"
   },
   "dependencies": {
-    "@ethereum-attestation-service/eas-sdk": "^0.29.1",
+    "@datadog/browser-rum": "^5.6.0",
+    "@ethereum-attestation-service/eas-sdk": "^1.4.2",
     "@peculiar/x509": "^1.9.2",
-    "@stencil/core": "2.22.3",
+    "@stencil/core": "4.12.1",
     "@tokenscript/engine-js": "../engine-js/",
+    "@tokenscript/xmldsigjs": "^2.5.1",
     "@toruslabs/torus-embed": "^1.41.2",
     "@walletconnect/ethereum-provider": "^2.10.2",
     "@walletconnect/qrcode-modal": "^1.8.0",
     "bignumber.js": "^9.1.1",
     "cb-toast": "^0.0.2",
     "dexie": "^3.2.3",
-    "ethers": "^5.7.2",
-    "ethers-decode-error": "^1.0.0",
+    "ethers": "^6.9.2",
+    "ethers-decode-error": "^2.1.2",
     "ipfs-only-hash": "^4.0.0",
     "jsdom": "^22.1.0",
-    "pako": "^2.1.0",
-    "typescript-memoize": "^1.1.1",
-    "webcrypto-liner": "^1.4.2",
-    "xmldsigjs": "^2.5.1"
+    "lodash": "^4.17.21",
+    "webcrypto-liner": "^1.4.2"
   },
   "overrides": {
     "xml-core": {
       "@xmldom/xmldom": "^0.9.0-beta.6"
+    },
+    "xmldsigjs": {
+      "pkijs": "3.0.11"
     }
   }
 }
