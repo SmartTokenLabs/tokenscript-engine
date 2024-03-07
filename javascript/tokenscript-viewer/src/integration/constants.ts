@@ -55,6 +55,13 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)"
 };
 
+export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
+  [ChainID.ETHEREUM]: '0xA7b39296258348C78294F95B872b282326A97BDF',
+  [ChainID.SEPOLIA]: '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0',
+  [ChainID.POLYGON]: '0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7',
+  [ChainID.MUMBAI]: '0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797',
+};
+
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
 		rpc: 'https://mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',

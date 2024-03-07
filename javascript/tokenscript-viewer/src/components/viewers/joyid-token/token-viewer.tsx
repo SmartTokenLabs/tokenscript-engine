@@ -8,9 +8,10 @@ import {getSingleTokenMetadata} from '../util/getSingleTokenMetadata';
 import {getHardcodedDescription} from '../util/getHardcodedDescription';
 import {SLNAdapter} from '../../../integration/slnAdapter';
 import {ISLNAttestation} from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
-import {ethers} from 'ethers';
+import {ethers, Provider} from 'ethers';
 import {SchemaDecodedItem, SchemaEncoder, SchemaRegistry} from '@ethereum-attestation-service/eas-sdk';
 import {IFrameProvider} from './iframe-provider';
+import {CHAIN_EAS_SCHEMA_REGI_MAP, ChainID} from '../../../integration/constants';
 
 const SLN_CHAIN_IDS = [1337, 82459, 5169];
 
@@ -41,6 +42,9 @@ export class TokenViewer {
 
 	@State()
 	tokenScript: TokenScript;
+
+	@State()
+	provider: Provider;
 
 	@State()
 	iframeProvider: IFrameProvider;
@@ -88,6 +92,7 @@ export class TokenViewer {
 			}
 
 			this.urlRequest = query;
+			this.provider = new ethers.BrowserProvider(window.ethereum);
 
 			await this.processUrlLoad();
 		} catch (e) {
@@ -128,7 +133,7 @@ export class TokenViewer {
 				this.app.hideTsLoader();
 
 				const rawData = this.slnAttestation.rawData;
-				this.decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema), rawData.message.data);
+				this.decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema, Number(rawData.domain.chainId)), rawData.message.data);
 				console.log(this.decoded.formatted.scriptURI);
 
 				this.BASE_URL = new URL(this.decoded.formatted.scriptURI).origin;
@@ -154,13 +159,11 @@ export class TokenViewer {
 		throw new Error('Could not locate token details using the values provided in the URL');
 	}
 
-	provider = new ethers.BrowserProvider(window.ethereum);
-
-	schemaReg: SchemaRegistry = new SchemaRegistry('0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797');
-
-	private async getSchemaSignature(uid: string) {
-		this.schemaReg.connect(this.provider);
-		const schema = await this.schemaReg.getSchema({ uid });
+	private async getSchemaSignature(uid: string, chainId: ChainID) {
+		console.log(chainId, CHAIN_EAS_SCHEMA_REGI_MAP[chainId])
+		const schemaReg: SchemaRegistry = new SchemaRegistry(CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
+		schemaReg.connect(this.provider);
+		const schema = await schemaReg.getSchema({ uid });
 		return schema.schema;
 	}
 
@@ -223,7 +226,7 @@ export class TokenViewer {
 				(document.getElementById('frame') as any).src = url;
 				this.iframeProvider = new IFrameProvider({
 					iframeRef: iFrame as HTMLIFrameElement,
-					provider: new ethers.BrowserProvider(window.ethereum),
+					provider: this.provider,
 					type: 'ethereum',
 					targetOrigin: this.BASE_URL,
 				});
