@@ -21,6 +21,10 @@ export interface IWeb3LegacySDK {
 	executeCallback: (id: number, error: string, value: any) => void
 	action: {
 		setProps: (data: any) => void,
+		showLoader: () => void,
+		hideLoader: () => void,
+		showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => void,
+		showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => void
 	}
 	personal: {
 		sign: SignPersonalFunc
@@ -28,6 +32,8 @@ export interface IWeb3LegacySDK {
 }
 
 export interface ITokenScriptSDK extends IWeb3LegacySDK {
-	getRpcUrls: (chain: number) => string[]
-	getRpcProvider: (chain: number) => AbstractProvider
+	eth: {
+		getRpcUrls: (chain: number) => string[]
+		getRpcProvider: (chain: number) => AbstractProvider
+	}
 }

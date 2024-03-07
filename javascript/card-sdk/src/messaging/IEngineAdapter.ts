@@ -12,7 +12,11 @@ export enum RequestFromView {
 	PUT_USER_INPUT = "putUserInput",
 	CLOSE = "close",
 	ETH_RPC = "ethRpc",
-	LOCAL_STORAGE = "localStorage"
+	LOCAL_STORAGE = "localStorage",
+	// UI methods must be handled by the view adapter, not forwarded to the engine
+	SET_LOADER = "setLoader",
+	SHOW_TX_TOAST = "showTransactionToast",
+	SHOW_TOAST = "showToast"
 }
 
 export interface IEngineAdapter {
