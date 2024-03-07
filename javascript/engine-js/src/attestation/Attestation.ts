@@ -13,15 +13,13 @@ import {AttestationDefinition} from "../tokenScript/attestation/AttestationDefin
 export const EAS_RPC_CONFIG = {
 	1: 'https://eth-mainnet.g.alchemy.com/v2/2bJxn0VGXp9U5EOfA6CoMGU-rrd-BIIT',
 	11155111: 'https://sepolia.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
-	42161: 'https://arb1.arbitrum.io/rpc',
-	80001: 'https://polygon-mumbai.g.alchemy.com/v2/rVI6pOV4irVsrw20cJxc1fxK_1cSeiY0'
+	42161: 'https://arb1.arbitrum.io/rpc'
 }
 
 export const EAS_REGISTRY_CONFIG = {
 	1: "0xA7b39296258348C78294F95B872b282326A97BDF",
 	11155111: "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
-	42161: "0xA310da9c5B885E7fb3fbA9D66E9Ba6Df512b78eB",
-	80001: "0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797"
+	42161: "0xA310da9c5B885E7fb3fbA9D66E9Ba6Df512b78eB"
 }
 
 export class Attestation {
