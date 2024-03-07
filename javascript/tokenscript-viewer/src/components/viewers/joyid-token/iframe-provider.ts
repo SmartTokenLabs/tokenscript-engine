@@ -84,7 +84,7 @@ export class IFrameProvider {
                 const pending = await this.provider.getBlock("pending");
                 this.sendResponse(
                   message.data,
-                  pending.baseFeePerGas.toBigInt(),
+                  pending.baseFeePerGas,
                   {}
                 );
               }
