@@ -1,0 +1,25 @@
+{
+  "name": "@tokenscript/card-sdk",
+  "version": "1.1.0",
+  "description": "Provides common code and types for interacting from the TokenScript engine from a card view",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "webpack build"
+  },
+  "author": "Michael B Wallace <miccy@smarttokenlabs.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@tokenscript/engine-js": "^1.0.4",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.4.0",
+    "ethers": "^6.9.0"
+  }
+}

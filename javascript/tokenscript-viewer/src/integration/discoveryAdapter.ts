@@ -5,7 +5,8 @@ import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC20_ABI_JSON, ERC721_ABI_JSON} from "./constants";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
-import {Contract, ethers} from "ethers";
+import {Contract, ethers, Network} from "ethers";
+import {showToastNotification} from "../components/viewers/util/showToast";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
@@ -38,7 +39,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				resultTokens.push(cachedToken);
 
 			} catch (e){
-				console.error(e);
+				await showToastNotification("error", "Token Discovery Error", e.message);
 			}
 		}
 
@@ -53,8 +54,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
-			collectionId: initialTokenDetails.contractAddress,
-			ownerAddress
+			collectionId: initialTokenDetails.contractAddress.toLowerCase(),
+			ownerAddress: ownerAddress.toLowerCase()
 		}).first();
 
 		if (token && Date.now() < token.dt + (TOKEN_CACHE_TTL * 1000))
@@ -67,8 +68,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokens.put({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
-			ownerAddress,
+			collectionId: token.contractAddress.toLowerCase(),
+			ownerAddress: ownerAddress.toLowerCase(),
 			data: token,
 			dt: Date.now()
 		});
@@ -164,7 +165,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
+			collectionId: token.contractAddress.toLowerCase(),
 		}).first();
 
 		if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
@@ -177,7 +178,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
-			collectionId: token.contractAddress,
+			collectionId: token.contractAddress.toLowerCase(),
 			data,
 			dt: Date.now()
 		});
@@ -362,24 +363,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private getEthersContractInstance(address: string, chainId: number, type: TokenType){
-		const provider = new ethers.providers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc);
+		const provider = new ethers.JsonRpcProvider(CHAIN_CONFIG[chainId].rpc, chainId, { staticNetwork: new Network(chainId.toString(), chainId)});
 
 		return new Contract(address, type === "erc20" ? ERC20_ABI_JSON : ERC721_ABI_JSON, provider);
 	}
 
 	private async fetchRequest(query: string){
-
-		try {
-			const response = await fetch(BASE_TOKEN_DISCOVERY_URL + query)
-			const ok = response.status >= 200 && response.status <= 299
-			if (!ok) {
-				console.warn('token api request failed: ', query)
-				return null;
-			}
-
-			return response.json();
-		} catch (msg: any) {
-			return null;
+		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + query)
+		const ok = response.status >= 200 && response.status <= 299
+		if (!ok) {
+			throw new Error("Failed to load tokens, please try again shortly: " + response.statusText);
 		}
+
+		return response.json();
 	}
 }

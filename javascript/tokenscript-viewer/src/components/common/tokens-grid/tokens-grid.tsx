@@ -53,7 +53,6 @@ export class TokensGrid {
 
 	@Watch("tokenScript")
 	private async initTokenScript(){
-		await this.populateTokens(await this.tokenScript.getTokenMetadata());
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
@@ -66,7 +65,10 @@ export class TokensGrid {
 		}, "grid")
 
 		// TODO: Move to parent component OR ensure parent component is rendered before calling
-		setTimeout(() => this.invokeUrlAction(), 500);
+		setTimeout(async () => {
+			await this.populateTokens(await this.tokenScript.getTokenMetadata());
+			this.invokeUrlAction();
+		}, 500);
 	}
 
 	async populateTokens(tokens: {[key: string]: ITokenCollection} ){

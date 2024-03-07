@@ -16,6 +16,15 @@ header {
 	flex-direction: column;
 }
 
+sts-viewer:has(> card-popover .open) {
+	overflow: hidden;
+	max-height: 100vh;
+}
+
+.token-viewer:has(+ card-popover .open) {
+	overflow: hidden;
+}
+
 .details-container {
 	flex-grow: 1;
 }
@@ -44,6 +53,7 @@ header {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	overflow-x: hidden;
 }
 
 .main-info {
@@ -87,6 +97,7 @@ header {
 
 .extra-info p {
 	margin: 0 0 16px;
+	word-wrap: break-word;
 }
 
 .attribute-container {

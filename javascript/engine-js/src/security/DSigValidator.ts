@@ -1,6 +1,6 @@
 import {TokenScript} from "../TokenScript";
-import * as xmldsigjs from "xmldsigjs";
-import {KeyInfoX509Data, KeyValue, X509Certificate} from "xmldsigjs";
+import * as xmldsigjs from "@tokenscript/xmldsigjs";
+import {KeyInfoX509Data, KeyValue, X509Certificate} from "@tokenscript/xmldsigjs";
 import * as x509 from "@peculiar/x509";
 import {uint8tohex} from "../utils";
 import {Crypto, CryptoKey} from "webcrypto-liner/build";
@@ -32,63 +32,69 @@ export class DSigValidator {
 			return false;
 		}
 
-		const xml = new xmldsigjs.SignedXml(doc);
-		xml.LoadXml(signatures[0]);
-		const verified = await xml.Verify();
+		try {
+			const xml = new xmldsigjs.SignedXml(doc);
+			xml.LoadXml(signatures[0]);
+			const verified = await xml.Verify();
 
-		if (verified){
+			if (verified){
 
-			const signerKey = await (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyValue) as KeyValue).exportKey();
-			const x509Data = (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyInfoX509Data) as KeyInfoX509Data);
-			const signerKeyHex = await this.keyToHex(signerKey);
+				const signerKey = await (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyValue) as KeyValue).exportKey();
+				const x509Data = (xml.XmlSignature.KeyInfo.GetIterator().find((value) => value instanceof KeyInfoX509Data) as KeyInfoX509Data);
+				const signerKeyHex = await this.keyToHex(signerKey);
 
-			//console.log("DSIG validator: signer key: ", signerKeyHex, computeAddress(signerKeyHex));
+				//console.log("DSIG validator: signer key: ", signerKeyHex, computeAddress(signerKeyHex));
 
-			if (x509Data && x509Data.Certificates.length > 0){
+				if (x509Data && x509Data.Certificates.length > 0){
 
-				console.info("DSIG validator: Signature includes certificate, verifying chain.");
+					console.info("DSIG validator: Signature includes certificate, verifying chain.");
 
-				if (x509Data.Certificates.length > 1){
+					if (x509Data.Certificates.length > 1){
 
-					const masterKeyHex = await this.keyToHex(await this.verifyCertificateChain(x509Data.Certificates, signerKeyHex));
+						const masterKeyHex = await this.keyToHex(await this.verifyCertificateChain(x509Data.Certificates, signerKeyHex));
 
-					return {
-						authoritiveKey: masterKeyHex,
-						signingKey: signerKeyHex
-					};
-				} else {
+						return {
+							authoritiveKey: masterKeyHex,
+							signingKey: signerKeyHex
+						};
+					} else {
 
-					const cert = new x509.X509Certificate(x509Data.Certificates[0].GetRaw());
+						const cert = new x509.X509Certificate(x509Data.Certificates[0].GetRaw());
 
-					const masterPubKey = await this.getSignerPublicKeyFromCertificate(cert);
+						const masterPubKey = await this.getSignerPublicKeyFromCertificate(cert);
 
-					const masterKeyHex = await this.keyToHex(masterPubKey);
+						const masterKeyHex = await this.keyToHex(masterPubKey);
 
-					//console.log("DSIG validator: master key: ", masterKeyHex, computeAddress(masterKeyHex));
+						//console.log("DSIG validator: master key: ", masterKeyHex, computeAddress(masterKeyHex));
 
-					if (!await cert.verify({ publicKey: masterPubKey }))
-						throw new Error("x509 certificate verification failed!");
+						if (!await cert.verify({ publicKey: masterPubKey }))
+							throw new Error("x509 certificate verification failed!");
 
-					const cerPubKey = await this.keyToHex(await cert.publicKey.export());
+						const cerPubKey = await this.keyToHex(await cert.publicKey.export());
 
-					if (cerPubKey != signerKeyHex)
-						throw new Error("Certificate subject public key does not match XML signing key");
+						if (cerPubKey != signerKeyHex)
+							throw new Error("Certificate subject public key does not match XML signing key");
 
-					return {
-						authoritiveKey: masterKeyHex,
-						signingKey: signerKeyHex
-					};
+						return {
+							authoritiveKey: masterKeyHex,
+							signingKey: signerKeyHex
+						};
+					}
+
 				}
 
+				return {
+					authoritiveKey: signerKeyHex,
+					signingKey: signerKeyHex
+				};
+
+			} else {
+				throw new Error("DSIG verification failed!");
 			}
-
-			return {
-				authoritiveKey: signerKeyHex,
-				signingKey: signerKeyHex
-			};
-
-		} else {
-			throw new Error("DSIG verification failed!");
+		} catch (e){
+			console.warn("Signature validation failed: ");
+			console.warn(e);
+			return false;
 		}
 	}
 

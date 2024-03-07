@@ -1,6 +1,6 @@
 import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
-import {ContractKeyResolver} from "../security/ContractKeyResolver";
+import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
 import {ethers} from "ethers";
 
 export type OriginType = "contract"|"attestation"
@@ -16,6 +16,7 @@ export interface IOriginSecurityInfo {
 	status: SecurityStatus,
 	statusText: string,
 	signingKey?: string
+	trustedKey?: TrustedKey
 }
 
 export class Origin {
@@ -38,7 +39,7 @@ export class Origin {
 			console.log("Validating token origin: " + this.name);
 
 			if (securityInfo.authoritivePublicKey)
-				await this.validateBySignerKey(securityInfo.authoritivePublicKey);
+				await this.validateBySignerKey(securityInfo.authoritivePublicKey, securityInfo.trustedKey);
 
 			if (!this.securityStatus && this.type === "contract")
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
@@ -56,7 +57,17 @@ export class Origin {
 		return this.securityStatus;
 	}
 
-	private async validateBySignerKey(publicKeyHex: string){
+	private async validateBySignerKey(authPubKey: string, trustedKey?: TrustedKey){
+
+		if (trustedKey){
+			this.securityStatus = {
+				type: AuthenticationType.XML_DSIG,
+				status: SecurityStatus.VALID,
+				statusText: "The TokenScript is signed by a trusted key",
+				trustedKey
+			}
+			return;
+		}
 
 		if (this.type === "contract"){
 			// Resolve contract owner or deployer address
@@ -69,10 +80,10 @@ export class Origin {
 				// transform tokenscript signing key into address if required
 				// const dsigKeyOrAddress = contractKey.valueType === "ethAddress" ? ethers.utils.computeAddress(publicKeyHex) : publicKeyHex;
 
-				const dSigAddress = ethers.utils.computeAddress(publicKeyHex);
+				const dSigAddress = ethers.computeAddress(authPubKey);
 
 				// TODO: Check signer key as well as authoritative key
-				const isAdmin = await (new ContractKeyResolver(this.tokenScript).isAdmin(contract, dSigAddress));
+				const isAdmin = await (new TrustedKeyResolver(this.tokenScript).isAdmin(contract, dSigAddress));
 
 				// console.log("DSIG validator: revolved contract deployment key: ", contractKey);
 
@@ -81,15 +92,18 @@ export class Origin {
 					this.securityStatus = {
 						type: AuthenticationType.XML_DSIG,
 						status: SecurityStatus.VALID,
-						statusText: "The TokenScript signer matches the contract deployer for this token"
+						statusText: "The TokenScript signer matches the contract deployer for this token",
+						trustedKey: {
+							issuerName: "Contract owner",
+							valueType: "ethAddress",
+							value: dSigAddress
+						}
 					}
 
 					console.log("DSIG validator: DSIG matched successfully");
 				} else {
-					console.warn(`DSIG validator: contract key does not match DSIG( publicKeyHex: ${publicKeyHex}, address: ${dSigAddress})`);
+					console.warn(`DSIG validator: contract key does not match DSIG( publicKeyHex: ${authPubKey}, address: ${dSigAddress})`);
 				}
-
-				this.signingKey = dSigAddress;
 
 			} catch (e) {
 				console.warn(e);
@@ -104,8 +118,8 @@ export class Origin {
 			// TODO: This will cause valid attestations to be marked as a fail, rework so status for a specific token can be fetched
 			for (const key of definition.keys){
 				console.log("DSIG Validator: matching attestation issuer key: ", key);
-				if (publicKeyHex.replace("0x", "").toLowerCase() !== key.replace("0x", "").toLowerCase()) {
-					console.warn("DSIG Validator: attestation issuer key does not match DSIG: ", publicKeyHex);
+				if (authPubKey.replace("0x", "").toLowerCase() !== key.replace("0x", "").toLowerCase()) {
+					console.warn("DSIG Validator: attestation issuer key does not match DSIG: ", authPubKey);
 					return; // Does not match one key
 				}
 			}
@@ -113,7 +127,7 @@ export class Origin {
 			this.securityStatus = {
 				type: AuthenticationType.XML_DSIG,
 				status: SecurityStatus.VALID,
-				statusText: "The TokenScript is signed by the attestation issuer"
+				statusText: "The TokenScript is signed by the attestation issuer",
 			}
 		}
 	}

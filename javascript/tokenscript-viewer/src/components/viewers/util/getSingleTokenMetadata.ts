@@ -5,7 +5,7 @@ import {TokenType} from "../../../../../engine-js/src/tokens/ITokenCollection";
 
 export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId: string): Promise<ITokenDetail> => {
 
-	const collectionUrl = `/get-token-collection?chain=${CHAIN_MAP[chain]}&smartContract=${contract}&tokenId=${tokenId}`;
+	const collectionUrl = `/get-token-collection?chain=${CHAIN_MAP[chain]}&smartContract=${contract}`;
 	const tokenUrl = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
 
 	const responses = await Promise.all([
@@ -15,7 +15,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 	const ok = (
 		(responses[0].status >= 200 && responses[0].status <= 299) &&
-		(responses[1].status >= 200 && responses[0].status <= 299)
+		(responses[1].status >= 200 && responses[1].status <= 299)
 	)
 	if (!ok) {
 		throw new Error("Failed to load token details");

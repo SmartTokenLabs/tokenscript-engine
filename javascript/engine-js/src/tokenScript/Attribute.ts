@@ -5,6 +5,8 @@ import {EthUtils} from "../ethereum/EthUtils";
 import {FilterQuery} from "./data/event/FilterQuery";
 import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
 import {Label} from "./Label";
+import LodashGet from "lodash/get";
+import {AttributeReference} from "./data/AttributeReference";
 
 interface TokenAttributeValue {
 	[tokenId: string]: any
@@ -18,7 +20,7 @@ interface TokenAttributeValue {
  */
 export class Attribute {
 
-	private static NO_DEPENDENCY_ORIGINS = ["ts:user-entry", "ts:data"];
+	private static NO_DEPENDENCY_ORIGINS = ["ts:user-entry"];
 
 	private label?: Label;
 	private asType?: string;
@@ -162,10 +164,7 @@ export class Attribute {
 	public async getJsonSafeValue(bypassLocks?: boolean){
 		const value = await this.getValue(false, false, bypassLocks);
 
-		if (typeof value === "bigint")
-			return value.toString();
-
-		return value;
+		return EthUtils.bigIntsToString(value);
 	}
 
 	/**
@@ -187,30 +186,46 @@ export class Attribute {
 
 				console.log("Resolving attribute: " + this.getName() + " for token context " + tokenContext?.selectedTokenId);
 
-				const contract = this.tokenScript.getContractByName(origin.getAttribute("contract"));
+				const contractName = origin.getAttribute("contract")
+				const contract = this.tokenScript.getContractByName(contractName);
 				const wallet = await this.tokenScript.getEngine().getWalletAdapter();
 				const chain = tokenContext?.chainId ?? await wallet.getChain();
 				const contractAddr = contract.getAddressByChain(chain, true);
-
-				let res;
 
 				if (origin.tagName === "ethereum:call") {
 
 					const func = origin.getAttribute("function");
 
 					let outputType = EthUtils.tokenScriptOutputToEthers(this.asType);
+					let outputTypes;
+
+					if (outputType === "abi"){
+
+						const abi = contract.getAbi("function", func);
+
+						if (!abi.length){
+							throw new Error("'as' XML attribute specifies abi but the abi for " + contractName + ":" + func + " is not defined");
+						}
+
+						outputTypes = abi[0].outputs;
+					} else {
+						outputTypes = [outputType];
+					}
 
 					const args = new Arguments(this.tokenScript, origin, this.localAttrContext).getArguments();
 
 					const ethParams = [];
 
 					for (let i in args) {
-						ethParams.push(await args[i].getEthersArgument(tokenContext, i.toString()))
+						ethParams.push(await args[i].getEthersArgument(tokenContext))
 					}
 
-					res = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, [outputType]);
+					resultValue = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);
 
-					console.log("Call result: ", res);
+					if (outputType === "abi")
+						resultValue = EthUtils.convertFunctionResult(resultValue);
+
+					console.log("Call result: ", resultValue);
 
 				} else {
 
@@ -246,15 +261,9 @@ export class Attribute {
 					if (events.length === 0)
 						break;
 
-					res = events[0].args[fieldToSelect];
+					resultValue = events[0].args[fieldToSelect];
 
-					console.log("Event result: ", res);
-				}
-
-				if (res instanceof Object) {
-					resultValue = BigInt(res);
-				} else {
-					resultValue = res;
+					console.log("Event result: ", resultValue);
 				}
 
 				break;
@@ -267,13 +276,43 @@ export class Attribute {
 					throw new Error("Attribute ts:data origin does not support more than one element");
 				}
 
-				resultValue = data[0].textContent;
+				if (origin.hasAttribute("ref")){
+
+					// TODO: prevent single attribute references (i.e. must be path)? Maybe not if this code gets shared for transaction argument resolution
+
+					// Check for path reference and extract attribute name
+					const ref = origin.getAttribute("ref");
+					const firstElem = ref.match(/\.|\[/)?.[0];
+					const attrName = firstElem ? ref.split(firstElem)[0] : ref;
+					let path = firstElem ? ref.substring(ref.indexOf(firstElem)) : "";
+
+					if (path.length && path.charAt(0) === ".")
+						path = path.substring(1);
+
+					console.log("Resolving attribute data reference, attribute:", attrName, " path:", path);
+
+					const attribute = this.tokenScript.getAttributes().getAttribute(attrName);
+
+					const value = await attribute.getValue(true, false, false, tokenContext);
+
+					resultValue = path ? LodashGet(value, path) : value;
+
+				} else {
+					resultValue = data[0].textContent;
+				}
 
 				break;
 
 			default:
 				throw new Error("Attribute origin type " + origin.tagName + " is not implemented");
 		}
+
+		// Cleanup ethers big numbers
+		if (resultValue instanceof Object && resultValue._isBigNumber) {
+			resultValue = BigInt(resultValue);
+		}
+
+		//console.log("Saving scope value: ", scope);
 
 		this.setScopedValue(resultValue, scope);
 
@@ -436,6 +475,10 @@ export class Attribute {
 		} else if (origin.tagName === "ethereum:event") {
 			const filter = origin.getAttribute("filter");
 			dependencies = new FilterQuery(this.tokenScript, filter, this.localAttrContext).getDynamicFilterValues();
+		} else if (origin.tagName === "ts:data" && origin.getAttribute("ref")){
+			dependencies = [new AttributeReference(this.tokenScript, origin, this.localAttrContext)];
+		} else {
+			return false;
 		}
 
 		return dependencies;

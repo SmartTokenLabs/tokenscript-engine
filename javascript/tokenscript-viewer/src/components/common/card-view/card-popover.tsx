@@ -6,6 +6,7 @@ import {RequestFromView, ViewEvent} from "../../../../../engine-js/src/view/View
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {AbstractViewBinding, VIEW_BINDING_JAVASCRIPT} from "../../../integration/abstractViewBinding";
 import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
+import {RpcResponse} from "../../../../../engine-js/src/wallet/IWalletAdapter";
 
 
 @Component({
@@ -75,25 +76,7 @@ export class CardPopover implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-
-		switch (method) {
-
-			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				console.log("Event from view: Sign personal message");
-				this.currentCard.signPersonalMessage(params.id, params.data);
-				break;
-
-			case RequestFromView.PUT_USER_INPUT:
-				await this.tokenScript.getViewController().setUserEntryValues(params);
-				break;
-
-			case RequestFromView.CLOSE:
-				this.unloadTokenView()
-				break;
-
-			default:
-				throw new Error("TokenScript view API method: " + method + " is not implemented.");
-		}
+		await this.tokenScript.getViewController().handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
@@ -115,6 +98,7 @@ export class CardPopover implements IViewBinding {
 			case ViewEvent.EXECUTE_CALLBACK:
 			case ViewEvent.GET_USER_INPUT:
 			case ViewEvent.ON_CONFIRM:
+			case ViewEvent.TRANSACTION_EVENT:
 				this.postMessageToView(event, {...data, id});
 				return;
 		}
@@ -124,19 +108,24 @@ export class CardPopover implements IViewBinding {
 		this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
+	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
+		return this.iframe.contentWindow.postMessage(response, "*");
+	}
+
 	async showTokenView(card: Card, tsId?: string) {
 
 		this.loading = true;
 		await this.dialog.openDialog(() => this.unloadTokenView());
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
 	}
 
 	async unloadTokenView() {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
-		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
+		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
 		history.replaceState(undefined, undefined, newUrl);
@@ -150,29 +139,16 @@ export class CardPopover implements IViewBinding {
 		this.loading = true;
 	}
 
-	// TODO: move this logic into engine
 	async confirmAction(){
-
-		const transaction = this.currentCard.getTransaction();
 
 		this.loading = true;
 
-		if (transaction){
-
-			console.log(transaction.getTransactionInfo());
-
-			try {
-				await this.currentCard.executeTransaction((data: ITransactionStatus) => {
-					this.postMessageToView(ViewEvent.TRANSACTION_EVENT, data);
-					showTransactionNotification(data, this.showToast);
-				});
-			} catch (e){
-				this.postMessageToView(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message});
-				handleTransactionError(e, this.showToast);
-			}
-
-		} else {
-			this.postMessageToView(ViewEvent.ON_CONFIRM, {});
+		try {
+			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+				showTransactionNotification(data, this.showToast);
+			});
+		} catch (e){
+			handleTransactionError(e, this.showToast);
 		}
 
 		this.loading = false

@@ -2,6 +2,7 @@ import {TokenScript} from "../TokenScript";
 import {DSigValidator} from "./DSigValidator";
 import * as IPFSOnlyHash from 'ipfs-only-hash';
 import {IOriginSecurityInfo} from "../tokenScript/Origin";
+import {TrustedKey, TrustedKeyResolver} from "./TrustedKeyResolver";
 
 export enum SecurityStatus {
 	VALID = "valid",
@@ -15,7 +16,7 @@ export interface ISecurityInfo {
 	ipfsCid?: string,
 	status: SecurityStatus,
 	statusText: string,
-	signerInfo: string // TODO: This is where we can put details of a known signer
+	trustedKey?: TrustedKey,
 	originStatuses: IOriginSecurityInfo[]
 }
 
@@ -52,9 +53,16 @@ export class SecurityInfo {
 		if (result !== false){
 			this.securityInfo.authoritivePublicKey = result.authoritiveKey;
 			this.securityInfo.signerPublicKey = result.signingKey;
+
+			const keyResolver = new TrustedKeyResolver(this.tokenScript);
+			this.securityInfo.trustedKey = keyResolver.getTrustedPublicKey(this.securityInfo.authoritivePublicKey, this.securityInfo.signerPublicKey);
 		}
 
-		this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);
+		try {
+			this.securityInfo.ipfsCid = await IPFSOnlyHash.of(this.tokenScript.xmlStr, null);
+		} catch (e){
+			console.error("Failed to calculate IPFS hash: ", e);
+		}
 
 		await this.verifyOrigins();
 	}
@@ -79,7 +87,7 @@ export class SecurityInfo {
 
 		if (originFailCount === 0){
 			this.securityInfo.status = SecurityStatus.VALID;
-			this.securityInfo.statusText = "The TokenScript is authenticated for use with all specified token origins.";
+			this.securityInfo.statusText = this.securityInfo.trustedKey ? "The TokenScript is signed by a trusted key" : "The TokenScript is authenticated for use with all specified token origins.";
 		} else {
 			this.securityInfo.status = SecurityStatus.INVALID;
 

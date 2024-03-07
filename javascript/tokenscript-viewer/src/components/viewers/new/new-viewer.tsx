@@ -52,9 +52,6 @@ export class NewViewer {
 				}
 			}
 		})
-	}
-
-	async componentDidLoad(){
 		this.init();
 		this.processUrlLoad();
 	}
@@ -246,8 +243,10 @@ export class NewViewer {
 				};
 
 				// TODO: This can possibly be moved to tokenscript-button component to allow dynamic update of the icon after it has been added
-				if (data.image){
+				if (data.image) {
 					meta.iconUrl = data.image;
+				} else if (tokenScript.getMetadata().iconUrl && tokenScript.getMetadata().iconUrl.trim()) {
+					meta.iconUrl = tokenScript.getMetadata().iconUrl.trim();
 				} else {
 					const originData = tokenScript.getTokenOriginData()[0];
 
@@ -255,8 +254,7 @@ export class NewViewer {
 						const discoveryAdapter = new DiscoveryAdapter();
 						try {
 							const data = await discoveryAdapter.getCollectionMeta(originData, CHAIN_MAP[originData.chainId]);
-							if (!meta.iconUrl)
-								meta.iconUrl = data.image;
+							meta.iconUrl = data.image;
 						} catch (e) {
 							console.error("Failed to load tokenscript icon from collection metadata", e);
 						}

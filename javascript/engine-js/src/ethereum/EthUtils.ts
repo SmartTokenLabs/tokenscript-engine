@@ -48,7 +48,7 @@ export class EthUtils {
 
 		if (type.indexOf("byte") === 0){
 			if (value && (typeof value !== "string" || value.indexOf("0x") !== 0))
-				value = ethers.utils.hexlify(value);
+				value = ethers.hexlify(value);
 			return value;
 		}
 
@@ -79,6 +79,70 @@ export class EthUtils {
 		return outputType;
 	}
 
+	/**
+	 * Since ethers.js returns structs as an array with additional object properties,
+	 * we need to convert it to a normal object for JSON encoding to work for alphanumeric keys.
+	 * Otherwise, the card Javascript only receives numeric keys
+	 * @param resultObject
+	 */
+	public static convertFunctionResult(resultObject: any){
+
+		if (typeof resultObject !== "object" || !("toObject" in resultObject))
+			return resultObject;
+
+		try {
+			const converted = {};
+
+			for (let i in resultObject.toObject()){
+				converted[i] = this.convertFunctionResult(resultObject[i]);
+			}
+
+			return converted;
+
+		} catch (e){
+
+			const converted = [];
+			const resultArray = resultObject.toArray();
+
+			for (let i=0; i<resultArray.length; i++){
+				converted.push(this.convertFunctionResult(resultArray[i]));
+			}
+
+			return converted;
+		}
+	}
+
+	/**
+	 * Convert bigint and other illegal JSON types to JSON compatible values.
+	 * @param data
+	 */
+	public static bigIntsToString(data: any){
+
+		if (typeof data === "bigint")
+			return data.toString();
+
+		if (typeof data !== "object")
+			return data;
+
+		if (Array.isArray(data)){
+			const res = [];
+
+			for (let i=0; i<data.length; i++){
+				res.push(this.bigIntsToString(data[i]))
+			}
+
+			return res;
+		}
+
+		const res = {};
+
+		for (let i in data){
+			res[i] = this.bigIntsToString(data[i]);
+		}
+
+		return res;
+	}
+
 	public static calculateDecimalValue(value: string|bigint|number, decimals: number){
 		if (!value)
 			return 0;
@@ -96,6 +160,8 @@ export class EthUtils {
 		if (typeof value !== "string")
 			value = value.toString();
 
-		return BigInt(new BigNumber(value).multipliedBy(Math.pow(10, decimals)).toString());
+		const convertedString = new BigNumber(value).multipliedBy(Math.pow(10, decimals)).integerValue().toString(10);
+
+		return BigInt(convertedString);
 	}
 }

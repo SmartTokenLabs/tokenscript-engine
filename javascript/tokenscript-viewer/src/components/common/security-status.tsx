@@ -1,7 +1,7 @@
-import {Component, h, Prop, State, Watch} from "@stencil/core";
+import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
 import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {computeAddress} from "ethers/lib/utils";
+import {computeAddress} from "ethers";
 
 @Component({
 	tag: 'security-status',
@@ -14,12 +14,14 @@ export class SecurityStatus {
 
 	@Prop() tokenScript: TokenScript;
 
+	@Prop() size: "large"|"small" = "large";
+
 	@State() securityInfo: Partial<ISecurityInfo>;
 
 	@State() statusColor: string;
 	@State() statusIcon: string;
 
-	async componentDidLoad() {
+	async componentWillLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
 	}
 
@@ -53,6 +55,7 @@ export class SecurityStatus {
 		}, []);
 
 		return "TokenScript security information\n" +
+			(this.securityInfo.trustedKey ? "\nIssued by: " + this.securityInfo.trustedKey.issuerName + "\n" : "") +
 			(this.securityInfo.authoritivePublicKey ? "\nAuthoritative Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + "\n(" + this.securityInfo.authoritivePublicKey + ")" : "") +
 			(this.securityInfo.signerPublicKey ? "\nSigner Key: " + computeAddress(this.securityInfo.signerPublicKey) : "") +
 			"\nAuthentication: " + (authMethods.join(", "));
@@ -61,8 +64,8 @@ export class SecurityStatus {
 	render() {
 		return (
 			this.securityInfo ?
-				<div>
-					<div class="security-status" style={{background: this.statusColor}}
+				<Host>
+					<div class={"security-status" + (this.size === "small" ? " small" : "")} style={{background: this.statusColor}}
 						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
 						 onClick={() => this.dialog.openDialog()}>
 						{this.statusIcon}
@@ -73,7 +76,7 @@ export class SecurityStatus {
 						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
 						</p>
 					</popover-dialog>
-				</div>
+				</Host>
 			: ''
 		)
 	}

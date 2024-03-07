@@ -25,6 +25,18 @@ export const knownTokenScripts: TokenScriptsMeta[] = [
 		name: "SmartCat Loot",
 		iconUrl: "/assets/tokenscripts/smart-cat/loot-meta/contract.png"
 	},
+	{
+		tokenScriptId: "1-0xAFb979d9afAd1aD27C5eFf4E27226E3AB9e5dCC9",
+		loadType: "resolve",
+		name: "Sablier Ethereum",
+		iconUrl: "https://api.thegraph.com/ipfs/api/v0/cat?arg=QmZCYxNUHghpEg7V59a2dXYC1C7DdxEayiwrYpJV9jwoaN"
+	},
+	{
+		tokenScriptId: "137-0x5f0e1dea4A635976ef51eC2a2ED41490d1eBa003",
+		loadType: "resolve",
+		name: "Sablier Polygon",
+		iconUrl: "https://api.thegraph.com/ipfs/api/v0/cat?arg=QmZCYxNUHghpEg7V59a2dXYC1C7DdxEayiwrYpJV9jwoaN"
+	},
 ];
 
 export const getKnownTokenScriptMetaById = (tsId: string) => {

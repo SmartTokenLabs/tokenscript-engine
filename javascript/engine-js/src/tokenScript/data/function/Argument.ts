@@ -33,7 +33,7 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 	/**
 	 * Get the ethers argument data for this argument
 	 */
-	public async getEthersArgument(tokenContext: ITokenIdContext, name: string){
+	public async getEthersArgument(tokenContext: ITokenIdContext, name: string = ""){
 
 		let arg: Partial<IEthersArgument> = {
 			name,

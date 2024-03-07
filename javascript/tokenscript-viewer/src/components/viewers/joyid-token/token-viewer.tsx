@@ -11,7 +11,8 @@ import { ethers } from 'ethers';
 import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
 import { IFrameProvider } from './iframe-provider';
 
-const SLN_CHAIN_IDS = [1337, 82459, 5169];
+const SLN_CHAIN_IDS = [1337, 82459, 5169];import {getHardcodedDescription} from "../util/getHardcodedDescription";
+
 @Component({
   tag: 'token-viewer',
   styleUrl: 'token-viewer.css',
@@ -37,8 +38,11 @@ export class TokenViewer {
   @State()
   decoded: any;
 
+	@State()
+	tokenScript: TokenScript;
+
   @State()
-  tokenScript: TokenScript;
+	description: string = "";
 
   @State()
   iframeProvider: IFrameProvider;
@@ -216,9 +220,11 @@ export class TokenViewer {
 
         tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
         this.tokenScript = tokenScript;
+				this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
       }
     } catch (e) {
       console.warn(e.message);
+			this.description = this.tokenDetails.description;
     }
   }
 

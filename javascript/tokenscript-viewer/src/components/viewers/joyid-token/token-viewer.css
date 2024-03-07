@@ -17,6 +17,16 @@ header {
   flex-direction: column;
 }
 
+
+token-viewer:has(> card-popover .open) {
+	overflow: hidden;
+	max-height: 100vh;
+}
+
+.token-viewer:has(+ card-popover .open) {
+	overflow: hidden;
+}
+
 .details-container {
   flex-grow: 1;
 }
@@ -58,6 +68,34 @@ header {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.title-row {
+	display: flex;
+	align-items: center;
+	margin: 16px 0 0;
+}
+
+.title-container {
+	flex-grow: 1;
+}
+
+.security-wrapper {
+	margin-right: -5px;
+}
+
+.title-row {
+	display: flex;
+	align-items: center;
+	margin: 16px 0 0;
+}
+
+.title-container {
+	flex-grow: 1;
+}
+
+.security-wrapper {
+	margin-right: -5px;
 }
 
 .main-info .owner-count {
@@ -172,6 +210,10 @@ header {
 
 .card-container {
   height: calc(100dvh - 50px) !important;
+}
+
+.tokenscript-frame, .card-container, .iframe-wrapper {
+	border-radius: 0 !important;
 }
 
 action-bar {

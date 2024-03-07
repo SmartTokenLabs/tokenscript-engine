@@ -6,15 +6,19 @@ import {IViewBinding} from "./view/IViewBinding";
 import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
 import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
+import {TrustedKey} from "./security/TrustedKeyResolver";
+import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
 	noLocalStorage?: boolean
+	trustedKeys?: TrustedKey[] // Define signing keys which are always valid
 }
 
 const DEFAULT_CONFIG: IEngineConfig = {
-	ipfsGateway: "https://ipfs.io/ipfs/",
-	noLocalStorage: false
+	ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
+	noLocalStorage: false,
+	trustedKeys: []
 };
 
 export enum ScriptSourceType {
@@ -37,6 +41,7 @@ export class TokenScriptEngine {
 		public getWalletAdapter: () => Promise<IWalletAdapter>,
 		public getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>,
 		public getAttestationStorageAdapter?: () => IAttestationStorageAdapter,
+		public getLocalStorageAdapter?: () => ILocalStorageAdapter,
 		public readonly config?: IEngineConfig
 	) {
 		if (this.config){
@@ -241,9 +246,24 @@ export class TokenScriptEngine {
 
 		return <string>uri;*/
 
-		const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
-		const scriptUris = await res.json();
+		// TODO: Add support for selecting a specific index or URL?
+		// const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
+		// const scriptUris = await res.json();
+		//return <string>scriptUris[0];
 
-		return <string>scriptUris[0];
+		// i.e. https://store-backend.smartlayer.network/tokenscript/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/chain/137/script-uri
+		const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr.toLowerCase()}/chain/${chain}/script-uri`);
+		const data = await res.json();
+
+		if (!data.scriptURI)
+			return null;
+
+		if (data.scriptURI.erc5169?.length)
+			return <string>data.scriptURI.erc5169[0];
+
+		if (data.scriptURI.offchain?.length)
+			return <string>data.scriptURI.offchain[0];
+
+		return null;
 	}
 }

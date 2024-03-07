@@ -35,6 +35,7 @@ export const getBrowserData = () => {
 	const isStatusWallet = isTouchDevice && !!windowEthereum.isStatusWallet
 	const isGoWallet = isTouchDevice && !!windowEthereum.isGoWallet
 	const isMyEthereumWallet = isTouchDevice && !!windowEthereum.isTrust && !!windowEthereum.isMetaMask
+	const isOkxWallet = window.okxwallet?.isOkxWallet
 	const isImToken = !!navigator.userAgent.match(/\simToken\//)
 
 	const isMetaMask = isTouchDevice && !!windowEthereum.isMetaMask && !isTrust && !isBrave
@@ -48,6 +49,7 @@ export const getBrowserData = () => {
 		goWallet: isGoWallet,
 		status: isStatusWallet,
 		imToken: isImToken,
-		brave: isBrave
+		brave: isBrave,
+		okx: isOkxWallet
 	}
 }

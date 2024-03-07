@@ -2,10 +2,10 @@ import { ethers } from "ethers";
 import {TokenScript} from "../TokenScript";
 import {Contract} from "../tokenScript/Contract";
 
-export interface IKeySource {
-	type: "contractCall" | "deployer";
+export interface TrustedKey {
+	issuerName: string;
 	valueType: "ec" | "ethAddress";
-	value: string; // Should be a valid hex encoded key or address
+	value: string;
 }
 
 const ACCESS_CONTROL_SCRIPTS_ADMIN = "TS_SCRIPT_ADMIN";
@@ -13,35 +13,47 @@ const ACCESS_CONTROL_SCRIPTS_ADMIN = "TS_SCRIPT_ADMIN";
 /**
  * The contract key resolver is used to resolve the owner or deployer of a smart contract
  */
-export class ContractKeyResolver {
-
-	/**
-	 * Define contract deployment key sources
-	 * @private
-	 */
-	private static KEY_SOURCES: IKeySource[] = [
-		{
-			type: "contractCall",
-			valueType: "ethAddress",
-			value: "owner" // The trusted public key of the TokenScript is the smart contract owner (contract must implement 'ownable' interface)
-		},
-		// TODO: Resolve by finding contract constructor transaction sender
-		/*{
-			type: "deployer",
-			valueType: "ethAddress",
-			value: ""
-		}*/
-	];
+export class TrustedKeyResolver {
 
 	constructor(private tokenScript: TokenScript) {
 
 	}
 
+	public getTrustedPublicKey(authPubKey: string, signerPubKey: string){
+
+		const trustedKeys = this.tokenScript.getEngine().config.trustedKeys;
+
+		if (!trustedKeys)
+			return null;
+
+		const authEthAddress = ethers.computeAddress(authPubKey);
+		const signerEthAddress = ethers.computeAddress(signerPubKey);
+
+		for (const trustedKey of trustedKeys){
+
+			if (trustedKey.valueType === "ethAddress"){
+				if (
+					authEthAddress.toLowerCase() === trustedKey.value.toLowerCase() ||
+					signerEthAddress.toLowerCase() === trustedKey.value.toLowerCase()
+				)
+					return trustedKey
+			} else {
+				if (
+					authPubKey.toLowerCase() === trustedKey.value.toLowerCase() ||
+					signerPubKey.toLowerCase() === trustedKey.value.toLowerCase()
+				)
+					return trustedKey
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * Test Ownable and AccessControl interfaces
-	 * @param address
+	 * @param contract
+	 * @param dSigAddress
 	 */
-
 	public async isAdmin(contract: Contract, dSigAddress: string): Promise<boolean> {
 		const adapter = await this.tokenScript.getEngine().getWalletAdapter();
 
@@ -66,14 +78,14 @@ export class ContractKeyResolver {
 				address.chain, address.address, "hasRole", [
 					{
 						internalType: "bytes32",
-						name: "0",
+						name: "",
 						type: "bytes32",
 						// 0x00000... its Admin Role for Openzeppelin AccessControl
-						value: ethers.constants.HashZero
+						value: ethers.ZeroHash
 					},
 					{
 						internalType: "address",
-						name: "1",
+						name: "",
 						type: "address",
 						value: dSigAddress
 					}
@@ -88,13 +100,13 @@ export class ContractKeyResolver {
 				address.chain, address.address, "hasRole", [
 					{
 						internalType: "bytes32",
-						name: "0",
+						name: "",
 						type: "bytes32",
-						value: ethers.utils.keccak256(ethers.utils.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
+						value: ethers.keccak256(ethers.toUtf8Bytes(ACCESS_CONTROL_SCRIPTS_ADMIN))
 					},
 					{
 						internalType: "address",
-						name: "1",
+						name: "",
 						type: "address",
 						value: dSigAddress
 					}
@@ -109,43 +121,5 @@ export class ContractKeyResolver {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Resolve script public key for a contract
-	 * @param contract
-	 */
-	public async resolvePublicKey(contract: Contract){
-
-		const adapter = await this.tokenScript.getEngine().getWalletAdapter();
-
-		// TODO: Implement multiple address checks
-		const address = contract.getFirstAddress();
-
-		for (let keySource of ContractKeyResolver.KEY_SOURCES){
-
-			try {
-
-				if (keySource.type === "contractCall"){
-
-					const value = await adapter.call(
-						address.chain, address.address, keySource.value, [],
-						[(keySource.valueType === "ethAddress" ? "address" : "bytes")]
-					);
-
-					return {
-						...keySource,
-						value
-					};
-				}
-
-				throw new Error("Key source type " + keySource.type + " is not implemented");
-
-			} catch (e){
-				console.error(e);
-			}
-		}
-
-		throw new Error("Owner or Pubkey for " + address.address + " was not found");
 	}
 }

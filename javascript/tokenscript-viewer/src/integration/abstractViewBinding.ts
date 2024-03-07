@@ -1,7 +1,8 @@
 import {IViewBinding} from "../../../engine-js/src/view/IViewBinding";
 import {Card} from "../../../engine-js/src/tokenScript/Card";
 import {TokenScript} from "../../../engine-js/src/TokenScript";
-import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {RequestFromView, ViewController, ViewEvent} from "@tokenscript/engine-js/src/view/ViewController";
+import {RpcResponse} from "../../../engine-js/src/wallet/IWalletAdapter";
 
 export abstract class AbstractViewBinding implements IViewBinding {
 
@@ -13,6 +14,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	loader: HTMLDivElement;
 
 	protected tokenScript: TokenScript
+	protected _viewController: ViewController;
 
 	constructor(protected view: HTMLElement) {
 
@@ -29,8 +31,21 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		}
 	}
 
+	// TODO: This can probably be accessed via view controller
 	setTokenScript(tokenScript: TokenScript) {
 		this.tokenScript = tokenScript;
+	}
+
+	setViewController(viewController: ViewController){
+		this._viewController = viewController;
+		this.tokenScript = viewController.tokenScript;
+	}
+
+	get viewController() {
+		if (!this._viewController)
+			return this.tokenScript.getViewController();
+
+		return this._viewController;
 	}
 
 	viewLoading() {
@@ -46,7 +61,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card);
+		await AbstractViewBinding.injectContentView(this.iframe, card, this.viewController);
 
 		this.setupConfirmButton(card);
 	}
@@ -54,7 +69,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	async unloadTokenView() {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
-		this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
+		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
 		history.replaceState(undefined, undefined, newUrl);
@@ -68,7 +84,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.loader.style.display = "none";
 	}
 
-	static async injectContentView(iframe: HTMLIFrameElement, card: Card) {
+	static async injectContentView(iframe: HTMLIFrameElement, card: Card, viewController: ViewController) {
 
 		if (!card.view) {
 			iframe.src = "";
@@ -81,16 +97,19 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			iframe.contentWindow.location.replace(card.url);
 
 		} else {
-			const html = await card.renderViewHtml();
+
+			// Moved to using srcdoc, since blob URLs are restricted in many wallets DApp browser
+			// To support URL fragment, we set document.location.hash in the cards Javascript
+			/*const html = await viewController.tokenViewData.renderViewHtml();
 
 			const blob = new Blob([html], {type: "text/html"});
 
 			const urlFragment = card.urlFragment;
 
 			const url = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
-			iframe.contentWindow.location.replace(url);
+			iframe.contentWindow.location.replace(url);*/
 
-			// TODO: try src-doc method
+			iframe.srcdoc = await viewController.tokenViewData.renderViewHtml();
 		}
 	}
 
@@ -112,6 +131,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	protected postMessageToView(method: ViewEvent, params: any) {
 		this.iframe.contentWindow.postMessage({method, params}, "*");
+	}
+
+	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
+		return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
 	protected handlePostMessageFromView(event: MessageEvent) {
@@ -136,25 +159,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
-
-		switch (method) {
-
-			case RequestFromView.SIGN_PERSONAL_MESSAGE:
-				console.log("Event from view: Sign personal message");
-				this.currentCard.signPersonalMessage(params.id, params.data);
-				break;
-
-			case RequestFromView.PUT_USER_INPUT:
-				await this.tokenScript.getViewController().setUserEntryValues(params);
-				break;
-
-			case RequestFromView.CLOSE:
-				this.unloadTokenView()
-				break;
-
-			default:
-				throw new Error("TokenScript view API method: " + method + " is not implemented.");
-		}
+		await this.viewController.handleMessageFromView(method, params);
 	}
 
 	async dispatchViewEvent(event: ViewEvent, data: any, id: string) {
@@ -183,74 +188,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	}
 }
 
+// Note: This formerly had post message logic for the card to interact with the engine
+// It has since been moved into the card SDK: javascript/card-sdk/src/messaging/PostMessageAdapter.ts
 export const VIEW_BINDING_JAVASCRIPT = `
-	window.addEventListener("message", (event) => {
 
-		if (event.origin !== "${document.location.origin}")
-			return;
-
-		const params = event.data?.params;
-
-		switch (event.data?.method){
-			case "tokensUpdated":
-				window.web3.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
-				break;
-
-			case "onConfirm":
-				window.onConfirm();
-				break;
-
-			case "executeCallback":
-				window.executeCallback(params.id, params.error, params.result);
-				break;
-
-			case "getUserInput":
-				sendUserInputValues();
-		}
-	});
-
-	function sendUserInputValues(){
-
-		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id);
-
-		const values = Object.fromEntries(inputs.map((elem) => {
-			return [elem.id, elem.value];
-		}));
-
-		postMessageToEngine("putUserInput", values);
-	}
-
-	function postMessageToEngine(method, params){
-		window.parent.postMessage({method, params}, {
-			targetOrigin: "${document.location.origin}"
-		});
-	}
-
-	window.alpha = {
-		signPersonalMessage: (id, data) => {
-			postMessageToEngine("signPersonalMessage", {id, data});
-		}
-	};
-
-	window.web3.action.setProps = (params) => {
-		postMessageToEngine("putUserInput", params);
-	};
-
-	function listenForUserValueChanges(){
-		window.addEventListener('change', (evt) => {
-			if (!evt.target.id) return;
-			sendUserInputValues();
-		});
-	}
-
-	listenForUserValueChanges();
-	/*document.addEventListener("DOMContentLoaded", function() {
-		sendUserInputValues();
-	});*/
-
-	const closing = window.close;
-	window.close = function () {
-		postMessageToEngine("close", undefined);
-		closing();
-	};
 `;

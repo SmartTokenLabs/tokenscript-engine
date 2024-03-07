@@ -213,8 +213,12 @@ export class TokenScript {
 	/**
 	 * The view controller exposes methods that can be used to interact with the UI of the TokenScript
 	 * - via view binding methods that are implemented by the user-agent.
+	 * @param viewBinding - An optional view binding can be supplied to enable the use of multiple views
 	 */
-	public getViewController(){
+	public getViewController(viewBinding?: IViewBinding){
+
+		if (viewBinding)
+			return new ViewController(this, viewBinding);
 
 		if (!this.viewController){
 
@@ -231,6 +235,7 @@ export class TokenScript {
 	 * Show a card in the UI
 	 * @param card The card object to display
 	 * @param transactionListener For transaction-only cards, supply a listener to get transaction status
+	 * @deprecated In-favor of accessing view controller method directly
 	 */
 	public async showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener){
 		await this.getViewController().showOrExecuteCard(card, transactionListener);
@@ -418,8 +423,29 @@ export class TokenScript {
 
 			this.tokenMetadata = {};
 
-			for (let token of tokenMeta){
-				this.tokenMetadata[token.originId] = token;
+			const tsMeta = this.getMetadata();
+
+			for (let collection of tokenMeta){
+
+				if (this.meta) {
+
+					if (!collection.image && tsMeta.iconUrl && tsMeta.iconUrl.trim())
+						collection.image = tsMeta.iconUrl;
+
+					if (!collection.description && tsMeta.description && tsMeta.description.trim())
+						collection.description = tsMeta.description;
+
+					if (collection.tokenDetails)
+						for (let token of collection.tokenDetails) {
+							if (!token.image && tsMeta.iconUrl && tsMeta.iconUrl.trim())
+								token.image = tsMeta.iconUrl;
+
+							if (!token.description && tsMeta.description && tsMeta.description.trim())
+								token.description = tsMeta.description;
+						}
+				}
+
+				this.tokenMetadata[collection.originId] = collection;
 			}
 
 			for (const definition of this.getAttestationDefinitions()){
@@ -602,7 +628,7 @@ export class TokenScript {
 			console.warn(e);
 		}
 
-		return ethers.constants.AddressZero;
+		return ethers.ZeroAddress;
 	}
 
 	/**
@@ -764,7 +790,7 @@ export class TokenScript {
 			const ethParams = [];
 
 			for (let i in transInfo.args){
-				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), i.toString()))
+				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
 			}
 
 			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
@@ -772,11 +798,6 @@ export class TokenScript {
 			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
 
 		} catch (e){
-
-			const matches = e.message.match(/reason="([^"]*)"/);
-
-			if (matches?.length > 1)
-				throw new Error(matches[1]);
 
 			if (e.message.indexOf("ACTION_REJECTED") > -1)
 				throw new Error("Transaction rejected");

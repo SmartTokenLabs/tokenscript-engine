@@ -1,5 +1,7 @@
 import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
+import CARD_SDK_V1 from "./sdk/v1.txt";
+import {LocalStorageProxy} from "./data/LocalStorageProxy";
 
 /**
  * TokenView data contains helper functions for
@@ -8,9 +10,102 @@ export class TokenViewData {
 
 	// This is a hacky fix to call tokenUpdated event with the same div target that was first rendered.
 	private viewContainerId;
+	private localStorageProxy: LocalStorageProxy;
 
 	constructor(private tokenScript: TokenScript, private card: Card) {
+		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
+	}
 
+	/**
+	 * Returns the full view content to be loaded into the webview or iframe.
+	 * This function prepends in-built engine scripts, as well as parsing and processing
+	 * the view content to inject common viewContent data and ensure correct formatting.
+	 */
+	public async renderViewHtml(){
+
+		let body = "";
+
+		body += '<div id="' + this.getViewDataId() + '" class="token-card"></div>' +
+			'<script type="text/javascript">' + await this.getTokenJavascript() + '</script>';
+
+		const viewChildren = this.card.view.children;
+
+		for (let x=0; x<viewChildren.length; x++){
+
+			const part = viewChildren[x];
+
+			if (part.nodeName == "#text")
+				continue;
+
+			if (part.nodeName === "ts:viewContent"){
+
+				const name = part.getAttribute("name");
+
+				const commonElems = this.tokenScript.getViewContent(name);
+
+				if (!commonElems){
+					console.error("Could not find viewContent element with " + name);
+					continue;
+				}
+
+				for (let i=0; i<commonElems.length; i++) {
+					body = this.processTags(commonElems[i], body);
+				}
+
+				continue;
+			}
+
+			body = this.processTags(part, body);
+		}
+
+		return `
+			<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<title>TokenScript</title>
+					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+					<script>
+						document.location.hash = '${(this.card.urlFragment ? "#" + this.card.urlFragment : "")}';
+					</script>
+				</head>
+				<body>
+					${body}
+				</body>
+			</html>
+		`;
+	}
+
+	/**
+	 * Process tags to ensure the correct HTML formatting for styles & scripts, reverting entity escaping where necessary.
+	 * @param part
+	 * @param body
+	 * @private
+	 */
+	private processTags(part: Element, body: string){
+
+		if (part.localName == "script"){
+
+			let scriptContent;
+
+			if (part.innerHTML.indexOf("<![CDATA[") === -1) {
+				// If the view content is not within a CData tag, then we need to decode HTML entities.
+				const textElem = document.createElement("textarea");
+				textElem.innerHTML = part.innerHTML;
+				scriptContent = textElem.value;
+			} else {
+				scriptContent = part.innerHTML;
+			}
+
+			body += '<script ' + (part.getAttribute("type") === "module" ? 'type="module" crossorigin=""' : 'text/javascript') + '>' + scriptContent + '</script>';
+
+		} else if (part.localName === "style") {
+			body += '<style>' + part.innerHTML + '</style>';
+		} else {
+			if (part.outerHTML)
+				body += part.outerHTML;
+		}
+
+		return body;
 	}
 
 	public async getCurrentTokenData(bypassLocks = false){
@@ -61,47 +156,21 @@ export class TokenViewData {
 
 		return `
 
-		const _currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replaceAll("`", "")}\`);
-
+		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
+		const localStorageData = JSON.parse(String.raw \`${JSON.stringify(await this.localStorageProxy.getLocalStorageDictionary()).replace(/`/g, "")}\`);
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
 		const rpcURL = "${walletAdapter.getRpcUrl(tokenData.chainId)}";
 		const chainID = "${tokenData.chainId}";
+		const engineOrigin = "${document.location.origin}";
 
-		window.web3CallBacks = {}
+		// Injected card SDK
+		${CARD_SDK_V1}
 
-		function executeCallback (id, error, value) {
-			console.debug('Execute callback: ' + id + ' ' + value)
-			window.web3CallBacks[id](error, value)
-			delete window.web3CallBacks[id]
-		}
+		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin, localStorageData});
 
-		web3 = {
-			personal: {
-				sign: function (msgParams, cb) {
-					const { data } = msgParams
-					const { id = 8888 } = msgParams
-					window.web3CallBacks[id] = cb
-					alpha.signPersonalMessage(id, data);
-				}
-			},
-			tokens: {
-				data: {
-					currentInstance: {},
-				},
-				dataChanged: (prevTokens, newTokens, id) => {
-					console.log('web3.tokens.data changed.')
-				}
-			},
-			action: {
-				setProps: function (msgParams) {
-					alpha.setValues(JSON.stringify(msgParams));
-				}
-			}
-		}
-
-		web3.tokens.data.currentInstance = _currentTokenInstance
-
+		// TODO: Move to SDK
+		// Extra initialisation
 		function refresh() {
 		   web3.tokens.dataChanged('test', web3.tokens.data, '${this.getViewDataId()}') //TODO: Cache previous value of token to feed into first arg
 		}

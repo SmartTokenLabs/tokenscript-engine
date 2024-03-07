@@ -1,5 +1,5 @@
 import {TokenScript} from "../../TokenScript";
-import {keccak256, computeAddress} from "ethers/lib/utils";
+import {keccak256, computeAddress} from "ethers";
 
 export interface AttestationDefinitionMeta {
 	name: string,

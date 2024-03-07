@@ -10,6 +10,7 @@
 	border-radius: 5px;
 	min-height: 80px;
 	padding: 5px;
+	overflow: hidden;
 }
 
 .attribute-item h5 {
@@ -17,6 +18,9 @@
 }
 
 .attribute-item span {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	font-size: 14px;
 }
 

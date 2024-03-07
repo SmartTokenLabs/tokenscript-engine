@@ -1,5 +1,19 @@
-import {Event} from "ethers";
+import {EventLog, Log} from "ethers";
 import {ITransactionListener} from "../TokenScript";
+
+export interface RpcRequest {
+	jsonrpc: "2.0";
+	id: number;
+	method: string;
+	data: any[];
+}
+
+export interface RpcResponse {
+	jsonrpc: "2.0";
+	id: number;
+	result?: any;
+	error?: any;
+}
 
 /**
  * The interface for integrating wallet connecton from the user-agent
@@ -12,7 +26,7 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		method: string,
 		args: any[],
-		outputTypes: string[],
+		outputTypes: any[]|string[],
 		errorAbi?: any[]
 	): Promise<any>;
 	getEvents(
@@ -20,7 +34,7 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		type: string,
 		inputs: any[]
-	): Promise<Event[]>;
+	): Promise<Array<EventLog>>;
 	sendTransaction(
 		chain: number,
 		contractAddr: string,
@@ -34,4 +48,5 @@ export interface IWalletAdapter {
 	): Promise<any>;
 	getChain(): Promise<number>;
 	getRpcUrl(chainId: number): string;
+	rpcProxy(request: RpcRequest): Promise<any>;
 }

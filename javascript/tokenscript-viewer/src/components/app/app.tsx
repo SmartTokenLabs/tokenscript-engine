@@ -1,3 +1,5 @@
+import "../../integration/rum"
+
 import {Component, Element, h, Host, JSX, Listen, Method} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
@@ -10,6 +12,9 @@ import {AttestationStorageAdapter} from "../../integration/attestationStorageAda
 import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
 import {ethers} from "ethers";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
+import {dbProvider} from "../../providers/databaseProvider";
+import {showToastNotification} from "../viewers/util/showToast";
+import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -19,7 +24,7 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
-export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token";
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet";
 
 const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token"];
 
@@ -43,6 +48,9 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 		case "sts-token":
 			viewerType = "sts-token";
 			break;
+		case "alphawallet":
+			viewerType = "alphawallet";
+			break;
 		// Fall-through to default
 		case "new":
 		default:
@@ -63,8 +71,9 @@ export class AppRoot {
 
 	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter()
 	attestationStorageAdapter = new AttestationStorageAdapter();
+	tsLocalStorageAdapter = new LocalStorageAdapter();
 
-	private iframeProvider: ethers.providers.Web3Provider;
+	private iframeProvider: ethers.BrowserProvider;
 
 	private params = new URLSearchParams(document.location.search);
 	private viewerType: ViewerTypes = initViewerType(this.params);
@@ -73,12 +82,28 @@ export class AppRoot {
 
 	constructor() {
 
+		if (this.viewerType !== "opensea")
+			dbProvider.checkCompatibility();
+
 		this.tsEngine = new TokenScriptEngine(
 			async () => this.getWalletAdapter(),
 			async () => this.discoveryAdapter,
 			() => this.attestationStorageAdapter,
+			() => this.tsLocalStorageAdapter,
 			{
-				noLocalStorage: this.viewerType === "opensea"
+				noLocalStorage: this.viewerType === "opensea",
+				trustedKeys: [
+					{
+						issuerName: "Smart Token Labs",
+						valueType: "ethAddress",
+						value: "0x1c18e4eF0C9740e258835Dbb26E6C5fB4684C7a0"
+					},
+					{
+						issuerName: "Smart Token Labs",
+						valueType: "ethAddress",
+						value: "0xf68b9DbfC6C3EE3323Eb9A3D4Ed8eb9d2Cb45A30"
+					}
+				]
 			}
 		);
 	}
@@ -87,15 +112,23 @@ export class AppRoot {
 
 		let providerFactory;
 
-		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) > -1 && !this.params.has("noIframeProvider")){
+		if (this.shouldUseIframeProvider()){
 			providerFactory = async () => {
 				if (!this.iframeProvider)
-					this.iframeProvider = new ethers.providers.Web3Provider(new IFrameEthereumProvider(), "any");
+					this.iframeProvider = new ethers.BrowserProvider(new IFrameEthereumProvider(), "any");
 				return this.iframeProvider;
 			}
 		} else if (this.viewerType === "opensea") {
 			providerFactory = async () => {
 				throw new Error("PROVIDER DISABLED")
+			}
+		} else if (this.viewerType === "alphawallet") {
+			// Automatically connect to injected web3 provider
+			providerFactory = async () => {
+				const WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
+				if (!WalletProvider.isWalletConnected())
+					await WalletProvider.connectWith("MetaMask");
+				return (await WalletProvider.getWallet(true)).provider;
 			}
 		} else {
 			providerFactory = async () => {
@@ -104,6 +137,10 @@ export class AppRoot {
 		}
 
 		return new EthersAdapter(providerFactory, CHAIN_CONFIG);
+	}
+
+	private shouldUseIframeProvider(){
+		return IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) > -1 && !this.params.has("noIframeProvider")
 	}
 
 	@Element() host: HTMLElement;
@@ -183,16 +220,7 @@ export class AppRoot {
 
 	@Method()
 	async showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-
-		const cbToast = document.querySelector(".toast") as HTMLCbToastElement;
-
-		cbToast.Toast({
-			title,
-			description,
-			timeOut: 30000,
-			position: 'top-right',
-			type
-		});
+		return showToastNotification(type, title, description);
 	}
 
 	async componentDidLoad(){
@@ -200,7 +228,7 @@ export class AppRoot {
 		//const queryStr = document.location.search.substring(1);
 		//const query = new URLSearchParams(queryStr);
 
-		if (IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 && !this.params.has("noIframeProvider") && this.viewerType !== "opensea"){
+		if (!this.shouldUseIframeProvider() && this.viewerType !== "opensea"){
 			const Web3WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
 			Web3WalletProvider.setWalletSelectorCallback(async () => this.walletSelector.connectWallet());
 			await Web3WalletProvider.loadConnections();
@@ -223,15 +251,14 @@ export class AppRoot {
 						{this.viewerType === "joyid-token" ? <token-viewer app={this}></token-viewer> : ''}
 						{this.viewerType === "sts-token" ? <sts-viewer app={this}></sts-viewer> : ''}
 						{this.viewerType === "opensea" ? <opensea-viewer app={this}></opensea-viewer> : ''}
+						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
 					</main>
 
 					<div id="ts-loader">
 						<loading-spinner/>
 					</div>
 				</div>
-				{ IFRAME_PROVIDER_VIEWS.indexOf(this.viewerType) === -1 &&
-					!this.params.has("noIframeProvider") &&
-					this.viewerType !== "opensea" ?
+				{ !this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 						<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
 			</Host>

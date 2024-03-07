@@ -127,24 +127,23 @@ export interface IFrameEthereumProvider {
  * Represents an error in an RPC returned from the event source. Always contains a code and a reason. The message
  * is constructed from both.
  */
-export class RpcError extends Error {
+class RpcError extends Error implements JsonRpcError {
+
 	public readonly isRpcError: true = true;
-
 	public readonly code: number;
-	public readonly reason: string;
+	public readonly data: any;
 
-	constructor(code: number, reason: string) {
-		super(`${code}: ${reason}`);
-
-		this.code = code;
-		this.reason = reason;
+	constructor(props: JsonRpcError) {
+		super(props.message);
+		this.code = props.code;
+		this.data = props.data;
 	}
 }
 
 /**
  * This is the primary artifact of this library.
  */
-export class IFrameEthereumProvider implements ethers.providers.ExternalProvider {
+export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 
 	_isSigner = true;
 
@@ -338,6 +337,16 @@ export class IFrameEthereumProvider implements ethers.providers.ExternalProvider
 			}
 		}*/
 	};
+
+	async request(request: { method: string; params?: Array<any> | Record<string, any> }): Promise<any> {
+		const response = await this.execute(request.method, request.params);
+
+		if ("error" in response) {
+			throw new RpcError(response.error);
+		}
+
+		return response.result;
+	}
 
 	/*private emitNotification(result: any) {
 		this.emit('notification', result);

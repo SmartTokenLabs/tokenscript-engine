@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/engine-js",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "A Typescript implementation if the TokenScript runtime",
   "type": "commonjs",
   "main": "./dist/lib.commonjs/index.js",
@@ -12,7 +12,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "preinstall": "npm i patch-package",
     "postinstall": "patch-package",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "bundle-sdk": "node scripts/bundleSDK.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,16 +23,16 @@
     "typescript": "^4.7.2"
   },
   "dependencies": {
-    "@ethereum-attestation-service/eas-sdk": "^0.29.0",
+    "@ethereum-attestation-service/eas-sdk": "^1.4.2",
     "@peculiar/x509": "^1.9.2",
+    "@tokenscript/xmldsigjs": "^2.5.1",
     "bignumber.js": "^9.1.1",
-    "ethers": "^5.6.8",
-    "ethers-decode-error": "^1.0.0",
+    "ethers": "^6.9.2",
+    "ethers-decode-error": "^2.1.2",
     "ipfs-only-hash": "^4.0.0",
     "jsdom": "^22.1.0",
-    "pako": "^2.1.0",
-    "webcrypto-liner": "^1.4.2",
-    "xmldsigjs": "^2.5.1"
+    "lodash": "^4.17.21",
+    "webcrypto-liner": "^1.4.2"
   },
   "overrides": {
     "xml-core": {
