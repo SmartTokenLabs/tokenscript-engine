@@ -118,7 +118,16 @@ export class SmartTokenStoreViewer {
 			let tokenScript;
 
 			if (this.urlRequest.has("tokenscriptUrl")) {
-				tokenScript = await this.app.loadTokenscript("url", this.urlRequest.get("tokenscriptUrl"));
+				// TODO: Remove this fix once AlphaWallet is updated to support embedded TS viewer for newer schema versions
+				let uri = this.urlRequest.get("tokenscriptUrl");
+				if (uri === "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-prod.tsml"){
+					console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
+					uri = "/assets/tokenscripts/smart-cat-prod-2024-01.tsml";
+				} else if (uri === "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat-mumbai.tsml"){
+					console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
+					uri = "/assets/tokenscripts/smart-cat-mumbai-2024-01.tsml";
+				}
+				tokenScript = await this.app.loadTokenscript("url", uri);
 			} else {
 				const tsId = chain + "-" + contract;
 				tokenScript = await this.app.loadTokenscript("resolve", tsId);
