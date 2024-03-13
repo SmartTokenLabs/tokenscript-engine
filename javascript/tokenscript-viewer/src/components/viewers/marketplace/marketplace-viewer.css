@@ -30,9 +30,10 @@ body {
 .marketplace-img-container {
 	display: flex;
 	flex-grow: 1;
-	background-size: cover;
 	background-repeat: no-repeat;
-	background-position: top;
+	background-size: contain;
+	background-color: white;
+	background-position: center;
 }
 
 .info-button, .close-button {
