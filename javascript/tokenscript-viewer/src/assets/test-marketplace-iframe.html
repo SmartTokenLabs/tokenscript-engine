@@ -9,9 +9,20 @@
 </head>
 
 <body style="margin: 0;">
+
+	<p>viewType: 'marketplace'</p>
+
 	<div style="max-width: 900px; width: 100%; margin: 0 auto; position: relative; height: 100dvh;">
 		<iframe id="frame"
 			src="http://localhost:3333/?viewType=marketplace&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=3803829543"
+			sandbox="allow-scripts" style="border: 0; width: 100%; height: 100%;"></iframe>
+	</div>
+
+	<p>viewType: 'opensea'</p>
+
+	<div style="max-width: 900px; width: 100%; margin: 0 auto; position: relative; height: 100dvh;">
+		<iframe id="frame"
+			src="http://localhost:3333/?viewType=opensea&chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=3803829543"
 			sandbox="allow-scripts" style="border: 0; width: 100%; height: 100%;"></iframe>
 	</div>
 </body>

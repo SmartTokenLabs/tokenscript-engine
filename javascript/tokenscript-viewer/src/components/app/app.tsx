@@ -42,6 +42,7 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
       viewerType = 'joyid-token';
       break;
     case 'marketplace':
+    case 'opensea':
       viewerType = 'marketplace';
       break;
     case 'sts-token':
