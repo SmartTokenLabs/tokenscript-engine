@@ -10,7 +10,7 @@ import {handleTransactionError, showTransactionNotification} from "../util/showT
 import {getCardButtonClass} from "../util/getCardButtonClass";
 import {getHardcodedDescription} from "../util/getHardcodedDescription";
 import {ISLNAttestation} from "@tokenscript/engine-js/src/attestation/ISLNAdapter";
-import {ethers, Provider} from "ethers";
+import {Provider} from "ethers";
 import {IFrameProvider} from "../../../providers/iframeProvider";
 import {SLN_CHAIN_IDS} from "../../../integration/constants";
 import {SLNAdapter} from "../../../integration/slnAdapter";
