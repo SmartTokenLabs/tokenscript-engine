@@ -1,4 +1,7 @@
 import { ISLNAdapter, ISLNAttestation } from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
+import { CHAIN_EAS_SCHEMA_REGI_MAP, ChainID } from './constants';
+import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
+import { Provider } from 'ethers';
 
 export class SLNAdapter implements ISLNAdapter {
   private url: string;
@@ -11,12 +14,18 @@ export class SLNAdapter implements ISLNAdapter {
     //'https://d3tm4hby53qtu1.cloudfront.net/';
   }
 
-  async getAttestation(attester: string, tokenId: string, chain: string): Promise<ISLNAttestation> {
+  async getAttestation(attester: string, tokenId: string, chain: string, provider: Provider): Promise<{ attestation: ISLNAttestation; decoded: any }> {
     //todo add signature /rawdata?message=${message}&signature=${signature}`
 
     const path = `attestations/${attester}/${tokenId}/rawdata`;
 
-    return this.fetchRequest(path);
+    const attestation: ISLNAttestation = await this.fetchRequest(path);
+
+    const rawData = attestation.rawData;
+
+    const decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema, Number(rawData.domain.chainId), provider), rawData.message.data);
+
+    return { attestation, decoded };
   }
 
   private async fetchRequest(path: string) {
@@ -32,5 +41,26 @@ export class SLNAdapter implements ISLNAdapter {
     } catch (msg: any) {
       return null;
     }
+  }
+
+  private async getSchemaSignature(uid: string, chainId: ChainID, provider: Provider) {
+    console.log(chainId, CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
+    const schemaReg: SchemaRegistry = new SchemaRegistry(CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
+    schemaReg.connect(provider);
+    const schema = await schemaReg.getSchema({ uid });
+    return schema.schema;
+  }
+
+  private decodeData(schema: string, data: string) {
+    const schemaEncoder = new SchemaEncoder(schema);
+    const decoded = schemaEncoder.decodeData(data);
+    // Assumption: one layer only, no embedded schema
+    const formatted: { [key: string]: any } = {};
+    const itemSchema: { [key: string]: SchemaDecodedItem } = {};
+    decoded.forEach(item => {
+      formatted[item.name] = item.value.value;
+      itemSchema[item.name] = item;
+    });
+    return { formatted, raw: itemSchema };
   }
 }

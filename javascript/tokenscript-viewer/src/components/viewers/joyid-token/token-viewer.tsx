@@ -9,11 +9,8 @@ import {getHardcodedDescription} from '../util/getHardcodedDescription';
 import {SLNAdapter} from '../../../integration/slnAdapter';
 import {ISLNAttestation} from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
 import {ethers, Provider} from 'ethers';
-import {SchemaDecodedItem, SchemaEncoder, SchemaRegistry} from '@ethereum-attestation-service/eas-sdk';
 import {IFrameProvider} from './iframe-provider';
-import {CHAIN_EAS_SCHEMA_REGI_MAP, ChainID} from '../../../integration/constants';
-
-const SLN_CHAIN_IDS = [1337, 82459, 5169];
+import {SLN_CHAIN_IDS} from '../../../integration/constants';
 
 @Component({
 	tag: 'token-viewer',
@@ -123,7 +120,10 @@ export class TokenViewer {
 				this.app.showTsLoader();
 
 				const slnAdapter = new SLNAdapter(chain);
-				this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString());
+				const attestationResult = await slnAdapter.getAttestation(contract, tokenId, chain.toString(), this.provider);
+
+				this.slnAttestation = attestationResult.attestation;
+				this.decoded = attestationResult.decoded;
 
 				if (!this.slnAttestation) {
 					console.log('No Attestation!');
@@ -132,10 +132,7 @@ export class TokenViewer {
 
 				this.app.hideTsLoader();
 
-				const rawData = this.slnAttestation.rawData;
-				this.decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema, Number(rawData.domain.chainId)), rawData.message.data);
 				console.log(this.decoded.formatted.scriptURI);
-
 				this.BASE_URL = new URL(this.decoded.formatted.scriptURI).origin;
 				this.loadIframe(this.decoded.formatted.scriptURI);
 			} else {
@@ -157,27 +154,6 @@ export class TokenViewer {
 		}
 
 		throw new Error('Could not locate token details using the values provided in the URL');
-	}
-
-	private async getSchemaSignature(uid: string, chainId: ChainID) {
-		console.log(chainId, CHAIN_EAS_SCHEMA_REGI_MAP[chainId])
-		const schemaReg: SchemaRegistry = new SchemaRegistry(CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
-		schemaReg.connect(this.provider);
-		const schema = await schemaReg.getSchema({ uid });
-		return schema.schema;
-	}
-
-	private decodeData(schema: string, data: string) {
-		const schemaEncoder = new SchemaEncoder(schema);
-		const decoded = schemaEncoder.decodeData(data);
-		// Assumption: one layer only, no embedded schema
-		const formatted: { [key: string]: any } = {};
-		const itemSchema: { [key: string]: SchemaDecodedItem } = {};
-		decoded.forEach(item => {
-			formatted[item.name] = item.value.value;
-			itemSchema[item.name] = item;
-		});
-		return { formatted, raw: itemSchema };
 	}
 
 	private async loadTokenScript() {
