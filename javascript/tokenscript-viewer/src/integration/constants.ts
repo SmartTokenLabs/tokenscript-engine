@@ -71,7 +71,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.POLYGON]: {
 		rpc: [
 			'https://polygon-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
-			'https://polygon.meowrpc.com'
+			//'https://polygon.meowrpc.com'
 		],
 		explorer: 'https://polygonscan.com/tx/'
 	},
