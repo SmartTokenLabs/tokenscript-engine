@@ -8,9 +8,10 @@ import {getSingleTokenMetadata} from '../util/getSingleTokenMetadata';
 import {getHardcodedDescription} from '../util/getHardcodedDescription';
 import {SLNAdapter} from '../../../integration/slnAdapter';
 import {ISLNAttestation} from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
-import {ethers, Provider} from 'ethers';
+import {Provider} from 'ethers';
 import {IFrameProvider} from '../../../providers/iframeProvider';
 import {SLN_CHAIN_IDS} from '../../../integration/constants';
+import {EthersAdapter} from '@tokenscript/engine-js/src/wallet/EthersAdapter';
 
 @Component({
 	tag: 'token-viewer',
@@ -89,7 +90,9 @@ export class TokenViewer {
 			}
 
 			this.urlRequest = query;
-			this.provider = new ethers.BrowserProvider(window.ethereum);
+
+			const walletAdapter = await this.app.getWalletAdapter() as EthersAdapter
+			this.provider = await walletAdapter.getWalletEthersProvider();
 
 			await this.processUrlLoad();
 		} catch (e) {

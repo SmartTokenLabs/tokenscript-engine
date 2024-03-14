@@ -89,6 +89,7 @@
 						case "eth_getTransactionCount":
 						case "personal_sign":
 						case "eth_signTypedData":
+						case "eth_call":
 						case "wallet_switchEthereumChain":
 							const result = await provider.send(message.data.method, message.data.params);
 							sendResponse(message.data, result);
