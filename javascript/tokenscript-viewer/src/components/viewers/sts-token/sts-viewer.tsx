@@ -14,6 +14,7 @@ import {ethers, Provider} from "ethers";
 import {IFrameProvider} from "../../../providers/iframeProvider";
 import {SLN_CHAIN_IDS} from "../../../integration/constants";
 import {SLNAdapter} from "../../../integration/slnAdapter";
+import {EthersAdapter} from "@tokenscript/engine-js/src/wallet/EthersAdapter";
 
 @Component({
 	tag: 'sts-viewer',
@@ -94,7 +95,8 @@ export class SmartTokenStoreViewer {
 			}
 
 			this.urlRequest = query;
-			this.provider = new ethers.BrowserProvider(window.ethereum);
+			const walletAdapter = (await this.app.getWalletAdapter()) as EthersAdapter
+			this.provider = await walletAdapter.getWalletEthersProvider();
 
 			await this.processUrlLoad();
 		} catch (e) {
