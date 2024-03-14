@@ -222,21 +222,20 @@ export class NewViewer {
 	}
 
 	// TODO: break up function into small components
-	private async addFormSubmit(type: TokenScriptSource, data: {tsId: string, xml?: File, image?: string}){
+	private async addFormSubmit(type: TokenScriptSource, data: {tsId?: string, xml?: File, image?: string}){
 
 		this.app.showTsLoader();
 
 		try {
 			const tokenScript = await this.app.loadTokenscript(type, data.tsId, data.xml);
 
-			// TODO: Use better UID for non-resolved tokenscripts
-			const tokenScriptId = data.tsId ?? tokenScript.getName();
+			const tokenScriptId = tokenScript.getSourceInfo().tsId;
 
 			let meta: TokenScriptsMeta = getKnownTokenScriptMetaById(tokenScriptId)
 
 			if (!meta) {
 				meta = {
-					tokenScriptId: data.tsId ?? tokenScript.getName(),
+					tokenScriptId,
 					loadType: type,
 					name: tokenScript.getLabel() ?? tokenScript.getName() ?? "Unknown TokenScript",
 					xml: type === "file" ? tokenScript.getXmlString() : null

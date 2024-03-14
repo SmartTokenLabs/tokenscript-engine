@@ -103,7 +103,8 @@ export class TokenScript {
 
 	public getSourceInfo(){
 		return {
-			tsId: this.sourceId,
+			// TODO: Use better UID for non-resolved tokenscripts
+			tsId: this.sourceId ?? this.getName(),
 			source: this.source,
 			sourceUrl: this.sourceUrl
 		}
