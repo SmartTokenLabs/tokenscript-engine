@@ -9,7 +9,7 @@ import {getHardcodedDescription} from '../util/getHardcodedDescription';
 import {SLNAdapter} from '../../../integration/slnAdapter';
 import {ISLNAttestation} from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
 import {ethers, Provider} from 'ethers';
-import {IFrameProvider} from './iframe-provider';
+import {IFrameProvider} from '../../../providers/iframeProvider';
 import {SLN_CHAIN_IDS} from '../../../integration/constants';
 
 @Component({

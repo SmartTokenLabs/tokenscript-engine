@@ -142,3 +142,9 @@ sts-viewer:has(> card-popover .open) {
 	gap: 10px;
 	padding: 10px 15px;
 }
+
+.iframe-viewer {
+	/* width: 700px; */
+	height: 800px;
+	border: none;
+}
