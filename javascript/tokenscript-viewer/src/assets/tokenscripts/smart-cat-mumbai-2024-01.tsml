@@ -189,13 +189,13 @@
 				rgba(255, 255, 255, 0.8) 0%,
 				rgba(255, 255, 255, 0.8) 100%
 			),
-			linear-gradient(235deg, #001aff 37.73%, #4f95ff 118.69%)}.gif-container.svelte-ygkdxn.svelte-ygkdxn{max-width:400px;width:100%;position:relative;margin:0 20px}.gif-container.svelte-ygkdxn .static.svelte-ygkdxn{width:100%}.gif-container.svelte-ygkdxn .gif.svelte-ygkdxn{width:100%;display:none}.gif-container.play.svelte-ygkdxn .static.svelte-ygkdxn{display:none}.gif-container.play.svelte-ygkdxn .gif.svelte-ygkdxn{display:block}.tabs.svelte-1hmkp7d{padding:0 10px}.tabs-header.svelte-1hmkp7d{display:flex;align-items:center;padding:20px 0;gap:20px}.tab-item.svelte-1hmkp7d{font-size:18px;font-style:normal;font-weight:500;color:#8B8B8B;cursor:pointer}.tab-item.selected.svelte-1hmkp7d{color:#001AFF}.invite-btn-wrapper.svelte-1hmkp7d{display:flex;justify-content:center;align-items:center;padding:0 8px}.invite-btn.svelte-1hmkp7d{width:88px}.fade-out-image.svelte-vmrgry{animation:svelte-vmrgry-fadeOut 5s;animation-fill-mode:initial;animation-iteration-count:infinite}@keyframes svelte-vmrgry-fadeOut{from{opacity:1}to{opacity:0}}.smart-level-wrapper.svelte-qgh38x.svelte-qgh38x{position:absolute;width:100%;left:0;bottom:-30px;z-index:30}.smart-level-box.svelte-qgh38x.svelte-qgh38x{position:relative;margin:0 auto;display:flex;width:190px;padding:8px 24px;flex-direction:column;align-items:center;gap:4px;border-radius:8px;border:1px solid #001AFF;background:#FAFAFA;box-shadow:0 4px 16px 0 rgba(0, 0, 0, 0.08)}.meme-wrapper.svelte-qgh38x.svelte-qgh38x{position:absolute;width:100%;height:100%;left:0;top:0;z-index:20;overflow:hidden}.meme-wrapper.svelte-qgh38x .level-image.svelte-qgh38x{position:absolute;width:0;left:50%;top:50%;transform:translate(-50%, -50%);animation:svelte-qgh38x-zoom;animation-iteration-count:infinite;animation-fill-mode:initial;animation-timing-function:ease-in;animation-duration:1.5s}.meme-wrapper.svelte-qgh38x .level-image2.svelte-qgh38x{animation-delay:0.5s}.meme-wrapper.svelte-qgh38x .level-image3.svelte-qgh38x{animation-delay:1s}@keyframes svelte-qgh38x-zoom{from{width:1%}to{width:250%}}.container.svelte-ueiykx{margin-top:25px;padding:10px 0}.badge-container.svelte-ueiykx{width:100%;height:350px;position:relative;padding:20px;display:flex;justify-content:center}.message-bubble.svelte-s0p2vl{margin:5px;border-radius:10px;width:80%;background:#EEE;color:#000;padding:8px}.message-content.svelte-s0p2vl{font-size:14px;text-align:left;word-break:break-word}.message-meta.svelte-s0p2vl{padding-top:6px;font-size:11px;text-align:right;display:block}.message-bubble.sender.svelte-s0p2vl{align-self:end;background:#0084ff;color:#fff}#message-popup.svelte-ramucj.svelte-ramucj{position:fixed;display:flex;flex-direction:column;top:0;left:0;width:100%;height:100%;background:#fff}#message-header.svelte-ramucj.svelte-ramucj{display:flex;border-bottom:#EEE;background:#FAFAFA}#message-title.svelte-ramucj.svelte-ramucj{flex-grow:1;display:flex;align-items:center;padding:10px 10px 10px 0;font-size:16px;font-weight:500}#message-close.svelte-ramucj.svelte-ramucj{width:30px;height:50px;display:flex;justify-content:center;align-items:center;font-size:20px;font-weight:bold;cursor:pointer}#message-history.svelte-ramucj.svelte-ramucj{flex-grow:1;display:flex;flex-direction:column;padding:10px;overflow:auto}#send-message.svelte-ramucj.svelte-ramucj{display:flex}#send-message.svelte-ramucj textarea.svelte-ramucj{flex-grow:1;margin:4px;border-radius:4px;border:2px solid #969696;outline:0 !important}#send-message.svelte-ramucj textarea.svelte-ramucj:focus{border-radius:4px;border:2px solid #001AFF}#send-message.svelte-ramucj button.svelte-ramucj{flex-grow:1;margin:4px 4px 4px 0;border-radius:4px;border:0;background:linear-gradient(235deg, #001AFF 37.73%, #4F95FF 118.69%)}#send-message.svelte-ramucj button.svelte-ramucj:disabled{background:linear-gradient(0deg, rgba(255, 255, 255, 0.60) 0%, rgba(255, 255, 255, 0.60) 100%), linear-gradient(235deg, #001AFF 37.73%, #4F95FF 118.69%)}.unread-count.has-unread.svelte-zmrcgg{font-weight:600;font-size:14px;display:flex;align-items:center}.unread-count.has-unread.svelte-zmrcgg:before{content:'•';color:#0724ff;font-weight:700;font-size:28px;line-height:14px;padding:0 4px}.player-icon.svelte-1s6v96s.svelte-1s6v96s{width:64px;height:64px;position:relative;border-radius:8px;overflow:hidden}.player-icon.svelte-1s6v96s img.svelte-1s6v96s{width:64px;border-radius:8px}.shimmer.svelte-1s6v96s.svelte-1s6v96s{display:inline-block;background-color:#dddbdd;height:100%;width:64px}.shimmer.svelte-1s6v96s.svelte-1s6v96s:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
+			linear-gradient(235deg, #001aff 37.73%, #4f95ff 118.69%)}.gif-container.svelte-ygkdxn.svelte-ygkdxn{max-width:400px;width:100%;position:relative;margin:0 20px}.gif-container.svelte-ygkdxn .static.svelte-ygkdxn{width:100%}.gif-container.svelte-ygkdxn .gif.svelte-ygkdxn{width:100%;display:none}.gif-container.play.svelte-ygkdxn .static.svelte-ygkdxn{display:none}.gif-container.play.svelte-ygkdxn .gif.svelte-ygkdxn{display:block}.tabs.svelte-1hmkp7d{padding:0 10px}.tabs-header.svelte-1hmkp7d{display:flex;align-items:center;padding:20px 0;gap:20px}.tab-item.svelte-1hmkp7d{font-size:18px;font-style:normal;font-weight:500;color:#8B8B8B;cursor:pointer}.tab-item.selected.svelte-1hmkp7d{color:#001AFF}.invite-btn-wrapper.svelte-1hmkp7d{display:flex;justify-content:center;align-items:center;padding:0 8px}.invite-btn.svelte-1hmkp7d{width:88px}.fade-out-image.svelte-vmrgry{animation:svelte-vmrgry-fadeOut 5s;animation-fill-mode:initial;animation-iteration-count:infinite}@keyframes svelte-vmrgry-fadeOut{from{opacity:1}to{opacity:0}}.smart-level-wrapper.svelte-qgh38x.svelte-qgh38x{position:absolute;width:100%;left:0;bottom:-30px;z-index:30}.smart-level-box.svelte-qgh38x.svelte-qgh38x{position:relative;margin:0 auto;display:flex;width:190px;padding:8px 24px;flex-direction:column;align-items:center;gap:4px;border-radius:8px;border:1px solid #001AFF;background:#FAFAFA;box-shadow:0 4px 16px 0 rgba(0, 0, 0, 0.08)}.meme-wrapper.svelte-qgh38x.svelte-qgh38x{position:absolute;width:100%;height:100%;left:0;top:0;z-index:20;overflow:hidden}.meme-wrapper.svelte-qgh38x .level-image.svelte-qgh38x{position:absolute;width:0;left:50%;top:50%;transform:translate(-50%, -50%);animation:svelte-qgh38x-zoom;animation-iteration-count:infinite;animation-fill-mode:initial;animation-timing-function:ease-in;animation-duration:1.5s}.meme-wrapper.svelte-qgh38x .level-image2.svelte-qgh38x{animation-delay:0.5s}.meme-wrapper.svelte-qgh38x .level-image3.svelte-qgh38x{animation-delay:1s}@keyframes svelte-qgh38x-zoom{from{width:1%}to{width:250%}}.container.svelte-ueiykx{margin-top:25px;padding:10px 0}.badge-container.svelte-ueiykx{width:100%;height:350px;position:relative;padding:20px;display:flex;justify-content:center}.message-bubble.svelte-s0p2vl{margin:5px;border-radius:10px;width:80%;background:#EEE;color:#000;padding:8px}.message-content.svelte-s0p2vl{font-size:14px;text-align:left;word-break:break-word}.message-meta.svelte-s0p2vl{padding-top:6px;font-size:11px;text-align:right;display:block}.message-bubble.sender.svelte-s0p2vl{align-self:end;background:#0084ff;color:#fff}#message-popup.svelte-ramucj.svelte-ramucj{position:fixed;display:flex;flex-direction:column;top:0;left:0;width:100%;height:100%;background:#fff}#message-header.svelte-ramucj.svelte-ramucj{display:flex;border-bottom:#EEE;background:#FAFAFA}#message-title.svelte-ramucj.svelte-ramucj{flex-grow:1;display:flex;align-items:center;padding:10px 10px 10px 0;font-size:16px;font-weight:500}#message-close.svelte-ramucj.svelte-ramucj{width:30px;height:50px;display:flex;justify-content:center;align-items:center;font-size:20px;font-weight:bold;cursor:pointer}#message-history.svelte-ramucj.svelte-ramucj{flex-grow:1;display:flex;flex-direction:column;padding:10px;overflow:auto}#send-message.svelte-ramucj.svelte-ramucj{display:flex}#send-message.svelte-ramucj textarea.svelte-ramucj{flex-grow:1;margin:4px;border-radius:4px;border:2px solid #969696;outline:0 !important}#send-message.svelte-ramucj textarea.svelte-ramucj:focus{border-radius:4px;border:2px solid #001AFF}#send-message.svelte-ramucj button.svelte-ramucj{flex-grow:1;margin:4px 4px 4px 0;border-radius:4px;border:0;background:linear-gradient(235deg, #001AFF 37.73%, #4F95FF 118.69%)}#send-message.svelte-ramucj button.svelte-ramucj:disabled{background:linear-gradient(0deg, rgba(255, 255, 255, 0.60) 0%, rgba(255, 255, 255, 0.60) 100%), linear-gradient(235deg, #001AFF 37.73%, #4F95FF 118.69%)}.unread-count.has-unread.svelte-zmrcgg{font-weight:600;font-size:14px;display:flex;align-items:center}.unread-count.has-unread.svelte-zmrcgg:before{content:'•';color:#0724ff;font-weight:700;font-size:28px;line-height:14px;padding:0 4px}.player-icon.svelte-1ru198.svelte-1ru198{width:48px;height:48px;position:relative;border-radius:8px;overflow:hidden}.player-icon.svelte-1ru198 img.svelte-1ru198{width:48px;border-radius:8px}.shimmer.svelte-1ru198.svelte-1ru198{display:inline-block;background-color:#dddbdd;height:100%;width:48px}.shimmer.svelte-1ru198.svelte-1ru198:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
 			90deg,
 			rgba(255, 255, 255, 0) 0,
 			rgba(255, 255, 255, 0.2) 20%,
 			rgba(255, 255, 255, 0.5) 60%,
 			rgba(255, 255, 255, 0)
-		);animation:svelte-1s6v96s-shimmer 2s infinite;content:""}@keyframes svelte-1s6v96s-shimmer{100%{transform:translateX(100%)}}.move-card.svelte-g7xrzw{display:flex;flex-direction:column;border-radius:10px;border:3px solid #000;height:70px;width:90px;position:relative;margin:0 auto;align-items:center;justify-content:center}.no-move.svelte-g7xrzw{font-size:36px}.result.svelte-g7xrzw{font-size:24px;color:rgb(255, 79, 79)}.result.success.svelte-g7xrzw{color:rgb(59, 210, 59) !important}.move-table.svelte-wwm4x7.svelte-wwm4x7{margin:10px auto;width:100%;max-width:400px}.move-table.svelte-wwm4x7 td.svelte-wwm4x7{width:80px;padding:10px}.move-table.svelte-wwm4x7 td.svelte-wwm4x7:nth-child(1){width:120px !important}.rounds-list.svelte-1wm141v{display:flex;flex-direction:column;gap:5px}.rounds-list-item.svelte-1wm141v{display:flex;align-items:center;gap:40px}.player-round.svelte-1wm141v{flex:4;flex-grow:1}.player-icons.svelte-12kdg1h.svelte-12kdg1h{display:flex;gap:4px;align-items:center;justify-content:center}.game-status.svelte-12kdg1h.svelte-12kdg1h,.player-icons.svelte-12kdg1h.svelte-12kdg1h,.game-rounds.svelte-12kdg1h.svelte-12kdg1h,.game-details.svelte-12kdg1h.svelte-12kdg1h{margin:20px 10px}.game-status.svelte-12kdg1h.svelte-12kdg1h{padding:10px;border-radius:10px;border-width:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px}.game-status.svelte-12kdg1h h4.svelte-12kdg1h{margin:5px 0 !important}.game-status-0.svelte-12kdg1h.svelte-12kdg1h,.game-status-1.svelte-12kdg1h.svelte-12kdg1h{background-color:#5fa7f3;border-color:#0d5aa7}.game-status-2.svelte-12kdg1h.svelte-12kdg1h{background-color:#58c59b;border-color:#19a974}.game-status-3.svelte-12kdg1h.svelte-12kdg1h{background-color:#f55d5a;border-color:#bf4342}.game-status-4.svelte-12kdg1h.svelte-12kdg1h{background-color:#f78b43;border-color:#e56700}.game-status-5.svelte-12kdg1h.svelte-12kdg1h{background-color:#ababab;border-color:#797979}.popover-modal.svelte-1pmoymu.svelte-1pmoymu{position:fixed;left:0;height:100dvh;width:100vw;top:0;background-color:#00000082;align-items:center;justify-content:center;display:none;overflow:hidden;z-index:100}.popover-modal.open.svelte-1pmoymu.svelte-1pmoymu{display:flex !important;animation:svelte-1pmoymu-fadeIn 0.25s}@keyframes svelte-1pmoymu-fadeIn{0%{opacity:0}100%{opacity:1}}.popover-modal.open.svelte-1pmoymu .popover-container.svelte-1pmoymu{top:unset !important;animation:svelte-1pmoymu-slideIn 0.25s}@keyframes svelte-1pmoymu-slideIn{0%{transform:translateY(500px);animation-timing-function:ease-out}100%{transform:translateY(0px);animation-timing-function:ease-in}}.popover-container.svelte-1pmoymu.svelte-1pmoymu{box-sizing:border-box;position:absolute;height:100dvh;width:100vw;background:#fff;border-radius:8px;padding:10px;top:110dvh;animation:svelte-1pmoymu-slideIn 0.5s reverse;display:flex;flex-direction:column}.close-btn.svelte-1pmoymu.svelte-1pmoymu{position:absolute;z-index:100;top:24px;left:24px;font-size:24px;background:none;border:none;color:#000;cursor:pointer;font-weight:bold;line-height:24px}.close-btn.svelte-1pmoymu.svelte-1pmoymu:hover{color:#cacaca}.popover-inner.svelte-1pmoymu.svelte-1pmoymu{position:relative;overflow:auto;display:flex;flex-direction:column;flex-grow:1;overflow-x:hidden;padding:0 10px}@media(max-width: 500px){.popover-modal.svelte-1pmoymu.svelte-1pmoymu{align-items:end}.popover-container.svelte-1pmoymu.svelte-1pmoymu{border-radius:8px 8px 0 0 !important}}svg.svelte-qbd276{width:var(--chevron-icon-width, 20px);height:var(--chevron-icon-width, 20px);color:var(--chevron-icon-colour, currentColor)}svg.svelte-whdbu1{width:var(--clear-icon-width, 20px);height:var(--clear-icon-width, 20px);color:var(--clear-icon-color, currentColor)}.loading.svelte-1p3nqvd{width:var(--spinner-width, 20px);height:var(--spinner-height, 20px);color:var(--spinner-color, var(--icons-color));animation:svelte-1p3nqvd-rotate 0.75s linear infinite;transform-origin:center center;transform:none}.circle_path.svelte-1p3nqvd{stroke-dasharray:90;stroke-linecap:round}@keyframes svelte-1p3nqvd-rotate{100%{transform:rotate(360deg)}}.svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{--borderRadius:var(--border-radius);--clearSelectColor:var(--clear-select-color);--clearSelectWidth:var(--clear-select-width);--disabledBackground:var(--disabled-background);--disabledBorderColor:var(--disabled-border-color);--disabledColor:var(--disabled-color);--disabledPlaceholderColor:var(--disabled-placeholder-color);--disabledPlaceholderOpacity:var(--disabled-placeholder-opacity);--errorBackground:var(--error-background);--errorBorder:var(--error-border);--groupItemPaddingLeft:var(--group-item-padding-left);--groupTitleColor:var(--group-title-color);--groupTitleFontSize:var(--group-title-font-size);--groupTitleFontWeight:var(--group-title-font-weight);--groupTitlePadding:var(--group-title-padding);--groupTitleTextTransform:var(--group-title-text-transform);--groupTitleBorderColor:var(--group-title-border-color);--groupTitleBorderWidth:var(--group-title-border-width);--groupTitleBorderStyle:var(--group-title-border-style);--indicatorColor:var(--chevron-color);--indicatorHeight:var(--chevron-height);--indicatorWidth:var(--chevron-width);--inputColor:var(--input-color);--inputLeft:var(--input-left);--inputLetterSpacing:var(--input-letter-spacing);--inputMargin:var(--input-margin);--inputPadding:var(--input-padding);--itemActiveBackground:var(--item-active-background);--itemColor:var(--item-color);--itemFirstBorderRadius:var(--item-first-border-radius);--itemHoverBG:var(--item-hover-bg);--itemHoverColor:var(--item-hover-color);--itemIsActiveBG:var(--item-is-active-bg);--itemIsActiveColor:var(--item-is-active-color);--itemIsNotSelectableColor:var(--item-is-not-selectable-color);--itemPadding:var(--item-padding);--listBackground:var(--list-background);--listBorder:var(--list-border);--listBorderRadius:var(--list-border-radius);--listEmptyColor:var(--list-empty-color);--listEmptyPadding:var(--list-empty-padding);--listEmptyTextAlign:var(--list-empty-text-align);--listMaxHeight:var(--list-max-height);--listPosition:var(--list-position);--listShadow:var(--list-shadow);--listZIndex:var(--list-z-index);--multiItemBG:var(--multi-item-bg);--multiItemBorderRadius:var(--multi-item-border-radius);--multiItemDisabledHoverBg:var(--multi-item-disabled-hover-bg);--multiItemDisabledHoverColor:var(--multi-item-disabled-hover-color);--multiItemHeight:var(--multi-item-height);--multiItemMargin:var(--multi-item-margin);--multiItemPadding:var(--multi-item-padding);--multiSelectInputMargin:var(--multi-select-input-margin);--multiSelectInputPadding:var(--multi-select-input-padding);--multiSelectPadding:var(--multi-select-padding);--placeholderColor:var(--placeholder-color);--placeholderOpacity:var(--placeholder-opacity);--selectedItemPadding:var(--selected-item-padding);--spinnerColor:var(--spinner-color);--spinnerHeight:var(--spinner-height);--spinnerWidth:var(--spinner-width);--internal-padding:0 0 0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--border-radius, 6px);min-height:var(--height, 42px);position:relative;display:flex;align-items:stretch;padding:var(--padding, var(--internal-padding));background:var(--background, #fff);margin:var(--margin, 0);width:var(--width, 100%);font-size:var(--font-size, 16px);max-height:var(--max-height)}.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{box-sizing:var(--box-sizing, border-box)}.svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:hover{border:var(--border-hover, 1px solid #b2b8bf)}.value-container.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;flex:1 1 0%;flex-wrap:wrap;align-items:center;gap:5px 10px;padding:var(--value-container-padding, 5px 0);position:relative;overflow:var(--value-container-overflow, hidden);align-self:stretch}.prepend.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.indicators.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;flex-shrink:0;align-items:center}.indicators.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:var(--indicators-position);top:var(--indicators-top);right:var(--indicators-right);bottom:var(--indicators-bottom)}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:absolute;cursor:default;border:none;color:var(--input-color, var(--item-color));padding:var(--input-padding, 0);letter-spacing:var(--input-letter-spacing, inherit);margin:var(--input-margin, 0);min-width:10px;top:0;right:0;bottom:0;left:0;background:transparent;font-size:var(--font-size, 16px)}.svelte-82qwg8:not(.multi)&gt;.value-container.svelte-82qwg8&gt;input.svelte-82qwg8{width:100%;height:100%}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8::placeholder{color:var(--placeholder-color, #78848f);opacity:var(--placeholder-opacity, 1)}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:none}.svelte-select.focused.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border:var(--border-focused, 1px solid #006fe8);border-radius:var(--border-radius-focused, var(--border-radius, 6px))}.disabled.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--disabled-background, #ebedef);border-color:var(--disabled-border-color, #ebedef);color:var(--disabled-color, #c1c6cc)}.disabled.svelte-82qwg8 input.svelte-82qwg8.svelte-82qwg8::placeholder{color:var(--disabled-placeholder-color, #c1c6cc);opacity:var(--disabled-placeholder-opacity, 1)}.selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:relative;overflow:var(--selected-item-overflow, hidden);padding:var(--selected-item-padding, 0 20px 0 0);text-overflow:ellipsis;white-space:nowrap;color:var(--selected-item-color, inherit);font-size:var(--font-size, 16px)}.multi.svelte-82qwg8 .selected-item.svelte-82qwg8.svelte-82qwg8{position:absolute;line-height:var(--height, 42px);height:var(--height, 42px)}.selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:none}.hide-selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0}.icon.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;align-items:center;justify-content:center}.clear-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{all:unset;display:flex;align-items:center;justify-content:center;width:var(--clear-select-width, 40px);height:var(--clear-select-height, 100%);color:var(--clear-select-color, var(--icons-color));margin:var(--clear-select-margin, 0);pointer-events:all;flex-shrink:0}.clear-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:var(--clear-select-focus-outline, 1px solid #006fe8)}.loading.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{width:var(--loading-width, 40px);height:var(--loading-height);color:var(--loading-color, var(--icons-color));margin:var(--loading--margin, 0);flex-shrink:0}.chevron.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{width:var(--chevron-width, 40px);height:var(--chevron-height, 40px);background:var(--chevron-background, transparent);pointer-events:var(--chevron-pointer-events, none);color:var(--chevron-color, var(--icons-color));border:var(--chevron-border, 0 0 0 1px solid #d8dbdf);flex-shrink:0}.multi.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{padding:var(--multi-select-padding, var(--internal-padding))}.multi.svelte-82qwg8 input.svelte-82qwg8.svelte-82qwg8{padding:var(--multi-select-input-padding, 0);position:relative;margin:var(--multi-select-input-margin, 5px 0);flex:1 1 40px}.svelte-select.error.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border:var(--error-border, 1px solid #ff2d55);background:var(--error-background, #fff)}.a11y-text.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}.multi-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--multi-item-bg, #ebedef);margin:var(--multi-item-margin, 0);outline:var(--multi-item-outline, 1px solid #ddd);border-radius:var(--multi-item-border-radius, 4px);height:var(--multi-item-height, 25px);line-height:var(--multi-item-height, 25px);display:flex;cursor:default;padding:var(--multi-item-padding, 0 5px);overflow:hidden;gap:var(--multi-item-gap, 4px);outline-offset:-1px;max-width:var(--multi-max-width, none);color:var(--multi-item-color, var(--item-color))}.multi-item.disabled.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:hover{background:var(--multi-item-disabled-hover-bg, #ebedef);color:var(--multi-item-disabled-hover-color, #c1c6cc)}.multi-item-text.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multi-item-clear.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;align-items:center;justify-content:center;--clear-icon-color:var(--multi-item-clear-icon-color, #000)}.multi-item.active.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{outline:var(--multi-item-active-outline, 1px solid #006fe8)}.svelte-select-list.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{box-shadow:var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--list-border-radius, 4px);max-height:var(--list-max-height, 252px);overflow-y:auto;background:var(--list-background, #fff);position:var(--list-position, absolute);z-index:var(--list-z-index, 2);border:var(--list-border)}.prefloat.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0;pointer-events:none}.list-group-title.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{color:var(--group-title-color, #8f8f8f);cursor:default;font-size:var(--group-title-font-size, 16px);font-weight:var(--group-title-font-weight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--group-title-padding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--group-title-text-transform, uppercase);border-width:var(--group-title-border-width, medium);border-style:var(--group-title-border-style, none);border-color:var(--group-title-border-color, color)}.empty.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{text-align:var(--list-empty-text-align, center);padding:var(--list-empty-padding, 20px 0);color:var(--list-empty-color, #78848f)}.item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{cursor:default;height:var(--item-height, var(--height, 42px));line-height:var(--item-line-height, var(--height, 42px));padding:var(--item-padding, 0 20px);color:var(--item-color, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;transition:var(--item-transition, all 0.2s);align-items:center;width:100%}.item.group-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{padding-left:var(--group-item-padding-left, 40px)}.item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:active{background:var(--item-active-background, #b9daff)}.item.active.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--item-is-active-bg, #007aff);color:var(--item-is-active-color, #fff)}.item.first.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border-radius:var(--item-first-border-radius, 4px 4px 0 0)}.item.hover.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:not(.active){background:var(--item-hover-bg, #e7f2ff);color:var(--item-hover-color, inherit)}.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.hover.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.active.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:active{color:var(--item-is-not-selectable-color, #999);background:transparent}.required.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0;z-index:-1;position:absolute;top:0;left:0;bottom:0;right:0}.select-form-field.svelte-g5ybep.svelte-g5ybep{display:flex;align-items:center;justify-content:center;margin:15px auto;width:100%;max-width:300px}.select-form-field.svelte-g5ybep label.svelte-g5ybep{top:-8px;padding-left:10px;color:#011aff;z-index:1;font-size:12px}.select-form-field.svelte-g5ybep div.svelte-g5ybep{flex-grow:1}.game-list-item.svelte-1xpk6gj{height:auto !important}.player-icons.svelte-1xpk6gj{display:flex;gap:4px;align-items:center;justify-content:center}.game-info.svelte-1xpk6gj{display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;padding:4px 8px;flex-grow:1}.load-more-btn.svelte-1eg7kf7{margin-top:16px;height:36px;padding:8px 32px;border-radius:8px;border:none;background:#EEE;cursor:pointer}.load-more-btn.svelte-1eg7kf7:hover{border-color:#dadada;background:#dadada}.score-box.svelte-qthdt span.svelte-qthdt{color:#000 !important}.stats-box.svelte-t6m8zh.svelte-t6m8zh{display:flex;flex-direction:column;gap:10px;margin:20px 0}.stats-row.svelte-t6m8zh.svelte-t6m8zh{display:flex;gap:20px}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh{flex:1}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh:last-child{text-align:left}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh:first-child{text-align:right}.toolbar.svelte-1doaeot{display:flex;flex-direction:column;gap:10px;padding:10px 0}.tabs.svelte-4q7ypb.svelte-4q7ypb{padding:0 10px}.tabs-header.svelte-4q7ypb.svelte-4q7ypb{display:flex;align-items:center;padding:20px 0;gap:20px}.tab-item.svelte-4q7ypb.svelte-4q7ypb{font-size:18px;font-style:normal;font-weight:500;color:#8B8B8B;cursor:pointer}.tab-item.selected.svelte-4q7ypb.svelte-4q7ypb{color:#001AFF}.game-toolbar.svelte-4q7ypb.svelte-4q7ypb{display:flex;align-items:center;gap:10px;padding:0 10px}.intro.svelte-4q7ypb.svelte-4q7ypb,.intro.svelte-4q7ypb&gt;div.svelte-4q7ypb{display:flex;flex-direction:column;flex-grow:1}.intro.svelte-4q7ypb&gt;div.svelte-4q7ypb{align-items:center;justify-content:flex-end}
+		);animation:svelte-1ru198-shimmer 2s infinite;content:""}@keyframes svelte-1ru198-shimmer{100%{transform:translateX(100%)}}.move-card.svelte-g7xrzw{display:flex;flex-direction:column;border-radius:10px;border:3px solid #000;height:70px;width:90px;position:relative;margin:0 auto;align-items:center;justify-content:center}.no-move.svelte-g7xrzw{font-size:36px}.result.svelte-g7xrzw{font-size:24px;color:rgb(255, 79, 79)}.result.success.svelte-g7xrzw{color:rgb(59, 210, 59) !important}.move-table.svelte-e9uk0m.svelte-e9uk0m{margin:10px auto 20px;width:100%}.move-table.svelte-e9uk0m td.svelte-e9uk0m{min-width:80px;padding:10px}.move-table.svelte-e9uk0m td.svelte-e9uk0m:nth-child(1){min-width:120px !important;text-align:left;padding-left:0}.rounds-list.svelte-1wm141v{display:flex;flex-direction:column;gap:5px}.rounds-list-item.svelte-1wm141v{display:flex;align-items:center;gap:40px}.player-round.svelte-1wm141v{flex:4;flex-grow:1}.player-icons.svelte-1n6uves.svelte-1n6uves{display:flex;gap:4px;align-items:center;justify-content:center}.game-status.svelte-1n6uves.svelte-1n6uves,.player-icons.svelte-1n6uves.svelte-1n6uves,.game-rounds.svelte-1n6uves.svelte-1n6uves,.game-details.svelte-1n6uves.svelte-1n6uves{margin:20px 10px}.game-status.svelte-1n6uves.svelte-1n6uves{padding:10px;border-radius:10px;border-width:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px}.game-status.svelte-1n6uves h4.svelte-1n6uves{margin:5px 0 !important}.game-status-0.svelte-1n6uves.svelte-1n6uves,.game-status-1.svelte-1n6uves.svelte-1n6uves{background-color:#5fa7f3;border-color:#0d5aa7}.game-status-2.svelte-1n6uves.svelte-1n6uves{background-color:#58c59b;border-color:#19a974}.game-status-3.svelte-1n6uves.svelte-1n6uves{background-color:#f55d5a;border-color:#bf4342}.game-status-4.svelte-1n6uves.svelte-1n6uves{background-color:#f78b43;border-color:#e56700}.game-status-5.svelte-1n6uves.svelte-1n6uves{background-color:#ababab;border-color:#797979}.game-details.svelte-1n6uves.svelte-1n6uves{font-size:14px !important}.popover-modal.svelte-w9ofnp.svelte-w9ofnp{position:fixed;left:0;height:100dvh;width:100vw;top:0;background-color:#00000082;align-items:center;justify-content:center;display:none;overflow:hidden;z-index:100}.popover-modal.open.svelte-w9ofnp.svelte-w9ofnp{display:flex !important;animation:svelte-w9ofnp-fadeIn 0.25s}@keyframes svelte-w9ofnp-fadeIn{0%{opacity:0}100%{opacity:1}}.popover-modal.open.svelte-w9ofnp .popover-container.svelte-w9ofnp{top:unset !important;animation:svelte-w9ofnp-slideIn 0.25s}@keyframes svelte-w9ofnp-slideIn{0%{transform:translateY(500px);animation-timing-function:ease-out}100%{transform:translateY(0px);animation-timing-function:ease-in}}.popover-container.svelte-w9ofnp.svelte-w9ofnp{box-sizing:border-box;position:absolute;height:100dvh;width:100vw;background:#fff;border-radius:8px;top:110dvh;animation:svelte-w9ofnp-slideIn 0.5s reverse;display:flex;flex-direction:column}.close-btn.svelte-w9ofnp.svelte-w9ofnp{position:absolute;z-index:100;top:16px;left:24px;font-size:24px;background:none;border:none;color:#000;cursor:pointer;font-weight:bold;line-height:24px}.close-btn.svelte-w9ofnp.svelte-w9ofnp:hover{color:#cacaca}.popover-inner.svelte-w9ofnp.svelte-w9ofnp{position:relative;overflow:auto;display:flex;flex-direction:column;flex-grow:1;overflow-x:hidden;padding:0 15px 15px}@media(max-width: 500px){.popover-modal.svelte-w9ofnp.svelte-w9ofnp{align-items:end}.popover-container.svelte-w9ofnp.svelte-w9ofnp{border-radius:8px 8px 0 0 !important}}svg.svelte-qbd276{width:var(--chevron-icon-width, 20px);height:var(--chevron-icon-width, 20px);color:var(--chevron-icon-colour, currentColor)}svg.svelte-whdbu1{width:var(--clear-icon-width, 20px);height:var(--clear-icon-width, 20px);color:var(--clear-icon-color, currentColor)}.loading.svelte-1p3nqvd{width:var(--spinner-width, 20px);height:var(--spinner-height, 20px);color:var(--spinner-color, var(--icons-color));animation:svelte-1p3nqvd-rotate 0.75s linear infinite;transform-origin:center center;transform:none}.circle_path.svelte-1p3nqvd{stroke-dasharray:90;stroke-linecap:round}@keyframes svelte-1p3nqvd-rotate{100%{transform:rotate(360deg)}}.svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{--borderRadius:var(--border-radius);--clearSelectColor:var(--clear-select-color);--clearSelectWidth:var(--clear-select-width);--disabledBackground:var(--disabled-background);--disabledBorderColor:var(--disabled-border-color);--disabledColor:var(--disabled-color);--disabledPlaceholderColor:var(--disabled-placeholder-color);--disabledPlaceholderOpacity:var(--disabled-placeholder-opacity);--errorBackground:var(--error-background);--errorBorder:var(--error-border);--groupItemPaddingLeft:var(--group-item-padding-left);--groupTitleColor:var(--group-title-color);--groupTitleFontSize:var(--group-title-font-size);--groupTitleFontWeight:var(--group-title-font-weight);--groupTitlePadding:var(--group-title-padding);--groupTitleTextTransform:var(--group-title-text-transform);--groupTitleBorderColor:var(--group-title-border-color);--groupTitleBorderWidth:var(--group-title-border-width);--groupTitleBorderStyle:var(--group-title-border-style);--indicatorColor:var(--chevron-color);--indicatorHeight:var(--chevron-height);--indicatorWidth:var(--chevron-width);--inputColor:var(--input-color);--inputLeft:var(--input-left);--inputLetterSpacing:var(--input-letter-spacing);--inputMargin:var(--input-margin);--inputPadding:var(--input-padding);--itemActiveBackground:var(--item-active-background);--itemColor:var(--item-color);--itemFirstBorderRadius:var(--item-first-border-radius);--itemHoverBG:var(--item-hover-bg);--itemHoverColor:var(--item-hover-color);--itemIsActiveBG:var(--item-is-active-bg);--itemIsActiveColor:var(--item-is-active-color);--itemIsNotSelectableColor:var(--item-is-not-selectable-color);--itemPadding:var(--item-padding);--listBackground:var(--list-background);--listBorder:var(--list-border);--listBorderRadius:var(--list-border-radius);--listEmptyColor:var(--list-empty-color);--listEmptyPadding:var(--list-empty-padding);--listEmptyTextAlign:var(--list-empty-text-align);--listMaxHeight:var(--list-max-height);--listPosition:var(--list-position);--listShadow:var(--list-shadow);--listZIndex:var(--list-z-index);--multiItemBG:var(--multi-item-bg);--multiItemBorderRadius:var(--multi-item-border-radius);--multiItemDisabledHoverBg:var(--multi-item-disabled-hover-bg);--multiItemDisabledHoverColor:var(--multi-item-disabled-hover-color);--multiItemHeight:var(--multi-item-height);--multiItemMargin:var(--multi-item-margin);--multiItemPadding:var(--multi-item-padding);--multiSelectInputMargin:var(--multi-select-input-margin);--multiSelectInputPadding:var(--multi-select-input-padding);--multiSelectPadding:var(--multi-select-padding);--placeholderColor:var(--placeholder-color);--placeholderOpacity:var(--placeholder-opacity);--selectedItemPadding:var(--selected-item-padding);--spinnerColor:var(--spinner-color);--spinnerHeight:var(--spinner-height);--spinnerWidth:var(--spinner-width);--internal-padding:0 0 0 16px;border:var(--border, 1px solid #d8dbdf);border-radius:var(--border-radius, 6px);min-height:var(--height, 42px);position:relative;display:flex;align-items:stretch;padding:var(--padding, var(--internal-padding));background:var(--background, #fff);margin:var(--margin, 0);width:var(--width, 100%);font-size:var(--font-size, 16px);max-height:var(--max-height)}.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{box-sizing:var(--box-sizing, border-box)}.svelte-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:hover{border:var(--border-hover, 1px solid #b2b8bf)}.value-container.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;flex:1 1 0%;flex-wrap:wrap;align-items:center;gap:5px 10px;padding:var(--value-container-padding, 5px 0);position:relative;overflow:var(--value-container-overflow, hidden);align-self:stretch}.prepend.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.indicators.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;flex-shrink:0;align-items:center}.indicators.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:var(--indicators-position);top:var(--indicators-top);right:var(--indicators-right);bottom:var(--indicators-bottom)}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:absolute;cursor:default;border:none;color:var(--input-color, var(--item-color));padding:var(--input-padding, 0);letter-spacing:var(--input-letter-spacing, inherit);margin:var(--input-margin, 0);min-width:10px;top:0;right:0;bottom:0;left:0;background:transparent;font-size:var(--font-size, 16px)}.svelte-82qwg8:not(.multi)&gt;.value-container.svelte-82qwg8&gt;input.svelte-82qwg8{width:100%;height:100%}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8::placeholder{color:var(--placeholder-color, #78848f);opacity:var(--placeholder-opacity, 1)}input.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:none}.svelte-select.focused.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border:var(--border-focused, 1px solid #006fe8);border-radius:var(--border-radius-focused, var(--border-radius, 6px))}.disabled.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--disabled-background, #ebedef);border-color:var(--disabled-border-color, #ebedef);color:var(--disabled-color, #c1c6cc)}.disabled.svelte-82qwg8 input.svelte-82qwg8.svelte-82qwg8::placeholder{color:var(--disabled-placeholder-color, #c1c6cc);opacity:var(--disabled-placeholder-opacity, 1)}.selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{position:relative;overflow:var(--selected-item-overflow, hidden);padding:var(--selected-item-padding, 0 20px 0 0);text-overflow:ellipsis;white-space:nowrap;color:var(--selected-item-color, inherit);font-size:var(--font-size, 16px)}.multi.svelte-82qwg8 .selected-item.svelte-82qwg8.svelte-82qwg8{position:absolute;line-height:var(--height, 42px);height:var(--height, 42px)}.selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:none}.hide-selected-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0}.icon.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;align-items:center;justify-content:center}.clear-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{all:unset;display:flex;align-items:center;justify-content:center;width:var(--clear-select-width, 40px);height:var(--clear-select-height, 100%);color:var(--clear-select-color, var(--icons-color));margin:var(--clear-select-margin, 0);pointer-events:all;flex-shrink:0}.clear-select.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:focus{outline:var(--clear-select-focus-outline, 1px solid #006fe8)}.loading.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{width:var(--loading-width, 40px);height:var(--loading-height);color:var(--loading-color, var(--icons-color));margin:var(--loading--margin, 0);flex-shrink:0}.chevron.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{width:var(--chevron-width, 40px);height:var(--chevron-height, 40px);background:var(--chevron-background, transparent);pointer-events:var(--chevron-pointer-events, none);color:var(--chevron-color, var(--icons-color));border:var(--chevron-border, 0 0 0 1px solid #d8dbdf);flex-shrink:0}.multi.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{padding:var(--multi-select-padding, var(--internal-padding))}.multi.svelte-82qwg8 input.svelte-82qwg8.svelte-82qwg8{padding:var(--multi-select-input-padding, 0);position:relative;margin:var(--multi-select-input-margin, 5px 0);flex:1 1 40px}.svelte-select.error.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border:var(--error-border, 1px solid #ff2d55);background:var(--error-background, #fff)}.a11y-text.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{z-index:9999;border:0px;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0px;white-space:nowrap}.multi-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--multi-item-bg, #ebedef);margin:var(--multi-item-margin, 0);outline:var(--multi-item-outline, 1px solid #ddd);border-radius:var(--multi-item-border-radius, 4px);height:var(--multi-item-height, 25px);line-height:var(--multi-item-height, 25px);display:flex;cursor:default;padding:var(--multi-item-padding, 0 5px);overflow:hidden;gap:var(--multi-item-gap, 4px);outline-offset:-1px;max-width:var(--multi-max-width, none);color:var(--multi-item-color, var(--item-color))}.multi-item.disabled.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:hover{background:var(--multi-item-disabled-hover-bg, #ebedef);color:var(--multi-item-disabled-hover-color, #c1c6cc)}.multi-item-text.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.multi-item-clear.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{display:flex;align-items:center;justify-content:center;--clear-icon-color:var(--multi-item-clear-icon-color, #000)}.multi-item.active.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{outline:var(--multi-item-active-outline, 1px solid #006fe8)}.svelte-select-list.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{box-shadow:var(--list-shadow, 0 2px 3px 0 rgba(44, 62, 80, 0.24));border-radius:var(--list-border-radius, 4px);max-height:var(--list-max-height, 252px);overflow-y:auto;background:var(--list-background, #fff);position:var(--list-position, absolute);z-index:var(--list-z-index, 2);border:var(--list-border)}.prefloat.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0;pointer-events:none}.list-group-title.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{color:var(--group-title-color, #8f8f8f);cursor:default;font-size:var(--group-title-font-size, 16px);font-weight:var(--group-title-font-weight, 600);height:var(--height, 42px);line-height:var(--height, 42px);padding:var(--group-title-padding, 0 20px);text-overflow:ellipsis;overflow-x:hidden;white-space:nowrap;text-transform:var(--group-title-text-transform, uppercase);border-width:var(--group-title-border-width, medium);border-style:var(--group-title-border-style, none);border-color:var(--group-title-border-color, color)}.empty.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{text-align:var(--list-empty-text-align, center);padding:var(--list-empty-padding, 20px 0);color:var(--list-empty-color, #78848f)}.item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{cursor:default;height:var(--item-height, var(--height, 42px));line-height:var(--item-line-height, var(--height, 42px));padding:var(--item-padding, 0 20px);color:var(--item-color, inherit);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;transition:var(--item-transition, all 0.2s);align-items:center;width:100%}.item.group-item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{padding-left:var(--group-item-padding-left, 40px)}.item.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:active{background:var(--item-active-background, #b9daff)}.item.active.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{background:var(--item-is-active-bg, #007aff);color:var(--item-is-active-color, #fff)}.item.first.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{border-radius:var(--item-first-border-radius, 4px 4px 0 0)}.item.hover.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:not(.active){background:var(--item-hover-bg, #e7f2ff);color:var(--item-hover-color, inherit)}.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.hover.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.active.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8,.item.not-selectable.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8:active{color:var(--item-is-not-selectable-color, #999);background:transparent}.required.svelte-82qwg8.svelte-82qwg8.svelte-82qwg8{opacity:0;z-index:-1;position:absolute;top:0;left:0;bottom:0;right:0}.battle-rules.svelte-58vzcf{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:8px;padding:15px;color:#545454;font-size:14px}.select-form-field.svelte-g5ybep.svelte-g5ybep{display:flex;align-items:center;justify-content:center;margin:15px auto;width:100%;max-width:300px}.select-form-field.svelte-g5ybep label.svelte-g5ybep{top:-8px;padding-left:10px;color:#011aff;z-index:1;font-size:12px}.select-form-field.svelte-g5ybep div.svelte-g5ybep{flex-grow:1}.game-list-item.svelte-9sktcv.svelte-9sktcv{height:auto !important}.player-icons.svelte-9sktcv.svelte-9sktcv{position:relative;width:85px;height:70px;margin:8px}.player-icons.svelte-9sktcv&gt;.svelte-9sktcv{position:absolute}.player-icons.svelte-9sktcv .icon-box.svelte-9sktcv:nth-child(1){top:0;left:0}.player-icons.svelte-9sktcv .icon-box.svelte-9sktcv:nth-child(2){bottom:0;right:0}.game-info.svelte-9sktcv.svelte-9sktcv{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:8px 8px;flex-grow:1}.game-info.svelte-9sktcv&gt;span.svelte-9sktcv{font-size:14px;display:flex;align-items:center}.game-info.svelte-9sktcv&gt;span.svelte-9sktcv:nth-child(1){font-size:16px !important}.game-info.svelte-9sktcv&gt;span.svelte-9sktcv:nth-child(2){flex-grow:1}.game-info.svelte-9sktcv strong.svelte-9sktcv{margin-right:5px}.result-icon.svelte-9sktcv.svelte-9sktcv{display:flex;font-size:32px;font-weight:700;align-items:center;width:70px;justify-content:center}.load-more-btn.svelte-1eg7kf7{margin-top:16px;height:36px;padding:8px 32px;border-radius:8px;border:none;background:#EEE;cursor:pointer}.load-more-btn.svelte-1eg7kf7:hover{border-color:#dadada;background:#dadada}.score-box.svelte-qthdt span.svelte-qthdt{color:#000 !important}.stats-box.svelte-t6m8zh.svelte-t6m8zh{display:flex;flex-direction:column;gap:10px;margin:20px 0}.stats-row.svelte-t6m8zh.svelte-t6m8zh{display:flex;gap:20px}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh{flex:1}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh:last-child{text-align:left}.stats-row.svelte-t6m8zh&gt;strong.svelte-t6m8zh:first-child{text-align:right}.toolbar.svelte-1doaeot{display:flex;flex-direction:column;gap:10px;padding:10px 0}.tabs.svelte-4q7ypb.svelte-4q7ypb{padding:0 10px}.tabs-header.svelte-4q7ypb.svelte-4q7ypb{display:flex;align-items:center;padding:20px 0;gap:20px}.tab-item.svelte-4q7ypb.svelte-4q7ypb{font-size:18px;font-style:normal;font-weight:500;color:#8B8B8B;cursor:pointer}.tab-item.selected.svelte-4q7ypb.svelte-4q7ypb{color:#001AFF}.game-toolbar.svelte-4q7ypb.svelte-4q7ypb{display:flex;align-items:center;gap:10px;padding:0 10px}.intro.svelte-4q7ypb.svelte-4q7ypb,.intro.svelte-4q7ypb&gt;div.svelte-4q7ypb{display:flex;flex-direction:column;flex-grow:1}.intro.svelte-4q7ypb&gt;div.svelte-4q7ypb{align-items:center;justify-content:flex-end}
 
  /*//]]&gt;*/</style>
 <script type="module" crossorigin="">//&lt;![CDATA[
@@ -18805,6 +18805,12 @@ var Status = /* @__PURE__ */ ((Status2) =&gt; {
   return Status2;
 })(Status || {});
 const STATUS_LABELS = ["Waiting For Opponent", "Waiting For Reveal", "Completed", "Cancelled"];
+var PlayerResult = /* @__PURE__ */ ((PlayerResult2) =&gt; {
+  PlayerResult2[PlayerResult2["Draw"] = 0] = "Draw";
+  PlayerResult2[PlayerResult2["Win"] = 1] = "Win";
+  PlayerResult2[PlayerResult2["Lose"] = 2] = "Lose";
+  return PlayerResult2;
+})(PlayerResult || {});
 const _BattleClient = class _BattleClient2 {
   constructor(tokenContext) {
     this.tokenContext = tokenContext;
@@ -18817,6 +18823,8 @@ const _BattleClient = class _BattleClient2 {
     this.readProvider = getEthersProvider();
     this.walletProvider = new BrowserProvider(window.ethereum, "any");
     this.contract = new Contract(_BattleClient2.CONTRACT_ADDR, _BattleClient2.CONTRACT_ABI, this.readProvider);
+  }
+  getResultColor() {
   }
   isOwner(game) {
     return game.gameState.playerAContract == this.tokenContext.contractAddress &amp;&amp; game.gameState.playerATokenId == BigInt(this.tokenContext.tokenId);
@@ -20981,7 +20989,7 @@ const context = {
   SLNBalance
 };
 const CatImage_svelte_svelte_type_style_lang = "";
-function create_fragment$E(ctx) {
+function create_fragment$G(ctx) {
   let div;
   let img;
   let img_src_value;
@@ -21072,7 +21080,7 @@ function create_fragment$E(ctx) {
     }
   };
 }
-function instance$z($$self, $$props, $$invalidate) {
+function instance$A($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { imageUrl } = $$props;
   $$self.$$set = ($$props2) =&gt; {
@@ -21086,10 +21094,10 @@ function instance$z($$self, $$props, $$invalidate) {
 class CatImage extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$z, create_fragment$E, safe_not_equal, { imageUrl: 0 });
+    init$2(this, options, instance$A, create_fragment$G, safe_not_equal, { imageUrl: 0 });
   }
 }
-function create_fragment$D(ctx) {
+function create_fragment$F(ctx) {
   let div1;
   let img;
   let img_src_value;
@@ -21185,7 +21193,7 @@ function create_fragment$D(ctx) {
     }
   };
 }
-function instance$y($$self, $$props, $$invalidate) {
+function instance$z($$self, $$props, $$invalidate) {
   let token;
   context.data.subscribe((value) =&gt; {
     if (!value.token)
@@ -21197,11 +21205,11 @@ function instance$y($$self, $$props, $$invalidate) {
 class Adopt extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$y, create_fragment$D, safe_not_equal, {});
+    init$2(this, options, instance$z, create_fragment$F, safe_not_equal, {});
   }
 }
 const Header_svelte_svelte_type_style_lang = "";
-function create_if_block$i(ctx) {
+function create_if_block$k(ctx) {
   let h1;
   let t;
   return {
@@ -21234,7 +21242,7 @@ function create_if_block$i(ctx) {
     }
   };
 }
-function create_fragment$C(ctx) {
+function create_fragment$E(ctx) {
   let div4;
   let div0;
   let catimage;
@@ -21267,7 +21275,7 @@ function create_fragment$C(ctx) {
   });
   let if_block = (
     /*catName*/
-    ctx[0] &amp;&amp; create_if_block$i(ctx)
+    ctx[0] &amp;&amp; create_if_block$k(ctx)
   );
   return {
     c() {
@@ -21324,7 +21332,7 @@ function create_fragment$C(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$i(ctx2);
+          if_block = create_if_block$k(ctx2);
           if_block.c();
           if_block.m(div3, t1);
         }
@@ -21361,7 +21369,7 @@ function create_fragment$C(ctx) {
     }
   };
 }
-function instance$x($$self, $$props, $$invalidate) {
+function instance$y($$self, $$props, $$invalidate) {
   let { catName } = $$props;
   let token;
   context.data.subscribe((value) =&gt; {
@@ -21376,11 +21384,11 @@ function instance$x($$self, $$props, $$invalidate) {
 class Header extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$x, create_fragment$C, safe_not_equal, { catName: 0 });
+    init$2(this, options, instance$y, create_fragment$E, safe_not_equal, { catName: 0 });
   }
 }
 const NftIcon_svelte_svelte_type_style_lang = "";
-function create_fragment$B(ctx) {
+function create_fragment$D(ctx) {
   let div1;
   let div0;
   let t;
@@ -21450,7 +21458,7 @@ function create_fragment$B(ctx) {
     }
   };
 }
-function instance$w($$self, $$props, $$invalidate) {
+function instance$x($$self, $$props, $$invalidate) {
   let { tokenUri } = $$props;
   let src;
   let loaded = false;
@@ -21473,10 +21481,10 @@ function instance$w($$self, $$props, $$invalidate) {
 class NftIcon extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$w, create_fragment$B, safe_not_equal, { tokenUri: 2 });
+    init$2(this, options, instance$x, create_fragment$D, safe_not_equal, { tokenUri: 2 });
   }
 }
-function create_fragment$A(ctx) {
+function create_fragment$C(ctx) {
   let small;
   let t0;
   let span;
@@ -21539,7 +21547,7 @@ function create_fragment$A(ctx) {
     }
   };
 }
-function instance$v($$self, $$props, $$invalidate) {
+function instance$w($$self, $$props, $$invalidate) {
   let { address } = $$props;
   let ensName;
   onMount(async () =&gt; {
@@ -21556,11 +21564,11 @@ function instance$v($$self, $$props, $$invalidate) {
 class OwnerAddress extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$v, create_fragment$A, safe_not_equal, { address: 0 });
+    init$2(this, options, instance$w, create_fragment$C, safe_not_equal, { address: 0 });
   }
 }
 const Loader_svelte_svelte_type_style_lang = "";
-function create_if_block$h(ctx) {
+function create_if_block$j(ctx) {
   let div5;
   let div4;
   let div0;
@@ -21615,11 +21623,11 @@ function create_if_block$h(ctx) {
     }
   };
 }
-function create_fragment$z(ctx) {
+function create_fragment$B(ctx) {
   let if_block_anchor;
   let if_block = (
     /*show*/
-    ctx[0] &amp;&amp; create_if_block$h(ctx)
+    ctx[0] &amp;&amp; create_if_block$j(ctx)
   );
   return {
     c() {
@@ -21640,7 +21648,7 @@ function create_fragment$z(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$h(ctx2);
+          if_block = create_if_block$j(ctx2);
           if_block.c();
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
         }
@@ -21660,7 +21668,7 @@ function create_fragment$z(ctx) {
     }
   };
 }
-function instance$u($$self, $$props, $$invalidate) {
+function instance$v($$self, $$props, $$invalidate) {
   let { show = true } = $$props;
   let { size: size2 = "small" } = $$props;
   $$self.$$set = ($$props2) =&gt; {
@@ -21674,11 +21682,11 @@ function instance$u($$self, $$props, $$invalidate) {
 class Loader extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$u, create_fragment$z, safe_not_equal, { show: 0, size: 1 });
+    init$2(this, options, instance$v, create_fragment$B, safe_not_equal, { show: 0, size: 1 });
   }
 }
 const LevelProgress_svelte_svelte_type_style_lang = "";
-function create_fragment$y(ctx) {
+function create_fragment$A(ctx) {
   let div2;
   let span;
   let t0;
@@ -21760,7 +21768,7 @@ function create_fragment$y(ctx) {
     }
   };
 }
-function instance$t($$self, $$props, $$invalidate) {
+function instance$u($$self, $$props, $$invalidate) {
   let { threshold } = $$props;
   let { total } = $$props;
   $$self.$$set = ($$props2) =&gt; {
@@ -21774,7 +21782,7 @@ function instance$t($$self, $$props, $$invalidate) {
 class LevelProgress extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$t, create_fragment$y, safe_not_equal, { threshold: 0, total: 1 });
+    init$2(this, options, instance$u, create_fragment$A, safe_not_equal, { threshold: 0, total: 1 });
   }
 }
 const LEVEL_TEXT = {
@@ -21892,7 +21900,7 @@ function create_each_block$8(ctx) {
     }
   };
 }
-function create_if_block$g(ctx) {
+function create_if_block$i(ctx) {
   let div;
   let button;
   let mounted;
@@ -21928,7 +21936,7 @@ function create_if_block$g(ctx) {
     }
   };
 }
-function create_fragment$x(ctx) {
+function create_fragment$z(ctx) {
   let div;
   let t;
   let current;
@@ -21946,7 +21954,7 @@ function create_fragment$x(ctx) {
   let if_block = (
     /*loadedFriends*/
     ctx[1].length &lt; /*friendsList*/
-    ctx[0].length &amp;&amp; create_if_block$g(ctx)
+    ctx[0].length &amp;&amp; create_if_block$i(ctx)
   );
   return {
     c() {
@@ -22005,7 +22013,7 @@ function create_fragment$x(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$g(ctx2);
+          if_block = create_if_block$i(ctx2);
           if_block.c();
           if_block.m(div, null);
         }
@@ -22039,7 +22047,7 @@ function create_fragment$x(ctx) {
     }
   };
 }
-function instance$s($$self, $$props, $$invalidate) {
+function instance$t($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { friendsList = [] } = $$props;
   let loadedFriends = [];
@@ -22067,10 +22075,10 @@ function instance$s($$self, $$props, $$invalidate) {
 class FriendsList extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$s, create_fragment$x, safe_not_equal, { friendsList: 0 });
+    init$2(this, options, instance$t, create_fragment$z, safe_not_equal, { friendsList: 0 });
   }
 }
-function create_fragment$w(ctx) {
+function create_fragment$y(ctx) {
   let html_tag;
   let html_anchor;
   return {
@@ -22106,7 +22114,7 @@ function create_fragment$w(ctx) {
     }
   };
 }
-function instance$r($$self, $$props, $$invalidate) {
+function instance$s($$self, $$props, $$invalidate) {
   let { epochMs } = $$props;
   let nowEpochMs;
   let timerValue = "-";
@@ -22152,11 +22160,11 @@ function instance$r($$self, $$props, $$invalidate) {
 class CountdownTimer extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$r, create_fragment$w, safe_not_equal, { epochMs: 1 });
+    init$2(this, options, instance$s, create_fragment$y, safe_not_equal, { epochMs: 1 });
   }
 }
 const ShareToTwitter_svelte_svelte_type_style_lang = "";
-function create_fragment$v(ctx) {
+function create_fragment$x(ctx) {
   let div5;
   let h4;
   let t1;
@@ -22311,7 +22319,7 @@ function create_fragment$v(ctx) {
   };
 }
 const openSeaLink = "https://opensea.io/assets/matic/0xd5ca946ac1c1f24eb26dae9e1a53ba6a02bd97fe/";
-function instance$q($$self, $$props, $$invalidate) {
+function instance$r($$self, $$props, $$invalidate) {
   let { token } = $$props;
   let { catState } = $$props;
   let mouseDown = false;
@@ -22391,7 +22399,7 @@ function instance$q($$self, $$props, $$invalidate) {
 class ShareToTwitter extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$q, create_fragment$v, safe_not_equal, { token: 0, catState: 6 });
+    init$2(this, options, instance$r, create_fragment$x, safe_not_equal, { token: 0, catState: 6 });
   }
 }
 new TextEncoder();
@@ -33199,7 +33207,7 @@ function create_if_block_2$a(ctx) {
     }
   };
 }
-function create_if_block$f(ctx) {
+function create_if_block$h(ctx) {
   let div;
   let h3;
   let t0;
@@ -33213,7 +33221,7 @@ function create_if_block$f(ctx) {
   let current_block_type_index;
   let if_block;
   let current;
-  const if_block_creators = [create_if_block_1$b, create_else_block$9];
+  const if_block_creators = [create_if_block_1$c, create_else_block$9];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -33321,7 +33329,7 @@ function create_else_block$9(ctx) {
     }
   };
 }
-function create_if_block_1$b(ctx) {
+function create_if_block_1$c(ctx) {
   let friendslist;
   let current;
   friendslist = new FriendsList({
@@ -33494,7 +33502,7 @@ function create_default_slot$4(ctx) {
     }
   };
 }
-function create_fragment$u(ctx) {
+function create_fragment$w(ctx) {
   let div7;
   let header;
   let t0;
@@ -33551,7 +33559,7 @@ function create_fragment$u(ctx) {
   );
   let if_block2 = (
     /*friendsList*/
-    ctx[2] &amp;&amp; create_if_block$f(ctx)
+    ctx[2] &amp;&amp; create_if_block$h(ctx)
   );
   loader = new Loader({ props: { show: (
     /*loading*/
@@ -33740,7 +33748,7 @@ function create_fragment$u(ctx) {
             transition_in(if_block2, 1);
           }
         } else {
-          if_block2 = create_if_block$f(ctx2);
+          if_block2 = create_if_block$h(ctx2);
           if_block2.c();
           transition_in(if_block2, 1);
           if_block2.m(div8, t15);
@@ -33803,7 +33811,7 @@ function getCurrentLevelProgress(total, level, threshold) {
   const levelsGte14 = level &gt; 14 ? levelsCompleted - 14 : 0;
   return Number(total) - Number(threshold) * levelsLt14 - Number(threshold) * levelsGte14 * 3;
 }
-function instance$p($$self, $$props, $$invalidate) {
+function instance$q($$self, $$props, $$invalidate) {
   const chainId = parseInt(chainID);
   let token;
   let catState = null;
@@ -33841,10 +33849,10 @@ function instance$p($$self, $$props, $$invalidate) {
 class Info extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$p, create_fragment$u, safe_not_equal, {});
+    init$2(this, options, instance$q, create_fragment$w, safe_not_equal, {});
   }
 }
-function create_fragment$t(ctx) {
+function create_fragment$v(ctx) {
   let h1;
   return {
     c() {
@@ -33867,11 +33875,11 @@ function create_fragment$t(ctx) {
 class NotFound extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, null, create_fragment$t, safe_not_equal, {});
+    init$2(this, options, null, create_fragment$v, safe_not_equal, {});
   }
 }
 const Feed_svelte_svelte_type_style_lang = "";
-function create_fragment$s(ctx) {
+function create_fragment$u(ctx) {
   let div1;
   let div0;
   let img0;
@@ -33948,7 +33956,7 @@ function create_fragment$s(ctx) {
     }
   };
 }
-function instance$o($$self, $$props, $$invalidate) {
+function instance$p($$self, $$props, $$invalidate) {
   let feeding = false;
   const onMessage = (evt) =&gt; {
     var _a2, _b, _c;
@@ -33968,10 +33976,10 @@ function instance$o($$self, $$props, $$invalidate) {
 class Feed extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$o, create_fragment$s, safe_not_equal, {});
+    init$2(this, options, instance$p, create_fragment$u, safe_not_equal, {});
   }
 }
-function create_fragment$r(ctx) {
+function create_fragment$t(ctx) {
   let button;
   let mounted;
   let dispose;
@@ -34005,7 +34013,7 @@ function create_fragment$r(ctx) {
     }
   };
 }
-function instance$n($$self, $$props, $$invalidate) {
+function instance$o($$self, $$props, $$invalidate) {
   let { tokenId } = $$props;
   const click_handler = () =&gt; {
     const tweetText = `Meow Meow 😺! My #smartcat is lonely. Cat #${tokenId} is looking for a playdate. Please invite me.`;
@@ -34020,7 +34028,7 @@ function instance$n($$self, $$props, $$invalidate) {
 class TwitterShareButton extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$n, create_fragment$r, safe_not_equal, { tokenId: 0 });
+    init$2(this, options, instance$o, create_fragment$t, safe_not_equal, { tokenId: 0 });
   }
 }
 function get_each_context$7(ctx, list, i2) {
@@ -34028,7 +34036,7 @@ function get_each_context$7(ctx, list, i2) {
   child_ctx[7] = list[i2];
   return child_ctx;
 }
-function create_if_block$e(ctx) {
+function create_if_block$g(ctx) {
   let show_if = (
     /*invites*/
     ctx[1].length &gt; 0 &amp;&amp; !/*invites*/
@@ -34040,7 +34048,7 @@ function create_if_block$e(ctx) {
   let if_block1_anchor;
   let current;
   let if_block0 = show_if &amp;&amp; create_if_block_2$9();
-  const if_block_creators = [create_if_block_1$a, create_else_block$8];
+  const if_block_creators = [create_if_block_1$b, create_else_block$8];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -34206,7 +34214,7 @@ function create_else_block$8(ctx) {
     }
   };
 }
-function create_if_block_1$a(ctx) {
+function create_if_block_1$b(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -34445,7 +34453,7 @@ function create_each_block$7(ctx) {
     }
   };
 }
-function create_fragment$q(ctx) {
+function create_fragment$s(ctx) {
   let div;
   let h3;
   let t1;
@@ -34460,7 +34468,7 @@ function create_fragment$q(ctx) {
   let current;
   let if_block = (
     /*invites*/
-    ctx[1] &amp;&amp; create_if_block$e(ctx)
+    ctx[1] &amp;&amp; create_if_block$g(ctx)
   );
   loader = new Loader({ props: { show: (
     /*loading*/
@@ -34517,7 +34525,7 @@ function create_fragment$q(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$e(ctx2);
+          if_block = create_if_block$g(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div, t6);
@@ -34564,7 +34572,7 @@ function create_fragment$q(ctx) {
   };
 }
 const func$2 = (invitee) =&gt; invitee.canPlay === true;
-function instance$m($$self, $$props, $$invalidate) {
+function instance$n($$self, $$props, $$invalidate) {
   let token;
   let invites = null;
   let selectedInviter = 0;
@@ -34594,7 +34602,7 @@ function instance$m($$self, $$props, $$invalidate) {
 class Play extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$m, create_fragment$q, safe_not_equal, {});
+    init$2(this, options, instance$n, create_fragment$s, safe_not_equal, {});
   }
 }
 const Invite_svelte_svelte_type_style_lang = "";
@@ -34874,12 +34882,12 @@ function create_each_block$6(ctx) {
     }
   };
 }
-function create_if_block$d(ctx) {
+function create_if_block$f(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block_1$9, create_else_block$7];
+  const if_block_creators = [create_if_block_1$a, create_else_block$7];
   const if_blocks = [];
   function select_block_type_1(ctx2, dirty) {
     if (
@@ -34967,7 +34975,7 @@ function create_else_block$7(ctx) {
     }
   };
 }
-function create_if_block_1$9(ctx) {
+function create_if_block_1$a(ctx) {
   let friendslist;
   let current;
   friendslist = new FriendsList({
@@ -35151,7 +35159,7 @@ function create_default_slot$3(ctx) {
     }
   };
 }
-function create_fragment$p(ctx) {
+function create_fragment$r(ctx) {
   var _a2;
   let div7;
   let h3;
@@ -35211,7 +35219,7 @@ function create_fragment$p(ctx) {
   });
   let if_block1 = (
     /*friendsList*/
-    ctx[5] !== null &amp;&amp; create_if_block$d(ctx)
+    ctx[5] !== null &amp;&amp; create_if_block$f(ctx)
   );
   loader1 = new Loader({
     props: { show: (
@@ -35419,7 +35427,7 @@ function create_fragment$p(ctx) {
             transition_in(if_block1, 1);
           }
         } else {
-          if_block1 = create_if_block$d(ctx2);
+          if_block1 = create_if_block$f(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
           if_block1.m(div5, t18);
@@ -35481,7 +35489,7 @@ function create_fragment$p(ctx) {
     }
   };
 }
-function instance$l($$self, $$props, $$invalidate) {
+function instance$m($$self, $$props, $$invalidate) {
   let token;
   let selectedTab = "pending";
   let pendingLoading = false;
@@ -35547,7 +35555,7 @@ function instance$l($$self, $$props, $$invalidate) {
 class Invite extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$l, create_fragment$p, safe_not_equal, {});
+    init$2(this, options, instance$m, create_fragment$r, safe_not_equal, {});
   }
 }
 const Clean_svelte_svelte_type_style_lang = "";
@@ -35590,7 +35598,7 @@ function create_default_slot$2(ctx) {
     }
   };
 }
-function create_fragment$o(ctx) {
+function create_fragment$q(ctx) {
   let div;
   let catimage;
   let t0;
@@ -35673,7 +35681,7 @@ function create_fragment$o(ctx) {
     }
   };
 }
-function instance$k($$self, $$props, $$invalidate) {
+function instance$l($$self, $$props, $$invalidate) {
   let token;
   let cleaning = false;
   context.data.subscribe((value) =&gt; {
@@ -35702,7 +35710,7 @@ function instance$k($$self, $$props, $$invalidate) {
 class Clean extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$k, create_fragment$o, safe_not_equal, {});
+    init$2(this, options, instance$l, create_fragment$q, safe_not_equal, {});
   }
 }
 const LevelUp_svelte_svelte_type_style_lang = "";
@@ -35806,7 +35814,7 @@ function create_default_slot$1(ctx) {
     }
   };
 }
-function create_fragment$n(ctx) {
+function create_fragment$p(ctx) {
   let div;
   let h3;
   let t1;
@@ -35888,7 +35896,7 @@ function create_fragment$n(ctx) {
   };
 }
 const MathsImage = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/Maths.png";
-function instance$j($$self, $$props, $$invalidate) {
+function instance$k($$self, $$props, $$invalidate) {
   let token;
   context.data.subscribe((value) =&gt; {
     if (!value.token)
@@ -35917,11 +35925,11 @@ function instance$j($$self, $$props, $$invalidate) {
 class LevelUp extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$j, create_fragment$n, safe_not_equal, {});
+    init$2(this, options, instance$k, create_fragment$p, safe_not_equal, {});
   }
 }
 const NameCat_svelte_svelte_type_style_lang = "";
-function create_if_block$c(ctx) {
+function create_if_block$e(ctx) {
   let div2;
   let div1;
   let div0;
@@ -35942,7 +35950,7 @@ function create_if_block$c(ctx) {
   );
   let if_block1 = (
     /*apiRequestStatus*/
-    ctx[4] === "error" &amp;&amp; create_if_block_7$2()
+    ctx[4] === "error" &amp;&amp; create_if_block_7$3()
   );
   let if_block2 = (
     /*apiRequestStatus*/
@@ -35957,7 +35965,7 @@ function create_if_block$c(ctx) {
   let if_block4 = (
     /*isCatNameAvailable*/
     ctx[2] === false &amp;&amp; !/*isCatNameAvailablePending*/
-    ctx[3] &amp;&amp; create_if_block_1$8(ctx)
+    ctx[3] &amp;&amp; create_if_block_1$9(ctx)
   );
   return {
     c() {
@@ -36084,7 +36092,7 @@ function create_if_block$c(ctx) {
         if (if_block1)
           ;
         else {
-          if_block1 = create_if_block_7$2();
+          if_block1 = create_if_block_7$3();
           if_block1.c();
           if_block1.m(div2, t4);
         }
@@ -36132,7 +36140,7 @@ function create_if_block$c(ctx) {
         if (if_block4) {
           if_block4.p(ctx2, dirty);
         } else {
-          if_block4 = create_if_block_1$8(ctx2);
+          if_block4 = create_if_block_1$9(ctx2);
           if_block4.c();
           if_block4.m(div2, null);
         }
@@ -36181,7 +36189,7 @@ function create_if_block_8$2(ctx) {
     }
   };
 }
-function create_if_block_7$2(ctx) {
+function create_if_block_7$3(ctx) {
   let div;
   return {
     c() {
@@ -36491,7 +36499,7 @@ function create_if_block_3$4(ctx) {
     }
   };
 }
-function create_if_block_1$8(ctx) {
+function create_if_block_1$9(ctx) {
   let div;
   let p2;
   let t0;
@@ -36534,13 +36542,13 @@ function create_if_block_1$8(ctx) {
     }
   };
 }
-function create_fragment$m(ctx) {
+function create_fragment$o(ctx) {
   let div2;
   let div1;
   let t4;
   let if_block = (
     /*token*/
-    ctx[0] &amp;&amp; create_if_block$c(ctx)
+    ctx[0] &amp;&amp; create_if_block$e(ctx)
   );
   return {
     c() {
@@ -36566,7 +36574,7 @@ function create_fragment$m(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$c(ctx2);
+          if_block = create_if_block$e(ctx2);
           if_block.c();
           if_block.m(div2, null);
         }
@@ -36586,7 +36594,7 @@ function create_fragment$m(ctx) {
     }
   };
 }
-function instance$i($$self, $$props, $$invalidate) {
+function instance$j($$self, $$props, $$invalidate) {
   const chainId = parseInt(chainID);
   let token;
   let tba;
@@ -36709,11 +36717,11 @@ function instance$i($$self, $$props, $$invalidate) {
 class NameCat extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$i, create_fragment$m, safe_not_equal, {});
+    init$2(this, options, instance$j, create_fragment$o, safe_not_equal, {});
   }
 }
 const MessageBubble_svelte_svelte_type_style_lang = "";
-function create_fragment$l(ctx) {
+function create_fragment$n(ctx) {
   let div1;
   let div0;
   let t0_value = (
@@ -36796,7 +36804,7 @@ function create_fragment$l(ctx) {
     }
   };
 }
-function instance$h($$self, $$props, $$invalidate) {
+function instance$i($$self, $$props, $$invalidate) {
   let { message } = $$props;
   let { senderTokenId } = $$props;
   let dateString;
@@ -36826,7 +36834,7 @@ function instance$h($$self, $$props, $$invalidate) {
 class MessageBubble extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$h, create_fragment$l, safe_not_equal, { message: 0, senderTokenId: 1 });
+    init$2(this, options, instance$i, create_fragment$n, safe_not_equal, { message: 0, senderTokenId: 1 });
   }
 }
 const MessagePopup_svelte_svelte_type_style_lang = "";
@@ -36835,7 +36843,7 @@ function get_each_context$5(ctx, list, i2) {
   child_ctx[15] = list[i2];
   return child_ctx;
 }
-function create_if_block$b(ctx) {
+function create_if_block$d(ctx) {
   let each_1_anchor;
   let current;
   let each_value = ensure_array_like(
@@ -36965,7 +36973,7 @@ function create_each_block$5(ctx) {
     }
   };
 }
-function create_fragment$k(ctx) {
+function create_fragment$m(ctx) {
   let div6;
   let div2;
   let div0;
@@ -36999,7 +37007,7 @@ function create_fragment$k(ctx) {
   let dispose;
   let if_block = (
     /*messages*/
-    ctx[2] &amp;&amp; create_if_block$b(ctx)
+    ctx[2] &amp;&amp; create_if_block$d(ctx)
   );
   loader = new Loader({ props: { show: (
     /*loading*/
@@ -37173,7 +37181,7 @@ function create_fragment$k(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$b(ctx2);
+          if_block = create_if_block$d(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div4, t5);
@@ -37256,7 +37264,7 @@ function scrollToBottom(smooth = false) {
     200
   );
 }
-function instance$g($$self, $$props, $$invalidate) {
+function instance$h($$self, $$props, $$invalidate) {
   let { closed } = $$props;
   let { friendId } = $$props;
   let { threadsList } = $$props;
@@ -37345,7 +37353,7 @@ function instance$g($$self, $$props, $$invalidate) {
 class MessagePopup extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$g, create_fragment$k, safe_not_equal, { closed: 7, friendId: 0, threadsList: 8 });
+    init$2(this, options, instance$h, create_fragment$m, safe_not_equal, { closed: 7, friendId: 0, threadsList: 8 });
   }
 }
 const Messages_svelte_svelte_type_style_lang = "";
@@ -37356,7 +37364,7 @@ function get_each_context$4(ctx, list, i2) {
   child_ctx[10] = i2;
   return child_ctx;
 }
-function create_if_block_1$7(ctx) {
+function create_if_block_1$8(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
@@ -37682,7 +37690,7 @@ function create_each_block$4(ctx) {
     }
   };
 }
-function create_if_block$a(ctx) {
+function create_if_block$c(ctx) {
   let messagepopup;
   let current;
   messagepopup = new MessagePopup({
@@ -37740,7 +37748,7 @@ function create_if_block$a(ctx) {
     }
   };
 }
-function create_fragment$j(ctx) {
+function create_fragment$l(ctx) {
   let h3;
   let t1;
   let p2;
@@ -37754,7 +37762,7 @@ function create_fragment$j(ctx) {
   let current;
   let if_block0 = (
     /*threadsList*/
-    ctx[0] &amp;&amp; create_if_block_1$7(ctx)
+    ctx[0] &amp;&amp; create_if_block_1$8(ctx)
   );
   loader = new Loader({ props: { show: (
     /*loading*/
@@ -37762,7 +37770,7 @@ function create_fragment$j(ctx) {
   ) } });
   let if_block1 = (
     /*selectedFriendId*/
-    ctx[1] &amp;&amp; create_if_block$a(ctx)
+    ctx[1] &amp;&amp; create_if_block$c(ctx)
   );
   return {
     c() {
@@ -37822,7 +37830,7 @@ function create_fragment$j(ctx) {
             transition_in(if_block0, 1);
           }
         } else {
-          if_block0 = create_if_block_1$7(ctx2);
+          if_block0 = create_if_block_1$8(ctx2);
           if_block0.c();
           transition_in(if_block0, 1);
           if_block0.m(div1, t10);
@@ -37851,7 +37859,7 @@ function create_fragment$j(ctx) {
             transition_in(if_block1, 1);
           }
         } else {
-          if_block1 = create_if_block$a(ctx2);
+          if_block1 = create_if_block$c(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
           if_block1.m(div1, null);
@@ -37896,7 +37904,7 @@ function create_fragment$j(ctx) {
     }
   };
 }
-function instance$f($$self, $$props, $$invalidate) {
+function instance$g($$self, $$props, $$invalidate) {
   let token;
   let threadsList = null;
   let selectedFriendId = null;
@@ -37938,11 +37946,11 @@ function instance$f($$self, $$props, $$invalidate) {
 class Messages extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$f, create_fragment$j, safe_not_equal, {});
+    init$2(this, options, instance$g, create_fragment$l, safe_not_equal, {});
   }
 }
 const PlayerIcon_svelte_svelte_type_style_lang = "";
-function create_fragment$i(ctx) {
+function create_fragment$k(ctx) {
   let div1;
   let div0;
   let t;
@@ -37956,7 +37964,7 @@ function create_fragment$i(ctx) {
       div0 = element("div");
       t = space();
       img = element("img");
-      attr(div0, "class", "shimmer svelte-1s6v96s");
+      attr(div0, "class", "shimmer svelte-1ru198");
       set_style(
         div0,
         "display",
@@ -37967,8 +37975,8 @@ function create_fragment$i(ctx) {
       if (!src_url_equal(img.src, img_src_value = /*src*/
       ctx[0]))
         attr(img, "src", img_src_value);
-      attr(img, "class", "svelte-1s6v96s");
-      attr(div1, "class", "player-icon svelte-1s6v96s");
+      attr(img, "class", "svelte-1ru198");
+      attr(div1, "class", "player-icon svelte-1ru198");
     },
     m(target, anchor) {
       insert(target, div1, anchor);
@@ -38012,13 +38020,14 @@ function create_fragment$i(ctx) {
     }
   };
 }
-function instance$e($$self, $$props, $$invalidate) {
+const noPlayerIcon = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/icons/no-player-icon.svg";
+function instance$f($$self, $$props, $$invalidate) {
   let { tokenUri } = $$props;
   let src;
   let loaded = false;
   onMount(async () =&gt; {
     if (!tokenUri) {
-      $$invalidate(0, src = "https://www.svgrepo.com/download/102034/question-mark.svg");
+      $$invalidate(0, src = noPlayerIcon);
       return;
     }
     try {
@@ -38027,7 +38036,7 @@ function instance$e($$self, $$props, $$invalidate) {
       })).json();
       $$invalidate(0, src = meta.image);
     } catch (e) {
-      $$invalidate(0, src = "https://www.svgrepo.com/download/102034/question-mark.svg");
+      $$invalidate(0, src = noPlayerIcon);
       return;
     }
   });
@@ -38041,11 +38050,11 @@ function instance$e($$self, $$props, $$invalidate) {
 class PlayerIcon extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$e, create_fragment$i, safe_not_equal, { tokenUri: 2 });
+    init$2(this, options, instance$f, create_fragment$k, safe_not_equal, { tokenUri: 2 });
   }
 }
 const MoveCard_svelte_svelte_type_style_lang = "";
-function create_if_block_1$6(ctx) {
+function create_if_block_1$7(ctx) {
   let div;
   let div_class_value;
   function select_block_type(ctx2, dirty) {
@@ -38155,7 +38164,7 @@ function create_else_block$5(ctx) {
     }
   };
 }
-function create_if_block$9(ctx) {
+function create_if_block$b(ctx) {
   let strong;
   return {
     c() {
@@ -38174,17 +38183,17 @@ function create_if_block$9(ctx) {
     }
   };
 }
-function create_fragment$h(ctx) {
+function create_fragment$j(ctx) {
   let div;
   let t;
   let if_block0 = (
     /*result*/
-    ctx[1] !== null &amp;&amp; create_if_block_1$6(ctx)
+    ctx[1] !== null &amp;&amp; create_if_block_1$7(ctx)
   );
   function select_block_type_1(ctx2, dirty) {
     if (!/*move*/
     ctx2[0])
-      return create_if_block$9;
+      return create_if_block$b;
     return create_else_block$5;
   }
   let current_block_type = select_block_type_1(ctx);
@@ -38213,7 +38222,7 @@ function create_fragment$h(ctx) {
         if (if_block0) {
           if_block0.p(ctx2, dirty);
         } else {
-          if_block0 = create_if_block_1$6(ctx2);
+          if_block0 = create_if_block_1$7(ctx2);
           if_block0.c();
           if_block0.m(div, t);
         }
@@ -38244,7 +38253,7 @@ function create_fragment$h(ctx) {
     }
   };
 }
-function instance$d($$self, $$props, $$invalidate) {
+function instance$e($$self, $$props, $$invalidate) {
   let { move } = $$props;
   let { result } = $$props;
   $$self.$$set = ($$props2) =&gt; {
@@ -38258,7 +38267,7 @@ function instance$d($$self, $$props, $$invalidate) {
 class MoveCard extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$d, create_fragment$h, safe_not_equal, { move: 0, result: 1 });
+    init$2(this, options, instance$e, create_fragment$j, safe_not_equal, { move: 0, result: 1 });
   }
 }
 var extendStatics = function(d2, b2) {
@@ -39573,7 +39582,7 @@ function Ripple(node, { ripple = true, surface = false, unbounded = false, disab
     }
   };
 }
-function create_fragment$g(ctx) {
+function create_fragment$i(ctx) {
   let div4;
   let input;
   let input_class_value;
@@ -40062,7 +40071,7 @@ function instance_1($$self, $$props, $$invalidate) {
 class Radio extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance_1, create_fragment$g, safe_not_equal, {
+    init$2(this, options, instance_1, create_fragment$i, safe_not_equal, {
       use: 2,
       class: 3,
       style: 4,
@@ -40087,9 +40096,9 @@ class Radio extends SvelteComponent {
 const GameMovesForm_svelte_svelte_type_style_lang = "";
 function get_each_context$3(ctx, list, i2) {
   const child_ctx = ctx.slice();
-  child_ctx[5] = list[i2];
-  child_ctx[6] = list;
-  child_ctx[7] = i2;
+  child_ctx[7] = list[i2];
+  child_ctx[8] = list;
+  child_ctx[9] = i2;
   return child_ctx;
 }
 function create_each_block$3(ctx) {
@@ -40112,20 +40121,20 @@ function create_each_block$3(ctx) {
   let current;
   let mounted;
   let dispose;
-  function click_handler() {
+  function click_handler_1() {
     return (
-      /*click_handler*/
-      ctx[1](
+      /*click_handler_1*/
+      ctx[3](
         /*index*/
-        ctx[7]
+        ctx[9]
       )
     );
   }
   function radio0_group_binding(value) {
-    ctx[2](
+    ctx[4](
       value,
       /*index*/
-      ctx[7]
+      ctx[9]
     );
   }
   let radio0_props = { value: Move.Rock };
@@ -40133,22 +40142,22 @@ function create_each_block$3(ctx) {
     /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ] !== void 0
   ) {
     radio0_props.group = /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ];
   }
   radio0 = new Radio({ props: radio0_props });
   binding_callbacks.push(() =&gt; bind(radio0, "group", radio0_group_binding));
   function radio1_group_binding(value) {
-    ctx[3](
+    ctx[5](
       value,
       /*index*/
-      ctx[7]
+      ctx[9]
     );
   }
   let radio1_props = { value: Move.Paper };
@@ -40156,22 +40165,22 @@ function create_each_block$3(ctx) {
     /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ] !== void 0
   ) {
     radio1_props.group = /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ];
   }
   radio1 = new Radio({ props: radio1_props });
   binding_callbacks.push(() =&gt; bind(radio1, "group", radio1_group_binding));
   function radio2_group_binding(value) {
-    ctx[4](
+    ctx[6](
       value,
       /*index*/
-      ctx[7]
+      ctx[9]
     );
   }
   let radio2_props = { value: Move.Scissors };
@@ -40179,13 +40188,13 @@ function create_each_block$3(ctx) {
     /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ] !== void 0
   ) {
     radio2_props.group = /*playerMoves*/
     ctx[0][
       /*index*/
-      ctx[7]
+      ctx[9]
     ];
   }
   radio2 = new Radio({ props: radio2_props });
@@ -40196,7 +40205,7 @@ function create_each_block$3(ctx) {
       td0 = element("td");
       label = element("label");
       label.textContent = `${"Round #" + /*index*/
-      (ctx[7] + 1)}`;
+      (ctx[9] + 1)}`;
       t1 = space();
       td1 = element("td");
       create_component(radio0.$$.fragment);
@@ -40207,10 +40216,10 @@ function create_each_block$3(ctx) {
       td3 = element("td");
       create_component(radio2.$$.fragment);
       t4 = space();
-      attr(td0, "class", "svelte-wwm4x7");
-      attr(td1, "class", "svelte-wwm4x7");
-      attr(td2, "class", "svelte-wwm4x7");
-      attr(td3, "class", "svelte-wwm4x7");
+      attr(td0, "class", "svelte-e9uk0m");
+      attr(td1, "class", "svelte-e9uk0m");
+      attr(td2, "class", "svelte-e9uk0m");
+      attr(td3, "class", "svelte-e9uk0m");
     },
     m(target, anchor) {
       insert(target, tr, anchor);
@@ -40228,7 +40237,7 @@ function create_each_block$3(ctx) {
       append(tr, t4);
       current = true;
       if (!mounted) {
-        dispose = listen$1(label, "click", click_handler);
+        dispose = listen$1(label, "click", click_handler_1);
         mounted = true;
       }
     },
@@ -40241,7 +40250,7 @@ function create_each_block$3(ctx) {
         radio0_changes.group = /*playerMoves*/
         ctx[0][
           /*index*/
-          ctx[7]
+          ctx[9]
         ];
         add_flush_callback(() =&gt; updating_group = false);
       }
@@ -40253,7 +40262,7 @@ function create_each_block$3(ctx) {
         radio1_changes.group = /*playerMoves*/
         ctx[0][
           /*index*/
-          ctx[7]
+          ctx[9]
         ];
         add_flush_callback(() =&gt; updating_group_1 = false);
       }
@@ -40265,7 +40274,7 @@ function create_each_block$3(ctx) {
         radio2_changes.group = /*playerMoves*/
         ctx[0][
           /*index*/
-          ctx[7]
+          ctx[9]
         ];
         add_flush_callback(() =&gt; updating_group_2 = false);
       }
@@ -40297,18 +40306,27 @@ function create_each_block$3(ctx) {
     }
   };
 }
-function create_fragment$f(ctx) {
+function create_fragment$h(ctx) {
+  let div;
+  let h5;
+  let t1;
+  let p2;
+  let t3;
+  let button;
+  let t5;
   let table;
   let tr;
   let td0;
-  let t0;
-  let td1;
-  let t2;
-  let td2;
-  let t4;
-  let td3;
   let t6;
+  let td1;
+  let t8;
+  let td2;
+  let t10;
+  let td3;
+  let t12;
   let current;
+  let mounted;
+  let dispose;
   let each_value = ensure_array_like(
     /*playerMoves*/
     ctx[0]
@@ -40322,45 +40340,73 @@ function create_fragment$f(ctx) {
   });
   return {
     c() {
+      div = element("div");
+      h5 = element("h5");
+      h5.textContent = "Select 5 moves";
+      t1 = space();
+      p2 = element("p");
+      p2.textContent = 'Manually select your moves or click "I Feel Lucky" to get moves randomly selected for you';
+      t3 = space();
+      button = element("button");
+      button.textContent = "I feel lucky";
+      t5 = space();
       table = element("table");
       tr = element("tr");
       td0 = element("td");
-      t0 = space();
+      t6 = space();
       td1 = element("td");
       td1.textContent = `${MOVE_LABELS[1]}`;
-      t2 = space();
+      t8 = space();
       td2 = element("td");
       td2.textContent = `${MOVE_LABELS[2]}`;
-      t4 = space();
+      t10 = space();
       td3 = element("td");
       td3.textContent = `${MOVE_LABELS[3]}`;
-      t6 = space();
+      t12 = space();
       for (let i2 = 0; i2 &lt; each_blocks.length; i2 += 1) {
         each_blocks[i2].c();
       }
-      attr(td0, "class", "svelte-wwm4x7");
-      attr(td1, "class", "svelte-wwm4x7");
-      attr(td2, "class", "svelte-wwm4x7");
-      attr(td3, "class", "svelte-wwm4x7");
-      attr(table, "class", "move-table svelte-wwm4x7");
+      attr(button, "class", "btn secondary-btn");
+      set_style(div, "text-align", "left");
+      attr(td0, "class", "svelte-e9uk0m");
+      attr(td1, "class", "svelte-e9uk0m");
+      attr(td2, "class", "svelte-e9uk0m");
+      attr(td3, "class", "svelte-e9uk0m");
+      attr(table, "class", "move-table svelte-e9uk0m");
     },
     m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, h5);
+      append(div, t1);
+      append(div, p2);
+      append(div, t3);
+      append(div, button);
+      insert(target, t5, anchor);
       insert(target, table, anchor);
       append(table, tr);
       append(tr, td0);
-      append(tr, t0);
+      append(tr, t6);
       append(tr, td1);
-      append(tr, t2);
+      append(tr, t8);
       append(tr, td2);
-      append(tr, t4);
+      append(tr, t10);
       append(tr, td3);
-      append(table, t6);
+      append(table, t12);
       for (let i2 = 0; i2 &lt; each_blocks.length; i2 += 1) {
         if (each_blocks[i2]) {
           each_blocks[i2].m(table, null);
         }
       }
       current = true;
+      if (!mounted) {
+        dispose = listen$1(
+          button,
+          "click",
+          /*click_handler*/
+          ctx[2]
+        );
+        mounted = true;
+      }
     },
     p(ctx2, [dirty]) {
       if (dirty &amp; /*playerMoves, document*/
@@ -40406,15 +40452,25 @@ function create_fragment$f(ctx) {
     },
     d(detaching) {
       if (detaching) {
+        detach(div);
+        detach(t5);
         detach(table);
       }
       destroy_each(each_blocks, detaching);
+      mounted = false;
+      dispose();
     }
   };
 }
-function instance$c($$self, $$props, $$invalidate) {
+function instance$d($$self, $$props, $$invalidate) {
   let { playerMoves = [0, 0, 0, 0, 0] } = $$props;
-  const click_handler = (index2) =&gt; document.getElementById(index2).focus();
+  function setRandomMoves() {
+    for (let i2 = 0; i2 &lt; playerMoves.length; i2++) {
+      $$invalidate(0, playerMoves[i2] = Math.floor(Math.random() * (4 - 1)) + 1, playerMoves);
+    }
+  }
+  const click_handler = () =&gt; setRandomMoves();
+  const click_handler_1 = (index2) =&gt; document.getElementById(index2).focus();
   function radio0_group_binding(value, index2) {
     if ($$self.$$.not_equal(playerMoves[index2], value)) {
       playerMoves[index2] = value;
@@ -40439,7 +40495,9 @@ function instance$c($$self, $$props, $$invalidate) {
   };
   return [
     playerMoves,
+    setRandomMoves,
     click_handler,
+    click_handler_1,
     radio0_group_binding,
     radio1_group_binding,
     radio2_group_binding
@@ -40448,85 +40506,17 @@ function instance$c($$self, $$props, $$invalidate) {
 class GameMovesForm extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$c, create_fragment$f, safe_not_equal, { playerMoves: 0 });
+    init$2(this, options, instance$d, create_fragment$h, safe_not_equal, { playerMoves: 0 });
   }
 }
 const GameBoard_svelte_svelte_type_style_lang = "";
 function get_each_context$2(ctx, list, i2) {
   const child_ctx = ctx.slice();
-  child_ctx[12] = list[i2];
-  child_ctx[14] = i2;
+  child_ctx[9] = list[i2];
+  child_ctx[11] = i2;
   return child_ctx;
 }
-function create_if_block$8(ctx) {
-  let current_block_type_index;
-  let if_block;
-  let if_block_anchor;
-  let current;
-  const if_block_creators = [create_if_block_1$5, create_else_block$4];
-  const if_blocks = [];
-  function select_block_type(ctx2, dirty) {
-    if (
-      /*isPlayerB*/
-      ctx2[1] &amp;&amp; /*game*/
-      ctx2[0].gameState.status == Status.Created
-    )
-      return 0;
-    return 1;
-  }
-  current_block_type_index = select_block_type(ctx);
-  if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-  return {
-    c() {
-      if_block.c();
-      if_block_anchor = empty$1();
-    },
-    m(target, anchor) {
-      if_blocks[current_block_type_index].m(target, anchor);
-      insert(target, if_block_anchor, anchor);
-      current = true;
-    },
-    p(ctx2, dirty) {
-      let previous_block_index = current_block_type_index;
-      current_block_type_index = select_block_type(ctx2);
-      if (current_block_type_index === previous_block_index) {
-        if_blocks[current_block_type_index].p(ctx2, dirty);
-      } else {
-        group_outros();
-        transition_out(if_blocks[previous_block_index], 1, 1, () =&gt; {
-          if_blocks[previous_block_index] = null;
-        });
-        check_outros();
-        if_block = if_blocks[current_block_type_index];
-        if (!if_block) {
-          if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx2);
-          if_block.c();
-        } else {
-          if_block.p(ctx2, dirty);
-        }
-        transition_in(if_block, 1);
-        if_block.m(if_block_anchor.parentNode, if_block_anchor);
-      }
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(if_block);
-      current = true;
-    },
-    o(local) {
-      transition_out(if_block);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching) {
-        detach(if_block_anchor);
-      }
-      if_blocks[current_block_type_index].d(detaching);
-    }
-  };
-}
-function create_else_block$4(ctx) {
+function create_if_block$a(ctx) {
   let t0;
   let div;
   let t1;
@@ -40544,7 +40534,7 @@ function create_else_block$4(ctx) {
   });
   let if_block = (
     /*roundResults*/
-    ctx[4] &amp;&amp; create_if_block_2$4(ctx)
+    ctx[3] &amp;&amp; create_if_block_1$6(ctx)
   );
   return {
     c() {
@@ -40573,7 +40563,7 @@ function create_else_block$4(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty &amp; /*playerBMoves, roundResults, playerAMoves, game*/
-      29) {
+      15) {
         each_value = ensure_array_like(
           /*game*/
           ctx2[0].gameState.rounds
@@ -40599,12 +40589,12 @@ function create_else_block$4(ctx) {
       }
       if (
         /*roundResults*/
-        ctx2[4]
+        ctx2[3]
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block_2$4(ctx2);
+          if_block = create_if_block_1$6(ctx2);
           if_block.c();
           if_block.m(div, null);
         }
@@ -40639,85 +40629,6 @@ function create_else_block$4(ctx) {
     }
   };
 }
-function create_if_block_1$5(ctx) {
-  let gamemovesform;
-  let updating_playerMoves;
-  let t0;
-  let div;
-  let button;
-  let current;
-  let mounted;
-  let dispose;
-  function gamemovesform_playerMoves_binding(value) {
-    ctx[8](value);
-  }
-  let gamemovesform_props = {};
-  if (
-    /*playerBMoves*/
-    ctx[3] !== void 0
-  ) {
-    gamemovesform_props.playerMoves = /*playerBMoves*/
-    ctx[3];
-  }
-  gamemovesform = new GameMovesForm({ props: gamemovesform_props });
-  binding_callbacks.push(() =&gt; bind(gamemovesform, "playerMoves", gamemovesform_playerMoves_binding));
-  return {
-    c() {
-      create_component(gamemovesform.$$.fragment);
-      t0 = space();
-      div = element("div");
-      button = element("button");
-      button.textContent = "Join Game";
-      attr(button, "class", "btn primary-btn");
-    },
-    m(target, anchor) {
-      mount_component(gamemovesform, target, anchor);
-      insert(target, t0, anchor);
-      insert(target, div, anchor);
-      append(div, button);
-      current = true;
-      if (!mounted) {
-        dispose = listen$1(
-          button,
-          "click",
-          /*click_handler*/
-          ctx[9]
-        );
-        mounted = true;
-      }
-    },
-    p(ctx2, dirty) {
-      const gamemovesform_changes = {};
-      if (!updating_playerMoves &amp;&amp; dirty &amp; /*playerBMoves*/
-      8) {
-        updating_playerMoves = true;
-        gamemovesform_changes.playerMoves = /*playerBMoves*/
-        ctx2[3];
-        add_flush_callback(() =&gt; updating_playerMoves = false);
-      }
-      gamemovesform.$set(gamemovesform_changes);
-    },
-    i(local) {
-      if (current)
-        return;
-      transition_in(gamemovesform.$$.fragment, local);
-      current = true;
-    },
-    o(local) {
-      transition_out(gamemovesform.$$.fragment, local);
-      current = false;
-    },
-    d(detaching) {
-      if (detaching) {
-        detach(t0);
-        detach(div);
-      }
-      destroy_component(gamemovesform, detaching);
-      mounted = false;
-      dispose();
-    }
-  };
-}
 function create_each_block$2(ctx) {
   let div3;
   let div0;
@@ -40732,22 +40643,22 @@ function create_each_block$2(ctx) {
     props: {
       move: (
         /*playerAMoves*/
-        ctx[2][
+        ctx[1][
           /*index*/
-          ctx[14]
+          ctx[11]
         ]
       ),
       result: (
         /*roundResults*/
-        ctx[4] &amp;&amp; /*roundResults*/
-        ctx[4][
+        ctx[3] &amp;&amp; /*roundResults*/
+        ctx[3][
           /*index*/
-          ctx[14]
+          ctx[11]
         ] &gt; 0 ? (
           /*roundResults*/
-          ctx[4][
+          ctx[3][
             /*index*/
-            ctx[14]
+            ctx[11]
           ] === 1
         ) : null
       )
@@ -40757,22 +40668,22 @@ function create_each_block$2(ctx) {
     props: {
       move: (
         /*playerBMoves*/
-        ctx[3][
+        ctx[2][
           /*index*/
-          ctx[14]
+          ctx[11]
         ]
       ),
       result: (
         /*roundResults*/
-        ctx[4] &amp;&amp; /*roundResults*/
-        ctx[4][
+        ctx[3] &amp;&amp; /*roundResults*/
+        ctx[3][
           /*index*/
-          ctx[14]
+          ctx[11]
         ] &gt; 0 ? (
           /*roundResults*/
-          ctx[4][
+          ctx[3][
             /*index*/
-            ctx[14]
+            ctx[11]
           ] === 2
         ) : null
       )
@@ -40808,47 +40719,47 @@ function create_each_block$2(ctx) {
     p(ctx2, dirty) {
       const movecard0_changes = {};
       if (dirty &amp; /*playerAMoves*/
-      4)
+      2)
         movecard0_changes.move = /*playerAMoves*/
-        ctx2[2][
+        ctx2[1][
           /*index*/
-          ctx2[14]
+          ctx2[11]
         ];
       if (dirty &amp; /*roundResults*/
-      16)
+      8)
         movecard0_changes.result = /*roundResults*/
-        ctx2[4] &amp;&amp; /*roundResults*/
-        ctx2[4][
+        ctx2[3] &amp;&amp; /*roundResults*/
+        ctx2[3][
           /*index*/
-          ctx2[14]
+          ctx2[11]
         ] &gt; 0 ? (
           /*roundResults*/
-          ctx2[4][
+          ctx2[3][
             /*index*/
-            ctx2[14]
+            ctx2[11]
           ] === 1
         ) : null;
       movecard0.$set(movecard0_changes);
       const movecard1_changes = {};
       if (dirty &amp; /*playerBMoves*/
-      8)
+      4)
         movecard1_changes.move = /*playerBMoves*/
-        ctx2[3][
+        ctx2[2][
           /*index*/
-          ctx2[14]
+          ctx2[11]
         ];
       if (dirty &amp; /*roundResults*/
-      16)
+      8)
         movecard1_changes.result = /*roundResults*/
-        ctx2[4] &amp;&amp; /*roundResults*/
-        ctx2[4][
+        ctx2[3] &amp;&amp; /*roundResults*/
+        ctx2[3][
           /*index*/
-          ctx2[14]
+          ctx2[11]
         ] &gt; 0 ? (
           /*roundResults*/
-          ctx2[4][
+          ctx2[3][
             /*index*/
-            ctx2[14]
+            ctx2[11]
           ] === 2
         ) : null;
       movecard1.$set(movecard1_changes);
@@ -40874,13 +40785,13 @@ function create_each_block$2(ctx) {
     }
   };
 }
-function create_if_block_2$4(ctx) {
+function create_if_block_1$6(ctx) {
   let div3;
   let div0;
   let h30;
   let t0_value = (
     /*roundResults*/
-    ctx[4].filter(func).length + ""
+    ctx[3].filter(func).length + ""
   );
   let t0;
   let t1;
@@ -40890,7 +40801,7 @@ function create_if_block_2$4(ctx) {
   let h31;
   let t4_value = (
     /*roundResults*/
-    ctx[4].filter(func_1).length + ""
+    ctx[3].filter(func_1).length + ""
   );
   let t4;
   return {
@@ -40925,12 +40836,12 @@ function create_if_block_2$4(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty &amp; /*roundResults*/
-      16 &amp;&amp; t0_value !== (t0_value = /*roundResults*/
-      ctx2[4].filter(func).length + ""))
+      8 &amp;&amp; t0_value !== (t0_value = /*roundResults*/
+      ctx2[3].filter(func).length + ""))
         set_data(t0, t0_value);
       if (dirty &amp; /*roundResults*/
-      16 &amp;&amp; t4_value !== (t4_value = /*roundResults*/
-      ctx2[4].filter(func_1).length + ""))
+      8 &amp;&amp; t4_value !== (t4_value = /*roundResults*/
+      ctx2[3].filter(func_1).length + ""))
         set_data(t4, t4_value);
     },
     d(detaching) {
@@ -40940,12 +40851,12 @@ function create_if_block_2$4(ctx) {
     }
   };
 }
-function create_fragment$e(ctx) {
+function create_fragment$g(ctx) {
   let if_block_anchor;
   let current;
   let if_block = (
     /*playerAMoves*/
-    ctx[2] &amp;&amp; create_if_block$8(ctx)
+    ctx[1] &amp;&amp; create_if_block$a(ctx)
   );
   return {
     c() {
@@ -40962,16 +40873,16 @@ function create_fragment$e(ctx) {
     p(ctx2, [dirty]) {
       if (
         /*playerAMoves*/
-        ctx2[2]
+        ctx2[1]
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
           if (dirty &amp; /*playerAMoves*/
-          4) {
+          2) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$8(ctx2);
+          if_block = create_if_block$a(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -41005,7 +40916,7 @@ function create_fragment$e(ctx) {
 }
 const func = (result) =&gt; result === 1;
 const func_1 = (result) =&gt; result === 2;
-function instance$b($$self, $$props, $$invalidate) {
+function instance$c($$self, $$props, $$invalidate) {
   let { game } = $$props;
   let { onJoinGame } = $$props;
   let { isPlayerA = false } = $$props;
@@ -41031,48 +40942,20 @@ function instance$b($$self, $$props, $$invalidate) {
           aMoves[i2] = state.moves[i2];
         }
     }
-    $$invalidate(2, playerAMoves = aMoves);
-    $$invalidate(3, playerBMoves = bMoves);
+    $$invalidate(1, playerAMoves = aMoves);
+    $$invalidate(2, playerBMoves = bMoves);
     if (game.gameState.outcome &gt; 0)
-      $$invalidate(4, roundResults = BattleClient.getRoundResults(playerAMoves, playerBMoves));
+      $$invalidate(3, roundResults = BattleClient.getRoundResults(playerAMoves, playerBMoves));
   }
-  async function joinGame() {
-    const gameClient2 = await context.getGameClient();
-    for (const playerBMove of playerBMoves) {
-      if (playerBMove == 0) {
-        alert("Please select moves for all rounds");
-        return;
-      }
-    }
-    tokenscript.action.showLoader();
-    try {
-      await gameClient2.joinGame(
-        {
-          gameId: game.gameState.gameId,
-          playerBMoves
-        },
-        game
-      );
-      onJoinGame();
-    } catch (e) {
-      await gameClient2.processGameError("Error joining game", e);
-    }
-    tokenscript.action.hideLoader();
-  }
-  function gamemovesform_playerMoves_binding(value) {
-    playerBMoves = value;
-    $$invalidate(3, playerBMoves);
-  }
-  const click_handler = () =&gt; joinGame();
   $$self.$$set = ($$props2) =&gt; {
     if ("game" in $$props2)
       $$invalidate(0, game = $$props2.game);
     if ("onJoinGame" in $$props2)
-      $$invalidate(6, onJoinGame = $$props2.onJoinGame);
+      $$invalidate(4, onJoinGame = $$props2.onJoinGame);
     if ("isPlayerA" in $$props2)
-      $$invalidate(7, isPlayerA = $$props2.isPlayerA);
+      $$invalidate(5, isPlayerA = $$props2.isPlayerA);
     if ("isPlayerB" in $$props2)
-      $$invalidate(1, isPlayerB = $$props2.isPlayerB);
+      $$invalidate(6, isPlayerB = $$props2.isPlayerB);
   };
   $$self.$$.update = () =&gt; {
     if ($$self.$$.dirty &amp; /*game*/
@@ -41082,42 +40965,39 @@ function instance$b($$self, $$props, $$invalidate) {
   };
   return [
     game,
-    isPlayerB,
     playerAMoves,
     playerBMoves,
     roundResults,
-    joinGame,
     onJoinGame,
     isPlayerA,
-    gamemovesform_playerMoves_binding,
-    click_handler
+    isPlayerB
   ];
 }
 class GameBoard extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$b, create_fragment$e, safe_not_equal, {
+    init$2(this, options, instance$c, create_fragment$g, safe_not_equal, {
       game: 0,
-      onJoinGame: 6,
-      isPlayerA: 7,
-      isPlayerB: 1
+      onJoinGame: 4,
+      isPlayerA: 5,
+      isPlayerB: 6
     });
   }
 }
 const GameCard_svelte_svelte_type_style_lang = "";
-function create_if_block$7(ctx) {
+function create_if_block$9(ctx) {
   let div11;
   let div0;
-  let playericon0;
-  let t0;
-  let h1;
-  let t2;
-  let playericon1;
-  let t3;
-  let div1;
   let current_block_type_index;
   let if_block0;
-  let div1_class_value;
+  let div0_class_value;
+  let t0;
+  let div1;
+  let playericon0;
+  let t1;
+  let h1;
+  let t3;
+  let playericon1;
   let t4;
   let div2;
   let gameboard;
@@ -41165,22 +41045,6 @@ function create_if_block$7(ctx) {
   let t23;
   let div9;
   let current;
-  playericon0 = new PlayerIcon({
-    props: {
-      tokenUri: (
-        /*game*/
-        ctx[0].playerATokenUri
-      )
-    }
-  });
-  playericon1 = new PlayerIcon({
-    props: {
-      tokenUri: (
-        /*game*/
-        ctx[0].playerBTokenUri
-      )
-    }
-  });
   const if_block_creators = [
     create_if_block_5$2,
     create_if_block_8$1,
@@ -41220,6 +41084,22 @@ function create_if_block$7(ctx) {
   if (~(current_block_type_index = select_block_type(ctx))) {
     if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
   }
+  playericon0 = new PlayerIcon({
+    props: {
+      tokenUri: (
+        /*game*/
+        ctx[0].playerATokenUri
+      )
+    }
+  });
+  playericon1 = new PlayerIcon({
+    props: {
+      tokenUri: (
+        /*game*/
+        ctx[0].playerBTokenUri
+      )
+    }
+  });
   gameboard = new GameBoard({
     props: {
       game: (
@@ -41251,26 +41131,26 @@ function create_if_block$7(ctx) {
   );
   let if_block3 = (
     /*game*/
-    ctx[0].gameState.acceptedTime &amp;&amp; create_if_block_2$3(ctx)
+    ctx[0].gameState.acceptedTime &amp;&amp; create_if_block_2$4(ctx)
   );
   let if_block4 = (
     /*game*/
-    ctx[0].gameState.completedTime &amp;&amp; create_if_block_1$4(ctx)
+    ctx[0].gameState.completedTime &amp;&amp; create_if_block_1$5(ctx)
   );
   return {
     c() {
       div11 = element("div");
       div0 = element("div");
-      create_component(playericon0.$$.fragment);
-      t0 = space();
-      h1 = element("h1");
-      h1.textContent = "⮕";
-      t2 = space();
-      create_component(playericon1.$$.fragment);
-      t3 = space();
-      div1 = element("div");
       if (if_block0)
         if_block0.c();
+      t0 = space();
+      div1 = element("div");
+      create_component(playericon0.$$.fragment);
+      t1 = space();
+      h1 = element("h1");
+      h1.textContent = "VS";
+      t3 = space();
+      create_component(playericon1.$$.fragment);
       t4 = space();
       div2 = element("div");
       create_component(gameboard.$$.fragment);
@@ -41310,28 +41190,28 @@ function create_if_block$7(ctx) {
       div9 = element("div");
       if (if_block4)
         if_block4.c();
-      attr(div0, "class", "player-icons svelte-12kdg1h");
-      attr(div1, "class", div1_class_value = "game-status game-status-" + /*getStatusColor*/
+      attr(div0, "class", div0_class_value = "game-status game-status-" + /*getStatusColor*/
       ctx[6](
         /*game*/
         ctx[0]
-      ) + " svelte-12kdg1h");
-      attr(div2, "class", "game-rounds svelte-12kdg1h");
-      attr(div10, "class", "game-details svelte-12kdg1h");
+      ) + " svelte-1n6uves");
+      attr(div1, "class", "player-icons svelte-1n6uves");
+      attr(div2, "class", "game-rounds svelte-1n6uves");
+      attr(div10, "class", "game-details svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, div11, anchor);
       append(div11, div0);
-      mount_component(playericon0, div0, null);
-      append(div0, t0);
-      append(div0, h1);
-      append(div0, t2);
-      mount_component(playericon1, div0, null);
-      append(div11, t3);
-      append(div11, div1);
       if (~current_block_type_index) {
-        if_blocks[current_block_type_index].m(div1, null);
+        if_blocks[current_block_type_index].m(div0, null);
       }
+      append(div11, t0);
+      append(div11, div1);
+      mount_component(playericon0, div1, null);
+      append(div1, t1);
+      append(div1, h1);
+      append(div1, t3);
+      mount_component(playericon1, div1, null);
       append(div11, t4);
       append(div11, div2);
       mount_component(gameboard, div2, null);
@@ -41373,18 +41253,6 @@ function create_if_block$7(ctx) {
       current = true;
     },
     p(ctx2, dirty) {
-      const playericon0_changes = {};
-      if (dirty &amp; /*game*/
-      1)
-        playericon0_changes.tokenUri = /*game*/
-        ctx2[0].playerATokenUri;
-      playericon0.$set(playericon0_changes);
-      const playericon1_changes = {};
-      if (dirty &amp; /*game*/
-      1)
-        playericon1_changes.tokenUri = /*game*/
-        ctx2[0].playerBTokenUri;
-      playericon1.$set(playericon1_changes);
       let previous_block_index = current_block_type_index;
       current_block_type_index = select_block_type(ctx2);
       if (current_block_type_index === previous_block_index) {
@@ -41408,19 +41276,31 @@ function create_if_block$7(ctx) {
             if_block0.p(ctx2, dirty);
           }
           transition_in(if_block0, 1);
-          if_block0.m(div1, null);
+          if_block0.m(div0, null);
         } else {
           if_block0 = null;
         }
       }
       if (!current || dirty &amp; /*game*/
-      1 &amp;&amp; div1_class_value !== (div1_class_value = "game-status game-status-" + /*getStatusColor*/
+      1 &amp;&amp; div0_class_value !== (div0_class_value = "game-status game-status-" + /*getStatusColor*/
       ctx2[6](
         /*game*/
         ctx2[0]
-      ) + " svelte-12kdg1h")) {
-        attr(div1, "class", div1_class_value);
+      ) + " svelte-1n6uves")) {
+        attr(div0, "class", div0_class_value);
       }
+      const playericon0_changes = {};
+      if (dirty &amp; /*game*/
+      1)
+        playericon0_changes.tokenUri = /*game*/
+        ctx2[0].playerATokenUri;
+      playericon0.$set(playericon0_changes);
+      const playericon1_changes = {};
+      if (dirty &amp; /*game*/
+      1)
+        playericon1_changes.tokenUri = /*game*/
+        ctx2[0].playerBTokenUri;
+      playericon1.$set(playericon1_changes);
       const gameboard_changes = {};
       if (dirty &amp; /*game*/
       1)
@@ -41497,7 +41377,7 @@ function create_if_block$7(ctx) {
         if (if_block3) {
           if_block3.p(ctx2, dirty);
         } else {
-          if_block3 = create_if_block_2$3(ctx2);
+          if_block3 = create_if_block_2$4(ctx2);
           if_block3.c();
           if_block3.m(div8, null);
         }
@@ -41512,7 +41392,7 @@ function create_if_block$7(ctx) {
         if (if_block4) {
           if_block4.p(ctx2, dirty);
         } else {
-          if_block4 = create_if_block_1$4(ctx2);
+          if_block4 = create_if_block_1$5(ctx2);
           if_block4.c();
           if_block4.m(div9, null);
         }
@@ -41524,16 +41404,16 @@ function create_if_block$7(ctx) {
     i(local) {
       if (current)
         return;
+      transition_in(if_block0);
       transition_in(playericon0.$$.fragment, local);
       transition_in(playericon1.$$.fragment, local);
-      transition_in(if_block0);
       transition_in(gameboard.$$.fragment, local);
       current = true;
     },
     o(local) {
+      transition_out(if_block0);
       transition_out(playericon0.$$.fragment, local);
       transition_out(playericon1.$$.fragment, local);
-      transition_out(if_block0);
       transition_out(gameboard.$$.fragment, local);
       current = false;
     },
@@ -41541,11 +41421,11 @@ function create_if_block$7(ctx) {
       if (detaching) {
         detach(div11);
       }
-      destroy_component(playericon0);
-      destroy_component(playericon1);
       if (~current_block_type_index) {
         if_blocks[current_block_type_index].d();
       }
+      destroy_component(playericon0);
+      destroy_component(playericon1);
       destroy_component(gameboard);
       if (if_block1)
         if_block1.d();
@@ -41569,7 +41449,7 @@ function create_if_block_13$1(ctx) {
       h4 = element("h4");
       create_component(loader.$$.fragment);
       t = text("Queued for reveal...");
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41602,7 +41482,7 @@ function create_if_block_12$1(ctx) {
     c() {
       h4 = element("h4");
       h4.textContent = "Waiting For Opponent";
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41691,7 +41571,7 @@ function create_if_block_8$1(ctx) {
     c() {
       h4 = element("h4");
       h4.textContent = "Game Cancelled";
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41725,8 +41605,8 @@ function create_if_block_5$2(ctx) {
     if (!/*isPlayerA*/
     ctx2[4] &amp;&amp; !/*isPlayerB*/
     ctx2[5])
-      return create_if_block_7$1;
-    return create_else_block$3;
+      return create_if_block_7$2;
+    return create_else_block$4;
   }
   let current_block_type = select_block_type_1(ctx);
   let if_block = current_block_type(ctx);
@@ -41739,7 +41619,7 @@ function create_if_block_5$2(ctx) {
       html_tag = new HtmlTag(false);
       t2 = space();
       if_block.c();
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
       html_tag.a = t2;
     },
     m(target, anchor) {
@@ -41783,7 +41663,7 @@ function create_else_block_1(ctx) {
       h4 = element("h4");
       create_component(loader.$$.fragment);
       t = text("Loading result...");
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41820,7 +41700,7 @@ function create_if_block_11$1(ctx) {
       h4 = element("h4");
       create_component(loader.$$.fragment);
       t = text("Queued for reveal...");
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41852,7 +41732,7 @@ function create_if_block_10$1(ctx) {
     c() {
       h4 = element("h4");
       h4.textContent = "Waiting For Opponent";
-      attr(h4, "class", "svelte-12kdg1h");
+      attr(h4, "class", "svelte-1n6uves");
     },
     m(target, anchor) {
       insert(target, h4, anchor);
@@ -41866,7 +41746,7 @@ function create_if_block_10$1(ctx) {
     }
   };
 }
-function create_else_block$3(ctx) {
+function create_else_block$4(ctx) {
   let h1;
   let t_value = (
     /*game*/
@@ -41901,7 +41781,7 @@ function create_else_block$3(ctx) {
     }
   };
 }
-function create_if_block_7$1(ctx) {
+function create_if_block_7$2(ctx) {
   let h1;
   let t_value = "Player " + /*game*/
   (ctx[0].gameState.outcome == Outcome.PlayerA ? "A" : "B") + " won";
@@ -42011,7 +41891,7 @@ function create_if_block_3$3(ctx) {
     }
   };
 }
-function create_if_block_2$3(ctx) {
+function create_if_block_2$4(ctx) {
   let t0;
   let t1_value = new Date(parseInt(
     /*game*/
@@ -42043,7 +41923,7 @@ function create_if_block_2$3(ctx) {
     }
   };
 }
-function create_if_block_1$4(ctx) {
+function create_if_block_1$5(ctx) {
   let t0;
   let t1_value = new Date(parseInt(
     /*game*/
@@ -42075,13 +41955,13 @@ function create_if_block_1$4(ctx) {
     }
   };
 }
-function create_fragment$d(ctx) {
+function create_fragment$f(ctx) {
   let if_block_anchor;
   let current;
   let if_block = (
     /*game*/
     ctx[0] &amp;&amp; /*loaded*/
-    ctx[3] &amp;&amp; create_if_block$7(ctx)
+    ctx[3] &amp;&amp; create_if_block$9(ctx)
   );
   return {
     c() {
@@ -42108,7 +41988,7 @@ function create_fragment$d(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$7(ctx2);
+          if_block = create_if_block$9(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -42140,7 +42020,7 @@ function create_fragment$d(ctx) {
     }
   };
 }
-function instance$a($$self, $$props, $$invalidate) {
+function instance$b($$self, $$props, $$invalidate) {
   let { game } = $$props;
   let { serverData } = $$props;
   let { onJoinGame } = $$props;
@@ -42229,7 +42109,7 @@ function instance$a($$self, $$props, $$invalidate) {
 class GameCard extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$a, create_fragment$d, safe_not_equal, {
+    init$2(this, options, instance$b, create_fragment$f, safe_not_equal, {
       game: 0,
       serverData: 1,
       onJoinGame: 2,
@@ -42238,7 +42118,7 @@ class GameCard extends SvelteComponent {
   }
 }
 const PopoverModal_svelte_svelte_type_style_lang = "";
-function create_fragment$c(ctx) {
+function create_fragment$e(ctx) {
   let div3;
   let div2;
   let div0;
@@ -42279,11 +42159,11 @@ function create_fragment$c(ctx) {
       div1 = element("div");
       if (default_slot)
         default_slot.c();
-      attr(button, "class", "close-btn svelte-1pmoymu");
+      attr(button, "class", "close-btn svelte-w9ofnp");
       attr(div0, "class", "title-bar");
-      attr(div1, "class", "popover-inner svelte-1pmoymu");
-      attr(div2, "class", "popover-container svelte-1pmoymu");
-      attr(div3, "class", null_to_empty("popover-modal" + (open ? " open" : "")) + " svelte-1pmoymu");
+      attr(div1, "class", "popover-inner svelte-w9ofnp");
+      attr(div2, "class", "popover-container svelte-w9ofnp");
+      attr(div3, "class", null_to_empty("popover-modal" + (open ? " open" : "")) + " svelte-w9ofnp");
     },
     m(target, anchor) {
       insert(target, div3, anchor);
@@ -42362,7 +42242,7 @@ function create_fragment$c(ctx) {
     }
   };
 }
-function instance$9($$self, $$props, $$invalidate) {
+function instance$a($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
   let { dismissCallback = null } = $$props;
   let { title = null } = $$props;
@@ -42385,7 +42265,7 @@ function instance$9($$self, $$props, $$invalidate) {
 class PopoverModal extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$9, create_fragment$c, safe_not_equal, { dismissCallback: 0, title: 1 });
+    init$2(this, options, instance$a, create_fragment$e, safe_not_equal, { dismissCallback: 0, title: 1 });
   }
 }
 const min = Math.min;
@@ -43741,7 +43621,7 @@ async function getItems({ dispatch: dispatch2, loadOptions, convertStringItemsTo
   }
 }
 const ChevronIcon_svelte_svelte_type_style_lang = "";
-function create_fragment$b(ctx) {
+function create_fragment$d(ctx) {
   let svg;
   let path;
   return {
@@ -43774,11 +43654,11 @@ function create_fragment$b(ctx) {
 class ChevronIcon extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, null, create_fragment$b, safe_not_equal, {});
+    init$2(this, options, null, create_fragment$d, safe_not_equal, {});
   }
 }
 const ClearIcon_svelte_svelte_type_style_lang = "";
-function create_fragment$a(ctx) {
+function create_fragment$c(ctx) {
   let svg;
   let path;
   return {
@@ -43812,11 +43692,11 @@ function create_fragment$a(ctx) {
 class ClearIcon extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, null, create_fragment$a, safe_not_equal, {});
+    init$2(this, options, null, create_fragment$c, safe_not_equal, {});
   }
 }
 const LoadingIcon_svelte_svelte_type_style_lang = "";
-function create_fragment$9(ctx) {
+function create_fragment$b(ctx) {
   let svg;
   let circle;
   return {
@@ -43851,7 +43731,7 @@ function create_fragment$9(ctx) {
 class LoadingIcon extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, null, create_fragment$9, safe_not_equal, {});
+    init$2(this, options, null, create_fragment$b, safe_not_equal, {});
   }
 }
 const Select_svelte_svelte_type_style_lang = "";
@@ -44843,7 +44723,7 @@ function create_if_block_9(ctx) {
     }
   };
 }
-function create_if_block_7(ctx) {
+function create_if_block_7$1(ctx) {
   let span0;
   let t0;
   let t1;
@@ -44904,7 +44784,7 @@ function create_if_block_4$1(ctx) {
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block_5$1, create_else_block$2];
+  const if_block_creators = [create_if_block_5$1, create_else_block$3];
   const if_blocks = [];
   function select_block_type_1(ctx2, dirty) {
     if (
@@ -44966,7 +44846,7 @@ function create_if_block_4$1(ctx) {
     }
   };
 }
-function create_else_block$2(ctx) {
+function create_else_block$3(ctx) {
   let div;
   let current;
   const selection_slot_template = (
@@ -45604,7 +45484,7 @@ function fallback_block_4(ctx) {
     }
   };
 }
-function create_if_block_2$2(ctx) {
+function create_if_block_2$3(ctx) {
   let button;
   let current;
   let mounted;
@@ -45718,7 +45598,7 @@ function fallback_block_3(ctx) {
     }
   };
 }
-function create_if_block_1$3(ctx) {
+function create_if_block_1$4(ctx) {
   let div;
   let current;
   const chevron_icon_slot_template = (
@@ -45869,7 +45749,7 @@ function fallback_block_1(ctx) {
     }
   };
 }
-function create_if_block$6(ctx) {
+function create_if_block$8(ctx) {
   let current;
   const required_slot_template = (
     /*#slots*/
@@ -45957,7 +45837,7 @@ function fallback_block(ctx) {
     }
   };
 }
-function create_fragment$8(ctx) {
+function create_fragment$a(ctx) {
   let div3;
   let t0;
   let span;
@@ -45984,7 +45864,7 @@ function create_fragment$8(ctx) {
   );
   let if_block1 = (
     /*focused*/
-    ctx[2] &amp;&amp; create_if_block_7(ctx)
+    ctx[2] &amp;&amp; create_if_block_7$1(ctx)
   );
   const prepend_slot_template = (
     /*#slots*/
@@ -46031,11 +45911,11 @@ function create_fragment$8(ctx) {
   );
   let if_block4 = (
     /*showClear*/
-    ctx[34] &amp;&amp; create_if_block_2$2(ctx)
+    ctx[34] &amp;&amp; create_if_block_2$3(ctx)
   );
   let if_block5 = (
     /*showChevron*/
-    ctx[20] &amp;&amp; create_if_block_1$3(ctx)
+    ctx[20] &amp;&amp; create_if_block_1$4(ctx)
   );
   const input_hidden_slot_template = (
     /*#slots*/
@@ -46053,7 +45933,7 @@ function create_fragment$8(ctx) {
     /*required*/
     ctx[16] &amp;&amp; (!/*value*/
     ctx[3] || /*value*/
-    ctx[3].length === 0) &amp;&amp; create_if_block$6(ctx)
+    ctx[3].length === 0) &amp;&amp; create_if_block$8(ctx)
   );
   return {
     c() {
@@ -46272,7 +46152,7 @@ function create_fragment$8(ctx) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block_7(ctx2);
+          if_block1 = create_if_block_7$1(ctx2);
           if_block1.c();
           if_block1.m(span, null);
         }
@@ -46393,7 +46273,7 @@ function create_fragment$8(ctx) {
             transition_in(if_block4, 1);
           }
         } else {
-          if_block4 = create_if_block_2$2(ctx2);
+          if_block4 = create_if_block_2$3(ctx2);
           if_block4.c();
           transition_in(if_block4, 1);
           if_block4.m(div2, t6);
@@ -46416,7 +46296,7 @@ function create_fragment$8(ctx) {
             transition_in(if_block5, 1);
           }
         } else {
-          if_block5 = create_if_block_1$3(ctx2);
+          if_block5 = create_if_block_1$4(ctx2);
           if_block5.c();
           transition_in(if_block5, 1);
           if_block5.m(div2, null);
@@ -46470,7 +46350,7 @@ function create_fragment$8(ctx) {
             transition_in(if_block6, 1);
           }
         } else {
-          if_block6 = create_if_block$6(ctx2);
+          if_block6 = create_if_block$8(ctx2);
           if_block6.c();
           transition_in(if_block6, 1);
           if_block6.m(div3, null);
@@ -46615,7 +46495,7 @@ function isItemFirst(itemIndex) {
 function isItemSelectable(item) {
   return item.groupHeader &amp;&amp; item.selectable || item.selectable || !item.hasOwnProperty("selectable");
 }
-function instance$8($$self, $$props, $$invalidate) {
+function instance$9($$self, $$props, $$invalidate) {
   let hasValue;
   let hideSelectedItem;
   let showClear;
@@ -47559,8 +47439,8 @@ class Select extends SvelteComponent {
     init$2(
       this,
       options,
-      instance$8,
-      create_fragment$8,
+      instance$9,
+      create_fragment$a,
       safe_not_equal,
       {
         justValue: 52,
@@ -47623,6 +47503,34 @@ class Select extends SvelteComponent {
   }
   get handleClear() {
     return this.$$.ctx[22];
+  }
+}
+const BattleRules_svelte_svelte_type_style_lang = "";
+function create_fragment$9(ctx) {
+  let div;
+  return {
+    c() {
+      div = element("div");
+      div.innerHTML = `&lt;strong&gt;* Battle rules&lt;/strong&gt; &lt;span&gt;Kick beats scratch (Rock)&lt;/span&gt; &lt;span&gt;Bite beats kick (Paper)&lt;/span&gt; &lt;span&gt;Scratch beats bite (Scissors)&lt;/span&gt; &lt;span&gt;Winner get all funds minus 1% fee. Draw gets 50% minus 0,5% fee.&lt;/span&gt;`;
+      attr(div, "class", "battle-rules svelte-58vzcf");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+    },
+    p: noop,
+    i: noop,
+    o: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+    }
+  };
+}
+class BattleRules extends SvelteComponent {
+  constructor(options) {
+    super();
+    init$2(this, options, null, create_fragment$9, safe_not_equal, {});
   }
 }
 const CreateGameCard_svelte_svelte_type_style_lang = "";
@@ -47724,7 +47632,7 @@ function create_selection_slot(ctx) {
     }
   };
 }
-function create_if_block$5(ctx) {
+function create_if_block$7(ctx) {
   let div;
   let input;
   let t0;
@@ -47743,7 +47651,7 @@ function create_if_block$5(ctx) {
       attr(input, "id", "invitee");
       attr(input, "data-ts-prop", "false");
       input.required = true;
-      attr(div, "class", "form-field");
+      attr(div, "class", "form-field full-width");
     },
     m(target, anchor) {
       insert(target, div, anchor);
@@ -47778,8 +47686,9 @@ function create_if_block$5(ctx) {
     }
   };
 }
-function create_fragment$7(ctx) {
-  let div4;
+function create_fragment$8(ctx) {
+  let div5;
+  let div3;
   let div1;
   let div0;
   let select;
@@ -47797,8 +47706,10 @@ function create_fragment$7(ctx) {
   let gamemovesform;
   let updating_playerMoves;
   let t7;
-  let div3;
+  let div4;
   let button;
+  let t9;
+  let battlerules;
   let current;
   let mounted;
   let dispose;
@@ -47835,7 +47746,7 @@ function create_fragment$7(ctx) {
     ctx[7]
   );
   let if_block = !/*publicGame*/
-  ctx[3] &amp;&amp; create_if_block$5(ctx);
+  ctx[3] &amp;&amp; create_if_block$7(ctx);
   function gamemovesform_playerMoves_binding(value) {
     ctx[12](value);
   }
@@ -47849,9 +47760,11 @@ function create_fragment$7(ctx) {
   }
   gamemovesform = new GameMovesForm({ props: gamemovesform_props });
   binding_callbacks.push(() =&gt; bind(gamemovesform, "playerMoves", gamemovesform_playerMoves_binding));
+  battlerules = new BattleRules({});
   return {
     c() {
-      div4 = element("div");
+      div5 = element("div");
+      div3 = element("div");
       div1 = element("div");
       div0 = element("div");
       div = element("div");
@@ -47871,9 +47784,11 @@ function create_fragment$7(ctx) {
       t6 = space();
       create_component(gamemovesform.$$.fragment);
       t7 = space();
-      div3 = element("div");
+      div4 = element("div");
       button = element("button");
-      button.textContent = "Create Game";
+      button.textContent = "Create battle";
+      t9 = space();
+      create_component(battlerules.$$.fragment);
       set_style(div, "display", "contents");
       set_style(div, "--border", "1px solid #969696");
       set_style(div, "--border-radius", "4px");
@@ -47885,7 +47800,7 @@ function create_fragment$7(ctx) {
       set_style(div0, "text-align", "left");
       attr(div0, "class", "svelte-g5ybep");
       attr(label0, "class", "svelte-g5ybep");
-      attr(div1, "class", "form-field select-form-field svelte-g5ybep");
+      attr(div1, "class", "form-field full-width select-form-field svelte-g5ybep");
       attr(input, "type", "text");
       attr(input, "placeholder", " ");
       attr(input, "id", "stake");
@@ -47895,31 +47810,36 @@ function create_fragment$7(ctx) {
         /*stake*/
         ctx[2]
       );
-      attr(div2, "class", "form-field");
+      attr(div2, "class", "form-field full-width");
+      attr(div3, "class", "moves-form");
       attr(button, "class", "btn primary-btn");
       set_style(button, "width", "100%");
+      attr(div4, "class", "button-bar");
     },
     m(target, anchor) {
-      insert(target, div4, anchor);
-      append(div4, div1);
+      insert(target, div5, anchor);
+      append(div5, div3);
+      append(div3, div1);
       append(div1, div0);
       append(div0, div);
       mount_component(select, div, null);
       append(div1, t0);
       append(div1, label0);
-      append(div4, t2);
+      append(div3, t2);
       if (if_block)
-        if_block.m(div4, null);
-      append(div4, t3);
-      append(div4, div2);
+        if_block.m(div3, null);
+      append(div3, t3);
+      append(div3, div2);
       append(div2, input);
       append(div2, t4);
       append(div2, label1);
-      append(div4, t6);
-      mount_component(gamemovesform, div4, null);
-      append(div4, t7);
-      append(div4, div3);
-      append(div3, button);
+      append(div3, t6);
+      mount_component(gamemovesform, div3, null);
+      append(div5, t7);
+      append(div5, div4);
+      append(div4, button);
+      append(div5, t9);
+      mount_component(battlerules, div5, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -47957,9 +47877,9 @@ function create_fragment$7(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block$5(ctx2);
+          if_block = create_if_block$7(ctx2);
           if_block.c();
-          if_block.m(div4, t3);
+          if_block.m(div3, t3);
         }
       } else if (if_block) {
         if_block.d(1);
@@ -47987,27 +47907,30 @@ function create_fragment$7(ctx) {
         return;
       transition_in(select.$$.fragment, local);
       transition_in(gamemovesform.$$.fragment, local);
+      transition_in(battlerules.$$.fragment, local);
       current = true;
     },
     o(local) {
       transition_out(select.$$.fragment, local);
       transition_out(gamemovesform.$$.fragment, local);
+      transition_out(battlerules.$$.fragment, local);
       current = false;
     },
     d(detaching) {
       if (detaching) {
-        detach(div4);
+        detach(div5);
       }
       destroy_component(select);
       if (if_block)
         if_block.d();
       destroy_component(gamemovesform);
+      destroy_component(battlerules);
       mounted = false;
       run_all(dispose);
     }
   };
 }
-function instance$7($$self, $$props, $$invalidate) {
+function instance$8($$self, $$props, $$invalidate) {
   let { onCreateGame } = $$props;
   let inviteId = 0n;
   let playerAMoves = [0, 0, 0, 0, 0];
@@ -48027,6 +47950,10 @@ function instance$7($$self, $$props, $$invalidate) {
   let publicGame = 1;
   async function createGame() {
     const gameClient2 = await context.getGameClient();
+    if (publicGame &amp;&amp; !inviteId) {
+      alert("Please enter microchip ID");
+      return;
+    }
     for (const playerAMove of playerAMoves) {
       if (playerAMove == 0) {
         alert("Please select moves for all rounds");
@@ -48087,29 +48014,31 @@ function instance$7($$self, $$props, $$invalidate) {
 class CreateGameCard extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$7, create_fragment$7, safe_not_equal, { onCreateGame: 6 });
+    init$2(this, options, instance$8, create_fragment$8, safe_not_equal, { onCreateGame: 6 });
   }
 }
 const GameListItem_svelte_svelte_type_style_lang = "";
-function create_fragment$6(ctx) {
+function create_if_block$6(ctx) {
+  let div4;
   let div2;
   let div0;
   let playericon0;
   let t0;
-  let h1;
-  let t2;
-  let playericon1;
-  let t3;
   let div1;
+  let playericon1;
+  let t1;
+  let div3;
   let span0;
-  let t4;
-  let t5_value = (
+  let strong0;
+  let t3;
+  let t4_value = (
     /*game*/
     ctx[0].gameState.gameId + ""
   );
+  let t4;
   let t5;
-  let t6;
   let span1;
+  let strong1;
   let t7;
   let t8_value = formatEther$1(
     /*game*/
@@ -48118,17 +48047,8 @@ function create_fragment$6(ctx) {
   let t8;
   let t9;
   let t10;
-  let span2;
   let t11;
-  let t12_value = (
-    /*gameRole*/
-    (ctx[1] === 2 &amp;&amp; /*game*/
-    ctx[0].gameState.status === 0n ? "Waiting for you" : STATUS_LABELS[
-      /*game*/
-      ctx[0].gameState.status
-    ]) + ""
-  );
-  let t12;
+  let div4_style_value;
   let current;
   playericon0 = new PlayerIcon({
     props: {
@@ -48146,59 +48066,89 @@ function create_fragment$6(ctx) {
       )
     }
   });
+  function select_block_type(ctx2, dirty) {
+    if (
+      /*game*/
+      ctx2[0].gameState.outcome &gt; 0
+    )
+      return create_if_block_2$2;
+    return create_else_block$2;
+  }
+  let current_block_type = select_block_type(ctx);
+  let if_block0 = current_block_type(ctx);
+  let if_block1 = (
+    /*game*/
+    ctx[0].gameState.outcome &gt; 0 &amp;&amp; create_if_block_1$3(ctx)
+  );
   return {
     c() {
+      div4 = element("div");
       div2 = element("div");
       div0 = element("div");
       create_component(playericon0.$$.fragment);
       t0 = space();
-      h1 = element("h1");
-      h1.textContent = "⮕";
-      t2 = space();
-      create_component(playericon1.$$.fragment);
-      t3 = space();
       div1 = element("div");
+      create_component(playericon1.$$.fragment);
+      t1 = space();
+      div3 = element("div");
       span0 = element("span");
-      t4 = text("Game ID: ");
-      t5 = text(t5_value);
-      t6 = space();
+      strong0 = element("strong");
+      strong0.textContent = "Game ID:";
+      t3 = space();
+      t4 = text(t4_value);
+      t5 = space();
       span1 = element("span");
-      t7 = text("Stake: ");
+      strong1 = element("strong");
+      strong1.textContent = "Stake:";
+      t7 = space();
       t8 = text(t8_value);
       t9 = text(" $SLN");
       t10 = space();
-      span2 = element("span");
-      t11 = text("Status: ");
-      t12 = text(t12_value);
-      attr(div0, "class", "player-icons svelte-1xpk6gj");
-      attr(div1, "class", "game-info svelte-1xpk6gj");
-      attr(div2, "class", "cat-list-item game-list-item svelte-1xpk6gj");
+      if_block0.c();
+      t11 = space();
+      if (if_block1)
+        if_block1.c();
+      attr(div0, "class", "icon-box svelte-9sktcv");
+      attr(div1, "class", "icon-box svelte-9sktcv");
+      attr(div2, "class", "player-icons svelte-9sktcv");
+      attr(strong0, "class", "svelte-9sktcv");
+      attr(span0, "class", "svelte-9sktcv");
+      attr(strong1, "class", "svelte-9sktcv");
+      attr(span1, "class", "svelte-9sktcv");
+      attr(div3, "class", "game-info svelte-9sktcv");
+      attr(div4, "class", "cat-list-item game-list-item svelte-9sktcv");
+      attr(div4, "style", div4_style_value = /*game*/
+      ctx[0].gameState.outcome &gt; 0 ? "border-color:" + /*getResultColor*/
+      ctx[3]() : "");
     },
     m(target, anchor) {
-      insert(target, div2, anchor);
+      insert(target, div4, anchor);
+      append(div4, div2);
       append(div2, div0);
       mount_component(playericon0, div0, null);
-      append(div0, t0);
-      append(div0, h1);
-      append(div0, t2);
-      mount_component(playericon1, div0, null);
-      append(div2, t3);
+      append(div2, t0);
       append(div2, div1);
-      append(div1, span0);
+      mount_component(playericon1, div1, null);
+      append(div4, t1);
+      append(div4, div3);
+      append(div3, span0);
+      append(span0, strong0);
+      append(span0, t3);
       append(span0, t4);
-      append(span0, t5);
-      append(div1, t6);
-      append(div1, span1);
+      append(div3, t5);
+      append(div3, span1);
+      append(span1, strong1);
       append(span1, t7);
       append(span1, t8);
       append(span1, t9);
-      append(div1, t10);
-      append(div1, span2);
-      append(span2, t11);
-      append(span2, t12);
+      append(div3, t10);
+      if_block0.m(div3, null);
+      append(div4, t11);
+      if (if_block1)
+        if_block1.m(div4, null);
       current = true;
     },
-    p(ctx2, [dirty]) {
+    p(ctx2, dirty) {
       const playericon0_changes = {};
       if (dirty &amp; /*game*/
       1)
@@ -48212,23 +48162,46 @@ function create_fragment$6(ctx) {
         ctx2[0].playerBTokenUri;
       playericon1.$set(playericon1_changes);
       if ((!current || dirty &amp; /*game*/
-      1) &amp;&amp; t5_value !== (t5_value = /*game*/
+      1) &amp;&amp; t4_value !== (t4_value = /*game*/
       ctx2[0].gameState.gameId + ""))
-        set_data(t5, t5_value);
+        set_data(t4, t4_value);
       if ((!current || dirty &amp; /*game*/
       1) &amp;&amp; t8_value !== (t8_value = formatEther$1(
         /*game*/
         ctx2[0].gameState.stake
       ) + ""))
         set_data(t8, t8_value);
-      if ((!current || dirty &amp; /*gameRole, game*/
-      3) &amp;&amp; t12_value !== (t12_value = /*gameRole*/
-      (ctx2[1] === 2 &amp;&amp; /*game*/
-      ctx2[0].gameState.status === 0n ? "Waiting for you" : STATUS_LABELS[
+      if (current_block_type === (current_block_type = select_block_type(ctx2)) &amp;&amp; if_block0) {
+        if_block0.p(ctx2, dirty);
+      } else {
+        if_block0.d(1);
+        if_block0 = current_block_type(ctx2);
+        if (if_block0) {
+          if_block0.c();
+          if_block0.m(div3, null);
+        }
+      }
+      if (
         /*game*/
-        ctx2[0].gameState.status
-      ]) + ""))
-        set_data(t12, t12_value);
+        ctx2[0].gameState.outcome &gt; 0
+      ) {
+        if (if_block1) {
+          if_block1.p(ctx2, dirty);
+        } else {
+          if_block1 = create_if_block_1$3(ctx2);
+          if_block1.c();
+          if_block1.m(div4, null);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
+      }
+      if (!current || dirty &amp; /*game*/
+      1 &amp;&amp; div4_style_value !== (div4_style_value = /*game*/
+      ctx2[0].gameState.outcome &gt; 0 ? "border-color:" + /*getResultColor*/
+      ctx2[3]() : "")) {
+        attr(div4, "style", div4_style_value);
+      }
     },
     i(local) {
       if (current)
@@ -48244,33 +48217,256 @@ function create_fragment$6(ctx) {
     },
     d(detaching) {
       if (detaching) {
-        detach(div2);
+        detach(div4);
       }
       destroy_component(playericon0);
       destroy_component(playericon1);
+      if_block0.d();
+      if (if_block1)
+        if_block1.d();
     }
   };
 }
-function instance$6($$self, $$props, $$invalidate) {
+function create_else_block$2(ctx) {
+  let span;
+  let strong;
+  let t1;
+  let t2_value = (
+    /*game*/
+    (ctx[0].gameState.status === 0n ? (
+      /*gameRole*/
+      ctx[1] === 2 ? "Your turn" : "Their turn"
+    ) : STATUS_LABELS[
+      /*game*/
+      ctx[0].gameState.status
+    ]) + ""
+  );
+  let t2;
+  return {
+    c() {
+      span = element("span");
+      strong = element("strong");
+      strong.textContent = "Status:";
+      t1 = space();
+      t2 = text(t2_value);
+      attr(strong, "class", "svelte-9sktcv");
+      attr(span, "class", "svelte-9sktcv");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      append(span, strong);
+      append(span, t1);
+      append(span, t2);
+    },
+    p(ctx2, dirty) {
+      if (dirty &amp; /*game, gameRole*/
+      3 &amp;&amp; t2_value !== (t2_value = /*game*/
+      (ctx2[0].gameState.status === 0n ? (
+        /*gameRole*/
+        ctx2[1] === 2 ? "Your turn" : "Their turn"
+      ) : STATUS_LABELS[
+        /*game*/
+        ctx2[0].gameState.status
+      ]) + ""))
+        set_data(t2, t2_value);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(span);
+      }
+    }
+  };
+}
+function create_if_block_2$2(ctx) {
+  let span;
+  let strong;
+  let t1;
+  let t2_value = (
+    /*result*/
+    ctx[2] === PlayerResult.Draw ? "Draw" : (
+      /*result*/
+      ctx[2] === PlayerResult.Win ? "You won" : "You lost"
+    )
+  );
+  let t2;
+  return {
+    c() {
+      span = element("span");
+      strong = element("strong");
+      strong.textContent = "Result:";
+      t1 = space();
+      t2 = text(t2_value);
+      attr(strong, "class", "svelte-9sktcv");
+      attr(span, "class", "svelte-9sktcv");
+    },
+    m(target, anchor) {
+      insert(target, span, anchor);
+      append(span, strong);
+      append(span, t1);
+      append(span, t2);
+    },
+    p(ctx2, dirty) {
+      if (dirty &amp; /*result*/
+      4 &amp;&amp; t2_value !== (t2_value = /*result*/
+      ctx2[2] === PlayerResult.Draw ? "Draw" : (
+        /*result*/
+        ctx2[2] === PlayerResult.Win ? "You won" : "You lost"
+      )))
+        set_data(t2, t2_value);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(span);
+      }
+    }
+  };
+}
+function create_if_block_1$3(ctx) {
+  let div;
+  let t_value = (
+    /*getResultIcon*/
+    ctx[4]() + ""
+  );
+  let t;
+  let div_style_value;
+  return {
+    c() {
+      div = element("div");
+      t = text(t_value);
+      attr(div, "class", "result-icon svelte-9sktcv");
+      attr(div, "style", div_style_value = /*game*/
+      ctx[0].gameState.outcome &gt; 0 ? "color:" + /*getResultColor*/
+      ctx[3]() : "");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+      append(div, t);
+    },
+    p(ctx2, dirty) {
+      if (dirty &amp; /*game*/
+      1 &amp;&amp; div_style_value !== (div_style_value = /*game*/
+      ctx2[0].gameState.outcome &gt; 0 ? "color:" + /*getResultColor*/
+      ctx2[3]() : "")) {
+        attr(div, "style", div_style_value);
+      }
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div);
+      }
+    }
+  };
+}
+function create_fragment$7(ctx) {
+  let if_block_anchor;
+  let current;
+  let if_block = (
+    /*gameRole*/
+    ctx[1] &amp;&amp; create_if_block$6(ctx)
+  );
+  return {
+    c() {
+      if (if_block)
+        if_block.c();
+      if_block_anchor = empty$1();
+    },
+    m(target, anchor) {
+      if (if_block)
+        if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      if (
+        /*gameRole*/
+        ctx2[1]
+      ) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+          if (dirty &amp; /*gameRole*/
+          2) {
+            transition_in(if_block, 1);
+          }
+        } else {
+          if_block = create_if_block$6(ctx2);
+          if_block.c();
+          transition_in(if_block, 1);
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      } else if (if_block) {
+        group_outros();
+        transition_out(if_block, 1, 1, () =&gt; {
+          if_block = null;
+        });
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(if_block_anchor);
+      }
+      if (if_block)
+        if_block.d(detaching);
+    }
+  };
+}
+function instance$7($$self, $$props, $$invalidate) {
   let { game } = $$props;
   let gameRole = 0;
+  let result = PlayerResult.Draw;
   context.data.subscribe(async (value) =&gt; {
     if (!value.token)
       return;
     value.token;
     const gameClient2 = await context.getGameClient();
     $$invalidate(1, gameRole = gameClient2.getGameRole(game));
+    $$invalidate(2, result = getResult());
   });
+  function getResult() {
+    if (game.gameState.outcome == Outcome.Draw)
+      return PlayerResult.Draw;
+    return game.gameState.outcome == Outcome.PlayerA &amp;&amp; gameRole === 1 || game.gameState.outcome &gt; Outcome.PlayerA &amp;&amp; gameRole === 2 ? PlayerResult.Win : PlayerResult.Lose;
+  }
+  function getResultColor() {
+    switch (result) {
+      case PlayerResult.Draw:
+        return "#FFC759";
+      case PlayerResult.Win:
+        return "#3DBD00";
+      case PlayerResult.Lose:
+        return "#FF8C91";
+    }
+  }
+  function getResultIcon() {
+    switch (result) {
+      case PlayerResult.Draw:
+        return "‒";
+      case PlayerResult.Win:
+        return "✔";
+      case PlayerResult.Lose:
+        return "✗";
+    }
+  }
   $$self.$$set = ($$props2) =&gt; {
     if ("game" in $$props2)
       $$invalidate(0, game = $$props2.game);
   };
-  return [game, gameRole];
+  return [game, gameRole, result, getResultColor, getResultIcon];
 }
 class GameListItem extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$6, create_fragment$6, safe_not_equal, { game: 0 });
+    init$2(this, options, instance$7, create_fragment$7, safe_not_equal, { game: 0 });
   }
 }
 const PagedGameList_svelte_svelte_type_style_lang = "";
@@ -48542,7 +48738,7 @@ function create_each_block(ctx) {
     }
   };
 }
-function create_if_block$4(ctx) {
+function create_if_block$5(ctx) {
   let div;
   let button;
   let mounted;
@@ -48578,7 +48774,7 @@ function create_if_block$4(ctx) {
     }
   };
 }
-function create_fragment$5(ctx) {
+function create_fragment$6(ctx) {
   let div;
   let t0;
   let loader;
@@ -48594,7 +48790,7 @@ function create_fragment$5(ctx) {
   ) } });
   let if_block1 = !/*loading*/
   ctx[4] &amp;&amp; !/*hasLoadedAll*/
-  ctx[3] &amp;&amp; create_if_block$4(ctx);
+  ctx[3] &amp;&amp; create_if_block$5(ctx);
   return {
     c() {
       div = element("div");
@@ -48654,7 +48850,7 @@ function create_fragment$5(ctx) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block$4(ctx2);
+          if_block1 = create_if_block$5(ctx2);
           if_block1.c();
           if_block1.m(div, null);
         }
@@ -48688,7 +48884,7 @@ function create_fragment$5(ctx) {
   };
 }
 const PAGE_SIZE = 50;
-function instance$5($$self, $$props, $$invalidate) {
+function instance$6($$self, $$props, $$invalidate) {
   let { games = null } = $$props;
   let { loadListFn } = $$props;
   let { filterFn = (game) =&gt; {
@@ -48764,7 +48960,7 @@ function instance$5($$self, $$props, $$invalidate) {
 class PagedGameList extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$5, create_fragment$5, safe_not_equal, {
+    init$2(this, options, instance$6, create_fragment$6, safe_not_equal, {
       games: 6,
       loadListFn: 7,
       filterFn: 0,
@@ -48802,7 +48998,7 @@ function create_if_block_1$1(ctx) {
     }
   };
 }
-function create_if_block$3(ctx) {
+function create_if_block$4(ctx) {
   let div0;
   let label0;
   let t1;
@@ -48882,12 +49078,12 @@ function create_if_block$3(ctx) {
     }
   };
 }
-function create_fragment$4(ctx) {
+function create_fragment$5(ctx) {
   let div;
   let current_block_type_index;
   let if_block;
   let current;
-  const if_block_creators = [create_if_block$3, create_if_block_1$1];
+  const if_block_creators = [create_if_block$4, create_if_block_1$1];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -48972,7 +49168,7 @@ function create_fragment$4(ctx) {
     }
   };
 }
-function instance$4($$self, $$props, $$invalidate) {
+function instance$5($$self, $$props, $$invalidate) {
   let balances = null;
   let loading = true;
   context.SLNBalance.subscribe((newBalances) =&gt; {
@@ -48985,10 +49181,10 @@ function instance$4($$self, $$props, $$invalidate) {
 class Balances extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$4, create_fragment$4, safe_not_equal, {});
+    init$2(this, options, instance$5, create_fragment$5, safe_not_equal, {});
   }
 }
-const StatsCard_svelte_svelte_type_style_lang = "";
+const Stats_svelte_svelte_type_style_lang = "";
 function create_else_block$1(ctx) {
   let div6;
   let div0;
@@ -49197,7 +49393,7 @@ function create_else_block$1(ctx) {
     }
   };
 }
-function create_if_block$2(ctx) {
+function create_if_block$3(ctx) {
   let loader;
   let current;
   loader = new Loader({});
@@ -49225,12 +49421,12 @@ function create_if_block$2(ctx) {
     }
   };
 }
-function create_fragment$3(ctx) {
+function create_fragment$4(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block$2, create_else_block$1];
+  const if_block_creators = [create_if_block$3, create_else_block$1];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -49292,7 +49488,7 @@ function create_fragment$3(ctx) {
     }
   };
 }
-function instance$3($$self, $$props, $$invalidate) {
+function instance$4($$self, $$props, $$invalidate) {
   let loading = true;
   let stats;
   onMount(loadStats);
@@ -49304,14 +49500,14 @@ function instance$3($$self, $$props, $$invalidate) {
   }
   return [loading, stats];
 }
-class StatsCard extends SvelteComponent {
+class Stats extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$3, create_fragment$3, safe_not_equal, {});
+    init$2(this, options, instance$4, create_fragment$4, safe_not_equal, {});
   }
 }
 const GameLobby_svelte_svelte_type_style_lang = "";
-function create_if_block$1(ctx) {
+function create_if_block$2(ctx) {
   let pagedgamelist;
   let current;
   pagedgamelist = new PagedGameList({
@@ -49369,7 +49565,7 @@ function create_if_block$1(ctx) {
     }
   };
 }
-function create_fragment$2(ctx) {
+function create_fragment$3(ctx) {
   let div1;
   let p2;
   let t1;
@@ -49383,7 +49579,7 @@ function create_fragment$2(ctx) {
   let dispose;
   let if_block = (
     /*gameClient*/
-    ctx[0] &amp;&amp; create_if_block$1(ctx)
+    ctx[0] &amp;&amp; create_if_block$2(ctx)
   );
   return {
     c() {
@@ -49437,7 +49633,7 @@ function create_fragment$2(ctx) {
             transition_in(if_block, 1);
           }
         } else {
-          if_block = create_if_block$1(ctx2);
+          if_block = create_if_block$2(ctx2);
           if_block.c();
           transition_in(if_block, 1);
           if_block.m(div1, null);
@@ -49471,7 +49667,7 @@ function create_fragment$2(ctx) {
     }
   };
 }
-function instance$2($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
   let { onGameClick } = $$props;
   let { onCreateGame } = $$props;
   let { gameClient: gameClient2 } = $$props;
@@ -49499,11 +49695,242 @@ function instance$2($$self, $$props, $$invalidate) {
 class GameLobby extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    init$2(this, options, instance$3, create_fragment$3, safe_not_equal, {
       onGameClick: 1,
       onCreateGame: 2,
       gameClient: 0
     });
+  }
+}
+function create_if_block$1(ctx) {
+  let div0;
+  let gamemovesform;
+  let updating_playerMoves;
+  let t0;
+  let div1;
+  let button;
+  let t2;
+  let battlerules;
+  let current;
+  let mounted;
+  let dispose;
+  function gamemovesform_playerMoves_binding(value) {
+    ctx[6](value);
+  }
+  let gamemovesform_props = {};
+  if (
+    /*playerBMoves*/
+    ctx[2] !== void 0
+  ) {
+    gamemovesform_props.playerMoves = /*playerBMoves*/
+    ctx[2];
+  }
+  gamemovesform = new GameMovesForm({ props: gamemovesform_props });
+  binding_callbacks.push(() =&gt; bind(gamemovesform, "playerMoves", gamemovesform_playerMoves_binding));
+  battlerules = new BattleRules({});
+  return {
+    c() {
+      div0 = element("div");
+      create_component(gamemovesform.$$.fragment);
+      t0 = space();
+      div1 = element("div");
+      button = element("button");
+      button.textContent = "Confirm moves";
+      t2 = space();
+      create_component(battlerules.$$.fragment);
+      attr(div0, "class", "moves-form");
+      attr(button, "class", "btn primary-btn");
+      set_style(button, "width", "100%");
+      attr(div1, "class", "button-bar");
+    },
+    m(target, anchor) {
+      insert(target, div0, anchor);
+      mount_component(gamemovesform, div0, null);
+      insert(target, t0, anchor);
+      insert(target, div1, anchor);
+      append(div1, button);
+      insert(target, t2, anchor);
+      mount_component(battlerules, target, anchor);
+      current = true;
+      if (!mounted) {
+        dispose = listen$1(
+          button,
+          "click",
+          /*click_handler*/
+          ctx[7]
+        );
+        mounted = true;
+      }
+    },
+    p(ctx2, dirty) {
+      const gamemovesform_changes = {};
+      if (!updating_playerMoves &amp;&amp; dirty &amp; /*playerBMoves*/
+      4) {
+        updating_playerMoves = true;
+        gamemovesform_changes.playerMoves = /*playerBMoves*/
+        ctx2[2];
+        add_flush_callback(() =&gt; updating_playerMoves = false);
+      }
+      gamemovesform.$set(gamemovesform_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(gamemovesform.$$.fragment, local);
+      transition_in(battlerules.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(gamemovesform.$$.fragment, local);
+      transition_out(battlerules.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(div0);
+        detach(t0);
+        detach(div1);
+        detach(t2);
+      }
+      destroy_component(gamemovesform);
+      destroy_component(battlerules, detaching);
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_fragment$2(ctx) {
+  let if_block_anchor;
+  let current;
+  let if_block = (
+    /*game*/
+    ctx[0] &amp;&amp; /*loaded*/
+    ctx[1] &amp;&amp; create_if_block$1(ctx)
+  );
+  return {
+    c() {
+      if (if_block)
+        if_block.c();
+      if_block_anchor = empty$1();
+    },
+    m(target, anchor) {
+      if (if_block)
+        if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+      current = true;
+    },
+    p(ctx2, [dirty]) {
+      if (
+        /*game*/
+        ctx2[0] &amp;&amp; /*loaded*/
+        ctx2[1]
+      ) {
+        if (if_block) {
+          if_block.p(ctx2, dirty);
+          if (dirty &amp; /*game, loaded*/
+          3) {
+            transition_in(if_block, 1);
+          }
+        } else {
+          if_block = create_if_block$1(ctx2);
+          if_block.c();
+          transition_in(if_block, 1);
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      } else if (if_block) {
+        group_outros();
+        transition_out(if_block, 1, 1, () =&gt; {
+          if_block = null;
+        });
+        check_outros();
+      }
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(if_block);
+      current = true;
+    },
+    o(local) {
+      transition_out(if_block);
+      current = false;
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(if_block_anchor);
+      }
+      if (if_block)
+        if_block.d(detaching);
+    }
+  };
+}
+function instance$2($$self, $$props, $$invalidate) {
+  let { game } = $$props;
+  let { serverData } = $$props;
+  let { onJoinGame } = $$props;
+  let loaded = false;
+  let playerBMoves = [0, 0, 0, 0, 0];
+  async function initialize() {
+    await context.getGameClient();
+    $$invalidate(1, loaded = true);
+  }
+  async function joinGame() {
+    const gameClient2 = await context.getGameClient();
+    for (const playerBMove of playerBMoves) {
+      if (playerBMove == 0) {
+        alert("Please select moves for all rounds");
+        return;
+      }
+    }
+    tokenscript.action.showLoader();
+    try {
+      await gameClient2.joinGame(
+        {
+          gameId: game.gameState.gameId,
+          playerBMoves
+        },
+        game
+      );
+      onJoinGame();
+    } catch (e) {
+      await gameClient2.processGameError("Error joining game", e);
+    }
+    tokenscript.action.hideLoader();
+  }
+  function gamemovesform_playerMoves_binding(value) {
+    playerBMoves = value;
+    $$invalidate(2, playerBMoves);
+  }
+  const click_handler = () =&gt; joinGame();
+  $$self.$$set = ($$props2) =&gt; {
+    if ("game" in $$props2)
+      $$invalidate(0, game = $$props2.game);
+    if ("serverData" in $$props2)
+      $$invalidate(4, serverData = $$props2.serverData);
+    if ("onJoinGame" in $$props2)
+      $$invalidate(5, onJoinGame = $$props2.onJoinGame);
+  };
+  $$self.$$.update = () =&gt; {
+    if ($$self.$$.dirty &amp; /*game*/
+    1) {
+      game &amp;&amp; initialize();
+    }
+  };
+  return [
+    game,
+    loaded,
+    playerBMoves,
+    joinGame,
+    serverData,
+    onJoinGame,
+    gamemovesform_playerMoves_binding,
+    click_handler
+  ];
+}
+class JoinGameCard extends SvelteComponent {
+  constructor(options) {
+    super();
+    init$2(this, options, instance$2, create_fragment$2, safe_not_equal, { game: 0, serverData: 4, onJoinGame: 5 });
   }
 }
 const Battle_svelte_svelte_type_style_lang = "";
@@ -49548,6 +49975,7 @@ function create_else_block(ctx) {
   let t23;
   let t24;
   let t25;
+  let t26;
   let div12_class_value;
   let current;
   let mounted;
@@ -49555,34 +49983,38 @@ function create_else_block(ctx) {
   balances = new Balances({});
   let if_block0 = (
     /*pendingGames*/
-    ctx[7] &amp;&amp; create_if_block_6(ctx)
+    ctx[8] &amp;&amp; create_if_block_7(ctx)
   );
   let if_block1 = (
     /*selectedTab*/
-    ctx[2] === "history" &amp;&amp; create_if_block_5(ctx)
+    ctx[2] === "history" &amp;&amp; create_if_block_6(ctx)
   );
   let if_block2 = (
     /*selectedTab*/
-    ctx[2] === "stats" &amp;&amp; create_if_block_4()
+    ctx[2] === "stats" &amp;&amp; create_if_block_5()
   );
   let if_block3 = (
     /*gameLobbyOpen*/
-    ctx[4] &amp;&amp; create_if_block_3(ctx)
+    ctx[4] &amp;&amp; create_if_block_4(ctx)
   );
   let if_block4 = (
     /*createGameOpen*/
-    ctx[3] &amp;&amp; create_if_block_2(ctx)
+    ctx[3] &amp;&amp; create_if_block_3(ctx)
   );
   let if_block5 = (
     /*selectedGame*/
-    ctx[5] != null &amp;&amp; create_if_block_1(ctx)
+    ctx[5] != null &amp;&amp; create_if_block_2(ctx)
+  );
+  let if_block6 = (
+    /*selectedJoinGame*/
+    ctx[6] != null &amp;&amp; create_if_block_1(ctx)
   );
   return {
     c() {
       div12 = element("div");
       div2 = element("div");
       h2 = element("h2");
-      h2.textContent = "Battle other cats";
+      h2.textContent = "Claw Clash";
       t1 = space();
       p2 = element("p");
       p2.innerHTML = `Win $SLN and enter Lottery by by beating other&lt;br/&gt; cats in a Scissor, Paper, Rock style battle`;
@@ -49608,7 +50040,7 @@ function create_else_block(ctx) {
       t13 = text("My Pending Games (");
       t14 = text(
         /*pendingCount*/
-        ctx[6]
+        ctx[7]
       );
       t15 = text(")");
       t16 = space();
@@ -49638,6 +50070,9 @@ function create_else_block(ctx) {
       t25 = space();
       if (if_block5)
         if_block5.c();
+      t26 = space();
+      if (if_block6)
+        if_block6.c();
       attr(div0, "class", "link-button");
       set_style(div0, "flex", "50%");
       attr(button, "class", "btn primary-btn large-btn");
@@ -49657,7 +50092,7 @@ function create_else_block(ctx) {
         /*selectedTab*/
         ctx[2] === "pending" ? "block" : "none"
       );
-      attr(div8, "class", "pending-tab");
+      attr(div8, "class", "history-tab");
       set_style(
         div8,
         "display",
@@ -49727,6 +50162,9 @@ function create_else_block(ctx) {
       append(div12, t25);
       if (if_block5)
         if_block5.m(div12, null);
+      append(div12, t26);
+      if (if_block6)
+        if_block6.m(div12, null);
       current = true;
       if (!mounted) {
         dispose = [
@@ -49734,25 +50172,25 @@ function create_else_block(ctx) {
             button,
             "click",
             /*click_handler_1*/
-            ctx[14]
+            ctx[16]
           ),
           listen$1(
             div3,
             "click",
             /*click_handler_2*/
-            ctx[15]
+            ctx[17]
           ),
           listen$1(
             div4,
             "click",
             /*click_handler_3*/
-            ctx[16]
+            ctx[18]
           ),
           listen$1(
             div5,
             "click",
             /*click_handler_4*/
-            ctx[17]
+            ctx[19]
           )
         ];
         mounted = true;
@@ -49760,11 +50198,11 @@ function create_else_block(ctx) {
     },
     p(ctx2, dirty) {
       if (!current || dirty[0] &amp; /*pendingCount*/
-      64)
+      128)
         set_data(
           t14,
           /*pendingCount*/
-          ctx2[6]
+          ctx2[7]
         );
       if (!current || dirty[0] &amp; /*selectedTab*/
       4 &amp;&amp; div3_class_value !== (div3_class_value = "tab-item " + /*selectedTab*/
@@ -49783,16 +50221,16 @@ function create_else_block(ctx) {
       }
       if (
         /*pendingGames*/
-        ctx2[7]
+        ctx2[8]
       ) {
         if (if_block0) {
           if_block0.p(ctx2, dirty);
           if (dirty[0] &amp; /*pendingGames*/
-          128) {
+          256) {
             transition_in(if_block0, 1);
           }
         } else {
-          if_block0 = create_if_block_6(ctx2);
+          if_block0 = create_if_block_7(ctx2);
           if_block0.c();
           transition_in(if_block0, 1);
           if_block0.m(div7, null);
@@ -49824,7 +50262,7 @@ function create_else_block(ctx) {
             transition_in(if_block1, 1);
           }
         } else {
-          if_block1 = create_if_block_5(ctx2);
+          if_block1 = create_if_block_6(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
           if_block1.m(div8, null);
@@ -49855,7 +50293,7 @@ function create_else_block(ctx) {
             transition_in(if_block2, 1);
           }
         } else {
-          if_block2 = create_if_block_4();
+          if_block2 = create_if_block_5();
           if_block2.c();
           transition_in(if_block2, 1);
           if_block2.m(div9, null);
@@ -49887,7 +50325,7 @@ function create_else_block(ctx) {
             transition_in(if_block3, 1);
           }
         } else {
-          if_block3 = create_if_block_3(ctx2);
+          if_block3 = create_if_block_4(ctx2);
           if_block3.c();
           transition_in(if_block3, 1);
           if_block3.m(div12, t24);
@@ -49910,7 +50348,7 @@ function create_else_block(ctx) {
             transition_in(if_block4, 1);
           }
         } else {
-          if_block4 = create_if_block_2(ctx2);
+          if_block4 = create_if_block_3(ctx2);
           if_block4.c();
           transition_in(if_block4, 1);
           if_block4.m(div12, t25);
@@ -49933,15 +50371,38 @@ function create_else_block(ctx) {
             transition_in(if_block5, 1);
           }
         } else {
-          if_block5 = create_if_block_1(ctx2);
+          if_block5 = create_if_block_2(ctx2);
           if_block5.c();
           transition_in(if_block5, 1);
-          if_block5.m(div12, null);
+          if_block5.m(div12, t26);
         }
       } else if (if_block5) {
         group_outros();
         transition_out(if_block5, 1, 1, () =&gt; {
           if_block5 = null;
+        });
+        check_outros();
+      }
+      if (
+        /*selectedJoinGame*/
+        ctx2[6] != null
+      ) {
+        if (if_block6) {
+          if_block6.p(ctx2, dirty);
+          if (dirty[0] &amp; /*selectedJoinGame*/
+          64) {
+            transition_in(if_block6, 1);
+          }
+        } else {
+          if_block6 = create_if_block_1(ctx2);
+          if_block6.c();
+          transition_in(if_block6, 1);
+          if_block6.m(div12, null);
+        }
+      } else if (if_block6) {
+        group_outros();
+        transition_out(if_block6, 1, 1, () =&gt; {
+          if_block6 = null;
         });
         check_outros();
       }
@@ -49963,6 +50424,7 @@ function create_else_block(ctx) {
       transition_in(if_block3);
       transition_in(if_block4);
       transition_in(if_block5);
+      transition_in(if_block6);
       current = true;
     },
     o(local) {
@@ -49973,6 +50435,7 @@ function create_else_block(ctx) {
       transition_out(if_block3);
       transition_out(if_block4);
       transition_out(if_block5);
+      transition_out(if_block6);
       current = false;
     },
     d(detaching) {
@@ -49992,6 +50455,8 @@ function create_else_block(ctx) {
         if_block4.d();
       if (if_block5)
         if_block5.d();
+      if (if_block6)
+        if_block6.d();
       mounted = false;
       run_all(dispose);
     }
@@ -50008,7 +50473,7 @@ function create_if_block(ctx) {
     c() {
       div1 = element("div");
       div0 = element("div");
-      div0.innerHTML = `&lt;h1&gt;Cat Battles&lt;/h1&gt; &lt;p&gt;Win $SLN and enter Lottery by by beating other&lt;br/&gt; cats in a Scissor, Paper, Rock style battle&lt;/p&gt; &lt;img alt="cat battle" src=""/&gt;`;
+      div0.innerHTML = `&lt;h1&gt;Claw Clash&lt;/h1&gt; &lt;p&gt;Win $SLN and enter Lottery by by beating other&lt;br/&gt; cats in a Scissor, Paper, Rock style battle&lt;/p&gt; &lt;img alt="cat battle" src=""/&gt;`;
       t5 = space();
       button = element("button");
       button.textContent = "Start Playing";
@@ -50026,7 +50491,7 @@ function create_if_block(ctx) {
           button,
           "click",
           /*click_handler*/
-          ctx[13]
+          ctx[15]
         );
         mounted = true;
       }
@@ -50043,18 +50508,18 @@ function create_if_block(ctx) {
     }
   };
 }
-function create_if_block_6(ctx) {
+function create_if_block_7(ctx) {
   let pagedgamelist;
   let current;
   pagedgamelist = new PagedGameList({
     props: {
       games: (
         /*pendingGames*/
-        ctx[7]
+        ctx[8]
       ),
       gameClick: (
         /*func*/
-        ctx[18]
+        ctx[20]
       )
     }
   });
@@ -50069,9 +50534,13 @@ function create_if_block_6(ctx) {
     p(ctx2, dirty) {
       const pagedgamelist_changes = {};
       if (dirty[0] &amp; /*pendingGames*/
-      128)
+      256)
         pagedgamelist_changes.games = /*pendingGames*/
-        ctx2[7];
+        ctx2[8];
+      if (dirty[0] &amp; /*gameClient*/
+      1)
+        pagedgamelist_changes.gameClick = /*func*/
+        ctx2[20];
       pagedgamelist.$set(pagedgamelist_changes);
     },
     i(local) {
@@ -50089,19 +50558,19 @@ function create_if_block_6(ctx) {
     }
   };
 }
-function create_if_block_5(ctx) {
+function create_if_block_6(ctx) {
   let pagedgamelist;
   let current;
   pagedgamelist = new PagedGameList({
     props: {
       loadListFn: (
         /*func_1*/
-        ctx[19]
+        ctx[21]
       ),
       filterFn: func_2,
       gameClick: (
         /*func_3*/
-        ctx[20]
+        ctx[22]
       )
     }
   });
@@ -50129,34 +50598,34 @@ function create_if_block_5(ctx) {
     }
   };
 }
-function create_if_block_4(ctx) {
-  let statscard;
+function create_if_block_5(ctx) {
+  let stats;
   let current;
-  statscard = new StatsCard({});
+  stats = new Stats({});
   return {
     c() {
-      create_component(statscard.$$.fragment);
+      create_component(stats.$$.fragment);
     },
     m(target, anchor) {
-      mount_component(statscard, target, anchor);
+      mount_component(stats, target, anchor);
       current = true;
     },
     i(local) {
       if (current)
         return;
-      transition_in(statscard.$$.fragment, local);
+      transition_in(stats.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(statscard.$$.fragment, local);
+      transition_out(stats.$$.fragment, local);
       current = false;
     },
     d(detaching) {
-      destroy_component(statscard, detaching);
+      destroy_component(stats, detaching);
     }
   };
 }
-function create_if_block_3(ctx) {
+function create_if_block_4(ctx) {
   let popovermodal;
   let current;
   popovermodal = new PopoverModal({
@@ -50164,9 +50633,9 @@ function create_if_block_3(ctx) {
       title: "Battle",
       dismissCallback: (
         /*func_6*/
-        ctx[23]
+        ctx[25]
       ),
-      $$slots: { default: [create_default_slot_2] },
+      $$slots: { default: [create_default_slot_3] },
       $$scope: { ctx }
     }
   });
@@ -50183,10 +50652,106 @@ function create_if_block_3(ctx) {
       if (dirty[0] &amp; /*gameLobbyOpen*/
       16)
         popovermodal_changes.dismissCallback = /*func_6*/
-        ctx2[23];
+        ctx2[25];
       if (dirty[0] &amp; /*createGameOpen*/
       8 | dirty[1] &amp; /*$$scope*/
-      64) {
+      1024) {
+        popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
+      }
+      popovermodal.$set(popovermodal_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(popovermodal.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(popovermodal.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(popovermodal, detaching);
+    }
+  };
+}
+function create_default_slot_3(ctx) {
+  let gamelobby;
+  let current;
+  gamelobby = new GameLobby({
+    props: {
+      onGameClick: (
+        /*func_4*/
+        ctx[23]
+      ),
+      onCreateGame: (
+        /*func_5*/
+        ctx[24]
+      )
+    }
+  });
+  return {
+    c() {
+      create_component(gamelobby.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(gamelobby, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const gamelobby_changes = {};
+      if (dirty[0] &amp; /*createGameOpen*/
+      8)
+        gamelobby_changes.onCreateGame = /*func_5*/
+        ctx2[24];
+      gamelobby.$set(gamelobby_changes);
+    },
+    i(local) {
+      if (current)
+        return;
+      transition_in(gamelobby.$$.fragment, local);
+      current = true;
+    },
+    o(local) {
+      transition_out(gamelobby.$$.fragment, local);
+      current = false;
+    },
+    d(detaching) {
+      destroy_component(gamelobby, detaching);
+    }
+  };
+}
+function create_if_block_3(ctx) {
+  let popovermodal;
+  let current;
+  popovermodal = new PopoverModal({
+    props: {
+      title: "Start new battle",
+      dismissCallback: (
+        /*func_8*/
+        ctx[27]
+      ),
+      $$slots: { default: [create_default_slot_2] },
+      $$scope: { ctx }
+    }
+  });
+  return {
+    c() {
+      create_component(popovermodal.$$.fragment);
+    },
+    m(target, anchor) {
+      mount_component(popovermodal, target, anchor);
+      current = true;
+    },
+    p(ctx2, dirty) {
+      const popovermodal_changes = {};
+      if (dirty[0] &amp; /*createGameOpen*/
+      8)
+        popovermodal_changes.dismissCallback = /*func_8*/
+        ctx2[27];
+      if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
+      25 | dirty[1] &amp; /*$$scope*/
+      1024) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -50207,48 +50772,42 @@ function create_if_block_3(ctx) {
   };
 }
 function create_default_slot_2(ctx) {
-  let gamelobby;
+  let creategamecard;
   let current;
-  gamelobby = new GameLobby({
-    props: {
-      onGameClick: (
-        /*func_4*/
-        ctx[21]
-      ),
-      onCreateGame: (
-        /*func_5*/
-        ctx[22]
-      )
-    }
+  creategamecard = new CreateGameCard({
+    props: { onCreateGame: (
+      /*func_7*/
+      ctx[26]
+    ) }
   });
   return {
     c() {
-      create_component(gamelobby.$$.fragment);
+      create_component(creategamecard.$$.fragment);
     },
     m(target, anchor) {
-      mount_component(gamelobby, target, anchor);
+      mount_component(creategamecard, target, anchor);
       current = true;
     },
     p(ctx2, dirty) {
-      const gamelobby_changes = {};
-      if (dirty[0] &amp; /*createGameOpen*/
-      8)
-        gamelobby_changes.onCreateGame = /*func_5*/
-        ctx2[22];
-      gamelobby.$set(gamelobby_changes);
+      const creategamecard_changes = {};
+      if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
+      25)
+        creategamecard_changes.onCreateGame = /*func_7*/
+        ctx2[26];
+      creategamecard.$set(creategamecard_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(gamelobby.$$.fragment, local);
+      transition_in(creategamecard.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(gamelobby.$$.fragment, local);
+      transition_out(creategamecard.$$.fragment, local);
       current = false;
     },
     d(detaching) {
-      destroy_component(gamelobby, detaching);
+      destroy_component(creategamecard, detaching);
     }
   };
 }
@@ -50257,10 +50816,11 @@ function create_if_block_2(ctx) {
   let current;
   popovermodal = new PopoverModal({
     props: {
-      title: "Start new battle",
+      title: "Battle #" + /*selectedGame*/
+      ctx[5].gameState.gameId,
       dismissCallback: (
-        /*func_8*/
-        ctx[25]
+        /*func_10*/
+        ctx[29]
       ),
       $$slots: { default: [create_default_slot_1] },
       $$scope: { ctx }
@@ -50276,13 +50836,17 @@ function create_if_block_2(ctx) {
     },
     p(ctx2, dirty) {
       const popovermodal_changes = {};
-      if (dirty[0] &amp; /*createGameOpen*/
-      8)
-        popovermodal_changes.dismissCallback = /*func_8*/
-        ctx2[25];
-      if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
-      25 | dirty[1] &amp; /*$$scope*/
-      64) {
+      if (dirty[0] &amp; /*selectedGame*/
+      32)
+        popovermodal_changes.title = "Battle #" + /*selectedGame*/
+        ctx2[5].gameState.gameId;
+      if (dirty[0] &amp; /*selectedGame*/
+      32)
+        popovermodal_changes.dismissCallback = /*func_10*/
+        ctx2[29];
+      if (dirty[0] &amp; /*selectedGame, serverData*/
+      544 | dirty[1] &amp; /*$$scope*/
+      1024) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -50303,42 +50867,66 @@ function create_if_block_2(ctx) {
   };
 }
 function create_default_slot_1(ctx) {
-  let creategamecard;
+  let gamecard;
   let current;
-  creategamecard = new CreateGameCard({
-    props: { onCreateGame: (
-      /*func_7*/
-      ctx[24]
-    ) }
+  gamecard = new GameCard({
+    props: {
+      game: (
+        /*selectedGame*/
+        ctx[5]
+      ),
+      serverData: (
+        /*serverData*/
+        ctx[9][
+          /*selectedGame*/
+          ctx[5].gameState.gameId
+        ]
+      ),
+      onCancelGame: (
+        /*func_9*/
+        ctx[28]
+      )
+    }
   });
   return {
     c() {
-      create_component(creategamecard.$$.fragment);
+      create_component(gamecard.$$.fragment);
     },
     m(target, anchor) {
-      mount_component(creategamecard, target, anchor);
+      mount_component(gamecard, target, anchor);
       current = true;
     },
     p(ctx2, dirty) {
-      const creategamecard_changes = {};
-      if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
-      25)
-        creategamecard_changes.onCreateGame = /*func_7*/
-        ctx2[24];
-      creategamecard.$set(creategamecard_changes);
+      const gamecard_changes = {};
+      if (dirty[0] &amp; /*selectedGame*/
+      32)
+        gamecard_changes.game = /*selectedGame*/
+        ctx2[5];
+      if (dirty[0] &amp; /*serverData, selectedGame*/
+      544)
+        gamecard_changes.serverData = /*serverData*/
+        ctx2[9][
+          /*selectedGame*/
+          ctx2[5].gameState.gameId
+        ];
+      if (dirty[0] &amp; /*serverData*/
+      512)
+        gamecard_changes.onCancelGame = /*func_9*/
+        ctx2[28];
+      gamecard.$set(gamecard_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(creategamecard.$$.fragment, local);
+      transition_in(gamecard.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(creategamecard.$$.fragment, local);
+      transition_out(gamecard.$$.fragment, local);
       current = false;
     },
     d(detaching) {
-      destroy_component(creategamecard, detaching);
+      destroy_component(gamecard, detaching);
     }
   };
 }
@@ -50347,11 +50935,11 @@ function create_if_block_1(ctx) {
   let current;
   popovermodal = new PopoverModal({
     props: {
-      title: "Battle #" + /*selectedGame*/
-      ctx[5].gameState.gameId,
+      title: "Join Battle #" + /*selectedJoinGame*/
+      ctx[6].gameState.gameId,
       dismissCallback: (
-        /*func_11*/
-        ctx[28]
+        /*func_12*/
+        ctx[31]
       ),
       $$slots: { default: [create_default_slot] },
       $$scope: { ctx }
@@ -50367,17 +50955,17 @@ function create_if_block_1(ctx) {
     },
     p(ctx2, dirty) {
       const popovermodal_changes = {};
-      if (dirty[0] &amp; /*selectedGame*/
-      32)
-        popovermodal_changes.title = "Battle #" + /*selectedGame*/
-        ctx2[5].gameState.gameId;
-      if (dirty[0] &amp; /*selectedGame*/
-      32)
-        popovermodal_changes.dismissCallback = /*func_11*/
-        ctx2[28];
-      if (dirty[0] &amp; /*selectedGame, serverData, gameLobbyOpen, gameClient*/
-      305 | dirty[1] &amp; /*$$scope*/
-      64) {
+      if (dirty[0] &amp; /*selectedJoinGame*/
+      64)
+        popovermodal_changes.title = "Join Battle #" + /*selectedJoinGame*/
+        ctx2[6].gameState.gameId;
+      if (dirty[0] &amp; /*selectedJoinGame*/
+      64)
+        popovermodal_changes.dismissCallback = /*func_12*/
+        ctx2[31];
+      if (dirty[0] &amp; /*selectedJoinGame, serverData, gameLobbyOpen, gameClient*/
+      593 | dirty[1] &amp; /*$$scope*/
+      1024) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -50398,74 +50986,66 @@ function create_if_block_1(ctx) {
   };
 }
 function create_default_slot(ctx) {
-  let gamecard;
+  let joingamecard;
   let current;
-  gamecard = new GameCard({
+  joingamecard = new JoinGameCard({
     props: {
       game: (
-        /*selectedGame*/
-        ctx[5]
+        /*selectedJoinGame*/
+        ctx[6]
       ),
       serverData: (
         /*serverData*/
-        ctx[8][
-          /*selectedGame*/
-          ctx[5].gameState.gameId
+        ctx[9][
+          /*selectedJoinGame*/
+          ctx[6].gameState.gameId
         ]
       ),
       onJoinGame: (
-        /*func_9*/
-        ctx[26]
-      ),
-      onCancelGame: (
-        /*func_10*/
-        ctx[27]
+        /*func_11*/
+        ctx[30]
       )
     }
   });
   return {
     c() {
-      create_component(gamecard.$$.fragment);
+      create_component(joingamecard.$$.fragment);
     },
     m(target, anchor) {
-      mount_component(gamecard, target, anchor);
+      mount_component(joingamecard, target, anchor);
       current = true;
     },
     p(ctx2, dirty) {
-      const gamecard_changes = {};
-      if (dirty[0] &amp; /*selectedGame*/
-      32)
-        gamecard_changes.game = /*selectedGame*/
-        ctx2[5];
-      if (dirty[0] &amp; /*serverData, selectedGame*/
-      288)
-        gamecard_changes.serverData = /*serverData*/
-        ctx2[8][
-          /*selectedGame*/
-          ctx2[5].gameState.gameId
+      const joingamecard_changes = {};
+      if (dirty[0] &amp; /*selectedJoinGame*/
+      64)
+        joingamecard_changes.game = /*selectedJoinGame*/
+        ctx2[6];
+      if (dirty[0] &amp; /*serverData, selectedJoinGame*/
+      576)
+        joingamecard_changes.serverData = /*serverData*/
+        ctx2[9][
+          /*selectedJoinGame*/
+          ctx2[6].gameState.gameId
         ];
-      if (dirty[0] &amp; /*gameLobbyOpen, gameClient*/
-      17)
-        gamecard_changes.onJoinGame = /*func_9*/
-        ctx2[26];
-      if (dirty[0] &amp; /*serverData*/
-      256)
-        gamecard_changes.onCancelGame = /*func_10*/
-        ctx2[27];
-      gamecard.$set(gamecard_changes);
+      if (dirty[0] &amp; /*gameLobbyOpen, selectedJoinGame, gameClient*/
+      81)
+        joingamecard_changes.onJoinGame = /*func_11*/
+        ctx2[30];
+      joingamecard.$set(joingamecard_changes);
     },
     i(local) {
       if (current)
         return;
-      transition_in(gamecard.$$.fragment, local);
+      transition_in(joingamecard.$$.fragment, local);
       current = true;
     },
     o(local) {
-      transition_out(gamecard.$$.fragment, local);
+      transition_out(joingamecard.$$.fragment, local);
       current = false;
     },
     d(detaching) {
-      destroy_component(gamecard, detaching);
+      destroy_component(joingamecard, detaching);
     }
   };
 }
@@ -50548,6 +51128,7 @@ function instance$1($$self, $$props, $$invalidate) {
   let createGameOpen = false;
   let gameLobbyOpen = false;
   let selectedGame = null;
+  let selectedJoinGame = null;
   let pendingCount = 0;
   let pendingGames2;
   let serverData = {};
@@ -50558,8 +51139,8 @@ function instance$1($$self, $$props, $$invalidate) {
     gameClient2.fetchBalances();
   });
   context.pendingGames.subscribe(async (value) =&gt; {
-    $$invalidate(7, pendingGames2 = value);
-    $$invalidate(6, pendingCount = (value == null ? void 0 : value.length) ?? 0);
+    $$invalidate(8, pendingGames2 = value);
+    $$invalidate(7, pendingCount = (value == null ? void 0 : value.length) ?? 0);
     if (selectedGame &amp;&amp; selectedGame.gameState.status &lt; Status.Completed) {
       for (const game of pendingGames2) {
         if (game.gameState.gameId === selectedGame.gameState.gameId) {
@@ -50615,7 +51196,7 @@ function instance$1($$self, $$props, $$invalidate) {
         if (serverDetails == false)
           continue;
         if (!serverData[pendingGame.gameState.gameId] || serverDetails.status != ((_a2 = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _a2.status)) {
-          $$invalidate(8, serverData = {
+          $$invalidate(9, serverData = {
             ...serverData,
             [serverDetails.gameId]: serverDetails
           });
@@ -50634,7 +51215,7 @@ function instance$1($$self, $$props, $$invalidate) {
           const serverDetails = await checkServerDetails(selectedGame);
           if (serverDetails !== false) {
             if (serverDetails.status != ((_d = serverData[selectedGame.gameState.gameId]) == null ? void 0 : _d.status) || serverDetails.status != Number(selectedGame.gameState.status)) {
-              $$invalidate(8, serverData = {
+              $$invalidate(9, serverData = {
                 ...serverData,
                 [serverDetails.gameId]: serverDetails
               });
@@ -50677,21 +51258,27 @@ function instance$1($$self, $$props, $$invalidate) {
     }
     return false;
   }
+  async function openJoinGameCard(game) {
+    await preloadServerData(game);
+    $$invalidate(6, selectedJoinGame = game);
+  }
   async function openGameCard(game) {
-    const gameClient22 = await context.getGameClient();
+    await preloadServerData(game);
+    $$invalidate(5, selectedGame = game);
+  }
+  async function preloadServerData(game) {
     if (!serverData[game.gameState.gameId] &amp;&amp; game.gameState.status &gt; 0) {
       tokenscript.action.showLoader();
       try {
-        $$invalidate(8, serverData = {
+        $$invalidate(9, serverData = {
           ...serverData,
-          [game.gameState.gameId]: await gameClient22.getServerStatus(game.gameState.gameId)
+          [game.gameState.gameId]: await gameClient2.getServerStatus(game.gameState.gameId)
         });
       } catch (e) {
         console.warn("Game not on server");
       }
       tokenscript.action.hideLoader();
     }
-    $$invalidate(5, selectedGame = game);
   }
   const selectTab = (tabId) =&gt; {
     $$invalidate(2, selectedTab = tabId);
@@ -50703,14 +51290,20 @@ function instance$1($$self, $$props, $$invalidate) {
   const click_handler_2 = () =&gt; selectTab("pending");
   const click_handler_3 = () =&gt; selectTab("history");
   const click_handler_4 = () =&gt; selectTab("stats");
-  const func2 = (game) =&gt; openGameCard(game);
+  const func2 = (game) =&gt; {
+    if (gameClient2.getGameRole(game) !== 1 &amp;&amp; game.gameState.status == Status.Created) {
+      openJoinGameCard(game);
+    } else {
+      openGameCard(game);
+    }
+  };
   const func_12 = async (page, pageSize) =&gt; {
     const gameClient3 = await context.getGameClient();
     return await gameClient3.getMyGamesList(page, pageSize);
   };
   const func_3 = (game) =&gt; openGameCard(game);
   const func_4 = async (game) =&gt; {
-    openGameCard(game);
+    openJoinGameCard(game);
   };
   const func_5 = () =&gt; {
     $$invalidate(3, createGameOpen = true);
@@ -50724,17 +51317,20 @@ function instance$1($$self, $$props, $$invalidate) {
     gameClient2.fetchBalances();
   };
   const func_8 = () =&gt; $$invalidate(3, createGameOpen = false);
-  const func_9 = async () =&gt; {
+  const func_9 = async (game) =&gt; {
+    await refreshPendingGames();
+    $$invalidate(9, serverData[game.gameState.gameId].status = Status.Cancelled, serverData);
+  };
+  const func_10 = () =&gt; $$invalidate(5, selectedGame = null);
+  const func_11 = async () =&gt; {
     $$invalidate(4, gameLobbyOpen = false);
+    openGameCard(selectedJoinGame);
+    $$invalidate(6, selectedJoinGame = null);
     startStatusRefresh();
     await refreshPendingGames();
     gameClient2.fetchBalances();
   };
-  const func_10 = async (game) =&gt; {
-    await refreshPendingGames();
-    $$invalidate(8, serverData[game.gameState.gameId].status = Status.Cancelled, serverData);
-  };
-  const func_11 = () =&gt; $$invalidate(5, selectedGame = null);
+  const func_122 = () =&gt; $$invalidate(6, selectedJoinGame = null);
   return [
     gameClient2,
     introScreen,
@@ -50742,11 +51338,13 @@ function instance$1($$self, $$props, $$invalidate) {
     createGameOpen,
     gameLobbyOpen,
     selectedGame,
+    selectedJoinGame,
     pendingCount,
     pendingGames2,
     serverData,
     refreshPendingGames,
     startStatusRefresh,
+    openJoinGameCard,
     openGameCard,
     selectTab,
     click_handler,
@@ -50764,7 +51362,8 @@ function instance$1($$self, $$props, $$invalidate) {
     func_8,
     func_9,
     func_10,
-    func_11
+    func_11,
+    func_122
   ];
 }
 class Battle extends SvelteComponent {
@@ -51059,6 +51658,10 @@ p.light {
 	max-width: 300px;
 }
 
+.form-field.full-width {
+	max-width: unset !important;
+}
+
 .form-field label {
 	position: absolute;
 	left: 12px;
@@ -51120,6 +51723,17 @@ p.light {
 	background: linear-gradient(214.82deg, #001AFF -21.14%, #4F95FF 89.22%);
 }
 
+.secondary-btn {
+	background: #fff;
+	border: 2px solid #011aff;
+	color: #011aff;
+}
+
+.secondary-btn:hover {
+	border-color: #0f28ff;
+	color: #0f28ff;
+}
+
 .cancel-btn {
 	background: linear-gradient(214.82deg, #ff0000 -21.14%, #ff4f4f 89.22%);
 }
@@ -51163,6 +51777,17 @@ body:has(.game-container.popover-open){
 	overflow: hidden;
 }
 
+.button-bar {
+	display: flex;
+	flex-direction: column;
+}
+
+.moves-form {
+	position: relative;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
 /*::-webkit-scrollbar {
 	height: 8px;
 	width: 8px;
@@ -51190,7 +51815,7 @@ body:has(.game-container.popover-open){
 
 		<ts:card buttonClass="featured" exclude="notAdoptedYet" name="battle" type="action">
 			<ts:label>
-				<ts:string xml:lang="en">Cat Battles</ts:string>
+				<ts:string xml:lang="en">Claw Clash</ts:string>
 			</ts:label>
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" uiButton="false" urlFragment="battle" xml:lang="en">
 				<ts:viewContent name="common"/>
@@ -51402,4 +52027,4 @@ body:has(.game-container.popover-open){
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>lpdIMiEv5RhZtA6RbkziBHFm9XLNS5cfMSO/hw09okw=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>QHVmK5yunohA+di0rSISXRt9MrBnCwI76i5KRKD1L3DsIfrrnqkLORGu8ecYigVhCgFLlIF2CVYwrzIP+sYbGw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>plSGgD9S+78z46/MWiIpHXuaSIqUabWOlHO9D4L/i/o=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>5wLvVTixhhK5lZOMfJMWWMtGePLxtpzWNokMDGYAbuZXTQ+JgaZM5TG5/mmtiRjVBkpKhav75T/RZ1Xh5f85bQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
