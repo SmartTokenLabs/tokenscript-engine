@@ -125,6 +125,7 @@ export class IFrameProvider {
             case "personal_sign":
             case "eth_signTypedData": //for v1
             case "eth_signTypedData_v4":
+	    	case "eth_call":
             case "wallet_switchEthereumChain": {
               const result = await this.requestMethod(message, this.type);
               this.sendResponse(message.data, result, {});
