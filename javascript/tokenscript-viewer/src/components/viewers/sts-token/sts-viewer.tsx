@@ -325,7 +325,7 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
-				<div class={"token-viewer" + (this.fullWidth ? 'full-width' : '')} >
+				<div class={"token-viewer " + (this.fullWidth ? 'full-width' : '')} >
 					{!this.isAttestation && this.tokenDetails && (
 						<div>
 							<div class="details-container">

@@ -16,6 +16,10 @@ header {
 	flex-direction: column;
 }
 
+.token-viewer.full-width {
+	max-width: 100%;
+}
+
 sts-viewer:has(> card-popover .open) {
 	overflow: hidden;
 	max-height: 100vh;
