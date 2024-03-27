@@ -148,7 +148,6 @@ sts-viewer:has(> card-popover .open) {
 }
 
 .iframe-viewer {
-	/* width: 700px; */
-	height: 800px;
+	height: 100vh;
 	border: none;
 }
