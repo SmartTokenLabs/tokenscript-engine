@@ -29287,6 +29287,10 @@ const _BattleClient = class _BattleClient2 {
   getGameByHash(hash2) {
     return this.storedGameData[hash2];
   }
+  setLocalStateCompleted(hash2, completedTime) {
+    this.storedGameData[hash2].completedDt = completedTime;
+    this.saveGameDetails();
+  }
   async getGame(gameId) {
     return await this.contract.getGame(gameId);
   }
@@ -29473,7 +29477,7 @@ const _BattleClient = class _BattleClient2 {
     const gameData = this.storedGameData[hash2];
     let game = null;
     if (!gameData)
-      throw new Error("Game not found");
+      throw new Error(`Game with hash ${hash2} not found`);
     let pendingGames2;
     if (!gameData.gameId) {
       pendingGames2 = await this.getPendingGames();
@@ -56819,10 +56823,13 @@ function instance$1($$self, $$props, $$invalidate) {
   async function refreshPendingGames() {
     console.log("Refreshing pending games");
     const games = await gameClient2.reloadPendingGames();
-    serverSubmissionCheck().catch((e) =&gt; {
-      console.error("Server submission check failed");
-      console.error(e);
-    });
+    setTimeout(
+      () =&gt; serverSubmissionCheck().catch((e) =&gt; {
+        console.error("Server submission check failed");
+        console.error(e);
+      }),
+      5e3
+    );
     return games;
   }
   async function startPendingRefresh() {
@@ -56848,14 +56855,19 @@ function instance$1($$self, $$props, $$invalidate) {
       clearInterval(statusTimer);
   }
   async function serverSubmissionCheck() {
+    var _a2, _b;
     if (pendingGames2)
       for (const pendingGame of pendingGames2) {
         const role = gameClient2.getGameRole(pendingGame);
         const savedDetails = gameClient2.getGameByHash(pendingGame.gameState.playerAHash);
         if (role === 1 &amp;&amp; !(savedDetails == null ? void 0 : savedDetails.subA)) {
+          if (((_a2 = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _a2.status) !== void 0)
+            continue;
           console.log("Not linked and registered, trying again");
           await gameClient2.linkIdAndRegister(pendingGame.gameState.playerAHash);
         } else if (role === 2 &amp;&amp; pendingGame.gameState.status &gt; 0 &amp;&amp; !(savedDetails == null ? void 0 : savedDetails.subB)) {
+          if (((_b = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _b.status) &gt; Status.Created)
+            continue;
           console.log("Not marked as completed on the server, trying again");
           await gameClient2.triggerReveal(pendingGame);
         }
@@ -56928,6 +56940,7 @@ function instance$1($$self, $$props, $$invalidate) {
         gameState: await gameClient2.getGame(gameId)
       });
       console.log("Game state:", selectedGame.gameState);
+      gameClient2.setLocalStateCompleted(selectedGame.gameState.playerAHash, selectedGame.gameState.completedTime);
       return true;
     }
     return false;
@@ -57579,7 +57592,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 
 		<ts:card buttonClass="featured" exclude="notAdoptedYet" name="battle" type="action">
 			<ts:label>
-				<ts:string xml:lang="en">Claw Clash</ts:string>
+				<ts:string xml:lang="en">Cat Kombat</ts:string>
 			</ts:label>
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" uiButton="false" urlFragment="battle" xml:lang="en">
 				<ts:viewContent name="common"/>
@@ -57791,4 +57804,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>7zz0XS7WvZCCiBOYkXMZFciEqsMZFHB/PzNVs9crxK0=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>pSdT0060ByN6FKhi7mgqtfuLCYImI+x2KiKVH30XJTRsQV9lqmF8FbSakVN6Gb2jRc31PNKgDnRe/uPvA0L2rg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>+v8CeinzGrffUNMY3mDoB9IFRczSfz8+5GfbIfySDMw=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>hreRehrt6hER1SIaaRxk+l2+7EFmtoLWErvVo+o3BQUboMLtPp5msGoQo4NmL3V6OWKEDIbGyUqV8Fg1iXsNCg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
