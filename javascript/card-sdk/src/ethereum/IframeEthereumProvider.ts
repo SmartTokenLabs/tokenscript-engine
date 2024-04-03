@@ -240,7 +240,7 @@ export class IFrameEthereumProvider implements Eip1193Provider {
 
 		this.execute(request.method, request.params).then(response => {
 			if ('error' in response) {
-				callback(response.error.code + ": " + response.error.message, null);
+				callback(response.error, null);
 			} else {
 				callback(null, response.result);
 			}
@@ -259,7 +259,7 @@ export class IFrameEthereumProvider implements Eip1193Provider {
 			const result = await this.execute(request.method, request.params);
 			callback(null, result);
 		} catch (error) {
-			callback(error.code + ": " + error.message, null);
+			callback(error, null);
 		}
 	}
 

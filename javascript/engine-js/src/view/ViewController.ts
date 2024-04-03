@@ -242,8 +242,8 @@ export class ViewController {
 			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, result: res});
 
 		} catch (e){
-			console.error(e);
-			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, error: e.valueOf()});
+			const message = e?.reason ?? e?.message;
+			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, error: {message, code: e?.code, data: Object.assign({}, e)}});
 		}
 	}
 
