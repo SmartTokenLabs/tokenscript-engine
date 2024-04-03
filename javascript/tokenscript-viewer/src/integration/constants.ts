@@ -4,8 +4,6 @@ export interface ChainMapInterface {
 	[key: number]: string;
 }
 
-export const SLN_CHAIN_IDS = [1337, 82459, 5169];
-
 export enum ChainID {
 	ETHEREUM = 1,
 	POLYGON = 137,

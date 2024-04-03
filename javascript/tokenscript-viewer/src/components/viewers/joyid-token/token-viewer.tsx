@@ -10,7 +10,6 @@ import {SLNAdapter} from '../../../integration/slnAdapter';
 import {ISLNAttestation} from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
 import {Provider} from 'ethers';
 import {IFrameProvider} from '../../../providers/iframeProvider';
-import {SLN_CHAIN_IDS} from '../../../integration/constants';
 import {EthersAdapter} from '@tokenscript/engine-js/src/wallet/EthersAdapter';
 
 @Component({
@@ -117,21 +116,15 @@ export class TokenViewer {
 			const contract = query.get('contract');
 			const tokenId = query.get('tokenId');
 
-			if (SLN_CHAIN_IDS.includes(chain)) {
+			const slnAdapter = new SLNAdapter();
+			this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())
+
+			if (this.slnAttestation) {
 				this.isAttestation = true;
 
 				this.app.showTsLoader();
 
-				const slnAdapter = new SLNAdapter(chain);
-				const attestationResult = await slnAdapter.getAttestation(contract, tokenId, chain.toString(), this.provider);
-
-				this.slnAttestation = attestationResult.attestation;
-				this.decoded = attestationResult.decoded;
-
-				if (!this.slnAttestation) {
-					console.log('No Attestation!');
-					return;
-				}
+				this.decoded = await slnAdapter.decodeAttestation(this.slnAttestation.rawData, this.provider);
 
 				this.app.hideTsLoader();
 

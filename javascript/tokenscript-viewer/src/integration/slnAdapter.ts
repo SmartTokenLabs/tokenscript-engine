@@ -1,31 +1,26 @@
 import { ISLNAdapter, ISLNAttestation } from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
 import { CHAIN_EAS_SCHEMA_REGI_MAP, ChainID } from './constants';
-import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry } from '@ethereum-attestation-service/eas-sdk';
+import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry, SignedOffchainAttestation } from '@ethereum-attestation-service/eas-sdk';
 import { Provider } from 'ethers';
 
 export class SLNAdapter implements ISLNAdapter {
   private url: string;
 
-  constructor(chain: number) {
-    this.url =
-      chain === 5169
-        ? 'TBD' // mainnet
-        : 'https://d2sc5n1wf6rato.cloudfront.net/'; // testnet [1337, 82459]
+  constructor() {
+    this.url = window.location.hostname === 'viewer.tokenscript.org' ? 'https://attestation.test.smartlayer.network/' : 'https://d2sc5n1wf6rato.cloudfront.net/';
     //'https://d3tm4hby53qtu1.cloudfront.net/';
   }
 
-  async getAttestation(attester: string, tokenId: string, chain: string, provider: Provider): Promise<{ attestation: ISLNAttestation; decoded: any }> {
+  async getAttestation(attester: string, tokenId: string, chain: string): Promise<ISLNAttestation> {
     //todo add signature /rawdata?message=${message}&signature=${signature}`
 
-    const path = `attestations/${attester}/${tokenId}/rawdata`;
+    const path = `attestations/${attester}/${tokenId}/${chain}/rawdata`;
 
-    const attestation: ISLNAttestation = await this.fetchRequest(path);
+    return await this.fetchRequest(path);
+  }
 
-    const rawData = attestation.rawData;
-
-    const decoded = this.decodeData(await this.getSchemaSignature(rawData.message.schema, Number(rawData.domain.chainId), provider), rawData.message.data);
-
-    return { attestation, decoded };
+  async decodeAttestation(rawData: SignedOffchainAttestation, provider: Provider) {
+    return this.decodeData(await this.getSchemaSignature(rawData.message.schema, Number(rawData.domain.chainId), provider), rawData.message.data);
   }
 
   private async fetchRequest(path: string) {

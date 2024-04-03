@@ -6,5 +6,6 @@ export interface ISLNAttestation {
 }
 
 export interface ISLNAdapter {
-  getAttestation(attester: string, tokenId: string, chain: string, provider: Provider): Promise<{ attestation: ISLNAttestation; decoded: any }>;
+  getAttestation(attester: string, tokenId: string, chain: string): Promise<ISLNAttestation>;
+  decodeAttestation(rawData: SignedOffchainAttestation, provider: Provider);
 }

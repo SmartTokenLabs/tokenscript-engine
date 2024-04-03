@@ -107,6 +107,16 @@ export class IFrameProvider {
               }
               break;
             }
+	    	case 'eth_decodeEventLog': {
+           	 if (this.type === DEFAULT_TYPE) {
+           	   const params = message.data.params;
+           	   const signer = await this.provider.getSigner();
+           	   const dvpContract = new ethers.Contract(params.contract, params.abi, signer);
+           	   const decodeData = dvpContract.interface.decodeEventLog(params.function, params.data[0], params.data[1]);
+            	  this.sendResponse(message.data, decodeData.toString(), {});
+           	 	}
+           	    break;
+         	 }
             case "eth_accounts":
             case "eth_requestAccounts": {
               const accounts = await this.requestAccounts(message, this.type);
