@@ -58,6 +58,9 @@ export class SmartTokenStoreViewer {
 
 	@State() overflowCardButtons: JSX.Element[];
 
+	@State()
+	fullWidth: boolean = false;
+
 	private overflowDialog: HTMLActionOverflowModalElement;
 
 	@Event({
@@ -84,7 +87,9 @@ export class SmartTokenStoreViewer {
 	})
 	hideLoader: EventEmitter<void>;
 
-	async componentDidLoad() {
+	async componentDidLoad(){
+		const params = new URLSearchParams(document.location.search);
+		this.fullWidth = params.get("fullWidth") === "true";
 		try {
 			const query = new URLSearchParams(document.location.search.substring(1));
 			const hashQuery = new URLSearchParams(document.location.hash.substring(1));
@@ -313,7 +318,7 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
-				<div class="token-viewer">
+				<div class={"token-viewer " + (this.fullWidth ? 'full-width' : '')} >
 					{!this.isAttestation && this.tokenDetails && (
 						<div>
 							<div class="details-container">
