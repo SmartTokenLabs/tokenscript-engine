@@ -50916,12 +50916,10 @@ function instance$4($$self, $$props, $$invalidate) {
   async function loadStats() {
     const client = await context.getGameClient();
     $$invalidate(1, stats = await client.getPlayerStats());
-    console.log(stats);
     $$invalidate(2, completedGames = Number(stats.wins) + Number(stats.losses) + Number(stats.draws));
     $$invalidate(3, percentages[0] = Number(stats.wins) / completedGames * 100, percentages);
     $$invalidate(3, percentages[1] = Number(stats.losses) / completedGames * 100, percentages);
     $$invalidate(3, percentages[2] = Number(stats.draws) / completedGames * 100, percentages);
-    console.log(percentages);
     $$invalidate(0, loading = false);
   }
   function getTwitterShareLink() {
@@ -56652,6 +56650,7 @@ function instance$1($$self, $$props, $$invalidate) {
   function stopStatusRefresh() {
     if (statusTimer)
       clearInterval(statusTimer);
+    statusTimer = null;
   }
   async function serverSubmissionCheck() {
     var _a2, _b;
@@ -56749,7 +56748,8 @@ function instance$1($$self, $$props, $$invalidate) {
     $$invalidate(6, selectedJoinGame = game);
   }
   async function openGameCard(game) {
-    await preloadServerData(game);
+    if (game.gameState.status &lt; Status.Completed)
+      await preloadServerData(game);
     $$invalidate(5, selectedGame = game);
   }
   async function preloadServerData(game) {
@@ -57603,4 +57603,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>v3Ji5xNmPHAoVZi+T/KYU6Nr+0K+khPLslYdTrioc5I=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>r4H3MWsSuJ5KURgFzWYDpvaR7U2jsGFvSFNnH2OaL7Q9R8t9WYzaVOb02IdA7LdIdVZYKUuW/xU3vGCgfpQG6w==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>uH26OqpHP6WLLcdRH4+bLRlBhlZcdK5zw9vPjckbrZc=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>3hGMXBzoosAPpeaHwxMZ26upoY1S9qtGcKxiL689E2jVF+5SSJDl0NRIzl5Zp0Fin4G2DiJWeInfJqxlCgPs2g==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
