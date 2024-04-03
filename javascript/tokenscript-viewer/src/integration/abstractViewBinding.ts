@@ -25,10 +25,6 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.actionBtn.addEventListener('click', this.confirmAction.bind(this));
 
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
-
-		this.iframe.onload = () => {
-			this.hideLoader();
-		}
 	}
 
 	// TODO: This can probably be accessed via view controller
@@ -61,7 +57,10 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card, this.viewController);
+		this.iframe = await AbstractViewBinding.injectContentView(this.iframe, card, this.viewController);
+		this.iframe.onload = () => {
+			this.hideLoader()
+		}
 
 		this.setupConfirmButton(card);
 	}
@@ -69,7 +68,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	async unloadTokenView() {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
-		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.srcdoc = "<!DOCTYPE html>";
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
@@ -109,8 +108,16 @@ export abstract class AbstractViewBinding implements IViewBinding {
 			const url = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
 			iframe.contentWindow.location.replace(url);*/
 
-			iframe.srcdoc = await viewController.tokenViewData.renderViewHtml();
+			// changing srcdoc adds to the parent pages history and there's no way to avoid this except for removing the iframe and adding a new one
+			const newIframe = iframe.cloneNode(true) as HTMLIFrameElement;
+
+			newIframe.srcdoc = await viewController.tokenViewData.renderViewHtml();
+
+			iframe.replaceWith(newIframe);
+			iframe = newIframe;
 		}
+
+		return iframe;
 	}
 
 	private setupConfirmButton(card: Card) {
