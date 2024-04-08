@@ -183,7 +183,7 @@ class Web3WalletProviderObj {
 							{
 								let walletConnect2Provider = await import('./providers/WalletConnectV2Provider')
 
-								let universalWalletConnect = await walletConnect2Provider.getWalletConnectV2ProviderInstance()
+								let universalWalletConnect = await walletConnect2Provider.getWalletConnectV2ProviderInstance(true)
 
 								if (universalWalletConnect.session) {
 									universalWalletConnect
@@ -389,17 +389,17 @@ class Web3WalletProviderObj {
 
 		const walletConnectProvider = await import('./providers/WalletConnectV2Provider')
 
-		const walletConnectV2 = await walletConnectProvider.getWalletConnectV2ProviderInstance()
+		const walletConnectV2 = await walletConnectProvider.getWalletConnectV2ProviderInstance(checkConnectionOnly)
 
-		let QRCodeModal
+		//let QRCodeModal
 
-		walletConnectV2.on('display_uri', async (uri: string) => {
-			QRCodeModal = (await import('@walletconnect/qrcode-modal')).default
+		/*walletConnectV2.on('display_uri', async (uri: string) => {
+			QRCodeModal = new (await import('@walletconnect/modal')).WalletConnectModal({ projectId: "2ec7ead81da1226703ad789c0b2f7b30" });
 
-			QRCodeModal.open(uri, () => {
+			QRCodeModal.openModal(uri, () => {
 				//this.client.getUi().showError('User closed modal')
 			})
-		})
+		})*/
 
 		walletConnectV2.on('session_delete', ({ id, topic }: { id: number; topic: string }) => {
 			// TODO: There is currently a bug in the universal provider that prevents this handler from being called.
@@ -429,12 +429,12 @@ class Web3WalletProviderObj {
 
 				connect
 					.then(() => {
-						QRCodeModal?.close()
+						//QRCodeModal?.close()
 						const provider = new ethers.BrowserProvider(walletConnectV2, 'any')
 						resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnectV2, walletConnectV2))
 					})
 					.catch((e) => {
-						QRCodeModal?.close()
+						//QRCodeModal?.close()
 						reject(e)
 					})
 			}

@@ -47,13 +47,13 @@ export const WC_V2_DEFAULT_CHAINS = [
 	10, // Optimism
 ]
 
-export const getWalletConnectV2ProviderInstance = async () => {
+export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: boolean) => {
 	// @ts-ignore
 	return await EthereumProvider.init({
 		projectId: '2ec7ead81da1226703ad789c0b2f7b30',
 		methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
 		events: ['chainChanged', 'accountsChanged'],
-		showQrModal: false,
+		showQrModal: !checkConnectionOnly,
 		optionalChains: WC_V2_DEFAULT_CHAINS
 	});
 }
