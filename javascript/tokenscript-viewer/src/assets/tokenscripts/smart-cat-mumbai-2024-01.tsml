@@ -29347,11 +29347,27 @@ const _BattleClient = class _BattleClient2 {
     return data2;
   }
   async processGameError(title, e) {
+    console.error(e);
     if (typeof e === "string")
       e = new Error(e);
     if (e.message.indexOf("ACTION_REJECTED") &gt; -1) {
       tokenscript.action.showMessageToast("error", title, "Transaction rejected");
     } else {
+      if (e.message.indexOf("could not coalesce error") &gt; -1) {
+        let message = "";
+        let match = e.message.match(/\\?"message\\?":\s*\\?"([^"\\]*)\\?"/);
+        if (match &amp;&amp; match[1]) {
+          message += match[1] + ". ";
+        }
+        console.log(match);
+        match = e.message.match(/reason=.*"/);
+        if (match &amp;&amp; match[1] != null) {
+          message += match[1] + ". ";
+        }
+        if (!message)
+          message = "Unknown error, check console for more details";
+        e = new Error(message);
+      }
       tokenscript.action.showMessageToast("error", title, (e == null ? void 0 : e.reason) ?? e.message);
     }
   }
@@ -58439,4 +58455,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>E99Ui93uw+GQGmER6SguBTzwMlZbpp3nkjgPW2Ym/F4=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>8sB7lUZWEXTKUzW7hoRYk5/pfxEwOZGXnkTOqxH/vqDcsoAa8aa02yVs7qAxVvExNqWCOCvbOCbqgRjEvmzPWg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>sj7uS7zMc7KLtmleByevu4oF61PPiPl8lZa+dUJOYZo=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>lpa/gVuXJ3uepXUPuGWTKZ26AP+aKem5/XE+Oyn6WnPwONLXMvr87Tw2cESyZjsoKkqc2RED9KKbMYn4k0L3tw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
