@@ -5,9 +5,15 @@ import { Provider } from 'ethers';
 
 export class SLNAdapter implements ISLNAdapter {
   private url: string;
+  private jwt: string;
 
   constructor() {
     this.url = window.location.hostname === 'viewer.tokenscript.org' ? 'https://attestation.test.smartlayer.network/' : 'https://d2sc5n1wf6rato.cloudfront.net/';
+    this.jwt =
+      window.location.hostname === 'viewer.tokenscript.org'
+        ? '' //todo
+        : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHVtbXkiLCJpYXQiOjE3MTI1NzA4OTF9.Mz0RVMIzuCpvvh40bZ9MJ97XEcu9CHBMlvAz1jxo25Q';
+
     //'https://d3tm4hby53qtu1.cloudfront.net/';
   }
 
@@ -25,7 +31,9 @@ export class SLNAdapter implements ISLNAdapter {
 
   private async fetchRequest(path: string) {
     try {
-      const response = await fetch(this.url + path);
+      const response = await fetch(this.url + path, {
+        headers: { Authorization: `Bearer ${this.jwt}` },
+      });
       const ok = response.status >= 200 && response.status <= 299;
       if (!ok) {
         console.warn('SLN api request failed: ', path);
