@@ -130,11 +130,13 @@ export class CardPopover implements IViewBinding {
 	}
 
 	protected postMessageToView(method: ViewEvent, params: any) {
-		this.iframe.contentWindow.postMessage({method, params}, "*");
+		if (this.iframe.contentWindow)
+			this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
-	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
-		return this.iframe.contentWindow.postMessage(response, "*");
+	dispatchRpcResult(response: RpcResponse) {
+		if (this.iframe.contentWindow)
+			return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
 	async showTokenView(card: Card, tsId?: string) {
