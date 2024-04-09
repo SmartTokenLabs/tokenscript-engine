@@ -17,7 +17,6 @@ header {
 	flex-direction: column;
 }
 
-
 token-viewer:has(> card-popover .open) {
 	overflow: hidden;
 	max-height: 100vh;
@@ -208,4 +207,10 @@ action-bar {
 	left: 0;
 	bottom: 0;
 	background: #fff;
+}
+
+.iframe-viewer {
+	/* width: 700px; */
+	height: 800px;
+	border: none;
 }

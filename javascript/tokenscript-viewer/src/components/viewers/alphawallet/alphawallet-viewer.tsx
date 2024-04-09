@@ -225,6 +225,8 @@ export class SmartTokenStoreViewer {
 
 		window.scrollTo(0, 0);
 
+		this.showLoader.emit();
+
 		try {
 			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
 
@@ -239,10 +241,10 @@ export class SmartTokenStoreViewer {
 
 		} catch(e){
 			console.error(e);
-			this.hideLoader.emit();
 			handleTransactionError(e, this.showToast);
-			return;
 		}
+
+		this.hideLoader.emit();
 	}
 
 	render(){

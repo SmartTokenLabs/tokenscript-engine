@@ -16,6 +16,10 @@ header {
 	flex-direction: column;
 }
 
+.token-viewer.full-width {
+	max-width: 100%;
+}
+
 sts-viewer:has(> card-popover .open) {
 	overflow: hidden;
 	max-height: 100vh;
@@ -141,4 +145,9 @@ sts-viewer:has(> card-popover .open) {
 	flex-direction: column;
 	gap: 10px;
 	padding: 10px 15px;
+}
+
+.iframe-viewer {
+	height: 100vh;
+	border: none;
 }

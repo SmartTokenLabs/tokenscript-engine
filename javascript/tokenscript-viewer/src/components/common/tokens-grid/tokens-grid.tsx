@@ -135,6 +135,8 @@ export class TokensGrid {
 
 		window.scrollTo(0, 0);
 
+		this.showLoader.emit();
+
 		try {
 			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
 
@@ -147,6 +149,10 @@ export class TokensGrid {
 				await showTransactionNotification(data, this.showToast);
 			});
 
+			// TODO: set only card param rather than updating the whole hash query
+			if (card.view)
+				history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + (("tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
+
 		} catch(e){
 			console.error(e);
 			this.hideLoader.emit();
@@ -154,10 +160,7 @@ export class TokensGrid {
 			return;
 		}
 
-		// TODO: Remove index - all cards should have a unique name but some current tokenscripts don't match the schema
-		// TODO: set only card param rather than updating the whole hash query
-		if (card.view)
-			history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + (("tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
+		this.hideLoader.emit();
 	}
 
 	render() {

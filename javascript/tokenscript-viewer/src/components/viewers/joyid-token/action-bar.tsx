@@ -122,6 +122,8 @@ export class ActionBar {
 
 		window.scrollTo(0, 0);
 
+		this.showLoader.emit();
+
 		try {
 			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
 
@@ -140,6 +142,8 @@ export class ActionBar {
 			handleTransactionError(e, this.showToast);
 			return;
 		}
+
+		this.hideLoader.emit();
 	}
 
 	private actionsAvailable(){

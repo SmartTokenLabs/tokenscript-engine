@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Prop, State, Watch} from "@stencil/core";
+import {Component, Event, EventEmitter, h, JSX, Prop, State, Watch, Element} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "../../../../../engine-js/src/TokenScript";
 import {IViewBinding} from "../../../../../engine-js/src/view/IViewBinding";
@@ -18,6 +18,9 @@ import {CHAIN_CONFIG} from "../../../integration/constants";
 	scoped: false
 })
 export class CardPopover implements IViewBinding {
+
+	@Element()
+	el: HTMLElement;
 
 	private dialog: HTMLPopoverDialogElement;
 	private iframe: HTMLIFrameElement;
@@ -47,11 +50,8 @@ export class CardPopover implements IViewBinding {
 		if (this.tokenScript)
 			this.loadTs();
 
+		this.iframe = this.el.getElementsByClassName('tokenscript-frame')[0] as HTMLIFrameElement;
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
-
-		this.iframe.onload = () => {
-			this.hideLoader()
-		}
 	}
 
 	hideLoader(){
@@ -130,26 +130,32 @@ export class CardPopover implements IViewBinding {
 	}
 
 	protected postMessageToView(method: ViewEvent, params: any) {
-		this.iframe.contentWindow.postMessage({method, params}, "*");
+		if (this.iframe.contentWindow)
+			this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
-	dispatchRpcResult(response: RpcResponse): Promise<void> | void {
-		return this.iframe.contentWindow.postMessage(response, "*");
+	dispatchRpcResult(response: RpcResponse) {
+		if (this.iframe.contentWindow)
+			return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
 	async showTokenView(card: Card, tsId?: string) {
 
 		this.loading = true;
-		await this.dialog.openDialog(() => this.unloadTokenView());
 		this.currentCard = card;
 
-		await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
+		this.iframe = await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
+		this.iframe.onload = () => {
+			this.hideLoader()
+		}
+
+		await this.dialog.openDialog(() => this.unloadTokenView());
 	}
 
 	async unloadTokenView() {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
-		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.srcdoc = "<!DOCTYPE html>";
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
@@ -187,8 +193,7 @@ export class CardPopover implements IViewBinding {
 				</div>
 				<div class="card-container view-container">
 					<div class="iframe-wrapper">
-						<iframe ref={(el) => this.iframe = el as HTMLIFrameElement}
-								class="tokenscript-frame"
+						<iframe class="tokenscript-frame"
 								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>
 					</div>
