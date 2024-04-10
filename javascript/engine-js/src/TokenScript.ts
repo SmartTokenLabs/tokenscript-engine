@@ -570,12 +570,16 @@ export class TokenScript {
 
 			const tokenDetails = tokenContext.selectedTokenIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedTokenIndex] : null;
 
+			const balance = tokenContext.balance ? tokenContext.balance.toString() : "0"; // bigint can't be json serialized, so it must always be string
+
 			data = {
 				name: tokenDetails?.name ?? tokenContext.name,
 				description: tokenDetails?.description ?? tokenContext.description,
 				label: tokenContext.name,
 				symbol: tokenContext.symbol,
-				_count: tokenContext.balance ? tokenContext.balance.toString() : "1", // bigint can't be json serialized, so it must always be string
+				_count: balance,
+				balance,
+				decimals: tokenContext.decimals,
 				contractAddress: tokenContext.contractAddress,
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
@@ -614,6 +618,7 @@ export class TokenScript {
 				contractAddress: primaryAddr?.address,
 				chainId: primaryAddr?.chain,
 				ownerAddress: await this.getCurrentOwnerAddress(),
+				balance: "0"
 			};
 		}
 

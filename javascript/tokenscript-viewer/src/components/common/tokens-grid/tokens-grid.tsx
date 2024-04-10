@@ -133,8 +133,6 @@ export class TokensGrid {
 		const refs = token.contextId.split("-");
 		this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]): null);
 
-		window.scrollTo(0, 0);
-
 		this.showLoader.emit();
 
 		try {

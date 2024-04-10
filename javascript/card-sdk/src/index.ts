@@ -81,6 +81,12 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         hideLoader:() => {
             this.engineAdapter.request(RequestFromView.SET_LOADER, { show: false });
         },
+        setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => {
+            this.engineAdapter.request(RequestFromView.SET_BUTTON, options);
+        },
+        executeTransaction:() => {
+            this.engineAdapter.request(RequestFromView.EXEC_TRANSACTION, { });
+        },
         showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TX_TOAST, { status, chain, txHash });
         },

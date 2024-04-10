@@ -120,8 +120,6 @@ export class ActionBar {
 	// TODO: This is copied from tokens-grid-item, dedupe required
 	private async showCard(card: Card){
 
-		window.scrollTo(0, 0);
-
 		this.showLoader.emit();
 
 		try {

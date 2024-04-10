@@ -11,7 +11,9 @@ export interface ITokenContextData {
 	description?: string; // Collection level description
 	label: string; // Should this be the label of the TokenScript?
 	symbol?: string;
-	_count?: string, // Balance of the current token (or total tokens if it's an NFT or attestation)
+	_count?: string; // Balance of the current token (or total tokens if it's an NFT or attestation)
+	balance?: string;
+	decimals?: number;
 	contractAddress?: string; // Only set for blockchain tokens
 	chainId: number; // The chain of the token or 0 if it's an attestation
 	tokenId?: number|string; // In the case of attestations, this is the ID generated using idFields in the attestation definition
