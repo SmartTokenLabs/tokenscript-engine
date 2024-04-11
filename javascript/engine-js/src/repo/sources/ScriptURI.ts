@@ -37,6 +37,9 @@ export class ScriptURI implements SourceInterface {
 		} else if (uri === "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat-mumbai.tsml"){
 			console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
 			uri = "/assets/tokenscripts/smart-cat-mumbai-2024-01.tsml";
+		} else if ("https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-loot-prod.tsml"){
+			// Always use staging version on staging site
+			uri = "/assets/tokenscripts/smart-cat-loot-prod.tsml";
 		}
 
 		uri = this.context.processIpfsUrl(uri);
