@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, JSX, Prop, State, Watch, Element} from "@stencil/core";
+import {Component, Element, Event, EventEmitter, h, Prop, State, Watch} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "../../../../../engine-js/src/TokenScript";
 import {IViewBinding} from "../../../../../engine-js/src/view/IViewBinding";
@@ -33,6 +33,9 @@ export class CardPopover implements IViewBinding {
 
 	@State()
 	currentCard?: Card;
+
+	@State()
+	buttonOptions?: { show: boolean, disable: boolean, text: string };
 
 	@Event({
 		eventName: 'showToast',
@@ -99,6 +102,16 @@ export class CardPopover implements IViewBinding {
 			case RequestFromView.SHOW_TOAST:
 				showToastNotification(params.type, params.title, params.description);
 				break;
+			case RequestFromView.SET_BUTTON:
+				const newOptions = {...this.buttonOptions};
+				for (const i in params){
+					newOptions[i] = params[i];
+				}
+				this.buttonOptions = newOptions;
+				break;
+			case RequestFromView.EXEC_TRANSACTION:
+				this.confirmAction();
+				break;
 			default:
 				await this.tokenScript.getViewController().handleMessageFromView(method, params);
 		}
@@ -143,6 +156,12 @@ export class CardPopover implements IViewBinding {
 
 		this.loading = true;
 		this.currentCard = card;
+
+		this.buttonOptions = {
+			show: this.currentCard?.type == "action" && this.currentCard.uiButton,
+			disable: false,
+			text: this.currentCard.label
+		};
 
 		this.iframe = await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
 		this.iframe.onload = () => {
@@ -197,9 +216,13 @@ export class CardPopover implements IViewBinding {
 								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>
 					</div>
-					<div class="action-bar" style={{display: this.currentCard?.type == "action" && this.currentCard?.uiButton ? "block" : "none"}}>
-						<button class="action-btn btn btn-primary" onClick={() => this.confirmAction()}>{this.currentCard?.label}</button>
-					</div>
+					{this.buttonOptions ?
+						(<div class="action-bar" style={{display: this.buttonOptions.show ? "block" : "none"}}>
+							<button class="action-btn btn btn-primary"
+									disabled={this.buttonOptions.disable}
+									onClick={() => this.confirmAction()}>{this.buttonOptions.text}</button>
+						</div>) : ''
+					}
 				</div>
 			</popover-dialog>
 		)

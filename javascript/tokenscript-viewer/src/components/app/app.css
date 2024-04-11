@@ -9,6 +9,10 @@
 	flex-direction: column;
 }
 
+html:has(.popover-modal.open){
+	overflow: hidden;
+}
+
 header {
   background: #000;
   color: white;
@@ -42,7 +46,7 @@ main {
 
 #ts-loader {
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 100;
 	top: 0;
 	width: 100%;

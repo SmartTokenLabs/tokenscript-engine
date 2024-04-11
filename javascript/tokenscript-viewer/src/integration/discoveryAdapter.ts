@@ -125,7 +125,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		// 	Rework so collection data API isn't required for erc20
 		} else if (tokenData.length > 0) {
 			token.name = tokenData[0].title;
-			token.balance = tokenData[0].data?.balance ?? 0;
+			token.balance = tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
 			token.symbol = tokenData[0].symbol;
 			token.decimals = tokenData[0].data?.decimals;
 		} else {

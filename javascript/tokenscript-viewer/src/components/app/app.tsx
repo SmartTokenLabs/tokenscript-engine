@@ -145,13 +145,15 @@ export class AppRoot {
 
 	@Element() host: HTMLElement;
 
+	loadTimer = null;
+
 	@Listen("showLoader")
 	showLoaderHandler(_event: CustomEvent<void>){
 		this.showTsLoader();
 	}
 
 	showTsLoader(){
-		document.getElementById("ts-loader").style.display = "flex";
+		this.loadTimer = setTimeout(() => document.getElementById("ts-loader").style.display = "flex", 50);
 	}
 
 	@Listen("hideLoader")
@@ -160,6 +162,7 @@ export class AppRoot {
 	}
 
 	hideTsLoader(){
+		clearTimeout(this.loadTimer);
 		document.getElementById("ts-loader").style.display = "none";
 	}
 

@@ -15,6 +15,8 @@ export enum RequestFromView {
 	LOCAL_STORAGE = "localStorage",
 	// UI methods must be handled by the view adapter, not forwarded to the engine
 	SET_LOADER = "setLoader",
+	SET_BUTTON = "setButton",
+	EXEC_TRANSACTION = "execTransaction",
 	SHOW_TX_TOAST = "showTransactionToast",
 	SHOW_TOAST = "showToast"
 }

@@ -9,6 +9,8 @@ export interface ITokenContextData {
 	label: string;
 	symbol?: string;
 	_count?: string;
+	balance?: string;
+	decimals?: number;
 	contractAddress?: string;
 	chainId: number;
 	tokenId?: string;
