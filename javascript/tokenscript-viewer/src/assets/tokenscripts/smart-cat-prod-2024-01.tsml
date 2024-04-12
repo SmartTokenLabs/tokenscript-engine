@@ -29313,6 +29313,18 @@ const _BattleClient = class _BattleClient2 {
     const tx = await contract.cancelGame(game.gameState.gameId);
     await tx.wait(1);
   }
+  async revealGame(game) {
+    const contract = await this.getWritableContract();
+    const storedData = this.getGameByHash(game.gameState.playerAHash);
+    if (!storedData)
+      throw new Error("Stored secret and game moves not found, did you create this game with a different device?");
+    const tx = await contract.reveal([
+      game.gameState.gameId,
+      storedData.secret,
+      storedData.moves
+    ]);
+    await tx.wait(1);
+  }
   async getServerStatus(gameId) {
     return await this.apiRequest(`/${gameId.toString()}/status`, "get");
   }
@@ -39484,8 +39496,8 @@ class PlayerIcon extends SvelteComponent {
 const GameBoard_svelte_svelte_type_style_lang = "";
 function get_each_context$5(ctx, list, i) {
   const child_ctx = ctx.slice();
-  child_ctx[9] = list[i];
-  child_ctx[11] = i;
+  child_ctx[8] = list[i];
+  child_ctx[10] = i;
   return child_ctx;
 }
 function create_if_block$d(ctx) {
@@ -39690,25 +39702,25 @@ function create_each_block$5(ctx) {
         /*playerAMoves*/
         ctx[1][
           /*index*/
-          ctx[11]
+          ctx[10]
         ]
       ),
       result: (
         /*roundResults*/
         ((_a2 = ctx[3]) == null ? void 0 : _a2[
           /*index*/
-          ctx[11]
+          ctx[10]
         ]) &gt; 0 ? (
           /*roundResults*/
           ctx[3][
             /*index*/
-            ctx[11]
+            ctx[10]
           ] === 1 ? PlayerResult.Win : PlayerResult.Lose
         ) : (
           /*roundResults*/
           (_b = ctx[3]) == null ? void 0 : _b[
             /*index*/
-            ctx[11]
+            ctx[10]
           ]
         )
       )
@@ -39720,25 +39732,25 @@ function create_each_block$5(ctx) {
         /*playerBMoves*/
         ctx[2][
           /*index*/
-          ctx[11]
+          ctx[10]
         ]
       ),
       result: (
         /*roundResults*/
         ((_c = ctx[3]) == null ? void 0 : _c[
           /*index*/
-          ctx[11]
+          ctx[10]
         ]) &gt; 0 ? (
           /*roundResults*/
           ctx[3][
             /*index*/
-            ctx[11]
+            ctx[10]
           ] === 2 ? PlayerResult.Win : PlayerResult.Lose
         ) : (
           /*roundResults*/
           (_d = ctx[3]) == null ? void 0 : _d[
             /*index*/
-            ctx[11]
+            ctx[10]
           ]
         )
       )
@@ -39779,25 +39791,25 @@ function create_each_block$5(ctx) {
         movecard0_changes.move = /*playerAMoves*/
         ctx2[1][
           /*index*/
-          ctx2[11]
+          ctx2[10]
         ];
       if (dirty &amp; /*roundResults*/
       8)
         movecard0_changes.result = /*roundResults*/
         ((_a3 = ctx2[3]) == null ? void 0 : _a3[
           /*index*/
-          ctx2[11]
+          ctx2[10]
         ]) &gt; 0 ? (
           /*roundResults*/
           ctx2[3][
             /*index*/
-            ctx2[11]
+            ctx2[10]
           ] === 1 ? PlayerResult.Win : PlayerResult.Lose
         ) : (
           /*roundResults*/
           (_b2 = ctx2[3]) == null ? void 0 : _b2[
             /*index*/
-            ctx2[11]
+            ctx2[10]
           ]
         );
       movecard0.$set(movecard0_changes);
@@ -39807,25 +39819,25 @@ function create_each_block$5(ctx) {
         movecard1_changes.move = /*playerBMoves*/
         ctx2[2][
           /*index*/
-          ctx2[11]
+          ctx2[10]
         ];
       if (dirty &amp; /*roundResults*/
       8)
         movecard1_changes.result = /*roundResults*/
         ((_c2 = ctx2[3]) == null ? void 0 : _c2[
           /*index*/
-          ctx2[11]
+          ctx2[10]
         ]) &gt; 0 ? (
           /*roundResults*/
           ctx2[3][
             /*index*/
-            ctx2[11]
+            ctx2[10]
           ] === 2 ? PlayerResult.Win : PlayerResult.Lose
         ) : (
           /*roundResults*/
           (_d2 = ctx2[3]) == null ? void 0 : _d2[
             /*index*/
-            ctx2[11]
+            ctx2[10]
           ]
         );
       movecard1.$set(movecard1_changes);
@@ -39984,7 +39996,6 @@ const func$2 = (result) =&gt; result === 1;
 const func_1$1 = (result) =&gt; result === 2;
 function instance$f($$self, $$props, $$invalidate) {
   let { game } = $$props;
-  let { onJoinGame } = $$props;
   let { isPlayerA = false } = $$props;
   let { isPlayerB = false } = $$props;
   let playerAMoves = null;
@@ -40016,12 +40027,10 @@ function instance$f($$self, $$props, $$invalidate) {
   $$self.$$set = ($$props2) =&gt; {
     if ("game" in $$props2)
       $$invalidate(0, game = $$props2.game);
-    if ("onJoinGame" in $$props2)
-      $$invalidate(4, onJoinGame = $$props2.onJoinGame);
     if ("isPlayerA" in $$props2)
-      $$invalidate(5, isPlayerA = $$props2.isPlayerA);
+      $$invalidate(4, isPlayerA = $$props2.isPlayerA);
     if ("isPlayerB" in $$props2)
-      $$invalidate(6, isPlayerB = $$props2.isPlayerB);
+      $$invalidate(5, isPlayerB = $$props2.isPlayerB);
   };
   $$self.$$.update = () =&gt; {
     if ($$self.$$.dirty &amp; /*game*/
@@ -40029,25 +40038,12 @@ function instance$f($$self, $$props, $$invalidate) {
       game &amp;&amp; initialize();
     }
   };
-  return [
-    game,
-    playerAMoves,
-    playerBMoves,
-    roundResults,
-    onJoinGame,
-    isPlayerA,
-    isPlayerB
-  ];
+  return [game, playerAMoves, playerBMoves, roundResults, isPlayerA, isPlayerB];
 }
 class GameBoard extends SvelteComponent {
   constructor(options) {
     super();
-    init$2(this, options, instance$f, create_fragment$k, safe_not_equal, {
-      game: 0,
-      onJoinGame: 4,
-      isPlayerA: 5,
-      isPlayerB: 6
-    });
+    init$2(this, options, instance$f, create_fragment$k, safe_not_equal, { game: 0, isPlayerA: 4, isPlayerB: 5 });
   }
 }
 function create_else_block$7(ctx) {
@@ -40235,50 +40231,51 @@ function create_if_block$b(ctx) {
   let div2;
   let t2;
   let t3;
+  let t4;
   let div10;
   let h5;
-  let t5;
-  let div3;
   let t6;
-  let t7_value = (
+  let div3;
+  let t7;
+  let t8_value = (
     /*game*/
     ctx[0].gameState.gameId + ""
   );
-  let t7;
   let t8;
-  let div4;
   let t9;
-  let t10_value = formatEther$1(
+  let div4;
+  let t10;
+  let t11_value = formatEther$1(
     /*game*/
     ctx[0].gameState.stake
   ) + "";
-  let t10;
   let t11;
   let t12;
-  let div5;
   let t13;
-  let catname;
+  let div5;
   let t14;
-  let div6;
+  let catname;
   let t15;
-  let div7;
+  let div6;
   let t16;
-  let t17_value = new Date(parseInt(
+  let div7;
+  let t17;
+  let t18_value = new Date(parseInt(
     /*game*/
     ctx[0].gameState.createdTime
   ) * 1e3).toLocaleString() + "";
-  let t17;
   let t18;
-  let div8;
   let t19;
+  let div8;
+  let t20;
   let div9;
   let current;
   const if_block_creators = [
-    create_if_block_6$2,
-    create_if_block_9$1,
+    create_if_block_7$2,
     create_if_block_10$1,
-    create_if_block_13$1,
-    create_if_block_14
+    create_if_block_11$1,
+    create_if_block_14,
+    create_if_block_15
   ];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
@@ -40320,24 +40317,25 @@ function create_if_block$b(ctx) {
       ),
       isPlayerA: (
         /*isPlayerA*/
-        ctx[5]
+        ctx[4]
       ),
       isPlayerB: (
         /*isPlayerB*/
-        ctx[6]
-      ),
-      onJoinGame: (
-        /*func*/
-        ctx[13]
+        ctx[5]
       )
     }
   });
   let if_block1 = (
     /*isPlayerA*/
-    ctx[5] &amp;&amp; /*game*/
-    ctx[0].gameState.status == Status.Created &amp;&amp; create_if_block_5$4(ctx)
+    ctx[4] &amp;&amp; /*game*/
+    ctx[0].gameState.status == Status.Created &amp;&amp; create_if_block_6$2(ctx)
   );
   let if_block2 = (
+    /*isPlayerA*/
+    ctx[4] &amp;&amp; /*game*/
+    ctx[0].gameState.status == Status.Accepted &amp;&amp; create_if_block_5$4(ctx)
+  );
+  let if_block3 = (
     /*game*/
     ctx[0].gameState.outcome &gt; 0 &amp;&amp; create_if_block_4$4(ctx)
   );
@@ -40353,15 +40351,15 @@ function create_if_block$b(ctx) {
       )
     }
   });
-  let if_block3 = (
+  let if_block4 = (
     /*game*/
     ctx[0].gameState.playerBContract !== ZeroAddress &amp;&amp; create_if_block_3$5(ctx)
   );
-  let if_block4 = (
+  let if_block5 = (
     /*game*/
     ctx[0].gameState.acceptedTime &amp;&amp; create_if_block_2$7(ctx)
   );
-  let if_block5 = (
+  let if_block6 = (
     /*game*/
     ctx[0].gameState.completedTime &amp;&amp; create_if_block_1$8(ctx)
   );
@@ -40382,40 +40380,43 @@ function create_if_block$b(ctx) {
       if (if_block2)
         if_block2.c();
       t3 = space();
+      if (if_block3)
+        if_block3.c();
+      t4 = space();
       div10 = element("div");
       h5 = element("h5");
       h5.textContent = "Details";
-      t5 = space();
+      t6 = space();
       div3 = element("div");
-      t6 = text("Game ID: ");
-      t7 = text(t7_value);
-      t8 = space();
+      t7 = text("Game ID: ");
+      t8 = text(t8_value);
+      t9 = space();
       div4 = element("div");
-      t9 = text("Stake: ");
-      t10 = text(t10_value);
-      t11 = text(" $SLN");
-      t12 = space();
+      t10 = text("Stake: ");
+      t11 = text(t11_value);
+      t12 = text(" $SLN");
+      t13 = space();
       div5 = element("div");
-      t13 = text("Player A: ");
+      t14 = text("Player A: ");
       create_component(catname.$$.fragment);
-      t14 = space();
-      div6 = element("div");
-      if (if_block3)
-        if_block3.c();
       t15 = space();
-      div7 = element("div");
-      t16 = text("Created at: ");
-      t17 = text(t17_value);
-      t18 = space();
-      div8 = element("div");
+      div6 = element("div");
       if (if_block4)
         if_block4.c();
+      t16 = space();
+      div7 = element("div");
+      t17 = text("Created at: ");
+      t18 = text(t18_value);
       t19 = space();
-      div9 = element("div");
+      div8 = element("div");
       if (if_block5)
         if_block5.c();
+      t20 = space();
+      div9 = element("div");
+      if (if_block6)
+        if_block6.c();
       attr(div0, "class", div0_class_value = "status-banner game-status game-status-" + /*getStatusColor*/
-      ctx[7](
+      ctx[6](
         /*game*/
         ctx[0]
       ) + " svelte-rglk70");
@@ -40439,38 +40440,41 @@ function create_if_block$b(ctx) {
       append(div2, t2);
       if (if_block2)
         if_block2.m(div2, null);
-      append(div11, t3);
+      append(div2, t3);
+      if (if_block3)
+        if_block3.m(div2, null);
+      append(div11, t4);
       append(div11, div10);
       append(div10, h5);
-      append(div10, t5);
+      append(div10, t6);
       append(div10, div3);
-      append(div3, t6);
       append(div3, t7);
-      append(div10, t8);
+      append(div3, t8);
+      append(div10, t9);
       append(div10, div4);
-      append(div4, t9);
       append(div4, t10);
       append(div4, t11);
-      append(div10, t12);
+      append(div4, t12);
+      append(div10, t13);
       append(div10, div5);
-      append(div5, t13);
+      append(div5, t14);
       mount_component(catname, div5, null);
-      append(div10, t14);
-      append(div10, div6);
-      if (if_block3)
-        if_block3.m(div6, null);
       append(div10, t15);
-      append(div10, div7);
-      append(div7, t16);
-      append(div7, t17);
-      append(div10, t18);
-      append(div10, div8);
+      append(div10, div6);
       if (if_block4)
-        if_block4.m(div8, null);
+        if_block4.m(div6, null);
+      append(div10, t16);
+      append(div10, div7);
+      append(div7, t17);
+      append(div7, t18);
       append(div10, t19);
-      append(div10, div9);
+      append(div10, div8);
       if (if_block5)
-        if_block5.m(div9, null);
+        if_block5.m(div8, null);
+      append(div10, t20);
+      append(div10, div9);
+      if (if_block6)
+        if_block6.m(div9, null);
       current = true;
     },
     p(ctx2, dirty) {
@@ -40504,7 +40508,7 @@ function create_if_block$b(ctx) {
       }
       if (!current || dirty &amp; /*game*/
       1 &amp;&amp; div0_class_value !== (div0_class_value = "status-banner game-status game-status-" + /*getStatusColor*/
-      ctx2[7](
+      ctx2[6](
         /*game*/
         ctx2[0]
       ) + " svelte-rglk70")) {
@@ -40516,27 +40520,23 @@ function create_if_block$b(ctx) {
         gameboard_changes.game = /*game*/
         ctx2[0];
       if (dirty &amp; /*isPlayerA*/
-      32)
+      16)
         gameboard_changes.isPlayerA = /*isPlayerA*/
-        ctx2[5];
+        ctx2[4];
       if (dirty &amp; /*isPlayerB*/
-      64)
+      32)
         gameboard_changes.isPlayerB = /*isPlayerB*/
-        ctx2[6];
-      if (dirty &amp; /*onJoinGame*/
-      4)
-        gameboard_changes.onJoinGame = /*func*/
-        ctx2[13];
+        ctx2[5];
       gameboard.$set(gameboard_changes);
       if (
         /*isPlayerA*/
-        ctx2[5] &amp;&amp; /*game*/
+        ctx2[4] &amp;&amp; /*game*/
         ctx2[0].gameState.status == Status.Created
       ) {
         if (if_block1) {
           if_block1.p(ctx2, dirty);
         } else {
-          if_block1 = create_if_block_5$4(ctx2);
+          if_block1 = create_if_block_6$2(ctx2);
           if_block1.c();
           if_block1.m(div2, t2);
         }
@@ -40545,30 +40545,46 @@ function create_if_block$b(ctx) {
         if_block1 = null;
       }
       if (
-        /*game*/
-        ctx2[0].gameState.outcome &gt; 0
+        /*isPlayerA*/
+        ctx2[4] &amp;&amp; /*game*/
+        ctx2[0].gameState.status == Status.Accepted
       ) {
         if (if_block2) {
           if_block2.p(ctx2, dirty);
         } else {
-          if_block2 = create_if_block_4$4(ctx2);
+          if_block2 = create_if_block_5$4(ctx2);
           if_block2.c();
-          if_block2.m(div2, null);
+          if_block2.m(div2, t3);
         }
       } else if (if_block2) {
         if_block2.d(1);
         if_block2 = null;
       }
+      if (
+        /*game*/
+        ctx2[0].gameState.outcome &gt; 0
+      ) {
+        if (if_block3) {
+          if_block3.p(ctx2, dirty);
+        } else {
+          if_block3 = create_if_block_4$4(ctx2);
+          if_block3.c();
+          if_block3.m(div2, null);
+        }
+      } else if (if_block3) {
+        if_block3.d(1);
+        if_block3 = null;
+      }
       if ((!current || dirty &amp; /*game*/
-      1) &amp;&amp; t7_value !== (t7_value = /*game*/
+      1) &amp;&amp; t8_value !== (t8_value = /*game*/
       ctx2[0].gameState.gameId + ""))
-        set_data(t7, t7_value);
+        set_data(t8, t8_value);
       if ((!current || dirty &amp; /*game*/
-      1) &amp;&amp; t10_value !== (t10_value = formatEther$1(
+      1) &amp;&amp; t11_value !== (t11_value = formatEther$1(
         /*game*/
         ctx2[0].gameState.stake
       ) + ""))
-        set_data(t10, t10_value);
+        set_data(t11, t11_value);
       const catname_changes = {};
       if (dirty &amp; /*game*/
       1)
@@ -40583,60 +40599,60 @@ function create_if_block$b(ctx) {
         /*game*/
         ctx2[0].gameState.playerBContract !== ZeroAddress
       ) {
-        if (if_block3) {
-          if_block3.p(ctx2, dirty);
+        if (if_block4) {
+          if_block4.p(ctx2, dirty);
           if (dirty &amp; /*game*/
           1) {
-            transition_in(if_block3, 1);
+            transition_in(if_block4, 1);
           }
         } else {
-          if_block3 = create_if_block_3$5(ctx2);
-          if_block3.c();
-          transition_in(if_block3, 1);
-          if_block3.m(div6, null);
+          if_block4 = create_if_block_3$5(ctx2);
+          if_block4.c();
+          transition_in(if_block4, 1);
+          if_block4.m(div6, null);
         }
-      } else if (if_block3) {
+      } else if (if_block4) {
         group_outros();
-        transition_out(if_block3, 1, 1, () =&gt; {
-          if_block3 = null;
+        transition_out(if_block4, 1, 1, () =&gt; {
+          if_block4 = null;
         });
         check_outros();
       }
       if ((!current || dirty &amp; /*game*/
-      1) &amp;&amp; t17_value !== (t17_value = new Date(parseInt(
+      1) &amp;&amp; t18_value !== (t18_value = new Date(parseInt(
         /*game*/
         ctx2[0].gameState.createdTime
       ) * 1e3).toLocaleString() + ""))
-        set_data(t17, t17_value);
+        set_data(t18, t18_value);
       if (
         /*game*/
         ctx2[0].gameState.acceptedTime
       ) {
-        if (if_block4) {
-          if_block4.p(ctx2, dirty);
+        if (if_block5) {
+          if_block5.p(ctx2, dirty);
         } else {
-          if_block4 = create_if_block_2$7(ctx2);
-          if_block4.c();
-          if_block4.m(div8, null);
+          if_block5 = create_if_block_2$7(ctx2);
+          if_block5.c();
+          if_block5.m(div8, null);
         }
-      } else if (if_block4) {
-        if_block4.d(1);
-        if_block4 = null;
+      } else if (if_block5) {
+        if_block5.d(1);
+        if_block5 = null;
       }
       if (
         /*game*/
         ctx2[0].gameState.completedTime
       ) {
-        if (if_block5) {
-          if_block5.p(ctx2, dirty);
+        if (if_block6) {
+          if_block6.p(ctx2, dirty);
         } else {
-          if_block5 = create_if_block_1$8(ctx2);
-          if_block5.c();
-          if_block5.m(div9, null);
+          if_block6 = create_if_block_1$8(ctx2);
+          if_block6.c();
+          if_block6.m(div9, null);
         }
-      } else if (if_block5) {
-        if_block5.d(1);
-        if_block5 = null;
+      } else if (if_block6) {
+        if_block6.d(1);
+        if_block6 = null;
       }
     },
     i(local) {
@@ -40645,14 +40661,14 @@ function create_if_block$b(ctx) {
       transition_in(if_block0);
       transition_in(gameboard.$$.fragment, local);
       transition_in(catname.$$.fragment, local);
-      transition_in(if_block3);
+      transition_in(if_block4);
       current = true;
     },
     o(local) {
       transition_out(if_block0);
       transition_out(gameboard.$$.fragment, local);
       transition_out(catname.$$.fragment, local);
-      transition_out(if_block3);
+      transition_out(if_block4);
       current = false;
     },
     d(detaching) {
@@ -40667,17 +40683,19 @@ function create_if_block$b(ctx) {
         if_block1.d();
       if (if_block2)
         if_block2.d();
-      destroy_component(catname);
       if (if_block3)
         if_block3.d();
+      destroy_component(catname);
       if (if_block4)
         if_block4.d();
       if (if_block5)
         if_block5.d();
+      if (if_block6)
+        if_block6.d();
     }
   };
 }
-function create_if_block_14(ctx) {
+function create_if_block_15(ctx) {
   let h4;
   let loader;
   let t;
@@ -40715,7 +40733,7 @@ function create_if_block_14(ctx) {
     }
   };
 }
-function create_if_block_13$1(ctx) {
+function create_if_block_14(ctx) {
   let h4;
   return {
     c() {
@@ -40736,12 +40754,12 @@ function create_if_block_13$1(ctx) {
     }
   };
 }
-function create_if_block_10$1(ctx) {
+function create_if_block_11$1(ctx) {
   let current_block_type_index;
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block_11$1, create_if_block_12$1, create_else_block_1$3];
+  const if_block_creators = [create_if_block_12$1, create_if_block_13$1, create_else_block_1$3];
   const if_blocks = [];
   function select_block_type_2(ctx2, dirty) {
     if (
@@ -40804,7 +40822,7 @@ function create_if_block_10$1(ctx) {
     }
   };
 }
-function create_if_block_9$1(ctx) {
+function create_if_block_10$1(ctx) {
   let h4;
   return {
     c() {
@@ -40825,14 +40843,14 @@ function create_if_block_9$1(ctx) {
     }
   };
 }
-function create_if_block_6$2(ctx) {
+function create_if_block_7$2(ctx) {
   let div;
   let h4;
   let t1;
   let html_tag;
   let raw_value = (
     /*getRevealTxMarkup*/
-    ctx[8]() + ""
+    ctx[7]() + ""
   );
   let t2;
   function select_block_type_1(ctx2, dirty) {
@@ -40840,11 +40858,11 @@ function create_if_block_6$2(ctx) {
       /*game*/
       ctx2[0].gameState.outcome == Outcome.Draw
     )
-      return create_if_block_7$2;
-    if (!/*isPlayerA*/
-    ctx2[5] &amp;&amp; !/*isPlayerB*/
-    ctx2[6])
       return create_if_block_8$2;
+    if (!/*isPlayerA*/
+    ctx2[4] &amp;&amp; !/*isPlayerB*/
+    ctx2[5])
+      return create_if_block_9$1;
     return create_else_block$6;
   }
   let current_block_type = select_block_type_1(ctx);
@@ -40928,7 +40946,7 @@ function create_else_block_1$3(ctx) {
     }
   };
 }
-function create_if_block_12$1(ctx) {
+function create_if_block_13$1(ctx) {
   let h4;
   let loader;
   let t;
@@ -40965,7 +40983,7 @@ function create_if_block_12$1(ctx) {
     }
   };
 }
-function create_if_block_11$1(ctx) {
+function create_if_block_12$1(ctx) {
   let h4;
   return {
     c() {
@@ -40990,9 +41008,9 @@ function create_else_block$6(ctx) {
   let t_value = (
     /*game*/
     ctx[0].gameState.outcome == Outcome.PlayerA &amp;&amp; /*isPlayerA*/
-    ctx[5] || /*game*/
+    ctx[4] || /*game*/
     ctx[0].gameState.outcome &gt; Outcome.PlayerA &amp;&amp; /*isPlayerB*/
-    ctx[6] ? "You won " + /*getWonAmount*/
+    ctx[5] ? "You won " + /*getWonAmount*/
     ctx[10](
       /*game*/
       ctx[0].gameState.stake
@@ -41011,11 +41029,11 @@ function create_else_block$6(ctx) {
     },
     p(ctx2, dirty) {
       if (dirty &amp; /*game, isPlayerA, isPlayerB*/
-      97 &amp;&amp; t_value !== (t_value = /*game*/
+      49 &amp;&amp; t_value !== (t_value = /*game*/
       ctx2[0].gameState.outcome == Outcome.PlayerA &amp;&amp; /*isPlayerA*/
-      ctx2[5] || /*game*/
+      ctx2[4] || /*game*/
       ctx2[0].gameState.outcome &gt; Outcome.PlayerA &amp;&amp; /*isPlayerB*/
-      ctx2[6] ? "You won " + /*getWonAmount*/
+      ctx2[5] ? "You won " + /*getWonAmount*/
       ctx2[10](
         /*game*/
         ctx2[0].gameState.stake
@@ -41029,7 +41047,7 @@ function create_else_block$6(ctx) {
     }
   };
 }
-function create_if_block_8$2(ctx) {
+function create_if_block_9$1(ctx) {
   let h2;
   let t_value = "Player " + /*game*/
   (ctx[0].gameState.outcome == Outcome.PlayerA ? "A" : "B") + " won " + /*getWonAmount*/
@@ -41065,7 +41083,7 @@ function create_if_block_8$2(ctx) {
     }
   };
 }
-function create_if_block_7$2(ctx) {
+function create_if_block_8$2(ctx) {
   let h2;
   return {
     c() {
@@ -41084,7 +41102,7 @@ function create_if_block_7$2(ctx) {
     }
   };
 }
-function create_if_block_5$4(ctx) {
+function create_if_block_6$2(ctx) {
   let button;
   let t1;
   let small;
@@ -41112,6 +41130,50 @@ function create_if_block_5$4(ctx) {
           "click",
           /*click_handler*/
           ctx[14]
+        );
+        mounted = true;
+      }
+    },
+    p: noop,
+    d(detaching) {
+      if (detaching) {
+        detach(button);
+        detach(t1);
+        detach(small);
+      }
+      mounted = false;
+      dispose();
+    }
+  };
+}
+function create_if_block_5$4(ctx) {
+  let button;
+  let t1;
+  let small;
+  let mounted;
+  let dispose;
+  return {
+    c() {
+      button = element("button");
+      button.textContent = "Reveal Game";
+      t1 = space();
+      small = element("small");
+      small.textContent = "Reveal server taking too long? You can send the TX using this option";
+      attr(button, "class", "btn primary-btn");
+      set_style(button, "font-weight", "bold");
+      set_style(button, "font-size", "16px");
+      set_style(small, "color", "#545454");
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      insert(target, t1, anchor);
+      insert(target, small, anchor);
+      if (!mounted) {
+        dispose = listen$1(
+          button,
+          "click",
+          /*click_handler_1*/
+          ctx[15]
         );
         mounted = true;
       }
@@ -41173,14 +41235,14 @@ function create_if_block_4$4(ctx) {
           listen$1(
             button0,
             "click",
-            /*click_handler_1*/
-            ctx[15]
+            /*click_handler_2*/
+            ctx[16]
           ),
           listen$1(
             button1,
             "click",
-            /*click_handler_2*/
-            ctx[16]
+            /*click_handler_3*/
+            ctx[17]
           )
         ];
         mounted = true;
@@ -41326,7 +41388,7 @@ function create_fragment$i(ctx) {
   let if_block = (
     /*game*/
     ctx[0] &amp;&amp; /*loaded*/
-    ctx[4] &amp;&amp; create_if_block$b(ctx)
+    ctx[3] &amp;&amp; create_if_block$b(ctx)
   );
   return {
     c() {
@@ -41344,12 +41406,12 @@ function create_fragment$i(ctx) {
       if (
         /*game*/
         ctx2[0] &amp;&amp; /*loaded*/
-        ctx2[4]
+        ctx2[3]
       ) {
         if (if_block) {
           if_block.p(ctx2, dirty);
           if (dirty &amp; /*game, loaded*/
-          17) {
+          9) {
             transition_in(if_block, 1);
           }
         } else {
@@ -41388,8 +41450,8 @@ function create_fragment$i(ctx) {
 function instance$d($$self, $$props, $$invalidate) {
   let { game } = $$props;
   let { serverData } = $$props;
-  let { onJoinGame } = $$props;
   let { onCancelGame } = $$props;
+  let { onRevealGame } = $$props;
   let { onPlayAgain } = $$props;
   let loaded = false;
   let isPlayerA = false;
@@ -41399,11 +41461,11 @@ function instance$d($$self, $$props, $$invalidate) {
     gameClient2 = await context.getGameClient();
     const gameRole = gameClient2.getGameRole(game);
     if (gameRole == 1) {
-      $$invalidate(5, isPlayerA = true);
+      $$invalidate(4, isPlayerA = true);
     } else if (gameRole == 2) {
-      $$invalidate(6, isPlayerB = true);
+      $$invalidate(5, isPlayerB = true);
     }
-    $$invalidate(4, loaded = true);
+    $$invalidate(3, loaded = true);
   }
   function getStatusColor(game2) {
     if (game2.gameState.outcome &gt; 0) {
@@ -41439,6 +41501,17 @@ function instance$d($$self, $$props, $$invalidate) {
     }
     tokenscript.action.hideLoader();
   }
+  async function revealGame() {
+    tokenscript.action.showLoader();
+    try {
+      await gameClient2.revealGame(game);
+      await new Promise((resolve) =&gt; setTimeout(() =&gt; resolve(), 2e3));
+      onRevealGame(game);
+    } catch (e) {
+      await gameClient2.processGameError("Error revealing game", e);
+    }
+    tokenscript.action.hideLoader();
+  }
   function getWonAmount(stake) {
     const payout = stake * (10000n - FEE_BASIS - (game.gameState.isPublic ? POOL_BASIS : 0n)) / 10000n;
     return formatEther$1(payout * 2n);
@@ -41448,10 +41521,10 @@ function instance$d($$self, $$props, $$invalidate) {
     let message = `My cat just ${game.gameState.outcome == Outcome.Draw ? "drew" : won ? "won" : "lost"} in a claw clash against cat ${(isPlayerA ? game.gameState.playerBTokenId : game.gameState.playerATokenId).toString()}! Will you challenge my cat next? Invite me with ID ${(isPlayerA ? game.gameState.playerATokenId : game.gameState.playerBTokenId).toString()} #smartcats #catkombat #smartlayer`;
     return `${TWITTER_SHARE_URL}${encodeURIComponent(message)}`;
   }
-  const func2 = () =&gt; onJoinGame();
   const click_handler = () =&gt; cancelGame();
-  const click_handler_1 = () =&gt; onPlayAgain({ stake: game.gameState.stake });
-  const click_handler_2 = () =&gt; onPlayAgain({
+  const click_handler_1 = () =&gt; revealGame();
+  const click_handler_2 = () =&gt; onPlayAgain({ stake: game.gameState.stake });
+  const click_handler_3 = () =&gt; onPlayAgain({
     invitee: isPlayerA ? game.gameState.playerBTokenId : game.gameState.playerATokenId,
     stake: game.gameState.stake
   });
@@ -41460,12 +41533,12 @@ function instance$d($$self, $$props, $$invalidate) {
       $$invalidate(0, game = $$props2.game);
     if ("serverData" in $$props2)
       $$invalidate(1, serverData = $$props2.serverData);
-    if ("onJoinGame" in $$props2)
-      $$invalidate(2, onJoinGame = $$props2.onJoinGame);
     if ("onCancelGame" in $$props2)
       $$invalidate(12, onCancelGame = $$props2.onCancelGame);
+    if ("onRevealGame" in $$props2)
+      $$invalidate(13, onRevealGame = $$props2.onRevealGame);
     if ("onPlayAgain" in $$props2)
-      $$invalidate(3, onPlayAgain = $$props2.onPlayAgain);
+      $$invalidate(2, onPlayAgain = $$props2.onPlayAgain);
   };
   $$self.$$.update = () =&gt; {
     if ($$self.$$.dirty &amp; /*game*/
@@ -41476,7 +41549,6 @@ function instance$d($$self, $$props, $$invalidate) {
   return [
     game,
     serverData,
-    onJoinGame,
     onPlayAgain,
     loaded,
     isPlayerA,
@@ -41484,13 +41556,15 @@ function instance$d($$self, $$props, $$invalidate) {
     getStatusColor,
     getRevealTxMarkup,
     cancelGame,
+    revealGame,
     getWonAmount,
     getTwitterShareLink,
     onCancelGame,
-    func2,
+    onRevealGame,
     click_handler,
     click_handler_1,
-    click_handler_2
+    click_handler_2,
+    click_handler_3
   ];
 }
 class GameCard extends SvelteComponent {
@@ -41499,9 +41573,9 @@ class GameCard extends SvelteComponent {
     init$2(this, options, instance$d, create_fragment$i, safe_not_equal, {
       game: 0,
       serverData: 1,
-      onJoinGame: 2,
       onCancelGame: 12,
-      onPlayAgain: 3
+      onRevealGame: 13,
+      onPlayAgain: 2
     });
   }
 }
@@ -56396,31 +56470,31 @@ function create_else_block(ctx) {
             div0,
             "click",
             /*click_handler_1*/
-            ctx[17]
+            ctx[18]
           ),
           listen$1(
             button,
             "click",
             /*click_handler_2*/
-            ctx[18]
+            ctx[19]
           ),
           listen$1(
             div4,
             "click",
             /*click_handler_3*/
-            ctx[19]
+            ctx[20]
           ),
           listen$1(
             div5,
             "click",
             /*click_handler_4*/
-            ctx[20]
+            ctx[21]
           ),
           listen$1(
             div6,
             "click",
             /*click_handler_5*/
-            ctx[21]
+            ctx[22]
           )
         ];
         mounted = true;
@@ -56710,7 +56784,7 @@ function create_if_block(ctx) {
           button,
           "click",
           /*click_handler*/
-          ctx[16]
+          ctx[17]
         );
         mounted = true;
       }
@@ -56779,7 +56853,7 @@ function create_if_block_7(ctx) {
       ),
       gameClick: (
         /*func*/
-        ctx[23]
+        ctx[24]
       )
     }
   });
@@ -56830,7 +56904,7 @@ function create_if_block_7(ctx) {
           span1,
           "click",
           /*click_handler_6*/
-          ctx[22]
+          ctx[23]
         );
         mounted = true;
       }
@@ -56852,7 +56926,7 @@ function create_if_block_7(ctx) {
       if (dirty[0] &amp; /*gameClient*/
       1)
         pagedgamelist_changes.gameClick = /*func*/
-        ctx2[23];
+        ctx2[24];
       pagedgamelist.$set(pagedgamelist_changes);
       if (
         /*publicGames*/
@@ -56931,7 +57005,7 @@ function create_if_block_8(ctx) {
       ),
       gameClick: (
         /*func_1*/
-        ctx[25]
+        ctx[26]
       )
     }
   });
@@ -56968,7 +57042,7 @@ function create_if_block_8(ctx) {
           span1,
           "click",
           /*click_handler_7*/
-          ctx[24]
+          ctx[25]
         );
         mounted = true;
       }
@@ -57013,12 +57087,12 @@ function create_if_block_6(ctx) {
     props: {
       loadListFn: (
         /*func_2*/
-        ctx[26]
+        ctx[27]
       ),
       filterFn: func_3,
       gameClick: (
         /*func_4*/
-        ctx[27]
+        ctx[28]
       )
     }
   });
@@ -57081,7 +57155,7 @@ function create_if_block_4(ctx) {
       title: "Battle",
       dismissCallback: (
         /*func_7*/
-        ctx[30]
+        ctx[31]
       ),
       $$slots: { default: [create_default_slot_3] },
       $$scope: { ctx }
@@ -57100,10 +57174,10 @@ function create_if_block_4(ctx) {
       if (dirty[0] &amp; /*gameLobbyOpen*/
       16)
         popovermodal_changes.dismissCallback = /*func_7*/
-        ctx2[30];
+        ctx2[31];
       if (dirty[0] &amp; /*createGameOpen*/
       8 | dirty[1] &amp; /*$$scope*/
-      131072) {
+      262144) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -57130,11 +57204,11 @@ function create_default_slot_3(ctx) {
     props: {
       onGameClick: (
         /*func_5*/
-        ctx[28]
+        ctx[29]
       ),
       onCreateGame: (
         /*func_6*/
-        ctx[29]
+        ctx[30]
       )
     }
   });
@@ -57151,7 +57225,7 @@ function create_default_slot_3(ctx) {
       if (dirty[0] &amp; /*createGameOpen*/
       8)
         gamelobby_changes.onCreateGame = /*func_6*/
-        ctx2[29];
+        ctx2[30];
       gamelobby.$set(gamelobby_changes);
     },
     i(local) {
@@ -57177,7 +57251,7 @@ function create_if_block_3(ctx) {
       title: "Start a new battle",
       dismissCallback: (
         /*func_9*/
-        ctx[32]
+        ctx[33]
       ),
       $$slots: { default: [create_default_slot_2] },
       $$scope: { ctx }
@@ -57196,10 +57270,10 @@ function create_if_block_3(ctx) {
       if (dirty[0] &amp; /*createGameOpen*/
       8)
         popovermodal_changes.dismissCallback = /*func_9*/
-        ctx2[32];
+        ctx2[33];
       if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
       25 | dirty[1] &amp; /*$$scope*/
-      131072) {
+      262144) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -57226,7 +57300,7 @@ function create_default_slot_2(ctx) {
     props: {
       onCreateGame: (
         /*func_8*/
-        ctx[31]
+        ctx[32]
       ),
       fieldPresets: (
         /*createGameOpen*/
@@ -57250,7 +57324,7 @@ function create_default_slot_2(ctx) {
       if (dirty[0] &amp; /*createGameOpen, gameLobbyOpen, gameClient*/
       25)
         creategamecard_changes.onCreateGame = /*func_8*/
-        ctx2[31];
+        ctx2[32];
       if (dirty[0] &amp; /*createGameOpen*/
       8)
         creategamecard_changes.fieldPresets = /*createGameOpen*/
@@ -57283,8 +57357,8 @@ function create_if_block_2(ctx) {
       title: "Battle #" + /*selectedGame*/
       ctx[5].gameState.gameId,
       dismissCallback: (
-        /*func_12*/
-        ctx[35]
+        /*func_13*/
+        ctx[37]
       ),
       $$slots: { default: [create_default_slot_1] },
       $$scope: { ctx }
@@ -57306,11 +57380,11 @@ function create_if_block_2(ctx) {
         ctx2[5].gameState.gameId;
       if (dirty[0] &amp; /*selectedGame*/
       32)
-        popovermodal_changes.dismissCallback = /*func_12*/
-        ctx2[35];
+        popovermodal_changes.dismissCallback = /*func_13*/
+        ctx2[37];
       if (dirty[0] &amp; /*selectedGame, serverData, createGameOpen*/
       1064 | dirty[1] &amp; /*$$scope*/
-      131072) {
+      262144) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -57348,11 +57422,15 @@ function create_default_slot_1(ctx) {
       ),
       onCancelGame: (
         /*func_10*/
-        ctx[33]
+        ctx[34]
+      ),
+      onRevealGame: (
+        /*func_11*/
+        ctx[35]
       ),
       onPlayAgain: (
-        /*func_11*/
-        ctx[34]
+        /*func_12*/
+        ctx[36]
       )
     }
   });
@@ -57380,11 +57458,11 @@ function create_default_slot_1(ctx) {
       if (dirty[0] &amp; /*serverData*/
       1024)
         gamecard_changes.onCancelGame = /*func_10*/
-        ctx2[33];
+        ctx2[34];
       if (dirty[0] &amp; /*selectedGame, createGameOpen*/
       40)
-        gamecard_changes.onPlayAgain = /*func_11*/
-        ctx2[34];
+        gamecard_changes.onPlayAgain = /*func_12*/
+        ctx2[36];
       gamecard.$set(gamecard_changes);
     },
     i(local) {
@@ -57410,8 +57488,8 @@ function create_if_block_1(ctx) {
       title: "Join Battle #" + /*selectedJoinGame*/
       ctx[6].gameState.gameId,
       dismissCallback: (
-        /*func_14*/
-        ctx[37]
+        /*func_15*/
+        ctx[39]
       ),
       $$slots: { default: [create_default_slot] },
       $$scope: { ctx }
@@ -57433,11 +57511,11 @@ function create_if_block_1(ctx) {
         ctx2[6].gameState.gameId;
       if (dirty[0] &amp; /*selectedJoinGame*/
       64)
-        popovermodal_changes.dismissCallback = /*func_14*/
-        ctx2[37];
+        popovermodal_changes.dismissCallback = /*func_15*/
+        ctx2[39];
       if (dirty[0] &amp; /*selectedJoinGame, serverData, gameLobbyOpen, gameClient*/
       1105 | dirty[1] &amp; /*$$scope*/
-      131072) {
+      262144) {
         popovermodal_changes.$$scope = { dirty, ctx: ctx2 };
       }
       popovermodal.$set(popovermodal_changes);
@@ -57474,8 +57552,8 @@ function create_default_slot(ctx) {
         ]
       ),
       onJoinGame: (
-        /*func_13*/
-        ctx[36]
+        /*func_14*/
+        ctx[38]
       )
     }
   });
@@ -57502,8 +57580,8 @@ function create_default_slot(ctx) {
         ];
       if (dirty[0] &amp; /*gameLobbyOpen, selectedJoinGame, gameClient*/
       81)
-        joingamecard_changes.onJoinGame = /*func_13*/
-        ctx2[36];
+        joingamecard_changes.onJoinGame = /*func_14*/
+        ctx2[38];
       joingamecard.$set(joingamecard_changes);
     },
     i(local) {
@@ -57746,12 +57824,15 @@ function instance$1($$self, $$props, $$invalidate) {
   async function loadCompletedGameState(gameId, status) {
     if (status &gt; Status.Accepted) {
       console.log("Game is now revealed or cancelled, fetching final state");
-      $$invalidate(5, selectedGame = {
-        ...selectedGame,
-        gameState: await gameClient2.getGame(gameId)
-      });
-      console.log("Game state:", selectedGame.gameState);
+      if (gameId === selectedGame.gameState.gameId) {
+        $$invalidate(5, selectedGame = {
+          ...selectedGame,
+          gameState: await gameClient2.getGame(gameId)
+        });
+        console.log("Game state:", selectedGame.gameState);
+      }
       gameClient2.setLocalStateCompleted(selectedGame.gameState.playerAHash, Number(selectedGame.gameState.completedTime));
+      gameClient2.fetchBalances();
       return true;
     }
     return false;
@@ -57837,12 +57918,16 @@ function instance$1($$self, $$props, $$invalidate) {
     await refreshPendingGames();
     $$invalidate(10, serverData[game.gameState.gameId].status = Status.Cancelled, serverData);
   };
-  const func_11 = (fieldPresets) =&gt; {
+  const func_11 = async (game) =&gt; {
+    await refreshPendingGames();
+    await loadCompletedGameState(game.gameState.gameId, Status.Completed);
+  };
+  const func_122 = (fieldPresets) =&gt; {
     $$invalidate(5, selectedGame = null);
     $$invalidate(3, createGameOpen = fieldPresets);
   };
-  const func_122 = () =&gt; $$invalidate(5, selectedGame = null);
-  const func_13 = async () =&gt; {
+  const func_13 = () =&gt; $$invalidate(5, selectedGame = null);
+  const func_14 = async () =&gt; {
     $$invalidate(4, gameLobbyOpen = false);
     await openGameCard(selectedJoinGame);
     $$invalidate(6, selectedJoinGame = null);
@@ -57850,7 +57935,7 @@ function instance$1($$self, $$props, $$invalidate) {
     startStatusRefresh();
     gameClient2.fetchBalances();
   };
-  const func_14 = () =&gt; $$invalidate(6, selectedJoinGame = null);
+  const func_15 = () =&gt; $$invalidate(6, selectedJoinGame = null);
   return [
     gameClient2,
     introScreen,
@@ -57865,6 +57950,7 @@ function instance$1($$self, $$props, $$invalidate) {
     serverData,
     refreshPendingGames,
     startStatusRefresh,
+    loadCompletedGameState,
     openJoinGameCard,
     openGameCard,
     selectTab,
@@ -57889,7 +57975,8 @@ function instance$1($$self, $$props, $$invalidate) {
     func_11,
     func_122,
     func_13,
-    func_14
+    func_14,
+    func_15
   ];
 }
 class Battle extends SvelteComponent {
@@ -58637,4 +58724,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>LPsGv5XYbQGOPdXRS8sYl1H6C7yQEmCMU08bYPIJGzQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>rC7Zzn1uuZfQIIfIU9dsfx0weIg8/3k1AMrPSUl6+JJaqf17HaYhaLvQgbRgUvwoexM8HPZk4rYdGxd7YpDjPA==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>g8FECtManQvHEUXtvNi6kLB1eI1mRElC3SKTw4UnecI=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>VRyxXPXOa+2U574lyGzXQHiooKJeOwLvRiO6QOqoYzTpRjRylTJOOIoYGzAi5rYRHy0Iqv3QKMlnHyhsdrwOOQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
