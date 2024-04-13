@@ -206,7 +206,7 @@ export class CardPopover implements IViewBinding {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading}>
 				<div slot="outer-content" class="view-loader" style={{display: this.loading ? "flex" : "none"}}>
 					<loading-spinner/>
 				</div>

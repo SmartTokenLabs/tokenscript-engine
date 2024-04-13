@@ -93,6 +93,7 @@ export namespace Components {
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
         "dialogStyles": {[cssProp: string]: string};
+        "disableClose": boolean;
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
@@ -734,6 +735,7 @@ declare namespace LocalJSX {
     }
     interface PopoverDialog {
         "dialogStyles"?: {[cssProp: string]: string};
+        "disableClose"?: boolean;
     }
     interface SecurityStatus {
         "size"?: "large"|"small";

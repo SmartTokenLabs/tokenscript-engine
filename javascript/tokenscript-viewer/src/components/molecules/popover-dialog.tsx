@@ -14,6 +14,9 @@ export class PopoverDialog {
 	@Prop()
 	dialogStyles: {[cssProp: string]: string} = {};
 
+	@Prop()
+	disableClose = false;
+
 	private dismissCallback: () => void|Promise<void>
 
 	@Method()
@@ -31,7 +34,7 @@ export class PopoverDialog {
 		return (
 			<div class={"popover-modal" + (this.open ? ' open' : '')}>
 				<div class="popover-container" style={this.dialogStyles}>
-					<button class="close-btn" onClick={() => {
+					<button class="close-btn" disabled={this.disableClose} onClick={() => {
 						this.open = false;
 						if (this.dismissCallback) {
 							this.dismissCallback();
