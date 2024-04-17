@@ -29325,7 +29325,12 @@ const _BattleClient = class _BattleClient2 {
     } catch (e) {
       console.error(e);
     }
-    return tx;
+    try {
+      return { game: await this.getPendingGameByHash(game.gameState.playerAHash), tx };
+    } catch (e) {
+      console.error(e);
+    }
+    return { game, tx };
   }
   async triggerReveal(game) {
     await this.apiRequest(`/${game.gameState.playerAHash}/complete`, "post");
@@ -39494,7 +39499,10 @@ function instance$g($$self, $$props, $$invalidate) {
   let { width = 40 } = $$props;
   let src;
   let title;
+  let loaded = false;
   async function initialize() {
+    if (loaded)
+      return;
     if (!tokenUri) {
       $$invalidate(1, src = noPlayerIcon);
       return;
@@ -39505,6 +39513,7 @@ function instance$g($$self, $$props, $$invalidate) {
       })).json();
       $$invalidate(1, src = meta.image);
       $$invalidate(2, title = meta.name);
+      loaded = true;
     } catch (e) {
       $$invalidate(1, src = noPlayerIcon);
       return;
@@ -39516,7 +39525,12 @@ function instance$g($$self, $$props, $$invalidate) {
     if ("width" in $$props2)
       $$invalidate(0, width = $$props2.width);
   };
-  initialize();
+  $$self.$$.update = () =&gt; {
+    if ($$self.$$.dirty &amp; /*tokenUri*/
+    8) {
+      [tokenUri] &amp;&amp; initialize();
+    }
+  };
   return [width, src, title, tokenUri];
 }
 class PlayerIcon extends SvelteComponent {
@@ -40037,9 +40051,6 @@ function instance$f($$self, $$props, $$invalidate) {
     const gameClient2 = await context.getGameClient();
     const aMoves = [];
     const bMoves = [];
-    if (playerAMoves &amp;&amp; playerBMoves &amp;&amp; game.gameState.status == Status.Created) {
-      return;
-    }
     game.gameState.rounds.forEach((value, index2) =&gt; {
       aMoves.push(Number(value.playerAMove));
       bMoves.push(isPlayerB || game.gameState.outcome &gt; 0 ? Number(value.playerBMove) : 0);
@@ -40384,8 +40395,9 @@ function create_if_block$b(ctx) {
     }
   });
   let if_block4 = (
-    /*game*/
-    ctx[0].gameState.playerBContract !== ZeroAddress &amp;&amp; create_if_block_3$5(ctx)
+    /*isPlayerB*/
+    (ctx[5] || /*game*/
+    ctx[0].gameState.playerBContract !== ZeroAddress) &amp;&amp; create_if_block_3$5(ctx)
   );
   let if_block5 = (
     /*game*/
@@ -40628,13 +40640,14 @@ function create_if_block$b(ctx) {
         ctx2[0].gameState.playerATokenId;
       catname.$set(catname_changes);
       if (
-        /*game*/
+        /*isPlayerB*/
+        ctx2[5] || /*game*/
         ctx2[0].gameState.playerBContract !== ZeroAddress
       ) {
         if (if_block4) {
           if_block4.p(ctx2, dirty);
-          if (dirty &amp; /*game*/
-          1) {
+          if (dirty &amp; /*isPlayerB, game*/
+          33) {
             transition_in(if_block4, 1);
           }
         } else {
@@ -56222,15 +56235,14 @@ function instance$2($$self, $$props, $$invalidate) {
     }
     tokenscript.action.showLoader();
     try {
-      await gameClient2.joinGame(
+      const res = await gameClient2.joinGame(
         {
           gameId: game.gameState.gameId,
           playerBMoves
         },
         game
       );
-      await gameClient2.reloadPendingGames();
-      onJoinGame();
+      onJoinGame(res.game);
     } catch (e) {
       await gameClient2.processGameError("Error joining game", e);
     }
@@ -57968,9 +57980,9 @@ function instance$1($$self, $$props, $$invalidate) {
     $$invalidate(3, createGameOpen = fieldPresets);
   };
   const func_13 = () =&gt; $$invalidate(5, selectedGame = null);
-  const func_14 = async () =&gt; {
+  const func_14 = async (game) =&gt; {
     $$invalidate(4, gameLobbyOpen = false);
-    await openGameCard(selectedJoinGame);
+    await openGameCard(game);
     $$invalidate(6, selectedJoinGame = null);
     startStatusRefresh();
     gameClient2.fetchBalances();
@@ -58559,15 +58571,6 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card buttonClass="primary" exclude="notAdoptedYet" name="nameCat" type="action">
-			<ts:label>
-				<ts:string xml:lang="en">Name Your Cat</ts:string>
-			</ts:label>
-			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="nameCat" xml:lang="en">
-				<ts:viewContent name="common"/>
-			</ts:view>
-		</ts:card>
-
 		<ts:card exclude="notAdoptedYet" name="Info" origins="SmartCatNFT" type="token">
 			<ts:label>
 				<ts:string xml:lang="en">Cat Bio</ts:string>
@@ -58637,6 +58640,15 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 				</ethereum:transaction>
 			</ts:transaction>
 			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="clean" xml:lang="en">
+				<ts:viewContent name="common"/>
+			</ts:view>
+		</ts:card>
+
+		<ts:card buttonClass="primary" exclude="notAdoptedYet" name="nameCat" type="action">
+			<ts:label>
+				<ts:string xml:lang="en">Name Your Cat</ts:string>
+			</ts:label>
+			<ts:view xmlns="http://www.w3.org/1999/xhtml" urlFragment="nameCat" xml:lang="en">
 				<ts:viewContent name="common"/>
 			</ts:view>
 		</ts:card>
@@ -58764,4 +58776,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>IWut8T1BIZsq/gHRMrxrgNlmkpmSMOl75ISjZ168Xtg=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>mGkj67R74PCDebsr13Ni/5GniSUYP1gfvUoV7f0kX3q7x72UI+Z//pUSgU/ApTEtfcaXC3g3mAvx9mZzfv3KAw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>+SwnldqKkrn32RidCm1ztm9JmHsHFeQtnxjMmWzjcD4=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>vdWcVSok1Ps9ncxixnyFbmN5P0e2p0+Ei9zhkRZOZfWnUj+xtNenn39QyDquXzSpRW/HVCIAuJfE7RlK3j5oAQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
