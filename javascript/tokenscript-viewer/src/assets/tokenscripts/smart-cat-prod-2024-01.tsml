@@ -29215,6 +29215,7 @@ const _BattleClient = class _BattleClient2 {
     await this.switchChainAndApproveIfRequired(createGame.stake);
     const contract = await this.getWritableContract();
     const { secret, hash: hash2 } = this.hashMoves(createGame.playerAMoves);
+    await this.preRegisterGame(hash2, secret, createGame.playerAMoves);
     this.storedGameData[hash2] = {
       hash: hash2,
       secret,
@@ -29235,48 +29236,72 @@ const _BattleClient = class _BattleClient2 {
     tokenscript.action.showTransactionToast("confirmed", Number(chainID), tx.hash);
     await new Promise((resolve) =&gt; setTimeout(() =&gt; resolve(), 2e3));
     try {
-      const { game, gameId } = await this.linkIdAndRegister(hash2);
-      tokenscript.action.showMessageToast("success", "Game Created", "Game " + gameId + " registered, waiting for opponent.");
-      return { game, tx, secret };
+      return { game: await this.getPendingGameByHash(hash2), tx, secret };
     } catch (e) {
       console.error(e);
     }
     return { tx, secret };
   }
-  async linkIdAndRegister(hash2) {
-    const gameData = this.storedGameData[hash2];
-    let game = null;
-    if (!gameData)
-      throw new Error(`Game with hash ${hash2} not found`);
-    let pendingGames2;
-    if (!gameData.gameId) {
-      pendingGames2 = await this.getPendingGames();
-      for (const pendingGame of pendingGames2) {
-        if (pendingGame.gameState.playerAHash === hash2) {
-          game = pendingGame;
-          gameData.gameId = pendingGame.gameState.gameId.toString();
-          this.saveGameDetails();
-          break;
-        }
+  async preRegisterGame(hash2, secret, moves) {
+    await this.apiRequest("/preregister", "post", {
+      hash: hash2,
+      secret,
+      moves
+    });
+  }
+  async getPendingGameByHash(hash2) {
+    const pendingGames2 = await this.reloadPendingGames();
+    for (const pendingGame of pendingGames2) {
+      if (pendingGame.gameState.playerAHash === hash2) {
+        return pendingGame;
       }
     }
-    if (!gameData.gameId)
-      throw Error("Failed to find game ID on the blockchain");
-    try {
-      await this.apiRequest("/register", "post", {
-        gameId: gameData.gameId,
-        secret: gameData.secret,
-        moves: gameData.moves
-      });
-      gameData.subA = true;
-      this.saveGameDetails();
-    } catch (e) {
-      console.error(e);
-    }
-    if (pendingGames2)
-      context.pendingGames.set(pendingGames2);
-    return { gameData, game, gameId: gameData.gameId };
+    throw new Error("Failed to find game in pending game list");
   }
+  /*public async linkIdAndRegister(hash: string){
+  
+  		const gameData = this.storedGameData[hash];
+  		let game = null;
+  
+  		if (!gameData)
+  			throw new Error(`Game with hash ${hash} not found`);
+  
+  		let pendingGames;
+  
+  		if (!gameData.gameId){
+  			pendingGames = await this.getPendingGames();
+  			for (const pendingGame of pendingGames){
+  				if (pendingGame.gameState.playerAHash === hash) {
+  					game = pendingGame;
+  					gameData.gameId = pendingGame.gameState.gameId.toString();
+  					this.saveGameDetails();
+  					break;
+  				}
+  			}
+  		}
+  
+  		if (!gameData.gameId)
+  			throw Error("Failed to find game ID on the blockchain");
+  
+  		try {
+  			await this.apiRequest("/register", "post", {
+  				gameId: gameData.gameId,
+  				secret: gameData.secret,
+  				moves: gameData.moves
+  			});
+  
+  			gameData.subA = true;
+  			this.saveGameDetails();
+  		} catch (e){
+  			// TODO: Show error
+  			console.error(e);
+  		}
+  
+  		if (pendingGames)
+  			context.pendingGames.set(pendingGames);
+  
+  		return {gameData, game, gameId: gameData.gameId};
+  	}*/
   async joinGame(joinGame, game) {
     await this.switchChainAndApproveIfRequired(game.gameState.stake);
     const contract = await this.getWritableContract();
@@ -29299,7 +29324,7 @@ const _BattleClient = class _BattleClient2 {
     return tx;
   }
   async triggerReveal(game) {
-    await this.apiRequest(`/${game.gameState.gameId.toString()}/complete`, "post");
+    await this.apiRequest(`/${game.gameState.playerAHash}/complete`, "post");
     if (!this.storedGameData[game.gameState.playerAHash]) {
       this.storedGameData[game.gameState.playerAHash] = {
         hash: game.gameState.playerAHash
@@ -29325,8 +29350,8 @@ const _BattleClient = class _BattleClient2 {
     ]);
     await tx.wait(1);
   }
-  async getServerStatus(gameId) {
-    return await this.apiRequest(`/${gameId.toString()}/status`, "get");
+  async getServerStatus(hash2) {
+    return await this.apiRequest(`/${hash2}/status`, "get");
   }
   saveGameDetails() {
     localStorage.setItem(_BattleClient2.LOCAL_STORAGE_KEY, JSON.stringify(this.storedGameData));
@@ -41485,8 +41510,8 @@ function instance$d($$self, $$props, $$invalidate) {
       case 137:
         explorerUrl = "https://polygonscan.com/tx/";
         break;
-      case 80001:
-        explorerUrl = "https://mumbai.polygonscan.com/tx/";
+      case 11155111:
+        explorerUrl = "https://sepolia.etherscan.io/tx/";
     }
     return `&lt;a href="${explorerUrl + serverData.revealTx}" target="_blank" title=${serverData.revealTx}&gt;View Transaction&lt;/a&gt;`;
   }
@@ -56197,6 +56222,7 @@ function instance$2($$self, $$props, $$invalidate) {
         },
         game
       );
+      await gameClient2.reloadPendingGames();
       onJoinGame();
     } catch (e) {
       await gameClient2.processGameError("Error joining game", e);
@@ -57677,7 +57703,7 @@ function create_fragment$1(ctx) {
   };
 }
 const SPLASH_LS_KEY = "splash-screen-dismissed";
-const ACTIVE_REFRESH_INTERVAL = 2e4;
+const ACTIVE_REFRESH_INTERVAL = 15e3;
 const PENDING_REFRESH_INTERVAL = 6e4;
 const func_3 = (games) =&gt; {
   return games.filter((game) =&gt; game.gameState.status &gt; 1);
@@ -57754,18 +57780,13 @@ function instance$1($$self, $$props, $$invalidate) {
     statusTimer = null;
   }
   async function serverSubmissionCheck() {
-    var _a2, _b;
+    var _a2;
     if (pendingGames2)
       for (const pendingGame of pendingGames2) {
         const role = gameClient2.getGameRole(pendingGame);
         const savedDetails = gameClient2.getGameByHash(pendingGame.gameState.playerAHash);
-        if (role === 1 &amp;&amp; !(savedDetails == null ? void 0 : savedDetails.subA)) {
-          if (((_a2 = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _a2.status) !== void 0)
-            continue;
-          console.log("Not linked and registered, trying again");
-          await gameClient2.linkIdAndRegister(pendingGame.gameState.playerAHash);
-        } else if (role === 2 &amp;&amp; pendingGame.gameState.status &gt; 0 &amp;&amp; !(savedDetails == null ? void 0 : savedDetails.subB)) {
-          if (((_b = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _b.status) &gt; Status.Created)
+        if (role === 2 &amp;&amp; pendingGame.gameState.status &gt; 0 &amp;&amp; !(savedDetails == null ? void 0 : savedDetails.subB)) {
+          if (((_a2 = serverData[pendingGame.gameState.gameId]) == null ? void 0 : _a2.status) &gt; Status.Created)
             continue;
           console.log("Not marked as completed on the server, trying again");
           await gameClient2.triggerReveal(pendingGame);
@@ -57822,7 +57843,7 @@ function instance$1($$self, $$props, $$invalidate) {
   }
   async function checkServerDetails(game) {
     try {
-      const serverDetails = await gameClient2.getServerStatus(game.gameState.gameId);
+      const serverDetails = await gameClient2.getServerStatus(game.gameState.playerAHash);
       console.log("Server status: ", serverDetails);
       return serverDetails;
     } catch (e) {
@@ -57865,7 +57886,7 @@ function instance$1($$self, $$props, $$invalidate) {
       try {
         $$invalidate(10, serverData = {
           ...serverData,
-          [game.gameState.gameId]: await gameClient2.getServerStatus(game.gameState.gameId)
+          [game.gameState.gameId]: await gameClient2.getServerStatus(game.gameState.playerAHash)
         });
       } catch (e) {
         console.warn("Game not on server");
@@ -57944,7 +57965,6 @@ function instance$1($$self, $$props, $$invalidate) {
     $$invalidate(4, gameLobbyOpen = false);
     await openGameCard(selectedJoinGame);
     $$invalidate(6, selectedJoinGame = null);
-    await refreshPendingGames();
     startStatusRefresh();
     gameClient2.fetchBalances();
   };
@@ -58737,4 +58757,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>hkKX00V/EyMcTM42k5V/q2nUJBFGqNBSI4qatethNIM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>lok3S21cnG5bAZv3jkyZmvOSSQ2E4TsLqWlUBUGGe+DRdhMNYYzm4GZBLeznosX0ShqKBMyb1GiBz2KbPSLMMg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>GjN97mYfC5BOVXrGLFPT3BRLhRlnvI6MZm5r8zSHWAo=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>+7Y+lHIbaxL8PxL/n1BoW2ZuAxeZ+o6LkajZbnMuUZMQa7DkKwlurHnEqS8VOPSvpFlhbtj9/EbJQ9zxU3qIMw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
