@@ -25,6 +25,19 @@ export class TokenViewData {
 
 		let body = "";
 
+		// vconsole is required to debug Javascript errors on mobiles where remote debugging is not available
+		if (new URLSearchParams(document.location.search).has("___debug")){
+			body += `
+				<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+				<script>
+				  // VConsole will be exported to \`window.VConsole\` by default.
+				  var vConsole = new window.VConsole({
+				  	defaultPlugins: ['system', 'network']
+				  });
+				</script>
+			`;
+		}
+
 		body += '<div id="' + this.getViewDataId() + '" class="token-card"></div>' +
 			'<script type="text/javascript">' + await this.getTokenJavascript() + '</script>';
 
