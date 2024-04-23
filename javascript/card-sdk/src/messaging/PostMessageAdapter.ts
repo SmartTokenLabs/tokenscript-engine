@@ -1,5 +1,5 @@
 import {IEngineAdapter, RequestFromView, ViewEvent} from "./IEngineAdapter";
-import {ITokenScriptSDK, IWeb3LegacySDK} from "../types";
+import {IWeb3LegacySDK} from "../types";
 
 export class PostMessageAdapter implements IEngineAdapter {
 
