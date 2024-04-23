@@ -1,4 +1,4 @@
-import {Eip1193Provider, ethers} from "ethers";
+import {Eip1193Provider} from "ethers";
 
 // By default post to any origin
 const DEFAULT_TARGET_ORIGIN = '*';
