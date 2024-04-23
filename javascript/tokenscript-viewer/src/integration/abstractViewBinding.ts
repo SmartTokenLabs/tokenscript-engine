@@ -92,26 +92,21 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		if (card.isUrlView) {
 
-			//iframe.src = card.url;
-			iframe.contentWindow.location.replace(card.url);
+			iframe.src = card.url;
 
 		} else {
 
-			// Moved to using srcdoc, since blob URLs are restricted in many wallets DApp browser
-			// To support URL fragment, we set document.location.hash in the cards Javascript
-			/*const html = await viewController.tokenViewData.renderViewHtml();
-
-			const blob = new Blob([html], {type: "text/html"});
-
-			const urlFragment = card.urlFragment;
-
-			const url = URL.createObjectURL(blob) + (urlFragment ? "#" + urlFragment : "");
-			iframe.contentWindow.location.replace(url);*/
+			const html = await viewController.tokenViewData.renderViewHtml();
 
 			// changing srcdoc adds to the parent pages history and there's no way to avoid this except for removing the iframe and adding a new one
 			const newIframe = iframe.cloneNode(true) as HTMLIFrameElement;
 
-			newIframe.srcdoc = await viewController.tokenViewData.renderViewHtml();
+			if (new URLSearchParams(document.location.search).has("___b64url")){
+				const blob = new Blob([html], {type: "text/html"});
+				newIframe.src = URL.createObjectURL(blob) + (card.urlFragment ? "#" + card.urlFragment : "");
+			} else {
+				newIframe.srcdoc = html;
+			}
 
 			iframe.replaceWith(newIframe);
 			iframe = newIframe;

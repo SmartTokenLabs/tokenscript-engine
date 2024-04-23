@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<script type="text/javascript">
+			window.addEventListener("DOMContentLoaded", () => {
+
+				const html = '<!DOCTYPE html><body><h1>content is loading!</h1></body>';
+
+				document.getElementById("srcdoc-iframe").srcdoc = html;
+
+				const blob = new Blob([html], {type: "text/html"});
+				document.getElementById("blob-iframe").src = URL.createObjectURL(blob);
+
+				document.getElementById("html-url-iframe").src = 'data:text/html;base64,' + btoa(unescape(encodeURIComponent(html)));
+			});
+		</script>
+	</head>
+	<body>
+		<h3>src-doc</h3>
+		<iframe id="srcdoc-iframe" srcdoc="<h1>content is loading!</h1>"></iframe>
+		<br/>
+		<br/>
+		<h3>blob URL</h3>
+		<iframe id="blob-iframe"></iframe>
+		<br/>
+		<br/>
+		<h3>base64 URL</h3>
+		<iframe id="html-url-iframe"></iframe>
+	</body>
+</html>
