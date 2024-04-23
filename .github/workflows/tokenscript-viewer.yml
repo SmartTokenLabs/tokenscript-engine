@@ -35,7 +35,7 @@ jobs:
           cd "${PROJ_PATH}"
           npm ci
           npm run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: tokenscript-viewer
           path: ${{ env.PROJ_PATH }}/www/
@@ -49,7 +49,7 @@ jobs:
     needs:
       - build
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: tokenscript-viewer
           path: ${{ env.PROJ_PATH }}/www/
@@ -71,5 +71,5 @@ jobs:
       - name: deploy
         run: |
           aws s3 sync "${PROJ_PATH}/www/" "s3://${S3_BUCKET}/" --cache-control 'max-age=31536000' --quiet \
-          && find "${PROJ_PATH}/www/" -type f \( -name 'index.html' -o -name 'app.css' -o -name 'app.js' -o -name 'app.esm.js' \) -printf '%P\0' | xargs -r -0 -I'{}' aws s3 cp "s3://${S3_BUCKET}/{}" "s3://${S3_BUCKET}/{}" --cache-control 'max-age=600,s-maxage=2592000' \
+          && find "${PROJ_PATH}/www/" -type f \( -name 'index.html' -o -name 'app.css' -o -name 'app.js' -o -name 'app.esm.js' -o -name '*.tsml' \) -printf '%P\0' | xargs -r -0 -I'{}' aws s3 cp "s3://${S3_BUCKET}/{}" "s3://${S3_BUCKET}/{}" --cache-control 'max-age=600,s-maxage=2592000' \
           && aws cloudfront create-invalidation --distribution-id "${CLOUDFRONT_ID}" --paths "/*"
