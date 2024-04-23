@@ -137,7 +137,9 @@ export class TokenScriptEngine {
 	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
 
 		// TODO: Add caching for URL loaded tokenscripts, add URL source to repo
-		const res = await fetch(url);
+		const res = await fetch(url, {
+			cache: "no-store"
+		});
 
 		if (res.status < 200 || res.status > 399){
 			throw new Error("Failed to load URL: " + res.statusText);
