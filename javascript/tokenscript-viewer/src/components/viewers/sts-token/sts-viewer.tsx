@@ -127,7 +127,10 @@ export class SmartTokenStoreViewer {
 		if (query.has('chain') && query.has('contract')) {
 			const chain = parseInt(query.get('chain'));
 			const contract = query.get('contract');
-			const tokenId = query.get('tokenId');
+			let tokenId = query.get('tokenId');
+
+			if (tokenId && tokenId.toLowerCase() === "erc20")
+				tokenId = null;
 
 			const slnAdapter = new SLNAdapter();
 			this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())

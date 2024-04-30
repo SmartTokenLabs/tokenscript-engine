@@ -12,7 +12,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 	let selectedOrigin: ITokenCollection = {
 		originId: "0",
 		blockChain: "eth",
-		tokenType: tokenId && tokenId.toLowerCase() !== "erc20" ? "erc721" : "erc20",
+		tokenType: tokenId ? "erc721" : "erc20",
 		chainId: chain,
 		contractAddress: contract,
 	}
