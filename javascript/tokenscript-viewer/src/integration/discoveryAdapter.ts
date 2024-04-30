@@ -84,12 +84,12 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		let collectionData = await this.getCollectionMeta(token, chain);
 
-		if (token.chainId === ChainID.HARDHAT_LOCALHOST){
+		token = {
+			...token,
+			...collectionData
+		}
 
-			token = {
-				...token,
-				...collectionData
-			}
+		if (token.chainId === ChainID.HARDHAT_LOCALHOST){
 
 			token = await this.fetchOwnerTokensRpc(token, ownerAddress);
 
@@ -142,6 +142,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		token.symbol = tokenData[0]?.symbol ? tokenData[0]?.symbol : tokenData[0]?.data?.symbol;
 
 		return token;
+	}
+
+	public async getTokensByOwner(token: ITokenCollection, ownerAddress: string){
+
+		if (token.chainId === ChainID.HARDHAT_LOCALHOST){
+
+			token = await this.fetchOwnerTokensRpc(token, ownerAddress);
+
+			return token;
+		}
+
+		return await this.fetchOwnerTokens(token, token.chainId.toString(), ownerAddress);
 	}
 
 	public async getCollectionMeta(token: ITokenCollection, chain: string){

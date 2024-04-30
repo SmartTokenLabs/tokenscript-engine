@@ -98,7 +98,8 @@ export class SmartTokenStoreViewer {
 			this.app.showTsLoader();
 
 			// TODO: Push from alphawallet
-			this.tokenDetails = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
+			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
+			this.tokenDetails = res.detail;
 			console.log("Token meta loaded!", this.tokenDetails);
 
 			this.app.hideTsLoader();

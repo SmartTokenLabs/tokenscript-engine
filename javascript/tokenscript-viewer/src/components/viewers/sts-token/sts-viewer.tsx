@@ -26,6 +26,9 @@ export class SmartTokenStoreViewer {
 	app: AppRoot;
 
 	@State()
+	collectionDetails: ITokenCollection;
+
+	@State()
 	tokenDetails: ITokenDetail;
 
 	@State()
@@ -120,7 +123,7 @@ export class SmartTokenStoreViewer {
 
 		const query = new URLSearchParams(queryStr);
 
-		if (query.has('chain') && query.has('contract') && query.has('tokenId')) {
+		if (query.has('chain') && query.has('contract')) {
 			const chain = parseInt(query.get('chain'));
 			const contract = query.get('contract');
 			const tokenId = query.get('tokenId');
@@ -144,7 +147,9 @@ export class SmartTokenStoreViewer {
 				this.isAttestation = false;
 				this.app.showTsLoader();
 
-				this.tokenDetails = await getSingleTokenMetadata(chain, contract, tokenId);
+				const res = await getSingleTokenMetadata(chain, contract, tokenId);
+				this.collectionDetails = res.collection;
+				this.tokenDetails = res.detail;
 
 				console.log('Token meta loaded!', this.tokenDetails);
 

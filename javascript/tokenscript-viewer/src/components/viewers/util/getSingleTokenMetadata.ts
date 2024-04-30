@@ -1,49 +1,66 @@
 import {CHAIN_MAP} from "../../../integration/constants";
-import {BASE_TOKEN_DISCOVERY_URL} from "../../../integration/discoveryAdapter";
+import {BASE_TOKEN_DISCOVERY_URL, DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
-import {TokenType} from "../../../../../engine-js/src/tokens/ITokenCollection";
+import {ITokenCollection, TokenType} from "../../../../../engine-js/src/tokens/ITokenCollection";
+import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 
-export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId: string): Promise<ITokenDetail> => {
+const discoveryAdapter = new DiscoveryAdapter();
 
-	const collectionUrl = `/get-token-collection?chain=${CHAIN_MAP[chain]}&smartContract=${contract}`;
-	const tokenUrl = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
+export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
 
-	const responses = await Promise.all([
-		fetch(BASE_TOKEN_DISCOVERY_URL + collectionUrl),
-		await fetch(BASE_TOKEN_DISCOVERY_URL + tokenUrl)
-	]);
-
-	const ok = (
-		(responses[0].status >= 200 && responses[0].status <= 299) &&
-		(responses[1].status >= 200 && responses[1].status <= 299)
-	)
-	if (!ok) {
-		throw new Error("Failed to load token details");
+	let selectedOrigin: ITokenCollection = {
+		originId: "0",
+		blockChain: "eth",
+		tokenType: tokenId && tokenId.toLowerCase() !== "erc20" ? "erc721" : "erc20",
+		chainId: chain,
+		contractAddress: contract,
 	}
 
-	const tokenMeta =  {
-		collectionData: await responses[0].json(),
-		...await responses[1].json()
+	selectedOrigin = {
+		...selectedOrigin,
+		...await discoveryAdapter.getCollectionMeta(selectedOrigin, chain.toString())
+	};
+
+	if (selectedOrigin.tokenType !== "erc20") {
+
+		const tokenUrl = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
+
+		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + tokenUrl);
+
+		if (!(response.status >= 200 && response.status <= 299)) {
+			throw new Error("Failed to load token details");
+		}
+
+		const tokenMeta =  await response.json()
+
+		selectedOrigin.tokenDetails = [
+			{
+				collectionDetails: selectedOrigin,
+				attributes: tokenMeta.attributes,
+				collectionId: tokenMeta.collection,
+				description: tokenMeta.description,
+				image: tokenMeta.image,
+				name: tokenMeta.title,
+				tokenId: tokenMeta.tokenId,
+				balance: tokenMeta.balance
+			}
+		]
+
+	} else {
+
+		if (!Web3WalletProvider.isWalletConnected()){
+			return {collection: selectedOrigin, detail: null};
+		}
+
+		const tokenData = await discoveryAdapter.getTokensByOwner(selectedOrigin, await discoveryAdapter.getCurrentWalletAddress());
+
+		if (tokenData.length > 0)
+			selectedOrigin.balance = tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
 	}
 
-	return {
-		attributes: tokenMeta.attributes,
-		collectionDetails: {
-			originId: "",
-			blockChain: "eth",
-			chainId: chain,
-			tokenType: tokenMeta.collectionData.contractType.toLowerCase() as TokenType,
-			contractAddress: contract,
-			name: tokenMeta.collectionData.title as string,
-			description: tokenMeta.collectionData.description as string,
-			image: tokenMeta.collectionData.image as string,
-			balance: tokenMeta.balance
-		},
-		collectionId: tokenMeta.collection,
-		description: tokenMeta.description,
-		image: tokenMeta.image,
-		name: tokenMeta.title,
-		tokenId: tokenMeta.tokenId,
-		balance: tokenMeta.balance
+	if (tokenId){
+		return {collection: selectedOrigin, detail: selectedOrigin.tokenDetails[0]};
 	}
+
+	return {collection: selectedOrigin, detail: null};
 }
