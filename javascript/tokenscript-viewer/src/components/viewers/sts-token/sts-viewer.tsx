@@ -13,8 +13,8 @@ import {ISLNAttestation} from "@tokenscript/engine-js/src/attestation/ISLNAdapte
 import {Provider} from "ethers";
 import {IFrameProvider} from "../../../providers/iframeProvider";
 import {SLNAdapter} from "../../../integration/slnAdapter";
-import {EthersAdapter} from "@tokenscript/engine-js/src/wallet/EthersAdapter";
-import {EthUtils} from "../../../../../engine-js/dist/lib.esm/ethereum/EthUtils";
+import {EthersAdapter} from "../../../../../engine-js/src/wallet/EthersAdapter";
+import {EthUtils} from "../../../../../engine-js/src/ethereum/EthUtils";
 
 @Component({
 	tag: 'sts-viewer',
