@@ -337,7 +337,11 @@ export class SmartTokenStoreViewer {
 						<div>
 							<div class="details-container">
 								<div class="image-container">
-									<token-icon style={{ minHeight: '100px;' }} src={this.tokenDetails?.image ?? this.collectionDetails.image} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name} />
+									<token-icon style={{ minHeight: '100px;' }} src={
+										this.tokenScript && this.tokenScript.getMetadata().imageUrl ?
+											this.tokenScript.getMetadata().imageUrl :
+											this.tokenDetails?.image ?? this.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null)
+									} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name} />
 								</div>
 								<div class="info-container">
 									<div class="main-info">

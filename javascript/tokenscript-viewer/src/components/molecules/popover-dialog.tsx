@@ -17,6 +17,9 @@ export class PopoverDialog {
 	@Prop()
 	disableClose = false;
 
+	@Prop()
+	fullScreen = false;
+
 	private dismissCallback: () => void|Promise<void>
 
 	@Method()
@@ -33,7 +36,7 @@ export class PopoverDialog {
 	render(){
 		return (
 			<div class={"popover-modal" + (this.open ? ' open' : '')}>
-				<div class="popover-container" style={this.dialogStyles}>
+				<div class={"popover-container" + (this.fullScreen ? ' fullscreen ' : '')} style={this.dialogStyles}>
 					<button class="close-btn" disabled={this.disableClose} onClick={() => {
 						this.open = false;
 						if (this.dismissCallback) {

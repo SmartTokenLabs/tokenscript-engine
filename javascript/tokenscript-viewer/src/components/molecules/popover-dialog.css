@@ -67,6 +67,17 @@
 	flex-direction: column;
 }
 
+.popover-container.fullscreen {
+	max-width: 100vw !important;
+	max-height: unset !important;
+	height: calc(100dvh - 50px);
+	margin-top: 50px;
+}
+
+.popover-container.fullscreen .close-btn {
+	top: -40px !important;
+}
+
 .close-btn {
 	position: absolute;
 	top: -36px;

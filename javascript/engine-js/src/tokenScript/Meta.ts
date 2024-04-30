@@ -53,4 +53,8 @@ export class Meta {
 	get iconUrl(){
 		return this.getValue("iconUrl")
 	}
+
+	get imageUrl(){
+		return this.getValue("imageUrl")
+	}
 }

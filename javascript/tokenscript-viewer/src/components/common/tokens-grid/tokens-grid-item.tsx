@@ -109,7 +109,12 @@ export class TokensGridItem {
 
 		return (
 			<Host class="tokens-grid-item">
-				<token-icon src={this.token.image} imageTitle={this.token.name}/>
+				<token-icon
+					src={this.tokenScript.getMetadata().imageUrl ?
+							this.tokenScript.getMetadata().imageUrl :
+							this.token.image ?? this.tokenScript.getMetadata().iconUrl
+					}
+					imageTitle={this.token.name}/>
 				<div class="tg-item-details">
 					<h5>{title}</h5>
 					{

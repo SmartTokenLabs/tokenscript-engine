@@ -83,6 +83,10 @@ export class Card {
 		return this.view.hasAttribute("uiButton") ? (this.view.getAttribute("uiButton") === 'true') : true;
 	}
 
+	get fullScreen() {
+		return this.view.getAttribute("fullScreen") === "true";
+	}
+
 	/**
 	 * Determines whether the view is to be loaded from a URL or from embedded content in ts:view
 	 */

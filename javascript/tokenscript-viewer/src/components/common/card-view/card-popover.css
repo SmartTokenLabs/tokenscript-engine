@@ -14,6 +14,12 @@ card-popover .popover-container {
 	overflow: hidden;
 }
 
+.card-container.fullscreen {
+	max-width: unset !important;
+	max-height: unset !important;
+	height: calc(100dvh - 50px);
+}
+
 .view-loader {
 	z-index: 50;
 	position: absolute;

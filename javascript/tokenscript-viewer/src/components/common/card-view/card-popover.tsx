@@ -206,11 +206,11 @@ export class CardPopover implements IViewBinding {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen}>
 				<div slot="outer-content" class="view-loader" style={{display: this.loading ? "flex" : "none"}}>
 					<loading-spinner/>
 				</div>
-				<div class="card-container view-container">
+				<div class={"card-container view-container" + (this.currentCard?.fullScreen ? ' fullscreen ' : '')}>
 					<div class="iframe-wrapper">
 						<iframe class="tokenscript-frame"
 								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
