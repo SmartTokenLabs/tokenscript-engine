@@ -696,7 +696,7 @@ export class TokenScript {
 		}
 
 		if (!this.tokenMetadata[contractName].tokenDetails?.[tokenIndex]){
-			throw new Error("Cannot set token context: contractName was not found")
+			throw new Error("Cannot set token context: token index was not found")
 		}
 
 		this.tokenContext = this.tokenMetadata[contractName];

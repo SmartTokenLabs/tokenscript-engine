@@ -1,7 +1,6 @@
 import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
@@ -22,7 +21,7 @@ export class SmartTokenStoreViewer {
 	app: AppRoot;
 
 	//@State()
-	tokenDetails: ITokenDetail;
+	collectionDetails: ITokenCollection;
 
 	@State()
 	tokenScript: TokenScript;
@@ -93,14 +92,14 @@ export class SmartTokenStoreViewer {
 
 		const query = new URLSearchParams(queryStr);
 
-		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
+		if (query.has("chain") && query.has("contract")){
 
 			this.app.showTsLoader();
 
 			// TODO: Push from alphawallet
-			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
-			this.tokenDetails = res.detail;
-			console.log("Token meta loaded!", this.tokenDetails);
+			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"), this.app.tsEngine);
+			this.collectionDetails = res.collection;
+			console.log("Token meta loaded!", this.collectionDetails);
 
 			this.app.hideTsLoader();
 
@@ -129,13 +128,18 @@ export class SmartTokenStoreViewer {
 			const origins = tokenScript.getTokenOriginData();
 			let selectedOrigin;
 
-			for (const origin of origins){
+			for (const [key, origin] of origins.entries()){
 				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					selectedOrigin = origin;
-					origin.tokenDetails = [this.tokenDetails];
+					origins[key] = {
+						...this.collectionDetails,
+						...origin
+					}
+					selectedOrigin = origins[key];
 					break;
 				}
 			}
+
+			console.log("Selected origin: ", selectedOrigin);
 
 			if (selectedOrigin){
 				tokenScript.setTokenMetadata(origins);
@@ -148,7 +152,7 @@ export class SmartTokenStoreViewer {
 
 				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
 
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
+				tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? 0 : null);
 				this.tokenScript = tokenScript;
 
 				// Reload cards after the token is updated
