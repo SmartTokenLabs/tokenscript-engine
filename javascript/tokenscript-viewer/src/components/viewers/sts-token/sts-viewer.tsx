@@ -14,6 +14,7 @@ import {Provider} from "ethers";
 import {IFrameProvider} from "../../../providers/iframeProvider";
 import {SLNAdapter} from "../../../integration/slnAdapter";
 import {EthersAdapter} from "@tokenscript/engine-js/src/wallet/EthersAdapter";
+import {EthUtils} from "../../../../../engine-js/dist/lib.esm/ethereum/EthUtils";
 
 @Component({
 	tag: 'sts-viewer',
@@ -189,8 +190,12 @@ export class SmartTokenStoreViewer {
 			const origins = tokenScript.getTokenOriginData();
 			let selectedOrigin;
 
-			for (const origin of origins){
+			for (const [key, origin] of origins.entries()){
 				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
+					origins[key] = {
+						...this.collectionDetails,
+						...origin
+					}
 					selectedOrigin = origin;
 					if (this.tokenDetails)
 						origin.tokenDetails = [this.tokenDetails];
@@ -336,7 +341,10 @@ export class SmartTokenStoreViewer {
 										<h1>{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
 										<div class="owner-count">
 											<span style={{ color: '#3D45FB' }}>
-												{this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + this.tokenDetails?.balance ?? this.collectionDetails.balance : '#' + this.tokenDetails.tokenId}
+												{this.collectionDetails.tokenType === "erc20" ?
+													'balance: ' + EthUtils.calculateDecimalValue(this.collectionDetails.balance, this.collectionDetails.decimals) :
+													this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) : '#' + this.tokenDetails.tokenId
+												}
 											</span>
 										</div>
 										<div class="collection-details">

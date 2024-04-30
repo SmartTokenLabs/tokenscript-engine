@@ -153,7 +153,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return token;
 		}
 
-		return await this.fetchOwnerTokens(token, token.chainId.toString(), ownerAddress);
+		return await this.fetchOwnerTokens(token, CHAIN_MAP[token.chainId], ownerAddress);
 	}
 
 	public async getCollectionMeta(token: ITokenCollection, chain: string){

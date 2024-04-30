@@ -49,7 +49,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 	} else {
 
-		if (!Web3WalletProvider.isWalletConnected()){
+		if (!engine && !Web3WalletProvider.isWalletConnected()){
 			return {collection: selectedOrigin, detail: null};
 		}
 
@@ -61,8 +61,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 		console.log("Fungible token data: ", tokenData);
 
 		selectedOrigin.name = tokenData[0].title;
-		if (tokenData.length > 0)
-			selectedOrigin.balance = tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
+		selectedOrigin.balance = tokenData.length && tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
 	}
 
 	if (tokenId){
