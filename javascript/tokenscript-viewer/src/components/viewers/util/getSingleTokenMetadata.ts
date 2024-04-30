@@ -3,10 +3,11 @@ import {BASE_TOKEN_DISCOVERY_URL, DiscoveryAdapter} from "../../../integration/d
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection, TokenType} from "../../../../../engine-js/src/tokens/ITokenCollection";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
+import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 
 const discoveryAdapter = new DiscoveryAdapter();
 
-export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
+export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: TokenScriptEngine): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
 
 	let selectedOrigin: ITokenCollection = {
 		originId: "0",
@@ -18,7 +19,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 	selectedOrigin = {
 		...selectedOrigin,
-		...await discoveryAdapter.getCollectionMeta(selectedOrigin, chain.toString())
+		...await discoveryAdapter.getCollectionMeta(selectedOrigin, CHAIN_MAP[chain])
 	};
 
 	if (selectedOrigin.tokenType !== "erc20") {
@@ -52,8 +53,14 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 			return {collection: selectedOrigin, detail: null};
 		}
 
-		const tokenData = await discoveryAdapter.getTokensByOwner(selectedOrigin, await discoveryAdapter.getCurrentWalletAddress());
+		const tokenData = await discoveryAdapter.getTokensByOwner(
+			selectedOrigin,
+			engine ? await (await engine.getWalletAdapter()).getCurrentWalletAddress() : await discoveryAdapter.getCurrentWalletAddress()
+		);
 
+		console.log("Fungible token data: ", tokenData);
+
+		selectedOrigin.name = tokenData[0].title;
 		if (tokenData.length > 0)
 			selectedOrigin.balance = tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
 	}

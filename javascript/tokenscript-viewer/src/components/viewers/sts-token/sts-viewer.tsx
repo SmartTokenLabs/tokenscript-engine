@@ -147,11 +147,11 @@ export class SmartTokenStoreViewer {
 				this.isAttestation = false;
 				this.app.showTsLoader();
 
-				const res = await getSingleTokenMetadata(chain, contract, tokenId);
+				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
 				this.collectionDetails = res.collection;
 				this.tokenDetails = res.detail;
 
-				console.log('Token meta loaded!', this.tokenDetails);
+				console.log('Token meta loaded!', this.collectionDetails);
 
 				this.app.hideTsLoader();
 
@@ -192,7 +192,8 @@ export class SmartTokenStoreViewer {
 			for (const origin of origins){
 				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
 					selectedOrigin = origin;
-					origin.tokenDetails = [this.tokenDetails];
+					if (this.tokenDetails)
+						origin.tokenDetails = [this.tokenDetails];
 					break;
 				}
 			}
@@ -208,7 +209,7 @@ export class SmartTokenStoreViewer {
 
 				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
 
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
+				tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? 0 : null);
 				this.tokenScript = tokenScript;
 
 				// Reload cards after the token is updated
@@ -291,7 +292,7 @@ export class SmartTokenStoreViewer {
 
 		this.cardButtons = cardButtons;
 		this.overflowCardButtons = overflowCardButtons;
-		this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
+		this.description = this.tokenDetails ? await getHardcodedDescription(this.tokenScript, this.tokenDetails) : this.collectionDetails.description ?? "";
 	}
 
 	// TODO: This is copied from tokens-grid-item, dedupe required
@@ -324,35 +325,35 @@ export class SmartTokenStoreViewer {
 		return (
 			<Host>
 				<div class={"token-viewer " + (this.fullWidth ? 'full-width' : '')} >
-					{!this.isAttestation && this.tokenDetails && (
+					{!this.isAttestation && this.collectionDetails && (
 						<div>
 							<div class="details-container">
 								<div class="image-container">
-									<token-icon style={{ minHeight: '100px;' }} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
+									<token-icon style={{ minHeight: '100px;' }} src={this.tokenDetails?.image ?? this.collectionDetails.image} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name} />
 								</div>
 								<div class="info-container">
 									<div class="main-info">
-										<h1>{this.tokenDetails.name}</h1>
+										<h1>{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
 										<div class="owner-count">
 											<span style={{ color: '#3D45FB' }}>
-												{this.tokenDetails.collectionDetails.tokenType === 'erc1155' ? 'balance: ' + this.tokenDetails.balance : '#' + this.tokenDetails.tokenId}
+												{this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + this.tokenDetails?.balance ?? this.collectionDetails.balance : '#' + this.tokenDetails.tokenId}
 											</span>
 										</div>
 										<div class="collection-details">
 											<token-icon
 												style={{ width: '24px', borderRadius: '4px' }}
-												src={this.tokenDetails.collectionDetails.image}
-												imageTitle={this.tokenDetails.collectionDetails.name}
+												src={this.collectionDetails.image}
+												imageTitle={this.collectionDetails.name}
 											/>
-											<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
-											<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
+											<h4>{this.collectionDetails.name ?? this.tokenDetails?.name}</h4>
+											<span>{this.collectionDetails.tokenType.toUpperCase()}</span>
 										</div>
 									</div>
 									<div class="extra-info">
-										<p innerHTML={this.description.replace(/\n/g, '<br/>')}></p>
+										<p innerHTML={ this.description && this.description.replace(/\n/g, '<br/>')}></p>
 										<div class="attribute-container">
-											{this.tokenDetails.attributes?.length
-												? this.tokenDetails.attributes.map(attr => {
+											{this.tokenDetails?.attributes?.length
+												? this.tokenDetails?.attributes.map(attr => {
 														return (
 															<div class="attribute-item" title={attr.trait_type + ': ' + attr.value}>
 																<h5>{attr.trait_type}</h5>
