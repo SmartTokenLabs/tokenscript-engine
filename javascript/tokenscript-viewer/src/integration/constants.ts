@@ -112,11 +112,11 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://optimistic.etherscan.io/tx/'
 	},
 	[ChainID.KLAYTN]: {
-		rpc: 'https://public-node-api.klaytnapi.com/v1/cypress',
+		rpc: 'https://public-en-cypress.klaytn.net',
 		explorer: 'https://scope.klaytn.com/tx/'
 	},
 	[ChainID.BAOBAB]: {
-		rpc: 'https://public-node-api.klaytnapi.com/v1/baobab',
+		rpc: 'https://public-en-baobab.klaytn.net',
 		explorer: 'https://baobab.scope.klaytn.com/tx/'
 	},
 	[ChainID.HARDHAT_LOCALHOST]: {
