@@ -54,6 +54,10 @@ export class TokensGrid {
 	@Watch("tokenScript")
 	private async initTokenScript(){
 
+		/*if (this.tokenScript.getMetadata().backgroundImageUrl){
+			document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
+		}*/
+
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
 		}, "grid")
@@ -163,7 +167,7 @@ export class TokensGrid {
 
 	render() {
 		return (
-			<Host>
+			<Host style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
 				<div class="tokens-grid">
 					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
 					{

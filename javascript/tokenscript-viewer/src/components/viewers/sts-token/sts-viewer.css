@@ -14,6 +14,14 @@ header {
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
+	background: #fff;
+}
+
+body {
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
 }
 
 .token-viewer.full-width {

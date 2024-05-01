@@ -172,7 +172,7 @@ export class SmartTokenStoreViewer {
 		try {
 			const chain: number = parseInt(this.urlRequest.get("chain"));
 			const contract: string = this.urlRequest.get("contract");
-			let tokenScript;
+			let tokenScript: TokenScript;
 
 			if (this.urlRequest.has("tokenscriptUrl")) {
 				// TODO: Remove this fix once AlphaWallet is updated to support embedded TS viewer for newer schema versions
@@ -207,6 +207,11 @@ export class SmartTokenStoreViewer {
 			}
 
 			if (selectedOrigin){
+
+				if (tokenScript.getMetadata().backgroundImageUrl){
+					document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
+				}
+
 				tokenScript.setTokenMetadata(origins);
 
 				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {

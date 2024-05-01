@@ -7,10 +7,19 @@ viewer-popover {
 	top: 0;
 	left: 0;
 	display: none;
+	flex-direction: column;
+}
+
+tokens-grid {
+	flex-grow: 1;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
 }
 
 viewer-popover.open {
-	display: block;
+	display: flex;
 }
 
 viewer-popover .view-heading {
@@ -42,7 +51,7 @@ viewer-popover .view-heading > button {
 }
 
 viewer-popover .meta-details {
-	margin: 0 25px;
+	margin: 0 25px 24px;
 }
 
 viewer-popover .meta-details p {
