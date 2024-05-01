@@ -24,6 +24,11 @@ body {
 	background-size: cover;
 }
 
+main {
+	backdrop-filter: blur(3px);
+	height: 100%;
+}
+
 .token-viewer.full-width {
 	max-width: 100%;
 }

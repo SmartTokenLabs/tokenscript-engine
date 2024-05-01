@@ -5,7 +5,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" integrity="sha512-FDcVY+g7vc5CXANbrTSg1K5qLyriCsGDYCE02Li1tXEYdNQPvLPHNE+rT2Mjei8N7fZbe0WLhw27j2SrGRpdMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	</head>
 	<body style="margin: 0;">
-		<div style="max-width: 600px; width: 100%; margin: 0 auto; position: relative; height: 100dvh;">
+		<div style="width: 100%; margin: 0 auto; position: relative; height: 100dvh;">
 			<iframe id="frame" src=""
 					style="border: 0; width: 100%; height: 100%;"></iframe>
 		</div>
@@ -36,12 +36,14 @@
 				params.set("tokenId", currentParams.get("tokenId"));
 			} else {
 				params = new URLSearchParams("chain=11155111&contract=0xa532D3c016aA0B44b7228aCcd701A5F03112CD22&tokenId=1"); // smart cat sepolia
+				//params = new URLSearchParams("chain=11155111&contract=0xa532D3c016aA0B44b7228aCcd701A5F03112CD22&tokenId=1&tokenscriptUrl=http%3A%2F%2Flocalhost%3A8090%2Ftokenscript.tsml"); // smart cat sepolia emulator
 				//params = new URLSearchParams("chain=1&contract=0x3c7e352481f4b2fdec1e642a3f0018661c77513d&tokenId=398233297468566556333642"); // devcon
 				//params = new URLSearchParams("chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1"); // ERC1155
 			}
 
 			params.set("viewType", VIEW_TYPE);
 			//params.set("actionsEnabled", "false");
+			params.set("fullScreen", "true");
 
 			loadIframeUrl(BASE_URL + "?" + params.toString())
 

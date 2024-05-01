@@ -9,6 +9,11 @@
 	position: relative;
 }
 
+.bg-blur {
+	backdrop-filter: blur(3px);
+	height: 100%;
+}
+
 @media (max-width: 768px) and (min-width: 571px) {
 	.tokens-grid {
 		justify-content: space-evenly;

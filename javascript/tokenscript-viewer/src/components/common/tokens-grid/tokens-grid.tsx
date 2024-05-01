@@ -168,19 +168,21 @@ export class TokensGrid {
 	render() {
 		return (
 			<Host style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
-				<div class="tokens-grid">
-					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
-					{
-						this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
-							return (
-								<tokens-grid-item key={token.contextId} tokenScript={this.tokenScript} token={token} showCard={this.showCard.bind(this)}></tokens-grid-item>
-							);
-						}) :  (
-							!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
-						)
-					}
+				<div class="bg-blur">
+					<div class="tokens-grid">
+						<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+						{
+							this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
+								return (
+									<tokens-grid-item key={token.contextId} tokenScript={this.tokenScript} token={token} showCard={this.showCard.bind(this)}></tokens-grid-item>
+								);
+							}) :  (
+								!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
+							)
+						}
+					</div>
+					<token-info-popover id="token-info-popover" tokenScript={this.tokenScript} />
 				</div>
-				<token-info-popover id="token-info-popover" tokenScript={this.tokenScript} />
 			</Host>
 		)
 	}
