@@ -158,7 +158,7 @@ export class CardPopover implements IViewBinding {
 		this.currentCard = card;
 
 		this.buttonOptions = {
-			show: this.currentCard?.type == "action" && this.currentCard.uiButton,
+			show: (this.currentCard?.type == "action" || this.currentCard?.type == "onboarding") && this.currentCard.uiButton,
 			disable: false,
 			text: this.currentCard.label
 		};
