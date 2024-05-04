@@ -241,6 +241,10 @@ export interface ViewStepCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLViewStepElement;
 }
+export interface ViewerPopoverCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLViewerPopoverElement;
+}
 export interface ViewerTabCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLViewerTabElement;
@@ -591,7 +595,20 @@ declare global {
         prototype: HTMLViewStepElement;
         new (): HTMLViewStepElement;
     };
+    interface HTMLViewerPopoverElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
     interface HTMLViewerPopoverElement extends Components.ViewerPopover, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLViewerPopoverElementEventMap>(type: K, listener: (this: HTMLViewerPopoverElement, ev: ViewerPopoverCustomEvent<HTMLViewerPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLViewerPopoverElementEventMap>(type: K, listener: (this: HTMLViewerPopoverElement, ev: ViewerPopoverCustomEvent<HTMLViewerPopoverElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLViewerPopoverElement: {
         prototype: HTMLViewerPopoverElement;
@@ -831,6 +848,9 @@ declare namespace LocalJSX {
         "viewer"?: IntegrationViewer;
     }
     interface ViewerPopover {
+        "onHideLoader"?: (event: ViewerPopoverCustomEvent<void>) => void;
+        "onShowLoader"?: (event: ViewerPopoverCustomEvent<void>) => void;
+        "onShowToast"?: (event: ViewerPopoverCustomEvent<ShowToastEventArgs>) => void;
     }
     interface ViewerTab {
         "app"?: AppRoot;

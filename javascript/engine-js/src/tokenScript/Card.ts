@@ -3,6 +3,8 @@ import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
 
+export type CardType = "onboarding"|"token"|"action"|"activity";
+
 export class Card {
 
 	private _label?: Label;
@@ -35,8 +37,8 @@ export class Card {
 	/**
 	 * The type of card. This can be token, action or activity
 	 */
-	get type(){
-		return this.cardDef.getAttribute("type");
+	get type(): CardType {
+		return this.cardDef.getAttribute("type") as CardType;
 	}
 
 	/**
@@ -134,7 +136,7 @@ export class Card {
 		if (!tokenContext)
 			tokenContext = this.tokenScript.getCurrentTokenContext();
 
-		if (!this.isAvailableForOrigin(tokenContext.originId))
+		if (tokenContext && !this.isAvailableForOrigin(tokenContext.originId))
 			return false;
 
 		if (!this.exclude)

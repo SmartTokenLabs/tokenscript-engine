@@ -75,3 +75,11 @@ viewer-popover .meta-details a:hover {
 viewer-popover .meta-details a img {
 	margin: 0 5px;
 }
+
+viewer-popover .onboarding-cards {
+	margin: 0 25px 24px;
+}
+
+.onboarding-cards button {
+	padding: 0 10px;
+}

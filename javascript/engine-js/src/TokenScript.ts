@@ -274,8 +274,9 @@ export class TokenScript {
 	/**
 	 * An array of cards for the TokenScript
 	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
+	 * @param onboardingCards
 	 */
-	public getCards(tokenOrigin?: string): Card[] {
+	public getCards(tokenOrigin?: string, onboardingCards = false): Card[] {
 
 		if (!tokenOrigin)
 			tokenOrigin = this.getCurrentTokenContext()?.originId;
@@ -298,13 +299,18 @@ export class TokenScript {
 		}
 
 		// Only return cards available for the specified token origins
+		let cards = this.cards.filter((card) => (
+			(!onboardingCards && card.type !== "onboarding") ||
+			(onboardingCards && card.type === "onboarding")
+		));
+
 		if (tokenOrigin){
-			return this.cards.filter((card) => {
+			cards = cards.filter((card) => {
 				return card.origins.length === 0 || card.origins.indexOf(tokenOrigin) > -1;
 			});
 		}
 
-		return this.cards;
+		return cards;
 	}
 
 	/**
@@ -676,6 +682,10 @@ export class TokenScript {
 	 */
 	public setTokenDiscoveryAdapter(adapter: ITokenDiscoveryAdapter){
 		this.tokenDiscoveryAdapter = adapter;
+	}
+
+	public unsetTokenContext(){
+		this.tokenContext = null;
 	}
 
 	/**
