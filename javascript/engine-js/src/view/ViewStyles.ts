@@ -16,7 +16,7 @@ export class ViewStyles {
 	// The keys must be valid regex
 	private static ALLOWED_SELECTORS_AND_PROPERTIES = {
 		// TODO: Add font-face
-		"font-face": [], // All properties allowed when empty
+		"@font-face": [], // All properties allowed when empty
 		"\.ts-token-container": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES
 	}
