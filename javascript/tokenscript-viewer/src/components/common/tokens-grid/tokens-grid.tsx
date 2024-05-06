@@ -17,6 +17,8 @@ export class TokensGrid {
 
 	@Prop() tokenScript: TokenScript;
 
+	@Prop() showCard: (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
+
 	currentTokens?: {[key: string]: ITokenCollection};
 
 	@State()
@@ -105,6 +107,15 @@ export class TokensGrid {
 			return;
 		}
 
+		if (cardRes.card.type === "onboarding"){
+			if (
+				await cardRes.card.isEnabledOrReason() === true
+			) {
+				this.showCard(cardRes.card);
+				return;
+			}
+		}
+
 		for (let token of this.currentTokensFlat){
 
 			const tokenId = ("tokenId" in token) ? token.tokenId : undefined;
@@ -130,39 +141,6 @@ export class TokensGrid {
 			title: "No supported tokens",
 			description: "None of your tokens support the " + action + " action."
 		});
-	}
-
-	private async showCard(card: Card, token: TokenGridContext, cardIndex: number){
-
-		const refs = token.contextId.split("-");
-		this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]): null);
-
-		this.showLoader.emit();
-
-		try {
-			await this.tokenScript.showOrExecuteTokenCard(card, async (data: ITransactionStatus) => {
-
-				if (data.status === "started")
-					this.showLoader.emit();
-
-				if (data.status === "confirmed")
-					this.hideLoader.emit();
-
-				await showTransactionNotification(data, this.showToast);
-			});
-
-			// TODO: set only card param rather than updating the whole hash query
-			if (card.view)
-				history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + (("tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
-
-		} catch(e){
-			console.error(e);
-			this.hideLoader.emit();
-			handleTransactionError(e, this.showToast);
-			return;
-		}
-
-		this.hideLoader.emit();
 	}
 
 	render() {

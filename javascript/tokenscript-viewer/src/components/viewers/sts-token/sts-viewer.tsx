@@ -285,11 +285,11 @@ export class SmartTokenStoreViewer {
 					continue;
 
 				const cardElem = (
-					<button class={"btn " + getCardButtonClass(card, index)}
+					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
 							onClick={() => this.showCard(card)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
-						{label}
+						<span>{label}</span>
 					</button>
 				)
 
@@ -337,7 +337,7 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
-				<div class={"token-viewer " + (this.fullWidth ? 'full-width' : '')} >
+				<div class={"ts-token-container token-viewer " + (this.fullWidth ? 'full-width' : '')} >
 					{!this.isAttestation && this.collectionDetails && (
 						<div>
 							<div class="details-container">

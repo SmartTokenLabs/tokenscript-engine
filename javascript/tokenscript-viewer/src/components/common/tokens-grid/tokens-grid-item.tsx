@@ -58,11 +58,11 @@ export class TokensGridItem {
 					continue;
 
 				const cardElem = (
-					<button class={"btn " + getCardButtonClass(card, index)}
+					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
 							onClick={() => this.showCard(card, this.token, index)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
-						{label}
+						<span>{label}</span>
 					</button>
 				)
 
@@ -108,7 +108,7 @@ export class TokensGridItem {
 		}
 
 		return (
-			<Host class="tokens-grid-item">
+			<Host class="ts-token-container tokens-grid-item">
 				<token-icon
 					src={this.tokenScript.getMetadata().imageUrl ?
 							this.tokenScript.getMetadata().imageUrl :

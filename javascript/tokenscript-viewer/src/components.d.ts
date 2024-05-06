@@ -154,6 +154,7 @@ export namespace Components {
         "app": AppRoot;
     }
     interface TokensGrid {
+        "showCard": (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
         "tokenScript": TokenScript1;
     }
     interface TokensGridItem {
@@ -817,6 +818,7 @@ declare namespace LocalJSX {
         "onHideLoader"?: (event: TokensGridCustomEvent<void>) => void;
         "onShowLoader"?: (event: TokensGridCustomEvent<void>) => void;
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
+        "showCard"?: (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
         "tokenScript"?: TokenScript1;
     }
     interface TokensGridItem {

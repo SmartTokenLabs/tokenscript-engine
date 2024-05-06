@@ -45,6 +45,11 @@ select:hover {
 	cursor: pointer;
 }
 
+.btn > span {
+	margin: 0;
+	font-size: 14px;
+}
+
 .btn-primary {
 	color: #fff;
 	background: linear-gradient(234.79deg, #001AFF 37.73%, #4F95FF 118.69%), #8A9CB8;

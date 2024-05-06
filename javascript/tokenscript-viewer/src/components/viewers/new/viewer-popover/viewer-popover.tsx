@@ -4,6 +4,7 @@ import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {getCardButtonClass} from "../../util/getCardButtonClass";
 import {handleTransactionError, showTransactionNotification} from "../../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../../app/app";
+import {TokenGridContext} from "../../util/getTokensFlat";
 
 @Component({
 	tag: 'viewer-popover',
@@ -49,8 +50,6 @@ export class ViewerPopover {
 
 		const onboardingCards = tokenScript.getCards(null, true);
 
-		console.log("Onboarding cards: ", onboardingCards);
-
 		const enabledCards = [];
 
 		for (let [index, card] of onboardingCards.entries()){
@@ -69,11 +68,11 @@ export class ViewerPopover {
 					continue;
 
 				const cardElem = (
-					<button class={"btn " + getCardButtonClass(card, index)}
-							onClick={() => this.showOnboardingCard(card)}
+					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
+							onClick={() => this.showCard(card)}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
-						{label}
+						<span>{label}</span>
 					</button>
 				)
 
@@ -87,9 +86,14 @@ export class ViewerPopover {
 		this.onboardingCards = enabledCards;
 	}
 
-	private async showOnboardingCard(card: Card){
+	private async showCard(card: Card, token?: TokenGridContext, cardIndex?: number){
 
-		this.tokenScript.unsetTokenContext();
+		if (token) {
+			const refs = token.contextId.split("-");
+			this.tokenScript.setCurrentTokenContext(refs[0], refs.length > 1 ? parseInt(refs[1]) : null);
+		} else {
+			this.tokenScript.unsetTokenContext();
+		}
 
 		this.showLoader.emit();
 
@@ -107,7 +111,7 @@ export class ViewerPopover {
 
 			// TODO: set only card param rather than updating the whole hash query
 			if (card.view)
-				history.replaceState(undefined, undefined, "#card=" + card.name);
+				history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + ((token && "tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
 
 		} catch(e){
 			console.error(e);
@@ -127,6 +131,7 @@ export class ViewerPopover {
 	render(){
 		return ( this.tokenScript ?
 			<Host class={(this.tokenScript ? " open" : "")}>
+				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""} />
 				<div class="toolbar">
 					<div class="view-heading">
 						<button class="btn" onClick={() => this.close()}>&lt;</button>
@@ -164,7 +169,7 @@ export class ViewerPopover {
 				{ this.onboardingCards ? (<div class="onboarding-cards">
 						{this.onboardingCards}
 				</div>) : ''}
-				<tokens-grid tokenScript={this.tokenScript}></tokens-grid>
+				<tokens-grid tokenScript={this.tokenScript} showCard={this.showCard}></tokens-grid>
 				{/*<card-modal tokenScript={this.tokenScript}></card-modal>*/}
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host> : ''

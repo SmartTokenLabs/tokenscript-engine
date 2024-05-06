@@ -3,7 +3,7 @@ import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 // TODO: Improve engine APIs so this is not required
 export function findCardByUrlParam(id: string, tokenScript: TokenScript){
 
-	const cards = tokenScript.getCards();
+	const cards = [...tokenScript.getCards(), ...tokenScript.getCards(null, true)];
 
 	for (let [index, card] of cards.entries()){
 		if (card.name == id)

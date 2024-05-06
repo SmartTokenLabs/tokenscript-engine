@@ -16,6 +16,7 @@ import {Origin} from "./tokenScript/Origin";
 import {ITokenContextData} from "./tokens/ITokenContextData";
 import {Meta} from "./tokenScript/Meta";
 import {ethers} from "ethers";
+import {ViewStyles} from "./view/ViewStyles";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -89,6 +90,8 @@ export class TokenScript {
 
 	private tokenDiscoveryAdapter?: ITokenDiscoveryAdapter;
 
+	public readonly viewStyles: ViewStyles;
+
 	constructor(
 		private engine: TokenScriptEngine,
 		public readonly tokenDef: XMLDocument,
@@ -99,6 +102,7 @@ export class TokenScript {
 		private viewBinding?: IViewBinding
 	) {
 		this.securityInfo = new SecurityInfo(this);
+		this.viewStyles = new ViewStyles(this.tokenDef);
 	}
 
 	public getSourceInfo(){
