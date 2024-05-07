@@ -36,18 +36,36 @@ export class ViewStyles {
 		let unprocessedCss = styleElems[0].textContent;
 		let processedCss = "";
 
-		console.log(unprocessedCss);
+		//console.log("Unprocessed: ", unprocessedCss);
 
 		const propertyRegex = new RegExp("([^\{\};]+}*:[^{};]+;)\\s", "g");
 
 		for (const [selectorRegex, allowedProperties] of Object.entries(ViewStyles.ALLOWED_SELECTORS_AND_PROPERTIES)){
 
+			// The regex deliberately selects copies for each rule in a CSS selector list and splits them into separate rules
+			// This allows easier processing of allowed properties for rule that contain different top-level selectors
 			const regex = new RegExp(`${selectorRegex}(\\s*)?\{[^\}]*\}`, "g");
 
 			const matches = unprocessedCss.match(regex);
 
 			if (matches) {
 				for (let cssRule of matches) {
+
+					//console.log("CSS rule: ", cssRule);
+
+					// We need to check all selectors separated by a comma, to ensure that they have the same allowed top-level selector
+					// Otherwise a user can put ".ts-action-btn, body { ... }" in order to use selectors & properties not present in the whitelist
+					const splitRules = cssRule.substring(0, cssRule.indexOf('{')).split(",");
+
+					if (splitRules.length > 1){
+
+						const commaRuleRegex = new RegExp(`(\\s*)?${selectorRegex}(\\s*)?`, "g");
+
+						for (let i=1; i<splitRules.length; i++){
+							if (!splitRules[i].match(commaRuleRegex))
+								cssRule = cssRule.replace(new RegExp(`,?(\\s*)?${splitRules[i]}`, "g"), "");
+						}
+					}
 
 					if (allowedProperties.length){
 						const cssProperties = cssRule.match(propertyRegex);
@@ -66,7 +84,7 @@ export class ViewStyles {
 			}
 		}
 
-		console.log(processedCss);
+		//console.log("Processed: ", processedCss);
 
 		return processedCss;
 

@@ -59,14 +59,18 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		if (!this.enableStorage)
 			return false;
 
-		const token = await dbProvider.tokens.where({
-			chainId: initialTokenDetails.chainId,
-			collectionId: initialTokenDetails.contractAddress.toLowerCase(),
-			ownerAddress: ownerAddress.toLowerCase()
-		}).first();
+		try {
+			const token = await dbProvider.tokens.where({
+				chainId: initialTokenDetails.chainId,
+				collectionId: initialTokenDetails.contractAddress.toLowerCase(),
+				ownerAddress: ownerAddress.toLowerCase()
+			}).first();
 
-		if (token && Date.now() < token.dt + (TOKEN_CACHE_TTL * 1000))
-			return token.data;
+			if (token && Date.now() < token.dt + (TOKEN_CACHE_TTL * 1000))
+				return token.data;
+		} catch (e) {
+			console.warn(e);
+		}
 
 		return false;
 	}
@@ -76,13 +80,17 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		if (!this.enableStorage)
 			return;
 
-		await dbProvider.tokens.put({
-			chainId: token.chainId,
-			collectionId: token.contractAddress.toLowerCase(),
-			ownerAddress: ownerAddress.toLowerCase(),
-			data: token,
-			dt: Date.now()
-		});
+		try {
+			await dbProvider.tokens.put({
+				chainId: token.chainId,
+				collectionId: token.contractAddress.toLowerCase(),
+				ownerAddress: ownerAddress.toLowerCase(),
+				data: token,
+				dt: Date.now()
+			});
+		} catch (e) {
+			console.warn(e);
+		}
 	}
 
 	async fetchTokens(token: ITokenCollection, ownerAddress: string){
@@ -188,13 +196,17 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		if (!this.enableStorage)
 			return false
 
-		const tokenMeta = await dbProvider.tokenMeta.where({
-			chainId: token.chainId,
-			collectionId: token.contractAddress.toLowerCase(),
-		}).first();
+		try {
+			const tokenMeta = await dbProvider.tokenMeta.where({
+				chainId: token.chainId,
+				collectionId: token.contractAddress.toLowerCase(),
+			}).first();
 
-		if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
-			return tokenMeta.data;
+			if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
+				return tokenMeta.data;
+		} catch (e) {
+			console.warn(e);
+		}
 
 		return false;
 	}
@@ -204,12 +216,16 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		if (!this.enableStorage)
 			return;
 
-		await dbProvider.tokenMeta.put({
-			chainId: token.chainId,
-			collectionId: token.contractAddress.toLowerCase(),
-			data,
-			dt: Date.now()
-		});
+		try {
+			await dbProvider.tokenMeta.put({
+				chainId: token.chainId,
+				collectionId: token.contractAddress.toLowerCase(),
+				data,
+				dt: Date.now()
+			});
+		} catch (e) {
+			console.warn(e);
+		}
 	}
 
 	private async fetchTokenMetadata(token: ITokenCollection, chain: string){
