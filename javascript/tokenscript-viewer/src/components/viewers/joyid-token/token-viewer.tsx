@@ -137,7 +137,7 @@ export class TokenViewer {
 
 				this.app.showTsLoader();
 
-				const res = await getSingleTokenMetadata(chain, contract, tokenId);
+				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
 				this.tokenDetails = res.detail;
 
 				console.log('Token meta loaded!', this.tokenDetails);

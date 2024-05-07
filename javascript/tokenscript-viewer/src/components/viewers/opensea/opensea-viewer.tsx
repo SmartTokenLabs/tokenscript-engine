@@ -97,7 +97,7 @@ export class OpenseaViewer {
 
 		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
 
-			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"));
+			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"), this.app.tsEngine);
 			this.tokenDetails = res.detail;
 
 			console.log("Token meta loaded!", this.tokenDetails);

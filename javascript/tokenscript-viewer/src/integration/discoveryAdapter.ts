@@ -57,7 +57,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	async getCachedTokens(initialTokenDetails: ITokenCollection, ownerAddress: string): Promise<ITokenCollection|false> {
 
 		if (!this.enableStorage)
-			return false
+			return false;
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
@@ -72,6 +72,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	async storeCachedTokens(token: ITokenCollection, ownerAddress: string){
+
+		if (!this.enableStorage)
+			return;
 
 		await dbProvider.tokens.put({
 			chainId: token.chainId,
@@ -197,6 +200,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private async storeCachedMeta(token: ITokenCollection, data: any){
+
+		if (!this.enableStorage)
+			return;
 
 		await dbProvider.tokenMeta.put({
 			chainId: token.chainId,
