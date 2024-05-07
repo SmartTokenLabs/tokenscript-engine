@@ -218,7 +218,7 @@ export class CardPopover implements IViewBinding {
 					</div>
 					{this.buttonOptions ?
 						(<div class="action-bar" style={{display: this.buttonOptions.show ? "block" : "none"}}>
-							<button class="action-btn btn btn-primary"
+							<button class="ts-action-button action-btn btn btn-primary"
 									disabled={this.buttonOptions.disable}
 									onClick={() => this.confirmAction()}>{this.buttonOptions.text}</button>
 						</div>) : ''

@@ -337,22 +337,23 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
-				<div class={"ts-token-container token-viewer " + (this.fullWidth ? 'full-width' : '')} >
+				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
+				<div class={"ts-token-container token-viewer " + (this.fullWidth ? 'full-width' : '')}>
 					{!this.isAttestation && this.collectionDetails && (
 						<div>
 							<div class="details-container">
 								<div class="image-container">
-									<token-icon style={{ minHeight: '100px;' }} src={
+									<token-icon style={{minHeight: '100px;'}} src={
 										this.tokenScript && this.tokenScript.getMetadata().imageUrl ?
 											this.tokenScript.getMetadata().imageUrl :
 											this.tokenDetails?.image ?? this.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null)
-									} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name} />
+									} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name}/>
 								</div>
 								<div class="info-container">
 									<div class="main-info">
 										<h1>{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
 										<div class="owner-count">
-											<span style={{ color: '#3D45FB' }}>
+											<span style={{color: '#3D45FB'}}>
 												{this.collectionDetails.tokenType === "erc20" ?
 													'balance: ' + EthUtils.calculateDecimalValue(this.collectionDetails.balance, this.collectionDetails.decimals) :
 													this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) : '#' + this.tokenDetails.tokenId
@@ -361,7 +362,7 @@ export class SmartTokenStoreViewer {
 										</div>
 										<div class="collection-details">
 											<token-icon
-												style={{ width: '24px', borderRadius: '4px' }}
+												style={{width: '24px', borderRadius: '4px'}}
 												src={this.collectionDetails.image}
 												imageTitle={this.collectionDetails.name}
 											/>
@@ -370,39 +371,46 @@ export class SmartTokenStoreViewer {
 										</div>
 									</div>
 									<div class="extra-info">
-										<p innerHTML={ this.description && this.description.replace(/\n/g, '<br/>')}></p>
+										<p innerHTML={this.description && this.description.replace(/\n/g, '<br/>')}></p>
 										<div class="attribute-container">
 											{this.tokenDetails?.attributes?.length
 												? this.tokenDetails?.attributes.map(attr => {
-														return (
-															<div class="attribute-item" title={attr.trait_type + ': ' + attr.value}>
-																<h5>{attr.trait_type}</h5>
-																<span>{attr.value}</span>
-															</div>
-														);
-													})
+													return (
+														<div class="attribute-item"
+															 title={attr.trait_type + ': ' + attr.value}>
+															<h5>{attr.trait_type}</h5>
+															<span>{attr.value}</span>
+														</div>
+													);
+												})
 												: ''}
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="actions">
-								{this.cardButtons ? this.cardButtons : <loading-spinner color={'#595959'} size={'small'} style={{ textAlign: 'center' }} />}
+								{this.cardButtons ? this.cardButtons :
+									<loading-spinner color={'#595959'} size={'small'} style={{textAlign: 'center'}}/>}
 								{this.overflowCardButtons?.length
 									? [
-											<button class="btn more-actions-btn" onClick={() => this.overflowDialog.openDialog()}>
-												+ More actions
-											</button>,
-											<action-overflow-modal ref={el => (this.overflowDialog = el as HTMLActionOverflowModalElement)}>
-												<div class="actions">{this.overflowCardButtons}</div>
-											</action-overflow-modal>,
-										]
+										<button class="btn more-actions-btn"
+												onClick={() => this.overflowDialog.openDialog()}>
+											+ More actions
+										</button>,
+										<action-overflow-modal
+											ref={el => (this.overflowDialog = el as HTMLActionOverflowModalElement)}>
+											<div class="actions">{this.overflowCardButtons}</div>
+										</action-overflow-modal>,
+									]
 									: ''}
 							</div>
-							<div style={{ padding: '0 10px 10px 10px' }}>{this.tokenScript ? <security-status tokenScript={this.tokenScript} /> : ''}</div>
+							<div style={{padding: '0 10px 10px 10px'}}>{this.tokenScript ?
+								<security-status tokenScript={this.tokenScript}/> : ''}</div>
 						</div>
 					)}
-					{this.isAttestation && <iframe src="" class="iframe-viewer" id="frame" onLoad={() => this.iframeLoadListener(this.slnAttestation, this.decoded)} frameBorder={0} />}
+					{this.isAttestation && <iframe src="" class="iframe-viewer" id="frame"
+												   onLoad={() => this.iframeLoadListener(this.slnAttestation, this.decoded)}
+												   frameBorder={0}/>}
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>

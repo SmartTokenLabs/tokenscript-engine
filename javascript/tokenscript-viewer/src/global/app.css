@@ -54,6 +54,7 @@ select:hover {
 .btn > span {
 	margin: 0;
 	font-size: 14px;
+	color: inherit;
 }
 
 .btn-primary {

@@ -15,6 +15,10 @@ export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
+	constructor(private enableStorage = true) {
+
+	}
+
 	async getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
 
 		const resultTokens: ITokenCollection[] = [];
@@ -51,6 +55,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	async getCachedTokens(initialTokenDetails: ITokenCollection, ownerAddress: string): Promise<ITokenCollection|false> {
+
+		if (!this.enableStorage)
+			return false
 
 		const token = await dbProvider.tokens.where({
 			chainId: initialTokenDetails.chainId,
@@ -174,6 +181,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private async getCachedMeta(token: ITokenCollection){
+
+		if (!this.enableStorage)
+			return false
 
 		const tokenMeta = await dbProvider.tokenMeta.where({
 			chainId: token.chainId,

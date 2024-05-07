@@ -68,7 +68,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 	async unloadTokenView() {
 		this.currentCard = null;
 		this.actionBar.style.display = "none";
-		//this.iframe.srcdoc = "<!DOCTYPE html>";
+		this.iframe.srcdoc = "<!DOCTYPE html>";
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";

@@ -5,7 +5,7 @@ import {ITokenCollection, TokenType} from "../../../../../engine-js/src/tokens/I
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 
-const discoveryAdapter = new DiscoveryAdapter();
+const discoveryAdapter = new DiscoveryAdapter(false);
 
 export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: TokenScriptEngine): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
 

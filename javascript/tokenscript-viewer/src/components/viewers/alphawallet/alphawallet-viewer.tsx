@@ -255,6 +255,7 @@ export class SmartTokenStoreViewer {
 		return (
 			<Host>
 				<div class="aw-viewer">
+					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					<div class="actions">
 						{this.cardButtons ?

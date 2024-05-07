@@ -18,7 +18,8 @@ export class ViewStyles {
 		// TODO: Add font-face
 		"@font-face": [], // All properties allowed when empty
 		"\.ts-token-container": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
-		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES
+		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
+		"\.ts-action-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES
 	}
 
 	constructor(private xml: XMLDocument) {
