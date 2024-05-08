@@ -28,6 +28,8 @@ export interface IFrameEthereumProviderOptions {
 
   // The provider type, e.g. "wagmi" or "ethereum"
   type: string;
+
+  onPageReady?: () => void;
 }
 
 // The interface for the source of the events, typically the window.
@@ -47,12 +49,14 @@ export class IFrameProvider {
   private readonly eventSource: MinimalEventSourceInterface;
   private readonly iframeRef: HTMLIFrameElement | undefined;
   private readonly type: string;
+  private readonly onPageReady: (() => void) | undefined;
 
   public constructor(options: IFrameEthereumProviderOptions) {
     this.targetOrigin = options.targetOrigin ?? DEFAULT_TARGET_ORIGIN;
     this.provider = options.provider;
     this.eventSource = options.eventSource ?? window;
     this.iframeRef = options.iframeRef;
+    this.onPageReady = options.onPageReady;
 
     this.type = options.type?.toLowerCase() ?? DEFAULT_TYPE;
     // Listen for messages from the event source.
@@ -139,6 +143,12 @@ export class IFrameProvider {
             case "wallet_switchEthereumChain": {
               const result = await this.requestMethod(message, this.type);
               this.sendResponse(message.data, result, {});
+              break;
+            }
+            case "page_ready": {
+              if (this.onPageReady) {
+                this.onPageReady();
+              }
               break;
             }
             default: {
