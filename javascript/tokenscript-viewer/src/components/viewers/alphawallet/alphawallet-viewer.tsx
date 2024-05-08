@@ -8,6 +8,7 @@ import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {getCardButtonClass} from "../util/getCardButtonClass";
 import {ViewBinding} from "../tabbed/viewBinding";
+import {ITokenDetail} from "@tokenscript/engine-js/dist/lib.esm/tokens/ITokenDetail";
 
 @Component({
 	tag: 'alphawallet-viewer',
@@ -20,8 +21,8 @@ export class SmartTokenStoreViewer {
 	@Prop()
 	app: AppRoot;
 
-	//@State()
 	collectionDetails: ITokenCollection;
+	tokenDetails: ITokenDetail;
 
 	@State()
 	tokenScript: TokenScript;
@@ -99,7 +100,8 @@ export class SmartTokenStoreViewer {
 			// TODO: Push from alphawallet
 			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"), this.app.tsEngine);
 			this.collectionDetails = res.collection;
-			console.log("Token meta loaded!", this.collectionDetails);
+			this.tokenDetails = res.detail;
+			console.log("Token meta loaded!", this.collectionDetails, this.tokenDetails);
 
 			this.app.hideTsLoader();
 
@@ -126,15 +128,16 @@ export class SmartTokenStoreViewer {
 			}
 
 			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin;
+			let selectedOrigin: ITokenCollection;
 
-			for (const [key, origin] of origins.entries()){
-				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					origins[key] = {
+			for (const origin of origins){
+				if (origin.chainId === chain && origin.contractAddress.toLowerCase() === contract.toLowerCase()){
+					selectedOrigin = {
 						...this.collectionDetails,
 						...origin
 					}
-					selectedOrigin = origins[key];
+					if (this.tokenDetails)
+						selectedOrigin.tokenDetails = [this.tokenDetails];
 					break;
 				}
 			}
@@ -142,11 +145,11 @@ export class SmartTokenStoreViewer {
 			console.log("Selected origin: ", selectedOrigin);
 
 			if (selectedOrigin){
-				tokenScript.setTokenMetadata(origins);
+				tokenScript.setTokenMetadata([selectedOrigin]);
 
 				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
 					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve(origins);
+						return Promise.resolve([selectedOrigin]);
 					}
 				}
 

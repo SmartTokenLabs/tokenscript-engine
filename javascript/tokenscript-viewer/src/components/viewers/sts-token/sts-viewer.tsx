@@ -191,17 +191,16 @@ export class SmartTokenStoreViewer {
 			}
 
 			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin;
+			let selectedOrigin: ITokenCollection;
 
-			for (const [key, origin] of origins.entries()){
-				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					origins[key] = {
+			for (const origin of origins){
+				if (origin.chainId === chain && origin.contractAddress.toLowerCase() === contract.toLowerCase()){
+					selectedOrigin = {
 						...this.collectionDetails,
 						...origin
 					}
-					selectedOrigin = origin;
 					if (this.tokenDetails)
-						origin.tokenDetails = [this.tokenDetails];
+						selectedOrigin.tokenDetails = [this.tokenDetails];
 					break;
 				}
 			}
@@ -212,11 +211,11 @@ export class SmartTokenStoreViewer {
 					document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
 				}
 
-				tokenScript.setTokenMetadata(origins);
+				tokenScript.setTokenMetadata([selectedOrigin]);
 
 				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
 					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve(origins);
+						return Promise.resolve([selectedOrigin]);
 					}
 				}
 
