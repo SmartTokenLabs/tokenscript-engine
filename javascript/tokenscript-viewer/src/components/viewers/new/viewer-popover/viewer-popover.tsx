@@ -1,4 +1,4 @@
-import {Component, h, State, Element, Method, Host, Event, EventEmitter} from "@stencil/core";
+import {Component, h, State, Element, Method, Host, Event, EventEmitter, JSX} from "@stencil/core";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {getCardButtonClass} from "../../util/getCardButtonClass";
@@ -43,6 +43,10 @@ export class ViewerPopover {
 		cancelable: true,
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
+
+	@State()
+	private overflowCardButtons: JSX.Element[];
+	private overflowDialog: HTMLActionOverflowModalElement;
 
 	@Method()
 	async open(tokenScript: TokenScript){
@@ -123,6 +127,11 @@ export class ViewerPopover {
 		this.hideLoader.emit();
 	}
 
+	private async openActionOverflowModal(buttons: JSX.Element[]){
+		this.overflowCardButtons = buttons;
+		this.overflowDialog.openDialog();
+	}
+
 	@Method()
 	async close(){
 		this.tokenScript = null;
@@ -131,7 +140,7 @@ export class ViewerPopover {
 	render(){
 		return ( this.tokenScript ?
 			<Host class={(this.tokenScript ? " open" : "")}>
-				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""} />
+				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 				<div class="toolbar">
 					<div class="view-heading">
 						<button class="btn" onClick={() => this.close()}>&lt;</button>
@@ -154,24 +163,34 @@ export class ViewerPopover {
 					</div>
 				</div>
 				<div class="meta-details">
-					{ this.tokenScript.getMetadata().description ?
+					{this.tokenScript.getMetadata().description ?
 						<p>
-							{ this.tokenScript.getMetadata().description}
+							{this.tokenScript.getMetadata().description}
 						</p> : ''
 					}
-					{ this.tokenScript.getMetadata().aboutUrl ?
+					{this.tokenScript.getMetadata().aboutUrl ?
 						<a href={this.tokenScript.getMetadata().aboutUrl} target="_blank">
-							{ "Discover how it works" }
-							<img alt="about" src="/assets/icon/question.svg" />
+							{"Discover how it works"}
+							<img alt="about" src="/assets/icon/question.svg"/>
 						</a> : ''
 					}
 				</div>
-				{ this.onboardingCards ? (<div class="onboarding-cards">
-						{this.onboardingCards}
+				{this.onboardingCards ? (<div class="onboarding-cards">
+					{this.onboardingCards}
 				</div>) : ''}
-				<tokens-grid tokenScript={this.tokenScript} showCard={this.showCard}></tokens-grid>
-				{/*<card-modal tokenScript={this.tokenScript}></card-modal>*/}
+				<tokens-grid
+					tokenScript={this.tokenScript}
+					showCard={this.showCard.bind(this)}
+					openActionOverflowModal={this.openActionOverflowModal.bind(this)}
+				></tokens-grid>
+				<action-overflow-modal ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
+					<div class="actions">
+						{this.overflowCardButtons}
+					</div>
+				</action-overflow-modal>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
+				<token-info-popover id="token-info-popover" tokenScript={this.tokenScript}/>
+				<token-security-status-popover id="token-security-status-popover"/>
 			</Host> : ''
 		)
 	}

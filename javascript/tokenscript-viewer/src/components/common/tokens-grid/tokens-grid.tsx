@@ -1,12 +1,11 @@
 import {Component, EventEmitter, h, Prop, State, Watch, Event, Host, JSX} from "@stencil/core";
-import {ITokenIdContext, ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {ShowToastEventArgs} from "../../app/app";
-import {handleTransactionError, showTransactionNotification} from "../../viewers/util/showTransactionNotification";
 
 @Component({
 	tag: 'tokens-grid',
@@ -18,6 +17,8 @@ export class TokensGrid {
 	@Prop() tokenScript: TokenScript;
 
 	@Prop() showCard: (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
+
+	@Prop() openActionOverflowModal: (buttons: JSX.Element[]) => void;
 
 	currentTokens?: {[key: string]: ITokenCollection};
 
@@ -152,14 +153,18 @@ export class TokensGrid {
 						{
 							this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
 								return (
-									<tokens-grid-item key={token.contextId} tokenScript={this.tokenScript} token={token} showCard={this.showCard.bind(this)}></tokens-grid-item>
+									<tokens-grid-item
+										key={token.contextId}
+										tokenScript={this.tokenScript}
+										token={token}
+										showCard={this.showCard.bind(this)}
+										openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
 								);
 							}) :  (
 								!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
 							)
 						}
 					</div>
-					<token-info-popover id="token-info-popover" tokenScript={this.tokenScript} />
 				</div>
 			</Host>
 		)

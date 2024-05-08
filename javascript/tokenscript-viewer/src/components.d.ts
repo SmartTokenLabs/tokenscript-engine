@@ -16,6 +16,7 @@ import { IntegrationViewer } from "./components/viewers/integration/integration-
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
+import { IOriginSecurityInfo } from "@tokenscript/engine-js/src/tokenScript/Origin";
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export { TokenScriptEngine } from "../../engine-js/src/Engine";
 export { ITokenDetail } from "../../engine-js/src/tokens/ITokenDetail";
@@ -28,6 +29,7 @@ export { IntegrationViewer } from "./components/viewers/integration/integration-
 export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 export { TokenGridContext } from "./components/viewers/util/getTokensFlat";
+export { IOriginSecurityInfo } from "@tokenscript/engine-js/src/tokenScript/Origin";
 export { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export namespace Components {
     interface AboutTokenscript {
@@ -150,14 +152,19 @@ export namespace Components {
         "originId": string;
         "tokenScript": TokenScript1;
     }
+    interface TokenSecurityStatusPopover {
+        "openDialog": (tokenSecInfo: Partial<IOriginSecurityInfo>) => Promise<void>;
+    }
     interface TokenViewer {
         "app": AppRoot;
     }
     interface TokensGrid {
+        "openActionOverflowModal": (buttons: JSX.Element[]) => void;
         "showCard": (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
         "tokenScript": TokenScript1;
     }
     interface TokensGridItem {
+        "openActionOverflowModal": (buttons: JSX.Element[]) => void;
         "showCard": (card: Card, token: TokenGridContext, index: number) => void;
         "token": TokenGridContext;
         "tokenScript": TokenScript1;
@@ -504,6 +511,12 @@ declare global {
         prototype: HTMLTokenSecurityStatusElement;
         new (): HTMLTokenSecurityStatusElement;
     };
+    interface HTMLTokenSecurityStatusPopoverElement extends Components.TokenSecurityStatusPopover, HTMLStencilElement {
+    }
+    var HTMLTokenSecurityStatusPopoverElement: {
+        prototype: HTMLTokenSecurityStatusPopoverElement;
+        new (): HTMLTokenSecurityStatusPopoverElement;
+    };
     interface HTMLTokenViewerElementEventMap {
         "showToast": ShowToastEventArgs;
         "showLoader": void;
@@ -673,6 +686,7 @@ declare global {
         "token-icon": HTMLTokenIconElement;
         "token-info-popover": HTMLTokenInfoPopoverElement;
         "token-security-status": HTMLTokenSecurityStatusElement;
+        "token-security-status-popover": HTMLTokenSecurityStatusPopoverElement;
         "token-viewer": HTMLTokenViewerElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
@@ -808,6 +822,8 @@ declare namespace LocalJSX {
         "originId"?: string;
         "tokenScript"?: TokenScript1;
     }
+    interface TokenSecurityStatusPopover {
+    }
     interface TokenViewer {
         "app"?: AppRoot;
         "onHideLoader"?: (event: TokenViewerCustomEvent<void>) => void;
@@ -818,10 +834,12 @@ declare namespace LocalJSX {
         "onHideLoader"?: (event: TokensGridCustomEvent<void>) => void;
         "onShowLoader"?: (event: TokensGridCustomEvent<void>) => void;
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
+        "openActionOverflowModal"?: (buttons: JSX.Element[]) => void;
         "showCard"?: (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
         "tokenScript"?: TokenScript1;
     }
     interface TokensGridItem {
+        "openActionOverflowModal"?: (buttons: JSX.Element[]) => void;
         "showCard"?: (card: Card, token: TokenGridContext, index: number) => void;
         "token"?: TokenGridContext;
         "tokenScript"?: TokenScript1;
@@ -893,6 +911,7 @@ declare namespace LocalJSX {
         "token-icon": TokenIcon;
         "token-info-popover": TokenInfoPopover;
         "token-security-status": TokenSecurityStatus;
+        "token-security-status-popover": TokenSecurityStatusPopover;
         "token-viewer": TokenViewer;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
@@ -938,6 +957,7 @@ declare module "@stencil/core" {
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "token-info-popover": LocalJSX.TokenInfoPopover & JSXBase.HTMLAttributes<HTMLTokenInfoPopoverElement>;
             "token-security-status": LocalJSX.TokenSecurityStatus & JSXBase.HTMLAttributes<HTMLTokenSecurityStatusElement>;
+            "token-security-status-popover": LocalJSX.TokenSecurityStatusPopover & JSXBase.HTMLAttributes<HTMLTokenSecurityStatusPopoverElement>;
             "token-viewer": LocalJSX.TokenViewer & JSXBase.HTMLAttributes<HTMLTokenViewerElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;

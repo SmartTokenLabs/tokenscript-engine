@@ -19,6 +19,8 @@ export class TokensGridItem {
 
 	@Prop() showCard: (card: Card, token: TokenGridContext, index: number) => void;
 
+	@Prop() openActionOverflowModal: (buttons: JSX.Element[]) => void;
+
 	@State() cardButtons: JSX.Element[];
 
 	@State() overflowCardButtons: JSX.Element[];
@@ -131,16 +133,9 @@ export class TokensGridItem {
 							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
 						}
 						{ this.overflowCardButtons?.length ?
-							[
-								(<button class="btn more-actions-btn" onClick={() => this.overflowDialog.openDialog()}>
-									+ More actions
-								</button>),
-								(<action-overflow-modal ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
-									<div class="actions">
-										{this.overflowCardButtons}
-									</div>
-								</action-overflow-modal>)
-							] : ''
+							(<button class="btn more-actions-btn" onClick={() => this.openActionOverflowModal(this.overflowCardButtons)}>
+								+ More actions
+							</button>) : ''
 						}
 					</div>
 				</div>
