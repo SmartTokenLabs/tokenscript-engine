@@ -8,10 +8,10 @@ export class SLNAdapter implements ISLNAdapter {
   private jwt: string;
 
   constructor() {
-    this.url = window.location.hostname === 'viewer.tokenscript.org' ? 'https://attestation.test.smartlayer.network/' : 'https://d2sc5n1wf6rato.cloudfront.net/';
+    this.url = window.location.hostname === 'viewer.tokenscript.org' ? 'https://airline.test.smartlayer.network/' : 'https://d2sc5n1wf6rato.cloudfront.net/';
     this.jwt =
       window.location.hostname === 'viewer.tokenscript.org'
-        ? '' //todo
+        ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHVtbXkiLCJpYXQiOjE3MTUxMzg1OTZ9.sLmcim7bVb3FuZnfkWKyzLF-k6UBSpjJdiyfUSTcBI8' //todo
         : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZHVtbXkiLCJpYXQiOjE3MTI1NzA4OTF9.Mz0RVMIzuCpvvh40bZ9MJ97XEcu9CHBMlvAz1jxo25Q';
 
     //'https://d3tm4hby53qtu1.cloudfront.net/';

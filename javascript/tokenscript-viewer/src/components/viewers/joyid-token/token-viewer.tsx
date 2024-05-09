@@ -207,6 +207,7 @@ export class TokenViewer {
 					provider: this.provider,
 					type: 'ethereum',
 					targetOrigin: this.BASE_URL,
+					onPageReady: () => this.iframeLoadListener(this.slnAttestation, this.decoded)
 				});
 			}
 		}, 1000);
@@ -273,7 +274,7 @@ export class TokenViewer {
 							<action-bar engine={this.app.tsEngine} tokenDetails={this.tokenDetails} tokenScript={this.tokenScript} actionsEnabled={this.actionsEnabled} />
 						</div>
 					)}
-					{this.isAttestation && <iframe src="" class="iframe-viewer" id="frame" onLoad={() => this.iframeLoadListener(this.slnAttestation, this.decoded)} frameBorder={0} />}
+					{this.isAttestation && <iframe src="" class="iframe-viewer" id="frame" frameBorder={0} />}
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>
