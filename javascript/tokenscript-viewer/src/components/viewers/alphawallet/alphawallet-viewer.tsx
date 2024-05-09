@@ -1,4 +1,4 @@
-import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
+import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
@@ -8,7 +8,7 @@ import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {getCardButtonClass} from "../util/getCardButtonClass";
 import {ViewBinding} from "../tabbed/viewBinding";
-import {ITokenDetail} from "@tokenscript/engine-js/dist/lib.esm/tokens/ITokenDetail";
+import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 
 @Component({
 	tag: 'alphawallet-viewer',
