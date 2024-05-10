@@ -28570,31 +28570,6 @@ const polygonMumbai = /* @__PURE__ */ defineChain({
   },
   testnet: true
 });
-const getTokenBoundClientInstance = (chainId) =&gt; {
-  let chain = void 0;
-  switch (chainId) {
-    case 80001:
-      chain = polygonMumbai;
-      break;
-    case 137:
-      chain = polygon;
-      break;
-  }
-  return new Xn({
-    chainId,
-    chain
-  });
-};
-const setTokenBoundAccount = (tokenboundClient, tokenContract, tokenId) =&gt; {
-  return tokenboundClient.getAccount({ tokenContract, tokenId });
-};
-const fetchCatName = async (uri, tba, tokenId) =&gt; {
-  var _a2;
-  const catNameRequest = await fetch(`${uri}/catname/${tba}/${tokenId}`);
-  const nameResp = await catNameRequest.json();
-  let catNameFormatted = (_a2 = nameResp.result) == null ? void 0 : _a2.toLowerCase().replace(".thesmartcats.eth", "").replace(".smartcat.eth", "");
-  return catNameFormatted &amp;&amp; catNameFormatted != "null" ? catNameFormatted : void 0;
-};
 const LEVEL_TEXT = {
   1: "Curious Whisker",
   2: "Clever Purrer",
@@ -28622,9 +28597,9 @@ const getLevelLabel = (level) =&gt; {
 };
 const environmentConfig = {
   test: {
-    nameAPIEndPoint: "https://ens.test.smartlayer.network",
+    nameAPIEndPoint: "http://44.217.178.162:8083",
     //nameAPIEndPoint: "http://localhost:8083",
-    ensBaseNameExt: ".smartcat.eth"
+    ensBaseNameExt: ".thesmartcats.eth"
   },
   prod: {
     nameAPIEndPoint: "https://ens.main.smartlayer.network",
@@ -28632,10 +28607,40 @@ const environmentConfig = {
     ensBaseNameExt: ".thesmartcats.eth"
   }
 };
-const environmentType = chainID == 137 ? "prod" : "test";
+const environmentType = Number(chainID) == 137 ? "prod" : "test";
 const TWITTER_SHARE_URL = "https://x.com/intent/tweet?text=";
 const POOL_BASIS = 500n;
 const FEE_BASIS = 400n;
+const getTokenBoundClientInstance = (chainId) =&gt; {
+  let chain = void 0;
+  switch (chainId) {
+    case 80001:
+      chain = polygonMumbai;
+      break;
+    case 137:
+      chain = polygon;
+      break;
+  }
+  return new Xn({
+    chainId,
+    chain
+  });
+};
+const setTokenBoundAccount = (tokenboundClient, tokenContract, tokenId) =&gt; {
+  return tokenboundClient.getAccount({ tokenContract, tokenId });
+};
+const fetchCatName = async (contractAddress, uri, tba, tokenId) =&gt; {
+  var _a2;
+  var catNameRequest;
+  if (environmentType == "prod") {
+    catNameRequest = await fetch(`${uri}/catname/${tba}/${tokenId}`);
+  } else {
+    catNameRequest = await fetch(`${uri}/name/${chainID}/${contractAddress}/${tokenId}`);
+  }
+  const nameResp = await catNameRequest.json();
+  let catNameFormatted = (_a2 = nameResp.result) == null ? void 0 : _a2.toLowerCase().replace(".thesmartcats.eth", "").replace(".smartcat.eth", "");
+  return catNameFormatted &amp;&amp; catNameFormatted != "null" ? catNameFormatted : void 0;
+};
 const ensLookupCache = {};
 async function lookupEnsName(address) {
   if (ensLookupCache[address])
@@ -28659,6 +28664,7 @@ async function getCatName(contractAddress, tokenId) {
   let name = null;
   if (tba) {
     name = await fetchCatName(
+      contractAddress,
       environmentConfig[environmentType].nameAPIEndPoint,
       tba,
       tokenId
@@ -37875,7 +37881,7 @@ function instance$l($$self, $$props, $$invalidate) {
         return;
       }
       const apiStatus = await applySubNameENS(environmentConfig[environmentType].nameAPIEndPoint, catName, chainId, token.contractAddress, token.tokenId, signature);
-      if (apiStatus == "pass") {
+      if (apiStatus === true) {
         setTimeout(
           () =&gt; {
             window.close();
@@ -37891,18 +37897,24 @@ function instance$l($$self, $$props, $$invalidate) {
     try {
       const fullName = `${catName2}${environmentConfig[environmentType].ensBaseNameExt}`;
       const response = await fetch(`${url}/register/${chainId2}/${fullName}/${tokenId}/${signature}`, { method: "POST" });
+      let data2 = {};
+      try {
+        data2 = await response.json();
+      } catch (e) {
+      }
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        let error = `HTTP error! Status: ${response.status}`;
+        if (data2.error)
+          error += ", " + data2.error;
+        throw new Error(error);
       }
       $$invalidate(4, apiRequestStatus = "success");
-      const responseText = await response.text();
-      console.log("response data", responseText);
-      return responseText;
+      return data2.result === "pass" ? true : data2.result ?? "Unknown error";
     } catch (error) {
       $$invalidate(4, apiRequestStatus = "error");
       console.error("Error during POST request:", error);
+      return error.message;
     }
-    return "fail";
   }
   const checkCatNameAvailability = async (event) =&gt; {
     $$invalidate(1, catName = event.target.value.toLowerCase().replace(/\s+/g, "-").replace(/-{2,}/g, "").replace(/^-+/g, "").replace(/[;'"`\\]/g, ""));
@@ -37925,7 +37937,6 @@ function instance$l($$self, $$props, $$invalidate) {
           return;
         }
         try {
-          console.log("check.. nick", `${environmentConfig[environmentType].nameAPIEndPoint}/checkname/${chainId}/${catName}${environmentConfig[environmentType].ensBaseNameExt}`);
           const response = await fetch(`${environmentConfig[environmentType].nameAPIEndPoint}/checkname/${chainId}/${catName}${environmentConfig[environmentType].ensBaseNameExt}`);
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -58878,4 +58889,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>MAFnsya1Tt0imYKBh2Am4jXm+DzGYTGHwaBzwQ3l+C4=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>xQ/XaGgGqjkXbwuEag6pL+1gq06jgi6P6CbOYckOgWCYI2/k6tlhfMTkg1lfjfHndHo+AZSKY1vcOaGqD7m3bA==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>BzZALSgTyD+VHOH7B30lfye3iGLzNxOsTeUyxpSZXEE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>IyHW1p/K+EMCFUXvSUpfTGuNVLAs1/BZiKWbNIer8qttPdb0lUGoUM23qoAUKqVDM1e+rv+2Gz6snhg169qANQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
