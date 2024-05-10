@@ -1,7 +1,10 @@
 
-
+let browserData = null;
 
 export const getBrowserData = () => {
+
+	if (browserData)
+		return browserData;
 
 	// detect browser
 	const isBrave = !!window.navigator['brave']
@@ -37,10 +40,11 @@ export const getBrowserData = () => {
 	const isMyEthereumWallet = isTouchDevice && !!windowEthereum.isTrust && !!windowEthereum.isMetaMask
 	const isOkxWallet = window.okxwallet?.isOkxWallet
 	const isImToken = !!navigator.userAgent.match(/\simToken\//)
+	const isGateWallet = !!window.gatewallet;
 
 	const isMetaMask = isTouchDevice && !!windowEthereum.isMetaMask && !isTrust && !isBrave
 
-	return {
+	browserData = {
 		metaMask: isMetaMask,
 		anyMetamask: !!windowEthereum.isMetaMask && !isTrust && !windowEthereum.isBraveWallet,
 		alphaWallet: isAlphaWallet,
@@ -50,6 +54,9 @@ export const getBrowserData = () => {
 		status: isStatusWallet,
 		imToken: isImToken,
 		brave: isBrave,
-		okx: isOkxWallet
+		okx: isOkxWallet,
+		gateWallet: isGateWallet
 	}
+
+	return browserData;
 }

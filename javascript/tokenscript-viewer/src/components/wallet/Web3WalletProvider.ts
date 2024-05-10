@@ -4,6 +4,7 @@ declare global {
 	interface Window {
 		ethereum: any;
 		okxwallet: any;
+		gatewallet: any;
 	}
 }
 
@@ -385,7 +386,14 @@ class Web3WalletProviderObj {
 		})
 	}*/
 
+	private showLoader(show: boolean){
+		document.getElementsByTagName("app-root")[0].dispatchEvent(new CustomEvent(show ? "showLoader" : "hideLoader"));
+	}
+
 	async WalletConnectV2(checkConnectionOnly: boolean) {
+
+		if (!checkConnectionOnly)
+			this.showLoader(true);
 
 		const walletConnectProvider = await import('./providers/WalletConnectV2Provider')
 
@@ -405,7 +413,7 @@ class Web3WalletProviderObj {
 			// TODO: There is currently a bug in the universal provider that prevents this handler from being called.
 			//  After this is fixed, this should handle the event correctly
 			//  https://github.com/WalletConnect/walletconnect-monorepo/issues/1772
-			//this.client.disconnectWallet()
+			this.disconnectWallet()
 		})
 
 		let preSavedWalletOptions = this.walletOptions
@@ -426,6 +434,8 @@ class Web3WalletProviderObj {
 						rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? walletConnectProvider.WC_DEFAULT_RPC_MAP,
 					})
 				}
+
+				this.showLoader(false);
 
 				connect
 					.then(() => {
