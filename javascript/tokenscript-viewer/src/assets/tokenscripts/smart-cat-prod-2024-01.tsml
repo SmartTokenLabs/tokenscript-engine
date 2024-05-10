@@ -28570,30 +28570,6 @@ const polygonMumbai = /* @__PURE__ */ defineChain({
   },
   testnet: true
 });
-const getTokenBoundClientInstance = (chainId) =&gt; {
-  let chain = void 0;
-  switch (chainId) {
-    case 80001:
-      chain = polygonMumbai;
-      break;
-    case 137:
-      chain = polygon;
-      break;
-  }
-  return new Xn({
-    chainId,
-    chain
-  });
-};
-const setTokenBoundAccount = (tokenboundClient, tokenContract, tokenId) =&gt; {
-  return tokenboundClient.getAccount({ tokenContract, tokenId });
-};
-const fetchCatName = async (uri, tba, tokenId) =&gt; {
-  const catNameRequest = await fetch(`${uri}/name/${tba}/${tokenId}`);
-  const nameResp = await catNameRequest.text();
-  let catNameFormatted = nameResp == null ? void 0 : nameResp.toLowerCase().replace(".thesmartcats.eth", "").replace(".smartcat.eth", "");
-  return catNameFormatted &amp;&amp; catNameFormatted != "null" ? catNameFormatted : void 0;
-};
 const LEVEL_TEXT = {
   1: "Curious Whisker",
   2: "Clever Purrer",
@@ -28621,9 +28597,9 @@ const getLevelLabel = (level) =&gt; {
 };
 const environmentConfig = {
   test: {
-    nameAPIEndPoint: "https://ens.test.smartlayer.network",
+    nameAPIEndPoint: "http://44.217.178.162:8083",
     //nameAPIEndPoint: "http://localhost:8083",
-    ensBaseNameExt: ".smartcat.eth"
+    ensBaseNameExt: ".thesmartcats.eth"
   },
   prod: {
     nameAPIEndPoint: "https://ens.main.smartlayer.network",
@@ -28631,10 +28607,40 @@ const environmentConfig = {
     ensBaseNameExt: ".thesmartcats.eth"
   }
 };
-const environmentType = chainID == 137 ? "prod" : "test";
+const environmentType = Number(chainID) == 137 ? "prod" : "test";
 const TWITTER_SHARE_URL = "https://x.com/intent/tweet?text=";
 const POOL_BASIS = 500n;
 const FEE_BASIS = 400n;
+const getTokenBoundClientInstance = (chainId) =&gt; {
+  let chain = void 0;
+  switch (chainId) {
+    case 80001:
+      chain = polygonMumbai;
+      break;
+    case 137:
+      chain = polygon;
+      break;
+  }
+  return new Xn({
+    chainId,
+    chain
+  });
+};
+const setTokenBoundAccount = (tokenboundClient, tokenContract, tokenId) =&gt; {
+  return tokenboundClient.getAccount({ tokenContract, tokenId });
+};
+const fetchCatName = async (contractAddress, uri, tba, tokenId) =&gt; {
+  var _a2;
+  var catNameRequest;
+  if (environmentType == "prod") {
+    catNameRequest = await fetch(`${uri}/catname/${tba}/${tokenId}`);
+  } else {
+    catNameRequest = await fetch(`${uri}/name/${chainID}/${contractAddress}/${tokenId}`);
+  }
+  const nameResp = await catNameRequest.json();
+  let catNameFormatted = (_a2 = nameResp.result) == null ? void 0 : _a2.toLowerCase().replace(".thesmartcats.eth", "").replace(".smartcat.eth", "");
+  return catNameFormatted &amp;&amp; catNameFormatted != "null" ? catNameFormatted : void 0;
+};
 const ensLookupCache = {};
 async function lookupEnsName(address) {
   if (ensLookupCache[address])
@@ -28658,6 +28664,7 @@ async function getCatName(contractAddress, tokenId) {
   let name = null;
   if (tba) {
     name = await fetchCatName(
+      contractAddress,
       environmentConfig[environmentType].nameAPIEndPoint,
       tba,
       tokenId
@@ -33907,7 +33914,7 @@ function create_if_block_4$6(ctx) {
     }
   };
 }
-function create_if_block_3$9(ctx) {
+function create_if_block_3$a(ctx) {
   let div2;
   let div1;
   let h3;
@@ -34678,7 +34685,7 @@ function create_fragment$y(ctx) {
   );
   let if_block1 = (
     /*catState*/
-    ctx[1] &amp;&amp; create_if_block_3$9(ctx)
+    ctx[1] &amp;&amp; create_if_block_3$a(ctx)
   );
   let if_block2 = (
     /*friendsList*/
@@ -34916,7 +34923,7 @@ function create_fragment$y(ctx) {
             transition_in(if_block1, 1);
           }
         } else {
-          if_block1 = create_if_block_3$9(ctx2);
+          if_block1 = create_if_block_3$a(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
           if_block1.m(div11, t18);
@@ -35855,7 +35862,7 @@ function create_if_block_2$b(ctx) {
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block_3$8, create_else_block_1$5];
+  const if_block_creators = [create_if_block_3$9, create_else_block_1$5];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -35937,7 +35944,7 @@ function create_else_block_1$5(ctx) {
     }
   };
 }
-function create_if_block_3$8(ctx) {
+function create_if_block_3$9(ctx) {
   let div;
   let current;
   let each_value = ensure_array_like(
@@ -37511,7 +37518,7 @@ function create_if_block_2$a(ctx) {
   );
   let if_block2 = (
     /*apiRequestStatus*/
-    ctx[4] !== "success" &amp;&amp; create_if_block_3$7(ctx)
+    ctx[4] !== "success" &amp;&amp; create_if_block_3$8(ctx)
   );
   return {
     c() {
@@ -37596,7 +37603,7 @@ function create_if_block_2$a(ctx) {
         if (if_block2) {
           if_block2.p(ctx2, dirty);
         } else {
-          if_block2 = create_if_block_3$7(ctx2);
+          if_block2 = create_if_block_3$8(ctx2);
           if_block2.c();
           if_block2.m(div, null);
         }
@@ -37700,7 +37707,7 @@ function create_if_block_4$5(ctx) {
     }
   };
 }
-function create_if_block_3$7(ctx) {
+function create_if_block_3$8(ctx) {
   let p;
   let t0;
   let t1;
@@ -37859,14 +37866,15 @@ function instance$l($$self, $$props, $$invalidate) {
       alert(`Your cat has been successfully named ${catName}`);
       return;
     }
-    const challenge = `Registering your catId ${token.tokenId} name to ${catName}`;
+    const fullName = `${catName}${environmentConfig[environmentType].ensBaseNameExt}`;
+    const challenge = `Registering your tokenId ${token.tokenId} name to ${fullName} on chain ${chainId}`;
     tokenscript.personal.sign({ data: challenge }, async function(error, signature) {
       if (error) {
         alert("Something went wrong. Please try again.");
         return;
       }
       const apiStatus = await applySubNameENS(environmentConfig[environmentType].nameAPIEndPoint, catName, chainId, token.contractAddress, token.tokenId, signature);
-      if (apiStatus == "pass") {
+      if (apiStatus === true) {
         setTimeout(
           () =&gt; {
             window.close();
@@ -37880,19 +37888,26 @@ function instance$l($$self, $$props, $$invalidate) {
   };
   async function applySubNameENS(url, catName2, chainId2, contractAddress, tokenId, signature) {
     try {
-      const response = await fetch(`${url}/register/${chainId2}/${contractAddress}/${tokenId}/${catName2}/${signature}`, { method: "POST" });
+      const fullName = `${catName2}${environmentConfig[environmentType].ensBaseNameExt}`;
+      const response = await fetch(`${url}/register/${chainId2}/${fullName}/${tokenId}/${signature}`, { method: "POST" });
+      let data2 = {};
+      try {
+        data2 = await response.json();
+      } catch (e) {
+      }
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        let error = `HTTP error! Status: ${response.status}`;
+        if (data2.error)
+          error += ", " + data2.error;
+        throw new Error(error);
       }
       $$invalidate(4, apiRequestStatus = "success");
-      const responseText = await response.text();
-      console.log("response data", responseText);
-      return responseText;
+      return data2.result === "pass" ? true : data2.result ?? "Unknown error";
     } catch (error) {
       $$invalidate(4, apiRequestStatus = "error");
       console.error("Error during POST request:", error);
+      return error.message;
     }
-    return "fail";
   }
   const checkCatNameAvailability = async (event) =&gt; {
     $$invalidate(1, catName = event.target.value.toLowerCase().replace(/\s+/g, "-").replace(/-{2,}/g, "").replace(/^-+/g, "").replace(/[;'"`\\]/g, ""));
@@ -37915,13 +37930,12 @@ function instance$l($$self, $$props, $$invalidate) {
           return;
         }
         try {
-          console.log("check.. nick", `${environmentConfig[environmentType].nameAPIEndPoint}/checkname/${catName}${environmentConfig[environmentType].ensBaseNameExt}`);
-          const response = await fetch(`${environmentConfig[environmentType].nameAPIEndPoint}/checkname/${catName}${environmentConfig[environmentType].ensBaseNameExt}`);
+          const response = await fetch(`${environmentConfig[environmentType].nameAPIEndPoint}/checkname/${chainId}/${catName}${environmentConfig[environmentType].ensBaseNameExt}`);
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          const isCatNameAvailableResp = await response.text();
-          $$invalidate(2, isCatNameAvailable = isCatNameAvailableResp.toLowerCase() === "available");
+          const isCatNameAvailableResp = await response.json();
+          $$invalidate(2, isCatNameAvailable = isCatNameAvailableResp.result.toLowerCase() === "available");
           $$invalidate(3, isCatNameAvailablePending = false);
         } catch (error) {
           console.error("Error checking cat name availability:", error);
@@ -39198,7 +39212,7 @@ function create_if_block_1$b(ctx) {
       /*result*/
       ctx2[1] === PlayerResult.Lose
     )
-      return create_if_block_3$6;
+      return create_if_block_3$7;
     return create_else_block_1$4;
   }
   let current_block_type = select_block_type(ctx);
@@ -39259,7 +39273,7 @@ function create_else_block_1$4(ctx) {
     }
   };
 }
-function create_if_block_3$6(ctx) {
+function create_if_block_3$7(ctx) {
   let t;
   return {
     c() {
@@ -40390,7 +40404,7 @@ function create_if_block$b(ctx) {
   let if_block4 = (
     /*isPlayerB*/
     (ctx[5] || /*game*/
-    ctx[0].gameState.playerBContract !== ZeroAddress) &amp;&amp; create_if_block_3$5(ctx)
+    ctx[0].gameState.playerBContract !== ZeroAddress) &amp;&amp; create_if_block_3$6(ctx)
   );
   let if_block5 = (
     /*game*/
@@ -40644,7 +40658,7 @@ function create_if_block$b(ctx) {
             transition_in(if_block4, 1);
           }
         } else {
-          if_block4 = create_if_block_3$5(ctx2);
+          if_block4 = create_if_block_3$6(ctx2);
           if_block4.c();
           transition_in(if_block4, 1);
           if_block4.m(div6, null);
@@ -41300,7 +41314,7 @@ function create_if_block_4$4(ctx) {
     }
   };
 }
-function create_if_block_3$5(ctx) {
+function create_if_block_3$6(ctx) {
   let t;
   let catname;
   let current;
@@ -44885,7 +44899,7 @@ function create_each_block$4(ctx) {
     }
   };
 }
-function create_if_block_3$4(ctx) {
+function create_if_block_3$5(ctx) {
   let div;
   let current;
   const loading_icon_slot_template = (
@@ -45409,7 +45423,7 @@ function create_fragment$d(ctx) {
   }
   let if_block3 = (
     /*loading*/
-    ctx[5] &amp;&amp; create_if_block_3$4(ctx)
+    ctx[5] &amp;&amp; create_if_block_3$5(ctx)
   );
   let if_block4 = (
     /*showClear*/
@@ -45752,7 +45766,7 @@ function create_fragment$d(ctx) {
             transition_in(if_block3, 1);
           }
         } else {
-          if_block3 = create_if_block_3$4(ctx2);
+          if_block3 = create_if_block_3$5(ctx2);
           if_block3.c();
           transition_in(if_block3, 1);
           if_block3.m(div2, t5);
@@ -50504,7 +50518,7 @@ function create_if_block$6(ctx) {
       /*game*/
       ctx2[0].gameState.outcome &gt; 0
     )
-      return create_if_block_3$3;
+      return create_if_block_3$4;
     return create_else_block$2;
   }
   let current_block_type = select_block_type_2(ctx);
@@ -50989,7 +51003,7 @@ function create_else_block$2(ctx) {
     }
   };
 }
-function create_if_block_3$3(ctx) {
+function create_if_block_3$4(ctx) {
   let div;
   let strong;
   let t1;
@@ -51230,7 +51244,7 @@ function create_if_block_1$4(ctx) {
   let if_block;
   let if_block_anchor;
   let current;
-  const if_block_creators = [create_if_block_2$4, create_if_block_3$2];
+  const if_block_creators = [create_if_block_2$4, create_if_block_3$3];
   const if_blocks = [];
   function select_block_type(ctx2, dirty) {
     if (
@@ -51309,7 +51323,7 @@ function create_if_block_1$4(ctx) {
     }
   };
 }
-function create_if_block_3$2(ctx) {
+function create_if_block_3$3(ctx) {
   let strong;
   return {
     c() {
@@ -53612,7 +53626,7 @@ function create_else_block$1(ctx) {
   let dispose;
   let if_block = (
     /*discrete*/
-    ctx[7] &amp;&amp; create_if_block_3$1(ctx)
+    ctx[7] &amp;&amp; create_if_block_3$2(ctx)
   );
   return {
     c() {
@@ -53683,7 +53697,7 @@ function create_else_block$1(ctx) {
         if (if_block) {
           if_block.p(ctx2, dirty);
         } else {
-          if_block = create_if_block_3$1(ctx2);
+          if_block = create_if_block_3$2(ctx2);
           if_block.c();
           if_block.m(div1, t);
         }
@@ -54042,7 +54056,7 @@ function create_if_block$3(ctx) {
     }
   };
 }
-function create_if_block_3$1(ctx) {
+function create_if_block_3$2(ctx) {
   let div1;
   let div0;
   let span;
@@ -55821,38 +55835,39 @@ function create_if_block$1(ctx) {
   let t0;
   let gamelistitem;
   let t1;
+  let t2;
   let div1;
   let form;
   let gamemovesform;
   let updating_playerMoves;
-  let t2;
+  let t3;
   let div2;
   let insufficientbalance;
-  let t3;
-  let button;
   let t4;
-  let button_disabled_value;
+  let button;
   let t5;
-  let battlerules;
+  let button_disabled_value;
   let t6;
+  let battlerules;
+  let t7;
   let div4;
   let h5;
-  let t8;
   let t9;
-  let div3;
   let t10;
-  let t11_value = new Date(parseInt(
+  let div3;
+  let t11;
+  let t12_value = new Date(parseInt(
     /*game*/
     ctx[0].gameState.createdTime
   ) * 1e3).toLocaleString() + "";
-  let t11;
+  let t12;
   let current;
   let mounted;
   let dispose;
   let if_block0 = (
     /*game*/
     ctx[0].gameState.stake &gt; /*balance*/
-    ctx[3] &amp;&amp; create_if_block_2$1()
+    ctx[3] &amp;&amp; create_if_block_3$1()
   );
   gamelistitem = new GameListItem({
     props: { game: (
@@ -55860,6 +55875,8 @@ function create_if_block$1(ctx) {
       ctx[0]
     ), opponentMode: 2 }
   });
+  let if_block1 = !/*game*/
+  ctx[0].gameState.isPublic &amp;&amp; create_if_block_2$1();
   function gamemovesform_playerMoves_binding(value) {
     ctx[7](value);
   }
@@ -55897,7 +55914,7 @@ function create_if_block$1(ctx) {
       )
     }
   });
-  let if_block1 = (
+  let if_block2 = (
     /*game*/
     ctx[0].gameState.playerBContract !== ZeroAddress &amp;&amp; create_if_block_1$1(ctx)
   );
@@ -55909,28 +55926,31 @@ function create_if_block$1(ctx) {
       t0 = space();
       create_component(gamelistitem.$$.fragment);
       t1 = space();
+      if (if_block1)
+        if_block1.c();
+      t2 = space();
       div1 = element("div");
       form = element("form");
       create_component(gamemovesform.$$.fragment);
-      t2 = space();
+      t3 = space();
       div2 = element("div");
       create_component(insufficientbalance.$$.fragment);
-      t3 = space();
+      t4 = space();
       button = element("button");
-      t4 = text("Confirm moves");
-      t5 = space();
-      create_component(battlerules.$$.fragment);
+      t5 = text("Confirm moves");
       t6 = space();
+      create_component(battlerules.$$.fragment);
+      t7 = space();
       div4 = element("div");
       h5 = element("h5");
       h5.textContent = "Details";
-      t8 = space();
-      if (if_block1)
-        if_block1.c();
       t9 = space();
+      if (if_block2)
+        if_block2.c();
+      t10 = space();
       div3 = element("div");
-      t10 = text("Created at: ");
-      t11 = text(t11_value);
+      t11 = text("Created at: ");
+      t12 = text(t12_value);
       set_style(div0, "margin", "0 15px");
       attr(form, "id", "join-form");
       attr(div1, "class", "moves-form");
@@ -55949,27 +55969,30 @@ function create_if_block$1(ctx) {
       append(div0, t0);
       mount_component(gamelistitem, div0, null);
       insert(target, t1, anchor);
+      if (if_block1)
+        if_block1.m(target, anchor);
+      insert(target, t2, anchor);
       insert(target, div1, anchor);
       append(div1, form);
       mount_component(gamemovesform, form, null);
-      insert(target, t2, anchor);
+      insert(target, t3, anchor);
       insert(target, div2, anchor);
       mount_component(insufficientbalance, div2, null);
-      append(div2, t3);
+      append(div2, t4);
       append(div2, button);
-      append(button, t4);
-      insert(target, t5, anchor);
-      mount_component(battlerules, target, anchor);
+      append(button, t5);
       insert(target, t6, anchor);
+      mount_component(battlerules, target, anchor);
+      insert(target, t7, anchor);
       insert(target, div4, anchor);
       append(div4, h5);
-      append(div4, t8);
-      if (if_block1)
-        if_block1.m(div4, null);
       append(div4, t9);
+      if (if_block2)
+        if_block2.m(div4, null);
+      append(div4, t10);
       append(div4, div3);
-      append(div3, t10);
       append(div3, t11);
+      append(div3, t12);
       current = true;
       if (!mounted) {
         dispose = [
@@ -55993,7 +56016,7 @@ function create_if_block$1(ctx) {
         if (if_block0)
           ;
         else {
-          if_block0 = create_if_block_2$1();
+          if_block0 = create_if_block_3$1();
           if_block0.c();
           if_block0.m(div0, t0);
         }
@@ -56007,6 +56030,19 @@ function create_if_block$1(ctx) {
         gamelistitem_changes.game = /*game*/
         ctx2[0];
       gamelistitem.$set(gamelistitem_changes);
+      if (!/*game*/
+      ctx2[0].gameState.isPublic) {
+        if (if_block1)
+          ;
+        else {
+          if_block1 = create_if_block_2$1();
+          if_block1.c();
+          if_block1.m(t2.parentNode, t2);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
+      }
       const gamemovesform_changes = {};
       if (!updating_playerMoves &amp;&amp; dirty &amp; /*playerBMoves*/
       4) {
@@ -56046,31 +56082,31 @@ function create_if_block$1(ctx) {
         /*game*/
         ctx2[0].gameState.playerBContract !== ZeroAddress
       ) {
-        if (if_block1) {
-          if_block1.p(ctx2, dirty);
+        if (if_block2) {
+          if_block2.p(ctx2, dirty);
           if (dirty &amp; /*game*/
           1) {
-            transition_in(if_block1, 1);
+            transition_in(if_block2, 1);
           }
         } else {
-          if_block1 = create_if_block_1$1(ctx2);
-          if_block1.c();
-          transition_in(if_block1, 1);
-          if_block1.m(div4, t9);
+          if_block2 = create_if_block_1$1(ctx2);
+          if_block2.c();
+          transition_in(if_block2, 1);
+          if_block2.m(div4, t10);
         }
-      } else if (if_block1) {
+      } else if (if_block2) {
         group_outros();
-        transition_out(if_block1, 1, 1, () =&gt; {
-          if_block1 = null;
+        transition_out(if_block2, 1, 1, () =&gt; {
+          if_block2 = null;
         });
         check_outros();
       }
       if ((!current || dirty &amp; /*game*/
-      1) &amp;&amp; t11_value !== (t11_value = new Date(parseInt(
+      1) &amp;&amp; t12_value !== (t12_value = new Date(parseInt(
         /*game*/
         ctx2[0].gameState.createdTime
       ) * 1e3).toLocaleString() + ""))
-        set_data(t11, t11_value);
+        set_data(t12, t12_value);
     },
     i(local) {
       if (current)
@@ -56079,7 +56115,7 @@ function create_if_block$1(ctx) {
       transition_in(gamemovesform.$$.fragment, local);
       transition_in(insufficientbalance.$$.fragment, local);
       transition_in(battlerules.$$.fragment, local);
-      transition_in(if_block1);
+      transition_in(if_block2);
       current = true;
     },
     o(local) {
@@ -56087,34 +56123,37 @@ function create_if_block$1(ctx) {
       transition_out(gamemovesform.$$.fragment, local);
       transition_out(insufficientbalance.$$.fragment, local);
       transition_out(battlerules.$$.fragment, local);
-      transition_out(if_block1);
+      transition_out(if_block2);
       current = false;
     },
     d(detaching) {
       if (detaching) {
         detach(div0);
         detach(t1);
-        detach(div1);
         detach(t2);
+        detach(div1);
+        detach(t3);
         detach(div2);
-        detach(t5);
         detach(t6);
+        detach(t7);
         detach(div4);
       }
       if (if_block0)
         if_block0.d();
       destroy_component(gamelistitem);
+      if (if_block1)
+        if_block1.d(detaching);
       destroy_component(gamemovesform);
       destroy_component(insufficientbalance);
       destroy_component(battlerules, detaching);
-      if (if_block1)
-        if_block1.d();
+      if (if_block2)
+        if_block2.d();
       mounted = false;
       run_all(dispose);
     }
   };
 }
-function create_if_block_2$1(ctx) {
+function create_if_block_3$1(ctx) {
   let div;
   return {
     c() {
@@ -56128,6 +56167,24 @@ function create_if_block_2$1(ctx) {
     d(detaching) {
       if (detaching) {
         detach(div);
+      }
+    }
+  };
+}
+function create_if_block_2$1(ctx) {
+  let small;
+  return {
+    c() {
+      small = element("small");
+      small.textContent = "Note: This is a private game, which will not give you entries to the prize pool";
+      set_style(small, "color", "red");
+    },
+    m(target, anchor) {
+      insert(target, small, anchor);
+    },
+    d(detaching) {
+      if (detaching) {
+        detach(small);
       }
     }
   };
@@ -57922,14 +57979,14 @@ function instance$1($$self, $$props, $$invalidate) {
   async function loadCompletedGameState(gameId, status) {
     if (status &gt; Status.Accepted) {
       console.log("Game is now revealed or cancelled, fetching final state");
-      if (gameId === selectedGame.gameState.gameId) {
+      if (selectedGame &amp;&amp; gameId === selectedGame.gameState.gameId) {
         $$invalidate(5, selectedGame = {
           ...selectedGame,
           gameState: await gameClient2.getGame(gameId)
         });
         console.log("Game state:", selectedGame.gameState);
       }
-      gameClient2.setLocalStateCompleted(selectedGame.gameState.playerAHash, Number(selectedGame.gameState.completedTime));
+      gameClient2.setLocalStateCompleted(selectedGame.gameState.playerAHash, selectedGame ? Number(selectedGame.gameState.completedTime) : Math.round(Date.now() / 1e3));
       gameClient2.fetchBalances();
       return true;
     }
@@ -58825,4 +58882,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>T7icD8UJdZDr+k59JeLlhGYmTO2BTxURSAIeTTZ/eQo=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>dWnipr9y/g23UUyikU3CgqTKptawa2sMYk/hBBygH2og/LzEbDHmDYJpeb0jxpousu+bkMhoY/kVd979lnFPGQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>o9M6fvmpyVHsUq6fWJjouE58EjmVBYAsGOaWnUZsUww=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>xC5kXoPrTucxIuIPxut9Ds/RUB4hushRm06E9UuQYUHt/Fs1DhlfHH9GJDDt0Zcrrep//dOB97/Q7yGakFI3fw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
