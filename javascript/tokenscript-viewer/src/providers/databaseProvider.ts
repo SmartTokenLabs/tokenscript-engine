@@ -1,4 +1,4 @@
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
+import {ITokenCollection, TokenType} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import Dexie from "dexie";
 import {TokenScriptSource} from "../components/app/app";
 import {IAttestationData} from "@tokenscript/engine-js/src/attestation/IAttestationStorageAdapter";
@@ -6,6 +6,7 @@ import {IAttestationData} from "@tokenscript/engine-js/src/attestation/IAttestat
 export interface TSTokenCacheTokens {
 	chainId: number,
 	collectionId: string,
+	tokenType: Omit<TokenType, "eas">,
 	ownerAddress: string,
 	data: ITokenCollection,
 	dt: number
@@ -43,8 +44,8 @@ class TSViewerDb extends Dexie {
 	constructor() {
 		super("TSViewer");
 
-		this.version(5).stores({
-			tokens: `&[chainId+collectionId+ownerAddress], dt`,
+		this.version(6).stores({
+			tokens: `&[chainId+collectionId+tokenType+ownerAddress], dt`,
 			tokenMeta: `&[chainId+collectionId], dt`,
 			myTokenScripts: `&tokenScriptId`,
 			attestations: `&[collectionId+tokenId]`,

@@ -63,6 +63,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			const token = await dbProvider.tokens.where({
 				chainId: initialTokenDetails.chainId,
 				collectionId: initialTokenDetails.contractAddress.toLowerCase(),
+				tokenType: initialTokenDetails.tokenType,
 				ownerAddress: ownerAddress.toLowerCase()
 			}).first();
 
@@ -84,6 +85,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			await dbProvider.tokens.put({
 				chainId: token.chainId,
 				collectionId: token.contractAddress.toLowerCase(),
+				tokenType: token.tokenType,
 				ownerAddress: ownerAddress.toLowerCase(),
 				data: token,
 				dt: Date.now()
