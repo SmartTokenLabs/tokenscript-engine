@@ -8,6 +8,11 @@ header {
 	color: #333;
 }
 
+sts-viewer {
+	height: 100dvh;
+	overflow-y: scroll;
+}
+
 .token-viewer {
 	max-width: 650px;
 	width: 100%;
