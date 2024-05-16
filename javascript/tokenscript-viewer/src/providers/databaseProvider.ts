@@ -60,6 +60,7 @@ class TSViewerDb extends Dexie {
 			console.warn("Dexie database open error, initializing new DB");
 			await this.cloneDatabase(this.name, `${this.name}-backup-${Date.now()}`);
 			await this.delete();
+			await this.open();
 		}
 	}
 

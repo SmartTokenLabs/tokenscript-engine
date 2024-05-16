@@ -42,7 +42,12 @@ export class LocalStorageProxy {
 			return {};
 		}
 
-		const adapter = this.tokenscript.getEngine().getLocalStorageAdapter();
-		return await adapter.getAllItems(this.tsId);
+		try {
+			const adapter = this.tokenscript.getEngine().getLocalStorageAdapter();
+			return await adapter.getAllItems(this.tsId);
+		} catch (e){
+			console.warn("local storage fetch failed", e);
+			return {};
+		}
 	}
 }
