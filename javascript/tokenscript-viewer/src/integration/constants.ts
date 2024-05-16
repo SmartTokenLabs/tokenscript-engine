@@ -11,10 +11,12 @@ export enum ChainID {
 	OPTIMISM = 10,
 	BSC = 56,
 	BSC_TESTNET = 97,
-	GOERLI = 5,
+	GOERLI = 5, // TODO: Remove soon
 	SEPOLIA = 11155111,
+	HOLESKY = 17000,
 	KOVAN = 42,
-	MUMBAI = 80001,
+	MUMBAI = 80001, // TODO: Remove soon
+	AMOY = 80002,
 	AVALANCH = 43114,
 	FANTOM = 250,
 	KLAYTN = 8217,
@@ -27,11 +29,13 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.POLYGON]: "polygon",
 	[ChainID.ARBITRUM]: "arbitrum",
 	[ChainID.OPTIMISM]: "optimism",
-	[ChainID.GOERLI]: "goerli",
+	[ChainID.GOERLI]: "goerli", // TODO: Remove soon
 	[ChainID.SEPOLIA]: "sepolia",
+	[ChainID.HOLESKY]: 'holesky',
 	[ChainID.KOVAN]: "kovan",
 	[ChainID.BSC]: "bsc",
-	[ChainID.MUMBAI]: "mumbai",
+	[ChainID.MUMBAI]: "mumbai", // TODO: Remove soon
+	[ChainID.AMOY]: "amoy",
 	[ChainID.AVALANCH]: "avalanche",
 	[ChainID.FANTOM]: "fantom",
 	[ChainID.KLAYTN]: "cypress",
@@ -41,10 +45,12 @@ export const CHAIN_MAP: ChainMapInterface = {
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.ETHEREUM]: "Ethereum Mainnet",
-	[ChainID.GOERLI]: "Goerli (Ethereum Testnet)",
+	[ChainID.GOERLI]: "Goerli (Ethereum Testnet)", // TODO: Remove soon
 	[ChainID.SEPOLIA]: "Sepolia (Ethereum Testnet)",
+	[ChainID.HOLESKY]: 'Holesky (Ethereum Testnet)',
 	[ChainID.POLYGON]: "Polygon",
-	[ChainID.MUMBAI]: "Mumbai (Polygon Testnet)",
+	[ChainID.MUMBAI]: "Mumbai (Polygon Testnet)", // TODO: Remove soon
+	[ChainID.AMOY]: "Amoy (Polygon Testnet)",
 	[ChainID.ARBITRUM]: "Arbitrum",
 	[ChainID.OPTIMISM]: "Optimism",
 	[ChainID.BSC]: "Binance Smart Chain",
@@ -59,7 +65,7 @@ export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
   [ChainID.ETHEREUM]: '0xA7b39296258348C78294F95B872b282326A97BDF',
   [ChainID.SEPOLIA]: '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0',
   [ChainID.POLYGON]: '0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7',
-  [ChainID.MUMBAI]: '0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797',
+  [ChainID.MUMBAI]: '0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797', // TODO: Remove soon & add amoy
 };
 
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
@@ -67,6 +73,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'https://mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
 		explorer: 'https://etherscan.com/tx/'
 	},
+	// TODO: Remove soon
 	[ChainID.GOERLI]: {
 		rpc: 'https://eth-goerli.g.alchemy.com/v2/yVhq9zPJorAWsw-F87fEabSUl7cCU6z4',
 		explorer: 'https://goerli.etherscan.io/tx/'
@@ -75,6 +82,10 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'https://sepolia.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
 		explorer: 'https://sepolia.etherscan.io/tx/'
 	},
+	[ChainID.HOLESKY]: {
+		rpc: 'https://holesky.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
+		explorer: 'https://holesky.etherscan.io/tx/'
+	},
 	[ChainID.POLYGON]: {
 		rpc: [
 			'https://polygon-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
@@ -82,9 +93,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		],
 		explorer: 'https://polygonscan.com/tx/'
 	},
+	// TODO: Remove soon
 	[ChainID.MUMBAI]: {
 		rpc: 'https://polygon-mumbai.g.alchemy.com/v2/rVI6pOV4irVsrw20cJxc1fxK_1cSeiY0',
 		explorer: 'https://mumbai.polygonscan.com/tx/'
+	},
+	[ChainID.AMOY]: {
+		rpc: 'https://polygon-amoy.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
+		explorer: 'https://amoy.polygonscan.com/tx/'
 	},
 	[ChainID.BSC]: {
 		rpc: 'https://bsc-dataseed.binance.org/',
