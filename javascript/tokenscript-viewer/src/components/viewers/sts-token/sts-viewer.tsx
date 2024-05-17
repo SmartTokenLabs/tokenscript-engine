@@ -65,6 +65,8 @@ export class SmartTokenStoreViewer {
 	@State()
 	fullWidth: boolean = false;
 
+	private fungible = false;
+
 	private overflowDialog: HTMLActionOverflowModalElement;
 
 	@Event({
@@ -132,8 +134,14 @@ export class SmartTokenStoreViewer {
 			if (tokenId && tokenId.toLowerCase() === "erc20")
 				tokenId = null;
 
-			const slnAdapter = new SLNAdapter();
-			this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())
+			let slnAdapter;
+
+			if (tokenId === null) {
+				this.fungible = true;
+			} else {
+				slnAdapter = new SLNAdapter();
+				this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())
+			}
 
 			if (this.slnAttestation) {
 				this.isAttestation = true;
@@ -194,7 +202,11 @@ export class SmartTokenStoreViewer {
 			let selectedOrigin: ITokenCollection;
 
 			for (const origin of origins){
-				if (origin.chainId === chain && origin.contractAddress.toLowerCase() === contract.toLowerCase()){
+				if (
+					origin.chainId === chain &&
+					origin.contractAddress.toLowerCase() === contract.toLowerCase() &&
+					((this.fungible && origin.tokenType === "erc20") || (!this.fungible && origin.tokenType !== "erc20"))
+				){
 					selectedOrigin = {
 						...this.collectionDetails,
 						...origin

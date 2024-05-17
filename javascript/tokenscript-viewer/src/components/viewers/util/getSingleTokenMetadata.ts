@@ -17,9 +17,12 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 		contractAddress: contract,
 	}
 
+	const meta = await discoveryAdapter.getCollectionMeta(selectedOrigin, CHAIN_MAP[chain])
+
 	selectedOrigin = {
 		...selectedOrigin,
-		...await discoveryAdapter.getCollectionMeta(selectedOrigin, CHAIN_MAP[chain])
+		...meta,
+		name: meta.title
 	};
 
 	if (selectedOrigin.tokenType !== "erc20") {
@@ -60,7 +63,6 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 		console.log("Fungible token data: ", tokenData);
 
-		selectedOrigin.name = tokenData[0].title;
 		selectedOrigin.balance = tokenData.length && tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
 	}
 
