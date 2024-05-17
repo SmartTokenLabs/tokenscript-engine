@@ -60,7 +60,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return false;
 
 		try {
-			const token = await dbProvider.tokens.where({
+			const token = await dbProvider.tokens2.where({
 				chainId: initialTokenDetails.chainId,
 				collectionId: initialTokenDetails.contractAddress.toLowerCase(),
 				tokenType: initialTokenDetails.tokenType,
@@ -82,7 +82,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return;
 
 		try {
-			await dbProvider.tokens.put({
+			await dbProvider.tokens2.put({
 				chainId: token.chainId,
 				collectionId: token.contractAddress.toLowerCase(),
 				tokenType: token.tokenType,
