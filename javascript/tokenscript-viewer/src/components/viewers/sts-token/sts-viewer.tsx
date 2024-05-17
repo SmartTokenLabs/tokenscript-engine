@@ -363,7 +363,7 @@ export class SmartTokenStoreViewer {
 								</div>
 								<div class="info-container">
 									<div class="main-info">
-										<h1>{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
+										<h1 class="token-title">{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
 										<div class="owner-count">
 											<span style={{color: '#3D45FB'}}>
 												{this.collectionDetails.tokenType === "erc20" ?

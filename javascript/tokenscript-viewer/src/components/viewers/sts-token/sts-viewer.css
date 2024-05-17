@@ -99,6 +99,11 @@ sts-viewer:has(> card-popover .open) {
 	letter-spacing: 0.24px;
 }
 
+.token-title, .owner-count {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .collection-details h4 {
 	font-size: 14px;
 	margin: 0;
