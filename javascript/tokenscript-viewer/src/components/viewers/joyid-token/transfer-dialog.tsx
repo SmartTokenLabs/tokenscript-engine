@@ -105,7 +105,6 @@ export class TransferDialog {
 				this.tokenDetails.collectionDetails.contractAddress,
 				method,
 				args,
-				[],
 				null,
 				true,
 				async (data: ITransactionStatus) => {

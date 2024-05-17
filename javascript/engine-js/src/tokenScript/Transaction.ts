@@ -5,13 +5,20 @@ import {Argument} from "./data/function/Argument";
 import {Attributes} from "./Attributes";
 import {EthUtils} from "../ethereum/EthUtils";
 
-interface ITransactionInfo {
+export interface ITransactionInfo {
 	as: string,
 	contract: Contract,
 	contractName: string,
 	function: string
 	args: Argument[],
-	value?: Argument
+	value?: Argument,
+	paymaster?: IPaymasterInfo
+}
+
+export interface IPaymasterInfo {
+	name: string,
+	url: string,
+	messagePrefix: string
 }
 
 /**
@@ -41,13 +48,16 @@ export class Transaction {
 
 		let as = EthUtils.tokenScriptOutputToEthers(transInfo[0].getAttribute("as"));
 
+		const paymaster = this.getPaymasterDetails(transInfo[0]);
+
 		this.transaction = {
 			as: as,
 			contract: this.tokenScript.getContractByName(contractName),
 			contractName: contractName,
 			function: transInfo[0].getAttribute("function"),
 			args: new Arguments(this.tokenScript, transInfo[0], this.localAttrContext).getArguments(),
-			value: this.getValueArg(transInfo[0])
+			value: this.getValueArg(transInfo[0]),
+			paymaster
 		};
 	}
 
@@ -66,6 +76,28 @@ export class Transaction {
 			return null;
 
 		return new Argument(this.tokenScript, valueElem[0], "uint256", this.localAttrContext);
+	}
+
+	private getPaymasterDetails(transInfo: Element): null | IPaymasterInfo {
+
+		const name = transInfo.getAttribute("paymaster");
+
+		if (!name)
+			return null;
+
+		const paymasterElems = this.tokenScript.tokenDef.getElementsByTagName("ts:paymaster");
+
+		for (let i=0; i<paymasterElems.length; i++){
+			if (paymasterElems[i].getAttribute("name") === name)
+				return {
+					name,
+					url: paymasterElems[i].getAttribute("url"),
+					messagePrefix: paymasterElems[i].getAttribute("messagePrefix")
+				}
+		}
+
+		console.warn(`Paymaster definition '${name}' was not found`);
+		return null;
 	}
 
 	public getTransactionInfo() {

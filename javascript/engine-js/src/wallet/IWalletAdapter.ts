@@ -1,6 +1,7 @@
 import {EventLog, Log} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {IChainConfig} from "./EthersAdapter";
+import {IPaymasterInfo} from "../tokenScript/Transaction";
 
 export interface RpcRequest {
 	jsonrpc: "2.0";
@@ -42,11 +43,11 @@ export interface IWalletAdapter {
 		contractAddr: string,
 		method: string,
 		args: any[],
-		outputTypes: string[],
 		value?: BigInt,
 		waitForConfirmation?: boolean,
 		listener?: ITransactionListener,
-		errorAbi?: any[]
+		errorAbi?: any[],
+		paymaster?: IPaymasterInfo
 	): Promise<any>;
 	getChain(): Promise<number>;
 	getRpcUrls(chainId: number): string[];

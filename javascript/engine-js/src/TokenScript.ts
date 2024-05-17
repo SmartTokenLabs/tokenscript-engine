@@ -815,7 +815,7 @@ export class TokenScript {
 
 			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
-			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, ethValue, waitForConfirmation, listener, errorAbi, transInfo.paymaster);
 
 		} catch (e){
 

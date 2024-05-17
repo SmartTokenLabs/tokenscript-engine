@@ -1,7 +1,17 @@
 import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
-import {Contract, ContractRunner, ContractTransaction, ethers, EventLog, FetchRequest, Network} from "ethers";
+import {
+	Contract,
+	ContractRunner,
+	ContractTransaction,
+	ethers,
+	EventLog,
+	FetchRequest, Fragment,
+	NamedFragment,
+	Network
+} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
+import {IPaymasterInfo} from "../tokenScript/Transaction";
 
 export interface IChainConfig {
 	rpc: string|string[],
@@ -48,16 +58,26 @@ export class EthersAdapter implements IWalletAdapter {
 		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
 	}
 
-	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
+	async sendTransaction(chain: number, contractAddr: string, method: string, args: Fragment[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = [], paymaster?: IPaymasterInfo){
 
 		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
+
+		if (paymaster){
+			try {
+				return await this.sendUsingPaymaster(chain, contractAddr, method, args, listener, errorAbi, paymaster);
+			} catch (e){
+				console.log("Paymaster submission failed");
+				console.error(e);
+				// TODO: Handle abort
+			}
+		}
 
 		await this.switchChain(chain);
 
 		// TODO: if no method is set, send raw transaction? Is this allowed?
 		// TODO: handle no-method transaction
 
-		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, value ? "payable" : "nonpayable", errorAbi);
+		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, [], value ? "payable" : "nonpayable", errorAbi);
 
 		const overrides: any = {};
 
@@ -127,6 +147,88 @@ export class EthersAdapter implements IWalletAdapter {
 			});
 
 		return tx;
+	}
+
+	private async sendUsingPaymaster(chain: number, contract: string, method: string, args: any[], listener?: ITransactionListener, errorAbi: any[] = [], paymaster?: IPaymasterInfo){
+
+		// TODO: Check paymaster availability
+
+		const abiInput = args.map((arg: any) => { const nArg = {...arg}; delete nArg.value; return nArg; });
+
+		const argsType = args.map((arg: any) => arg.type);
+		const argsData = args.map((arg: any) => arg.value);
+
+		// Remove signature argument from end
+		argsType.pop();
+		argsData.pop();
+
+		// Encode data without the signature argument but method ID MUST be calculated with the signature argument
+		const callData = ethers.id(`feedCat(${args.map((arg: any) => arg.type).join(",")})`).substring(0, 10) +
+								ethers.AbiCoder.defaultAbiCoder().encode(argsType, argsData).substring(2);
+		// Get user signature
+		const sig = await this.addPaymasterSignature(contract, callData);
+
+		// Add signature to args
+		argsData.push(ethers.AbiCoder.defaultAbiCoder().encode(['bytes', 'uint256'], [sig.signature, sig.expiry]));
+
+		// Send the request to the server
+		const data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
+			chain,
+			contract,
+			method,
+			args: argsData,
+			abiInput,
+			signature: sig.signature,
+			sigMsg: sig.msg
+		});
+
+		console.log("TX Submitted", data);
+
+		// Check status in a loop
+
+		// Fetch confirmed TX and return
+
+	}
+
+	private async paymasterApiRequest(url: string, method: "get"|"post", requestData?: any){
+
+		const headers: any = {
+			"Content-type": "application/json",
+			"Accept": "application/json",
+		};
+
+		const res = await fetch(url, {
+			method,
+			headers,
+			body: requestData ? JSON.stringify(requestData): undefined
+		});
+
+		let data: any;
+
+		try {
+			data = await res.json();
+		} catch (e: any){
+
+		}
+
+		if (res.status > 299 || res.status < 200){
+			if (res.status === 403)
+				throw new Error("Authorisation failed");
+			throw new Error("HTTP Request failed:" + (data?.message ?? res.statusText ));
+		}
+
+		return data;
+	}
+
+	private async addPaymasterSignature(contractAddr: string, callData: string){
+
+		const expiry = Math.round(Date.now() / 1000) + 3600;
+
+		const msg = `Interact with SmartDragon, contract ${contractAddr.toLowerCase()}, call ${ethers.keccak256(callData)}, expiring ${expiry}`;
+
+		const signature = await this.signPersonalMessage(msg);
+
+		return {msg, signature, expiry};
 	}
 
 	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]|any[], stateMutability: string, errorAbi: any[] = []){
