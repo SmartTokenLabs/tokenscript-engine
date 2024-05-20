@@ -69,6 +69,7 @@ export class EthersAdapter implements IWalletAdapter {
 				console.log("Paymaster submission failed");
 				console.error(e);
 				// TODO: Handle abort
+				return; // TODO: Only fallback for specific status codes
 			}
 		}
 
@@ -171,12 +172,18 @@ export class EthersAdapter implements IWalletAdapter {
 		// Add signature to args
 		argsData.push(ethers.AbiCoder.defaultAbiCoder().encode(['bytes', 'uint256'], [sig.signature, sig.expiry]));
 
+		console.log(argsData);
+
 		// Send the request to the server
 		const data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
 			chain,
 			contract,
 			method,
-			args: argsData,
+			args: argsData.map((arg) => {
+				if (typeof arg === "bigint")
+					arg = arg.toString()
+				return arg;
+			}),
 			abiInput,
 			signature: sig.signature,
 			sigMsg: sig.msg
@@ -184,9 +191,9 @@ export class EthersAdapter implements IWalletAdapter {
 
 		console.log("TX Submitted", data);
 
-		// Check status in a loop
+		// TODO: Check status in a loop
 
-		// Fetch confirmed TX and return
+		// TODO: Fetch confirmed TX and return
 
 	}
 
