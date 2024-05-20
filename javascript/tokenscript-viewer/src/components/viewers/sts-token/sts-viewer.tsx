@@ -355,7 +355,7 @@ export class SmartTokenStoreViewer {
 			<Host>
 				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 				<div class={"ts-token-container token-viewer " + (this.fullWidth ? 'full-width' : '')}>
-					{!this.isAttestation && this.collectionDetails && (
+					{!this.isAttestation && this.tokenScript && (
 						<div>
 							<div class="details-container">
 								<div class="image-container">
