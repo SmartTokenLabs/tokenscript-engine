@@ -199,9 +199,10 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return false
 
 		try {
-			const tokenMeta = await dbProvider.tokenMeta.where({
+			const tokenMeta = await dbProvider.tokenMeta2.where({
 				chainId: token.chainId,
 				collectionId: token.contractAddress.toLowerCase(),
+				tokenType: token.tokenType
 			}).first();
 
 			if (tokenMeta && Date.now() < tokenMeta.dt + (COLLECTION_CACHE_TTL * 1000))
@@ -219,9 +220,10 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			return;
 
 		try {
-			await dbProvider.tokenMeta.put({
+			await dbProvider.tokenMeta2.put({
 				chainId: token.chainId,
 				collectionId: token.contractAddress.toLowerCase(),
+				tokenType: token.tokenType,
 				data,
 				dt: Date.now()
 			});

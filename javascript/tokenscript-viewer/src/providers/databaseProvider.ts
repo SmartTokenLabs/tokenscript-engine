@@ -15,6 +15,7 @@ export interface TSTokenCacheTokens {
 export interface TSTokenCacheMeta {
 	chainId: number,
 	collectionId: string,
+	tokenType: Omit<TokenType, "eas">,
 	data: any,
 	dt: number
 }
@@ -36,7 +37,7 @@ export interface TokenScriptLocalStorage {
 class TSViewerDb extends Dexie {
 
 	tokens2!: Dexie.Table<TSTokenCacheTokens, string>;
-	tokenMeta!: Dexie.Table<TSTokenCacheMeta, string>;
+	tokenMeta2!: Dexie.Table<TSTokenCacheMeta, string>;
 	myTokenScripts!: Dexie.Table<TokenScriptsMeta, string>;
 	attestations!: Dexie.Table<IAttestationData, string>;
 	tsLocalStorage!: Dexie.Table<TokenScriptLocalStorage, string>;
@@ -44,9 +45,9 @@ class TSViewerDb extends Dexie {
 	constructor() {
 		super("TSViewer");
 
-		this.version(6).stores({
+		this.version(7).stores({
 			tokens2: `&[chainId+collectionId+tokenType+ownerAddress], dt`,
-			tokenMeta: `&[chainId+collectionId], dt`,
+			tokenMeta2: `&[chainId+collectionId+tokenType], dt`,
 			myTokenScripts: `&tokenScriptId`,
 			attestations: `&[collectionId+tokenId]`,
 			tsLocalStorage: `&[tokenScriptId+key], tokenScriptId`
