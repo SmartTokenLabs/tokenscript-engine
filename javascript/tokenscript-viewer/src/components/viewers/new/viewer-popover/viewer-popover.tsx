@@ -1,10 +1,11 @@
-import {Component, h, State, Element, Method, Host, Event, EventEmitter, JSX} from "@stencil/core";
+import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, State} from "@stencil/core";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {getCardButtonClass} from "../../util/getCardButtonClass";
 import {handleTransactionError, showTransactionNotification} from "../../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
+import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
 
 @Component({
 	tag: 'viewer-popover',
@@ -88,6 +89,26 @@ export class ViewerPopover {
 		}
 
 		this.onboardingCards = enabledCards;
+
+		// Update URL
+		const params = new URLSearchParams(document.location.search);
+
+		const sourceInfo = this.tokenScript.getSourceInfo();
+
+		if (sourceInfo.source !== ScriptSourceType.UNKNOWN){
+			if (sourceInfo.source === "scriptUri"){
+				const [chain, contract] = sourceInfo.tsId.split("-");
+				params.set("chain", chain);
+				params.set("contract", contract);
+			} else {
+				params.set("tokenscriptUrl", sourceInfo.sourceUrl);
+			}
+		}
+
+		const location = new URL(document.location.href);
+		location.search = params.toString();
+
+		history.pushState(undefined, undefined, location);
 	}
 
 	private async showCard(card: Card, token?: TokenGridContext, cardIndex?: number){
@@ -135,6 +156,9 @@ export class ViewerPopover {
 	@Method()
 	async close(){
 		this.tokenScript = null;
+		const location = new URL(document.location.href);
+		location.search = "";
+		history.pushState(undefined, undefined, location);
 	}
 
 	render(){

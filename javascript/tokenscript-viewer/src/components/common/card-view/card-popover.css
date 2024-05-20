@@ -59,3 +59,7 @@ card-popover .popover-container {
 	width: 100%;
 	height: 100%;
 }
+
+#iframe-template {
+	display: none;
+}

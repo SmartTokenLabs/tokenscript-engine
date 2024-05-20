@@ -20,7 +20,9 @@ import {CHAIN_CONFIG} from "../../../integration/constants";
 export class CardPopover implements IViewBinding {
 
 	@Element()
-	el: HTMLElement;
+	el: HTMLDivElement;
+
+	private iframeTemplate: HTMLIFrameElement;
 
 	private dialog: HTMLPopoverDialogElement;
 	private iframe: HTMLIFrameElement;
@@ -53,7 +55,7 @@ export class CardPopover implements IViewBinding {
 		if (this.tokenScript)
 			this.loadTs();
 
-		this.iframe = this.el.getElementsByClassName('tokenscript-frame')[0] as HTMLIFrameElement;
+		this.iframeTemplate = this.el.getElementsByClassName('tokenscript-frame')[0] as HTMLIFrameElement;
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
 	}
 
@@ -163,7 +165,12 @@ export class CardPopover implements IViewBinding {
 			text: this.currentCard.label
 		};
 
-		this.iframe = await AbstractViewBinding.injectContentView(this.iframe, card, this.tokenScript.getViewController());
+		// changing srcdoc adds to the parent pages history and there's no way to avoid this except for removing the iframe and adding a new one
+		const newIframe = this.iframeTemplate.cloneNode(true) as HTMLIFrameElement;
+		newIframe.style.display = "";
+
+		this.iframe = await AbstractViewBinding.injectContentView(newIframe, card, this.tokenScript.getViewController());
+		this.el.getElementsByClassName("iframe-wrapper")[0].appendChild(this.iframe);
 		this.iframe.onload = () => {
 			this.hideLoader()
 		}
@@ -174,7 +181,8 @@ export class CardPopover implements IViewBinding {
 	async unloadTokenView() {
 		await this.dialog.closeDialog();
 		this.currentCard = null;
-		this.iframe.srcdoc = "<!DOCTYPE html>";
+		//this.iframe.srcdoc = "<!DOCTYPE html>";
+		this.iframe.remove();
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const newUrl = new URL(document.location.href);
 		newUrl.hash = "";
@@ -212,6 +220,9 @@ export class CardPopover implements IViewBinding {
 				</div>
 				<div class={"card-container view-container" + (this.currentCard?.fullScreen ? ' fullscreen ' : '')}>
 					<div class="iframe-wrapper">
+
+					</div>
+					<div id="iframe-template" style={{display: "none !important"}}>
 						<iframe class="tokenscript-frame"
 								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>

@@ -160,6 +160,10 @@ export class NewViewer {
 				tokenScriptsMap[tsMeta.tokenScriptId] = {...tsMeta, tokenScript};
 			} catch (e){
 				console.error("Failed to load TokenScript definition: ", tsMeta.name);
+
+				if (tsMeta.loadType == "url" && new URL(tsMeta.tokenScriptId).hostname === "localhost")
+					continue;
+
 				this.showToast.emit({
 					type: "error",
 					title: "Failed to load TokenScript",

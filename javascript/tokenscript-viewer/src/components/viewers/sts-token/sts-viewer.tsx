@@ -161,8 +161,8 @@ export class SmartTokenStoreViewer {
 				this.app.showTsLoader();
 
 				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine, wallet);
-				this.collectionDetails = res.collection;
 				this.tokenDetails = res.detail;
+				this.collectionDetails = res.collection;
 
 				console.log('Token meta loaded!', this.collectionDetails, this.tokenDetails);
 
@@ -250,7 +250,8 @@ export class SmartTokenStoreViewer {
 			}
 
 		} catch (e){
-			console.warn(e.message);
+			console.error(e.message);
+			console.error(e);
 		}
 	}
 

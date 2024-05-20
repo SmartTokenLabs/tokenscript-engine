@@ -98,18 +98,12 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 			const html = await viewController.tokenViewData.renderViewHtml();
 
-			// changing srcdoc adds to the parent pages history and there's no way to avoid this except for removing the iframe and adding a new one
-			const newIframe = iframe.cloneNode(true) as HTMLIFrameElement;
-
 			if (new URLSearchParams(document.location.search).has("___b64url")){
 				const blob = new Blob([html], {type: "text/html"});
-				newIframe.src = URL.createObjectURL(blob) + (card.urlFragment ? "#" + card.urlFragment : "");
+				iframe.src = URL.createObjectURL(blob) + (card.urlFragment ? "#" + card.urlFragment : "");
 			} else {
-				newIframe.srcdoc = html;
+				iframe.srcdoc = html;
 			}
-
-			iframe.replaceWith(newIframe);
-			iframe = newIframe;
 		}
 
 		return iframe;
