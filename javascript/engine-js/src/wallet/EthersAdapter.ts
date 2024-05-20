@@ -175,7 +175,7 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log(argsData);
 
 		// Send the request to the server
-		const data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
+		let data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
 			chain,
 			contract,
 			method,
@@ -191,10 +191,44 @@ export class EthersAdapter implements IWalletAdapter {
 
 		console.log("TX Submitted", data);
 
-		// TODO: Check status in a loop
+		let submitted = false;
 
-		// TODO: Fetch confirmed TX and return
+		while (true){
+			try {
+				data = await this.paymasterApiRequest(paymaster.url + `/tx/${data.id}/status`, "get");
+			} catch (e: any){
+				throw new Error("Paymaster API error: " + e.message);
+			}
 
+			if (data.status > 0){
+				if (!submitted && data.status === 1){
+					submitted = true;
+					listener({
+						status: 'submitted',
+						txNumber: data.txHash
+					});
+				} else if (data.status === 2){
+					listener({
+						status: 'confirmed',
+						txNumber: data.txHash,
+						txLink: this.chainConfig[chain].explorer ? this.chainConfig[chain].explorer + data.txHash : null
+					});
+					break;
+				} else {
+					class PaymasterError extends Error {
+						constructor(data: any) {
+							super(data.error);
+							for (let i in data)
+								this[i] = data[i];
+						}
+					}
+
+					throw new PaymasterError(data.error);
+				}
+			}
+
+			await new Promise((resolve) => setTimeout(resolve, 5000));
+		}
 	}
 
 	private async paymasterApiRequest(url: string, method: "get"|"post", requestData?: any){
