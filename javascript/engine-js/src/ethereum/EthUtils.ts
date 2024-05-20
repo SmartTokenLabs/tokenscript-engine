@@ -143,7 +143,7 @@ export class EthUtils {
 		return res;
 	}
 
-	public static calculateDecimalValue(value: string|bigint|number, decimals: number){
+	public static calculateDecimalValue(value: string|bigint|number, decimals: number = 18){
 		if (!value)
 			return 0;
 

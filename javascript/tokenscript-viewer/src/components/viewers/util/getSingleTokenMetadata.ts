@@ -5,7 +5,7 @@ import {ITokenCollection} from "../../../../../engine-js/src/tokens/ITokenCollec
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 
-export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: TokenScriptEngine): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
+export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: TokenScriptEngine, wallet?: string): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
 
 	const discoveryAdapter = new DiscoveryAdapter(!engine.config.noLocalStorage);
 
@@ -52,18 +52,20 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 	} else {
 
-		if (!engine && !Web3WalletProvider.isWalletConnected()){
+		if (!wallet && !engine && !Web3WalletProvider.isWalletConnected()){
 			return {collection: selectedOrigin, detail: null};
 		}
 
 		const tokenData = await discoveryAdapter.getTokensByOwner(
 			selectedOrigin,
-			engine ? await (await engine.getWalletAdapter()).getCurrentWalletAddress() : await discoveryAdapter.getCurrentWalletAddress()
+			wallet ? wallet : (engine ? await (await engine.getWalletAdapter()).getCurrentWalletAddress() : await discoveryAdapter.getCurrentWalletAddress())
 		);
 
-		console.log("Fungible token data: ", tokenData);
+		//console.log("Fungible token data: ", tokenData);
 
 		selectedOrigin.balance = tokenData.length && tokenData[0].data?.balance ? BigInt(tokenData[0].data?.balance) : 0;
+		if (!selectedOrigin.name && tokenData[0]?.title)
+			selectedOrigin.name = tokenData[0].title;
 	}
 
 	if (tokenId){

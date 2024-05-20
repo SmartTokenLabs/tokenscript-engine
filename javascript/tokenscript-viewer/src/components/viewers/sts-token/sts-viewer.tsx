@@ -129,6 +129,7 @@ export class SmartTokenStoreViewer {
 		if (query.has('chain') && query.has('contract')) {
 			const chain = parseInt(query.get('chain'));
 			const contract = query.get('contract');
+			const wallet = query.get('wallet');
 			let tokenId = query.get('tokenId');
 
 			if (tokenId && tokenId.toLowerCase() === "erc20")
@@ -159,11 +160,11 @@ export class SmartTokenStoreViewer {
 				this.isAttestation = false;
 				this.app.showTsLoader();
 
-				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
+				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine, wallet);
 				this.collectionDetails = res.collection;
 				this.tokenDetails = res.detail;
 
-				console.log('Token meta loaded!', this.collectionDetails);
+				console.log('Token meta loaded!', this.collectionDetails, this.tokenDetails);
 
 				this.app.hideTsLoader();
 
@@ -244,6 +245,8 @@ export class SmartTokenStoreViewer {
 				}, "grid")
 
 				this.loadCards();
+			} else {
+				console.error("Could not find token origin in the tokenscript");
 			}
 
 		} catch (e){
@@ -378,7 +381,7 @@ export class SmartTokenStoreViewer {
 												src={this.collectionDetails.image}
 												imageTitle={this.collectionDetails.name}
 											/>
-											<h4>{this.collectionDetails.name ?? this.tokenDetails?.name}</h4>
+											<h4>{this.collectionDetails.name}</h4>
 											<span>{this.collectionDetails.tokenType.toUpperCase()}</span>
 										</div>
 									</div>
