@@ -43,6 +43,10 @@ export class WalletSelector {
 		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnectV2));
 		providers.push(getWalletInfo(SupportedWalletProviders.Torus));
 
+		if (typeof window.gatewallet !== 'undefined') {
+			providers.push(getWalletInfo(SupportedWalletProviders.Gate));
+		}
+
 		this.providerList = providers
 	}
 
@@ -64,7 +68,7 @@ export class WalletSelector {
 									this.dialog.closeDialog();
 								}
 							}>
-								<div class="wallet-icon" innerHTML={provider.imgBig}></div>
+								<div class="wallet-icon" innerHTML={provider.imgBig} style={{overflow: "hidden"}}></div>
 								<div class="wallet-name">{provider.label}</div>
 							</button>
 						)

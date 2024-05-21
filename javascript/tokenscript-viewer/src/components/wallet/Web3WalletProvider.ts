@@ -32,6 +32,7 @@ export interface WalletConnection {
 
 export enum SupportedWalletProviders {
 	MetaMask = 'MetaMask',
+	Gate = 'Gate',
 	WalletConnect = 'WalletConnect',
 	WalletConnectV2 = 'WalletConnectV2',
 	Torus = 'Torus',
@@ -357,6 +358,22 @@ class Web3WalletProviderObj {
 			const provider = new ethers.BrowserProvider(window.ethereum, 'any')
 
 			return this.registerEvmProvider(provider, SupportedWalletProviders.MetaMask, window.ethereum);
+		} else {
+			throw new Error('MetaMask is not available. Please check the extension is supported and active.')
+		}
+	}
+
+	async Gate(checkConnectionOnly: boolean) {
+
+		if (typeof window.gatewallet !== 'undefined') {
+
+			console.log("connecting on gate");
+
+			await window.gatewallet.enable()
+
+			const provider = new ethers.BrowserProvider(window.gatewallet, 'any')
+
+			return this.registerEvmProvider(provider, SupportedWalletProviders.Gate, window.gatewallet);
 		} else {
 			throw new Error('MetaMask is not available. Please check the extension is supported and active.')
 		}
