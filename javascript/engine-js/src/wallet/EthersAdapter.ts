@@ -63,19 +63,16 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
 
 		if (paymaster){
-			try {
-				return await this.sendUsingPaymaster(chain, contractAddr, method, args, listener, errorAbi, paymaster);
-			} catch (e){
-				throw e;
-				// TODO: Handle abort
-				//return; // TODO: Only fallback for specific status codes
-			}
+
+			const fallback = await this.sendUsingPaymaster(chain, contractAddr, method, args, listener, errorAbi, paymaster);
+
+			if (fallback !== true)
+				return;
+
+			console.warn("Paymaster API server not available, falling back to direct send.")
 		}
 
 		await this.switchChain(chain);
-
-		// TODO: if no method is set, send raw transaction? Is this allowed?
-		// TODO: handle no-method transaction
 
 		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, [], value ? "payable" : "nonpayable", errorAbi);
 
@@ -151,7 +148,16 @@ export class EthersAdapter implements IWalletAdapter {
 
 	private async sendUsingPaymaster(chain: number, contract: string, method: string, args: any[], listener?: ITransactionListener, errorAbi: any[] = [], paymaster?: IPaymasterInfo){
 
-		// TODO: Check paymaster availability
+		let available = false;
+
+		try {
+			available = (await this.paymasterApiRequest(paymaster.url + `/status/${chain}/${contract}/${method}`, "get")).enabled;
+		} catch (e){
+			console.warn("Paymaster API error " + e.message);
+		}
+
+		if (available !== true)
+			return true;
 
 		const abiInput = args.map((arg: any) => { const nArg = {...arg}; delete nArg.value; return nArg; });
 
@@ -174,19 +180,28 @@ export class EthersAdapter implements IWalletAdapter {
 		console.log(argsData);
 
 		// Send the request to the server
-		let data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
-			chain,
-			contract,
-			method,
-			args: argsData.map((arg) => {
-				if (typeof arg === "bigint")
-					arg = arg.toString()
-				return arg;
-			}),
-			abiInput,
-			signature: sig.signature,
-			sigMsg: sig.msg
-		});
+		let data;
+		try {
+			data = await this.paymasterApiRequest(paymaster.url + "/tx/send", "post", {
+				chain,
+				contract,
+				method,
+				args: argsData.map((arg) => {
+					if (typeof arg === "bigint")
+						arg = arg.toString()
+					return arg;
+				}),
+				abiInput,
+				signature: sig.signature,
+				sigMsg: sig.msg
+			});
+		} catch (e: any){
+			// Fallback to direct send for certain status codes
+			if ([403].indexOf(e.staus) > -1)
+				return true;
+
+			throw e;
+		}
 
 		console.log("TX Submitted", data);
 
