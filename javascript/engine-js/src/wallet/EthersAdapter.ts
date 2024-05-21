@@ -66,10 +66,9 @@ export class EthersAdapter implements IWalletAdapter {
 			try {
 				return await this.sendUsingPaymaster(chain, contractAddr, method, args, listener, errorAbi, paymaster);
 			} catch (e){
-				console.log("Paymaster submission failed");
-				console.error(e);
+				throw e;
 				// TODO: Handle abort
-				return; // TODO: Only fallback for specific status codes
+				//return; // TODO: Only fallback for specific status codes
 			}
 		}
 
@@ -164,7 +163,7 @@ export class EthersAdapter implements IWalletAdapter {
 		argsData.pop();
 
 		// Encode data without the signature argument but method ID MUST be calculated with the signature argument
-		const callData = ethers.id(`feedCat(${args.map((arg: any) => arg.type).join(",")})`).substring(0, 10) +
+		const callData = ethers.id(`${method}(${args.map((arg: any) => arg.type).join(",")})`).substring(0, 10) +
 								ethers.AbiCoder.defaultAbiCoder().encode(argsType, argsData).substring(2);
 		// Get user signature
 		const sig = await this.addPaymasterSignature(contract, callData);
@@ -201,12 +200,14 @@ export class EthersAdapter implements IWalletAdapter {
 			}
 
 			if (data.status > 0){
-				if (!submitted && data.status === 1){
-					submitted = true;
-					listener({
-						status: 'submitted',
-						txNumber: data.txHash
-					});
+				if (data.status === 1){
+					if (!submitted) {
+						submitted = true;
+						listener({
+							status: 'submitted',
+							txNumber: data.txHash
+						});
+					}
 				} else if (data.status === 2){
 					listener({
 						status: 'confirmed',
@@ -215,15 +216,8 @@ export class EthersAdapter implements IWalletAdapter {
 					});
 					break;
 				} else {
-					class PaymasterError extends Error {
-						constructor(data: any) {
-							super(data.error);
-							for (let i in data)
-								this[i] = data[i];
-						}
-					}
-
-					throw new PaymasterError(data.error);
+					console.error(data.error);
+					throw new Error(data.error.shortMessage ?? data.error.message);
 				}
 			}
 
@@ -253,8 +247,9 @@ export class EthersAdapter implements IWalletAdapter {
 		}
 
 		if (res.status > 299 || res.status < 200){
-			if (res.status === 403)
-				throw new Error("Authorisation failed");
+			if (res.status === 400 && data.data){
+				throw new Error(data.data.shortMessage);
+			}
 			throw new Error("HTTP Request failed:" + (data?.message ?? res.statusText ));
 		}
 
