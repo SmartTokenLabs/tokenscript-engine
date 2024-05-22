@@ -1,7 +1,7 @@
 import {TokenScript} from "../TokenScript";
 import {DSigValidator} from "./DSigValidator";
 import * as IPFSOnlyHash from 'ipfs-only-hash';
-import {IOriginSecurityInfo} from "../tokenScript/Origin";
+import {IOriginSecurityInfo, Origin} from "../tokenScript/Origin";
 import {TrustedKey, TrustedKeyResolver} from "./TrustedKeyResolver";
 
 export enum SecurityStatus {
@@ -126,6 +126,23 @@ export class SecurityInfo {
 		// TODO: Track valid public keys and contract sources in originInfo and compare to individual NFT or attestation issuer
 		await this.checkAndLoad();
 		return this.originStatuses[originId];
+	}
+
+	public async getContractSecurityInfo(originId: string){
+
+		console.log("Verifying contract security info");
+
+		if (this.originStatuses[originId])
+			return this.originStatuses[originId];
+
+		const contract = this.tokenScript.getContractByName(originId);
+
+		if (!contract)
+			return <IOriginSecurityInfo>{
+				status: SecurityStatus.INVALID
+			};
+
+		return new Origin(this.tokenScript, originId, "contract").getOriginSecurityStatus(this.securityInfo);
 	}
 
 	public async getAllOriginInfo(){

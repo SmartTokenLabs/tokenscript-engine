@@ -239,7 +239,16 @@ export class ViewController {
 	private async rpcProxy(request: RpcRequest){
 
 		try {
-			let res = await (await this.tokenScript.getEngine().getWalletAdapter()).rpcProxy(request);
+			const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
+
+			// Check if the contract is specified in the tokenscript
+			if (["eth_sendTransaction", "eth_signTransaction"].indexOf(request.method) > -1){
+				// If validation callback returns false we abort silently
+				if (!await this.tokenScript.transactionValidator.validateContractAddress(await walletAdapter.getChain(), request.params[0].to))
+					return;
+			}
+
+			let res = await walletAdapter.rpcProxy(request);
 
 			this.dispatchRpcResult({jsonrpc: "2.0", id: request.id, result: res});
 
