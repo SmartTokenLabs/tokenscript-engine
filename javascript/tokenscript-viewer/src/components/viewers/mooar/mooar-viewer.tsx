@@ -138,7 +138,17 @@ export class SmartTokenStoreViewer {
 
 				const cardElem = (
 					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
-							onClick={() => this.showCard(card)}
+							onClick={() => {
+								if (enabled !== true){
+									this.showToast.emit({
+										type: 'error',
+										title: "Action not available",
+										description: enabled
+									});
+									return;
+								}
+								this.showCard(card)
+							}}
 							disabled={enabled !== true}
 							title={enabled !== true ? enabled : label}>
 						<span>{label}</span>
@@ -189,6 +199,12 @@ export class SmartTokenStoreViewer {
 		return (
 			<Host>
 				<div class="mooar-viewer">
+					<div class="mooar-header">
+						<a href="https://www.smartlayer.network/" target="_blank">
+							<span>Smart Token Viewer</span>
+							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
+						</a>
+					</div>
 					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					<div class="actions">
@@ -199,8 +215,8 @@ export class SmartTokenStoreViewer {
 						{this.overflowCardButtons?.length ?
 							[
 								(<button class="btn more-actions-btn"
-										 onClick={() => this.overflowDialog.openDialog()}>
-									+ More actions
+								         onClick={() => this.overflowDialog.openDialog()}>
+									<span>+ More actions</span>
 								</button>),
 								(<action-overflow-modal
 									ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
@@ -211,8 +227,8 @@ export class SmartTokenStoreViewer {
 							] : ''
 						}
 					</div>
+					<card-popover tokenScript={this.tokenScript}></card-popover>
 				</div>
-				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>
 		)
 	}

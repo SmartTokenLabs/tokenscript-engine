@@ -153,8 +153,10 @@ export class OpenseaViewer {
 				 : ''}
 				</div>
 				<div class="opensea-header">
-					<span>XNFT by</span>
-					<img class="header-icon" alt="TokenScript icon" src="assets/icon/smart-layer-icon.png"/>
+					<a href="https://www.smartlayer.network/" target="_blank">
+						<span>XNFT by</span>
+						<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
+					</a>
 				</div>
 			</Host>
 		)

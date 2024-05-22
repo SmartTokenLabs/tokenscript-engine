@@ -189,7 +189,7 @@ export class AppRoot {
 
 	async loadTokenScriptFromFile(file: File): Promise<TokenScript> {
 
-		return new Promise((resolve, reject) => {
+		return new Promise<TokenScript>((resolve, reject) => {
 
 			// const file = (document.getElementById("ts-file") as HTMLInputElement).files[0];
 
@@ -259,7 +259,7 @@ export class AppRoot {
 						{this.viewerType === "sts-token" ? <sts-viewer app={this}></sts-viewer> : ''}
 						{this.viewerType === "opensea" ? <opensea-viewer app={this}></opensea-viewer> : ''}
 						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
-						{this.viewerType === "mooar" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
+						{this.viewerType === "mooar" ? <mooar-viewer app={this}></mooar-viewer> : ''}
 					</main>
 
 					<div id="ts-loader">
