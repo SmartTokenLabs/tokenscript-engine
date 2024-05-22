@@ -6,6 +6,8 @@ import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollecti
 import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {ViewBinding} from "../tabbed/viewBinding";
+import {getTokenUrlParams} from "../util/getTokenUrlParams";
+import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 
 @Component({
 	tag: 'opensea-viewer',
@@ -72,7 +74,6 @@ export class OpenseaViewer {
 			this.urlRequest = query;
 
 			await this.processUrlLoad();
-			this.loadTokenScript();
 
 		} catch (e){
 			console.error(e);
@@ -88,70 +89,27 @@ export class OpenseaViewer {
 
 	async processUrlLoad(){
 
-		const queryStr = document.location.search.substring(1);
+		const {chain, contract, tokenId, tokenscriptUrl} = getTokenUrlParams();
 
-		if (!queryStr)
-			return false;
+		if (!tokenId)
+			throw new Error('Token ID was not provided in the URL');
 
-		const query = new URLSearchParams(queryStr);
+		const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
+		this.tokenDetails = res.detail;
 
-		if (query.has("chain") && query.has("contract") && query.has("tokenId")){
+		console.log("Token meta loaded!", this.tokenDetails);
 
-			const res = await getSingleTokenMetadata(parseInt(query.get("chain")), query.get("contract"), query.get("tokenId"), this.app.tsEngine);
-			this.tokenDetails = res.detail;
-
-			console.log("Token meta loaded!", this.tokenDetails);
-
-			return true;
-		}
-
-		throw new Error("Could not locate token details using the values provided in the URL");
+		this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
 
-	private async loadTokenScript(){
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
 		try {
-			const chain: number = parseInt(this.urlRequest.get("chain"));
-			const contract: string = this.urlRequest.get("contract");
-			let tokenScript;
+			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
-			if (this.urlRequest.has("tokenscriptUrl")) {
-				tokenScript = await this.app.loadTokenscript("url", this.urlRequest.get("tokenscriptUrl"));
-			} else {
-				const tsId = chain + "-" + contract;
-				tokenScript = await this.app.loadTokenscript("resolve", tsId);
-			}
-
-			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin;
-
-			for (const origin of origins){
-				if (origin.chainId === chain && contract.toLowerCase() === contract.toLowerCase()){
-					selectedOrigin = origin;
-					origin.tokenDetails = [this.tokenDetails];
-					break;
-				}
-			}
-
-			if (selectedOrigin){
-				tokenScript.setTokenMetadata(origins);
-
-				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
-					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve(origins);
-					}
-				}
-
-				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
-
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, 0);
-				this.tokenScript = tokenScript;
-				this.viewBinding = new ViewBinding(this.host, this.showToast);
-				this.viewBinding.setTokenScript(this.tokenScript);
-				this.tokenScript.setViewBinding(this.viewBinding);
-
-
-			}
+			this.viewBinding = new ViewBinding(this.host, this.showToast);
+			this.viewBinding.setTokenScript(this.tokenScript);
+			this.tokenScript.setViewBinding(this.viewBinding);
 
 		} catch (e){
 			console.warn(e.message);

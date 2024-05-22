@@ -24,9 +24,9 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
-export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet";
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar";
 
-const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token"];
+const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar"];
 
 const initViewerType = (params: URLSearchParams): ViewerTypes => {
 
@@ -42,6 +42,7 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 		case "joyid-token":
 			viewerType = "joyid-token";
 			break;
+		case "animationUrl":
 		case "opensea":
 			viewerType = "opensea";
 			break;
@@ -50,6 +51,9 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			break;
 		case "alphawallet":
 			viewerType = "alphawallet";
+			break;
+		case "mooar":
+			viewerType = "mooar";
 			break;
 		// Fall-through to default
 		case "new":
@@ -255,6 +259,7 @@ export class AppRoot {
 						{this.viewerType === "sts-token" ? <sts-viewer app={this}></sts-viewer> : ''}
 						{this.viewerType === "opensea" ? <opensea-viewer app={this}></opensea-viewer> : ''}
 						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
+						{this.viewerType === "mooar" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
 					</main>
 
 					<div id="ts-loader">

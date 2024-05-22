@@ -86,6 +86,9 @@ export namespace Components {
         "color": string;
         "size": "large"|"small";
     }
+    interface MooarViewer {
+        "app": AppRoot;
+    }
     interface NewViewer {
         "app": AppRoot;
     }
@@ -220,6 +223,10 @@ export interface CardModalCustomEvent<T> extends CustomEvent<T> {
 export interface CardPopoverCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLCardPopoverElement;
+}
+export interface MooarViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMooarViewerElement;
 }
 export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -389,6 +396,25 @@ declare global {
     var HTMLLoadingSpinnerElement: {
         prototype: HTMLLoadingSpinnerElement;
         new (): HTMLLoadingSpinnerElement;
+    };
+    interface HTMLMooarViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
+    interface HTMLMooarViewerElement extends Components.MooarViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMooarViewerElementEventMap>(type: K, listener: (this: HTMLMooarViewerElement, ev: MooarViewerCustomEvent<HTMLMooarViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMooarViewerElementEventMap>(type: K, listener: (this: HTMLMooarViewerElement, ev: MooarViewerCustomEvent<HTMLMooarViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMooarViewerElement: {
+        prototype: HTMLMooarViewerElement;
+        new (): HTMLMooarViewerElement;
     };
     interface HTMLNewViewerElementEventMap {
         "showToast": ShowToastEventArgs;
@@ -672,6 +698,7 @@ declare global {
         "input-field": HTMLInputFieldElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
+        "mooar-viewer": HTMLMooarViewerElement;
         "new-viewer": HTMLNewViewerElement;
         "opensea-viewer": HTMLOpenseaViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
@@ -755,6 +782,12 @@ declare namespace LocalJSX {
     interface LoadingSpinner {
         "color"?: string;
         "size"?: "large"|"small";
+    }
+    interface MooarViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: MooarViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: MooarViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: MooarViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface NewViewer {
         "app"?: AppRoot;
@@ -897,6 +930,7 @@ declare namespace LocalJSX {
         "input-field": InputField;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
+        "mooar-viewer": MooarViewer;
         "new-viewer": NewViewer;
         "opensea-viewer": OpenseaViewer;
         "popover-dialog": PopoverDialog;
@@ -943,6 +977,7 @@ declare module "@stencil/core" {
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
+            "mooar-viewer": LocalJSX.MooarViewer & JSXBase.HTMLAttributes<HTMLMooarViewerElement>;
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
             "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;

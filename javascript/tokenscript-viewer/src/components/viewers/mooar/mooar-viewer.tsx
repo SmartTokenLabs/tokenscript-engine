@@ -12,8 +12,8 @@ import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSi
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 
 @Component({
-	tag: 'alphawallet-viewer',
-	styleUrl: 'alphawallet-viewer.css',
+	tag: 'mooar-viewer',
+	styleUrl: 'mooar-viewer.css',
 	shadow: false,
 	scoped: false
 })
@@ -90,7 +90,7 @@ export class SmartTokenStoreViewer {
 		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId?: string, tokenScriptUrl?: string){
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
 		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
@@ -188,7 +188,7 @@ export class SmartTokenStoreViewer {
 
 		return (
 			<Host>
-				<div class="aw-viewer">
+				<div class="mooar-viewer">
 					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					<div class="actions">

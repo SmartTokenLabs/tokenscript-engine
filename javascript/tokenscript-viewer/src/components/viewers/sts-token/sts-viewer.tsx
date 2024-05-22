@@ -3,7 +3,6 @@ import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
-import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
@@ -15,6 +14,8 @@ import {IFrameProvider} from "../../../providers/iframeProvider";
 import {SLNAdapter} from "../../../integration/slnAdapter";
 import {EthersAdapter} from "../../../../../engine-js/src/wallet/EthersAdapter";
 import {EthUtils} from "../../../../../engine-js/src/ethereum/EthUtils";
+import {getTokenUrlParams} from "../util/getTokenUrlParams";
+import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 
 @Component({
 	tag: 'sts-viewer',
@@ -97,14 +98,6 @@ export class SmartTokenStoreViewer {
 		const params = new URLSearchParams(document.location.search);
 		this.fullWidth = params.get("fullWidth") === "true";
 		try {
-			const query = new URLSearchParams(document.location.search.substring(1));
-			const hashQuery = new URLSearchParams(document.location.hash.substring(1));
-
-			for (const [key, param] of hashQuery.entries()) {
-				query.set(key, param);
-			}
-
-			this.urlRequest = query;
 			const walletAdapter = (await this.app.getWalletAdapter()) as EthersAdapter
 			this.provider = await walletAdapter.getWalletEthersProvider();
 
@@ -120,139 +113,60 @@ export class SmartTokenStoreViewer {
 	}
 
 	async processUrlLoad() {
-		const queryStr = document.location.search.substring(1);
 
-		if (!queryStr) return false;
+		const {chain, contract, tokenId, tokenscriptUrl, wallet} = getTokenUrlParams();
 
-		const query = new URLSearchParams(queryStr);
+		let slnAdapter;
 
-		if (query.has('chain') && query.has('contract')) {
-			const chain = parseInt(query.get('chain'));
-			const contract = query.get('contract');
-			const wallet = query.get('wallet');
-			let tokenId = query.get('tokenId');
-
-			if (tokenId && tokenId.toLowerCase() === "erc20")
-				tokenId = null;
-
-			let slnAdapter;
-
-			if (tokenId === null) {
-				this.fungible = true;
-			} else {
-				slnAdapter = new SLNAdapter();
-				this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())
-			}
-
-			if (this.slnAttestation) {
-				this.isAttestation = true;
-
-				this.app.showTsLoader();
-
-				this.decoded = await slnAdapter.decodeAttestation(this.slnAttestation.rawData, this.provider);
-
-				this.app.hideTsLoader();
-
-				console.log(this.decoded.formatted.scriptURI);
-				this.BASE_URL = new URL(this.decoded.formatted.scriptURI).origin;
-				this.loadIframe(this.decoded.formatted.scriptURI);
-			} else {
-				this.isAttestation = false;
-				this.app.showTsLoader();
-
-				const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine, wallet);
-				this.tokenDetails = res.detail;
-				this.collectionDetails = res.collection;
-
-				console.log('Token meta loaded!', this.collectionDetails, this.tokenDetails);
-
-				this.app.hideTsLoader();
-
-				this.loadTokenScript();
-			}
-
-			return true;
+		if (tokenId) {
+			slnAdapter = new SLNAdapter();
+			this.slnAttestation = await slnAdapter.getAttestation(contract, tokenId, chain.toString())
 		}
 
-		throw new Error("Could not locate token details using the values provided in the URL");
+		if (this.slnAttestation) {
+			this.isAttestation = true;
+
+			this.app.showTsLoader();
+
+			this.decoded = await slnAdapter.decodeAttestation(this.slnAttestation.rawData, this.provider);
+
+			this.app.hideTsLoader();
+
+			console.log(this.decoded.formatted.scriptURI);
+			this.BASE_URL = new URL(this.decoded.formatted.scriptURI).origin;
+			this.loadIframe(this.decoded.formatted.scriptURI);
+		} else {
+			this.isAttestation = false;
+			this.app.showTsLoader();
+
+			const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine, wallet);
+			this.tokenDetails = res.detail;
+			this.collectionDetails = res.collection;
+
+			console.log('Token meta loaded!', this.collectionDetails, this.tokenDetails);
+
+			this.app.hideTsLoader();
+
+			await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		}
 	}
 
-	private async loadTokenScript() {
-		try {
-			const chain: number = parseInt(this.urlRequest.get("chain"));
-			const contract: string = this.urlRequest.get("contract");
-			let tokenScript: TokenScript;
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string) {
 
-			if (this.urlRequest.has("tokenscriptUrl")) {
-				// TODO: Remove this fix once AlphaWallet is updated to support embedded TS viewer for newer schema versions
-				let uri = this.urlRequest.get("tokenscriptUrl");
-				if (uri === "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-prod.tsml"){
-					console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
-					uri = "/assets/tokenscripts/smart-cat-prod-2024-01.tsml";
-				} else if (uri === "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat-mumbai.tsml"){
-					console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
-					uri = "/assets/tokenscripts/smart-cat-mumbai-2024-01.tsml";
-				}
-				tokenScript = await this.app.loadTokenscript("url", uri);
-			} else {
-				const tsId = chain + "-" + contract;
-				tokenScript = await this.app.loadTokenscript("resolve", tsId);
-			}
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
-			const origins = tokenScript.getTokenOriginData();
-			let selectedOrigin: ITokenCollection;
-
-			for (const origin of origins){
-				if (
-					origin.chainId === chain &&
-					origin.contractAddress.toLowerCase() === contract.toLowerCase() &&
-					((this.fungible && origin.tokenType === "erc20") || (!this.fungible && origin.tokenType !== "erc20"))
-				){
-					selectedOrigin = {
-						...this.collectionDetails,
-						...origin
-					}
-					if (this.tokenDetails)
-						selectedOrigin.tokenDetails = [this.tokenDetails];
-					break;
-				}
-			}
-
-			if (selectedOrigin){
-
-				if (tokenScript.getMetadata().backgroundImageUrl){
-					document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
-				}
-
-				tokenScript.setTokenMetadata([selectedOrigin]);
-
-				class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
-					getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
-						return Promise.resolve([selectedOrigin]);
-					}
-				}
-
-				this.app.discoveryAdapter = new StaticDiscoveryAdapter();
-
-				tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? 0 : null);
-				this.tokenScript = tokenScript;
-
-				// Reload cards after the token is updated
-				this.tokenScript.on("TOKENS_UPDATED", (data) => {
-					this.cardButtons = null;
-					this.overflowCardButtons = null;
-					this.loadCards();
-				}, "grid")
-
-				this.loadCards();
-			} else {
-				console.error("Could not find token origin in the tokenscript");
-			}
-
-		} catch (e){
-			console.error(e.message);
-			console.error(e);
+		if (this.tokenScript.getMetadata().backgroundImageUrl){
+			document.getElementsByTagName("body")[0].style.backgroundImage = `url(${this.tokenScript.getMetadata().backgroundImageUrl})`;
 		}
+
+		// Reload cards after the token is updated
+		this.tokenScript.on("TOKENS_UPDATED", (data) => {
+			this.cardButtons = null;
+			this.overflowCardButtons = null;
+			this.loadCards();
+		}, "grid")
+
+		this.loadCards();
 	}
 
 	private async loadIframe(url: string) {
