@@ -193,7 +193,7 @@ export class ViewerPopover {
 						</p> : ''
 					}
 					{this.tokenScript.getMetadata().aboutUrl ?
-						<a href={this.tokenScript.getMetadata().aboutUrl} target="_blank">
+						<a class="how-it-works" href={this.tokenScript.getMetadata().aboutUrl} target="_blank">
 							{"Discover how it works"}
 							<img alt="about" src="/assets/icon/question.svg"/>
 						</a> : ''
