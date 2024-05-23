@@ -32,8 +32,6 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 
 	let viewerType;
 
-	if (viewerType === 'marketplace') viewerType = 'opensea';
-
 	switch (params.get("viewType")){
 		case "integration":
 			viewerType = "integration";
@@ -45,6 +43,7 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			viewerType = "joyid-token";
 			break;
 		case "opensea":
+		case 'marketplace':
 			viewerType = "opensea";
 			break;
 		case "sts-token":
