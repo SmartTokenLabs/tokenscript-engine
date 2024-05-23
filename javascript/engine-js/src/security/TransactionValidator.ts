@@ -1,6 +1,7 @@
 import {TokenScript} from "../TokenScript";
 import {Contract} from "../tokenScript/Contract";
 import {IOriginSecurityInfo} from "../tokenScript/Origin";
+import {SecurityStatus} from "./SecurityInfo";
 
 export interface ITxValidationInfo extends IOriginSecurityInfo {
 	chain: number
@@ -30,15 +31,31 @@ export class TransactionValidator {
 
 		const secInfo = await this.tokenScript.getSecurityInfo().getContractSecurityInfo(contract ? contract.getName() : null);
 
-		return this.validationCallback({
+		const txSecInfo = {
 			chain,
 			toAddress: address,
 			...secInfo
-		})
+		};
+
+		console.log("Verifying contract security info: ", txSecInfo);
+
+		if (txSecInfo.status == SecurityStatus.VALID)
+			return true;
+
+		return this.validationCallback({
+			chain,
+			toAddress: address,
+			...txSecInfo
+		});
 	}
 
 	private async validationCallback(txInfo: ITxValidationInfo): Promise<boolean> {
-		// TODO: fire callback defined in TS engine config
-		return Promise.resolve(true);
+
+		const validationCallback = this.tokenScript.getEngine().config.txValidationCallback;
+
+		if (!validationCallback)
+			return true;
+
+		return validationCallback(txInfo);
 	}
 }

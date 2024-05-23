@@ -130,7 +130,7 @@ export class SecurityInfo {
 
 	public async getContractSecurityInfo(originId: string){
 
-		console.log("Verifying contract security info");
+		await this.checkAndLoad();
 
 		if (this.originStatuses[originId])
 			return this.originStatuses[originId];

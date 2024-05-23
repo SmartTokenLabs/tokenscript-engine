@@ -805,12 +805,11 @@ export class TokenScript {
 
 			// TODO: confirm with James exact use cases of having multiple address in a contract element
 			const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
 			const contract = transInfo.contract.getAddressByChain(chain, true);
 
 			// If validation callback returns false we abort silently
 			if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
-				return;
+				return false;
 
 			const errorAbi = transInfo.contract.getAbi("error");
 
@@ -825,6 +824,8 @@ export class TokenScript {
 			listener({status: 'started'});
 
 			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+
+			return true;
 
 		} catch (e){
 

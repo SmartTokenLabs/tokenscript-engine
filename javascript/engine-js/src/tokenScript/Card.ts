@@ -183,7 +183,10 @@ export class Card {
 
 		const transaction = this.getTransaction();
 
-		await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
+		const processed = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
+
+		if (!processed)
+			return;
 
 		// TODO: transactions should specify which attributes should be invalidated
 		this.getAttributes().invalidate();

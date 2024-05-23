@@ -79,6 +79,8 @@ export class AppRoot {
 
 	private iframeProvider: ethers.BrowserProvider;
 
+	private confirmTxPopover: HTMLConfirmTxPopoverElement;
+
 	private params = new URLSearchParams(document.location.search);
 	private viewerType: ViewerTypes = initViewerType(this.params);
 
@@ -107,7 +109,10 @@ export class AppRoot {
 						valueType: "ethAddress",
 						value: "0xf68b9DbfC6C3EE3323Eb9A3D4Ed8eb9d2Cb45A30"
 					}
-				]
+				],
+				txValidationCallback: (txInfo) => {
+					return this.confirmTxPopover.confirmTransaction(txInfo);
+				}
 			}
 		);
 	}
@@ -261,6 +266,8 @@ export class AppRoot {
 						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
 						{this.viewerType === "mooar" ? <mooar-viewer app={this}></mooar-viewer> : ''}
 					</main>
+
+					<confirm-tx-popover ref={(elem) => this.confirmTxPopover = elem}/>
 
 					<div id="ts-loader">
 						<loading-spinner/>

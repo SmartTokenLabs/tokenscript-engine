@@ -13,6 +13,7 @@ import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
+import { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -26,6 +27,7 @@ export { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 export { JSX } from "@stencil/core";
 export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
+export { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
 export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 export { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -69,6 +71,9 @@ export namespace Components {
     interface ConfirmStep {
         "tokenScript": TokenScript1;
         "viewer": IntegrationViewer;
+    }
+    interface ConfirmTxPopover {
+        "confirmTransaction": (txInfo: ITxValidationInfo) => Promise<boolean>;
     }
     interface InputField {
         "getFile": () => Promise<File>;
@@ -378,6 +383,12 @@ declare global {
     var HTMLConfirmStepElement: {
         prototype: HTMLConfirmStepElement;
         new (): HTMLConfirmStepElement;
+    };
+    interface HTMLConfirmTxPopoverElement extends Components.ConfirmTxPopover, HTMLStencilElement {
+    }
+    var HTMLConfirmTxPopoverElement: {
+        prototype: HTMLConfirmTxPopoverElement;
+        new (): HTMLConfirmTxPopoverElement;
     };
     interface HTMLInputFieldElement extends Components.InputField, HTMLStencilElement {
     }
@@ -695,6 +706,7 @@ declare global {
         "card-popover": HTMLCardPopoverElement;
         "card-view": HTMLCardViewElement;
         "confirm-step": HTMLConfirmStepElement;
+        "confirm-tx-popover": HTMLConfirmTxPopoverElement;
         "input-field": HTMLInputFieldElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
@@ -767,6 +779,8 @@ declare namespace LocalJSX {
     interface ConfirmStep {
         "tokenScript"?: TokenScript1;
         "viewer"?: IntegrationViewer;
+    }
+    interface ConfirmTxPopover {
     }
     interface InputField {
         "label"?: string;
@@ -927,6 +941,7 @@ declare namespace LocalJSX {
         "card-popover": CardPopover;
         "card-view": CardView;
         "confirm-step": ConfirmStep;
+        "confirm-tx-popover": ConfirmTxPopover;
         "input-field": InputField;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
@@ -974,6 +989,7 @@ declare module "@stencil/core" {
             "card-popover": LocalJSX.CardPopover & JSXBase.HTMLAttributes<HTMLCardPopoverElement>;
             "card-view": LocalJSX.CardView & JSXBase.HTMLAttributes<HTMLCardViewElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
+            "confirm-tx-popover": LocalJSX.ConfirmTxPopover & JSXBase.HTMLAttributes<HTMLConfirmTxPopoverElement>;
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;
