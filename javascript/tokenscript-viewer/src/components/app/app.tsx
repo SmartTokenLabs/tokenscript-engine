@@ -32,6 +32,8 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 
 	let viewerType;
 
+	if (viewerType === 'marketplace') viewerType = 'opensea';
+
 	switch (params.get("viewType")){
 		case "integration":
 			viewerType = "integration";
