@@ -4,6 +4,7 @@ import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {EthUtils} from "@tokenscript/engine-js/src/ethereum/EthUtils";
 import {getCardButtonClass} from "../../viewers/util/getCardButtonClass";
+import { previewAddr } from '@tokenscript/engine-js/src/utils';
 
 @Component({
 	tag: 'tokens-grid-item',
@@ -118,10 +119,10 @@ export class TokensGridItem {
 					}
 					imageTitle={this.token.name}/>
 				<div class="tg-item-details">
-					<h5>{title}</h5>
+					<h5>{previewAddr(title)}</h5>
 					{
 						details ?
-							<span title={details}>{details}</span>
+							<span title={details}>{previewAddr(details)}</span>
 							: ''
 					}
 					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>
