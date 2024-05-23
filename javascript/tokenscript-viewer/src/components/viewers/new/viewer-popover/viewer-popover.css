@@ -72,6 +72,10 @@ viewer-popover .meta-details a:hover {
 	filter: opacity(80%);
 }
 
+viewer-popover a.how-it-works {
+	width: fit-content;
+}
+
 viewer-popover .meta-details a img {
 	margin: 0 5px;
 }
