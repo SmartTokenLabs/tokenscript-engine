@@ -70,3 +70,23 @@ export function uint8tohex(uint8: Uint8Array): string {
 	if (!uint8 || !uint8.length) return '';
 	return Array.from(uint8).map(i => ('0' + i.toString(16)).slice(-2)).join('');
 }
+
+export function previewAddr(inputString: string) {
+	if (inputString.length < 24 || !this.isPredominantlyNumerical(inputString)) {
+		return inputString;
+	} else {
+		const offset = inputString.indexOf('#') > 0 ? inputString.indexOf('#') : 0;
+		const firstChars = inputString.substring(0, 5 + offset);
+		const lastChars = inputString.substring(inputString.length - 4);
+		return `${firstChars}...${lastChars}`;
+	}
+}
+
+export function isPredominantlyNumerical(value: string) {
+	if (typeof value !== 'string') {
+		return false;
+	}
+	// Remove non-digit characters and check the length
+	const digits = value.replace(/\D/g, '');
+	return digits.length > value.length / 2;
+}

@@ -44,6 +44,7 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			break;
 		case "animationUrl":
 		case "opensea":
+		case 'marketplace':
 			viewerType = "opensea";
 			break;
 		case "sts-token":
