@@ -55,6 +55,10 @@ select:hover {
 	margin: 0;
 	font-size: 14px;
 	color: inherit;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .btn-primary {
