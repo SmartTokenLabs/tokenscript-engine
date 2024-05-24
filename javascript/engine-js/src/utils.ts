@@ -72,7 +72,7 @@ export function uint8tohex(uint8: Uint8Array): string {
 }
 
 export function previewAddr(inputString: string) {
-	if (inputString.length < 24 || !this.isPredominantlyNumerical(inputString)) {
+	if (inputString.length < 24 || !isPredominantlyNumerical(inputString)) {
 		return inputString;
 	} else {
 		const offset = inputString.indexOf('#') > 0 ? inputString.indexOf('#') : 0;
