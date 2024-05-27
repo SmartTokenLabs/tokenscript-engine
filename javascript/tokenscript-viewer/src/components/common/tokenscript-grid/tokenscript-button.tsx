@@ -61,9 +61,9 @@ export class TokenscriptButton {
 
 	render(){
 		return (
-			<Host class={"ts-button" + (this.enabled ? '' : ' disabled')}
+			<Host class={"ts-button" + (this.enabled && (!this.onRemove || this.tokenScript) ? '' : ' disabled')}
 				 title={this.name}
-				 style={{cursor: this.enabled ? 'pointer' : 'not-allowed'}}>
+				 style={{cursor: this.enabled && (!this.onRemove || this.tokenScript) ? 'pointer' : 'not-allowed'}}>
 				<token-icon src={this.imageUrl} imageTitle={this.name}/>
 				<div class="ts-details">
 					<h5>{this.name}</h5>

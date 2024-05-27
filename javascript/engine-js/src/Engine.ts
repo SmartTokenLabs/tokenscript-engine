@@ -8,11 +8,13 @@ import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapt
 import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
 import {TrustedKey} from "./security/TrustedKeyResolver";
 import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
+import {ITxValidationInfo} from "./security/TransactionValidator";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
 	noLocalStorage?: boolean
-	trustedKeys?: TrustedKey[] // Define signing keys which are always valid
+	trustedKeys?: TrustedKey[], // Define signing keys which are always valid
+	txValidationCallback?: (txInfo: ITxValidationInfo) => boolean|Promise<boolean>;
 }
 
 const DEFAULT_CONFIG: IEngineConfig = {

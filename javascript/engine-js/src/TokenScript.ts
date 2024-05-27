@@ -17,6 +17,7 @@ import {ITokenContextData} from "./tokens/ITokenContextData";
 import {Meta} from "./tokenScript/Meta";
 import {ethers} from "ethers";
 import {ViewStyles} from "./view/ViewStyles";
+import {TransactionValidator} from "./security/TransactionValidator";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -92,6 +93,8 @@ export class TokenScript {
 
 	public readonly viewStyles: ViewStyles;
 
+	public readonly transactionValidator: TransactionValidator
+
 	constructor(
 		private engine: TokenScriptEngine,
 		public readonly tokenDef: XMLDocument,
@@ -103,6 +106,7 @@ export class TokenScript {
 	) {
 		this.securityInfo = new SecurityInfo(this);
 		this.viewStyles = new ViewStyles(this.tokenDef);
+		this.transactionValidator = new TransactionValidator(this);
 	}
 
 	public getSourceInfo(){
@@ -794,8 +798,6 @@ export class TokenScript {
 	 */
 	public async executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation: boolean = true){
 
-		listener({status: 'started'});
-
 		try {
 
 			const wallet = await this.engine.getWalletAdapter();
@@ -803,8 +805,12 @@ export class TokenScript {
 
 			// TODO: confirm with James exact use cases of having multiple address in a contract element
 			const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
 			const contract = transInfo.contract.getAddressByChain(chain, true);
+
+			// If validation callback returns false we abort silently
+			if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
+				return false;
+
 			const errorAbi = transInfo.contract.getAbi("error");
 
 			const ethParams = [];
@@ -815,7 +821,11 @@ export class TokenScript {
 
 			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
+			listener({status: 'started'});
+
 			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+
+			return true;
 
 		} catch (e){
 

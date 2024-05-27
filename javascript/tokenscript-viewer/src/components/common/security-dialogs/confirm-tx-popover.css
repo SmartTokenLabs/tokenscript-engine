@@ -1,0 +1,36 @@
+
+.tx-confirm-dialog {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.tx-confirm-dialog h1 {
+	padding: 0 !important;
+	margin: 0;
+}
+
+.tx-confirm-info {
+	flex-grow: 1;
+	padding-bottom: 20px;
+}
+
+.tx-confirm-buttons {
+	display: flex;
+	gap: 10px;
+}
+
+.tx-confirm-buttons .btn {
+	flex-grow: 1;
+}
+
+.tx-confirm-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.tx-confirm-header img {
+	width: auto;
+	height: 30px;
+}
