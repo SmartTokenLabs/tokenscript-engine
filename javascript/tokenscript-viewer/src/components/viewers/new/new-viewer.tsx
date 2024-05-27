@@ -100,6 +100,8 @@ export class NewViewer {
 
 		} else if (query.has("tokenscriptUrl")){
 			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
+		} else if (query.has("tsId")){
+			tsMeta = await this.addFormSubmit("resolve", {tsId: query.get("tsId")})
 		} else if (query.has("chain") && query.has("contract")){
 			const tsId = query.get("chain") + "-" + query.get("contract");
 			tsMeta = await this.addFormSubmit("resolve", {tsId})
@@ -169,6 +171,8 @@ export class NewViewer {
 					title: "Failed to load TokenScript",
 					description: e.message
 				});
+
+				tokenScriptsMap[tsMeta.tokenScriptId] = tsMeta;
 			}
 		}
 
@@ -301,6 +305,8 @@ export class NewViewer {
 						<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
 								onClick={() => {
 									for (const id in this.myTokenScripts){
+										if (!this.myTokenScripts[id].tokenScript)
+											continue;
 										this.myTokenScripts[id].tokenScript.getTokenMetadata(true, true);
 									}
 								}}>↻</button>
@@ -320,6 +326,14 @@ export class NewViewer {
 														imageUrl={ts.iconUrl}
 														tokenScript={ts.tokenScript}
 														onClick={() => {
+															if (!ts.tokenScript){
+																this.showToast.emit({
+																	type: "error",
+																	title: "TokenScript not available",
+																	description: "This tokenscript could not be resolved"
+																});
+																return;
+															}
 															this.viewerPopover.open(ts.tokenScript);
 														}}
 														onRemove={async (tsId: string) => {

@@ -38,7 +38,10 @@ export class ConfirmTxPopover {
 					(
 						<div class="tx-confirm-dialog">
 							<div class="tx-confirm-info">
-								<h1>Beware!</h1>
+								<div class="tx-confirm-header">
+									<img alt="caution" src="/assets/icon/caution.svg" />
+									<h1> Caution!</h1>
+								</div>
 								<p>
 									This token is trying to send a transaction to a contract that it is not signed for.
 									Please proceed with caution.

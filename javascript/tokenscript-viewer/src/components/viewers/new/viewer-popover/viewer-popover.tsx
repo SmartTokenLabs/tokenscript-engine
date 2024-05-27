@@ -96,10 +96,14 @@ export class ViewerPopover {
 		const sourceInfo = this.tokenScript.getSourceInfo();
 
 		if (sourceInfo.source !== ScriptSourceType.UNKNOWN){
-			if (sourceInfo.source === "scriptUri"){
+			if (sourceInfo.source === ScriptSourceType.SCRIPT_URI){
 				const [chain, contract] = sourceInfo.tsId.split("-");
-				params.set("chain", chain);
-				params.set("contract", contract);
+				if (contract){
+					params.set("chain", chain);
+					params.set("contract", contract);
+				} else {
+					params.set("tsId", sourceInfo.tsId);
+				}
 			} else {
 				params.set("tokenscriptUrl", sourceInfo.sourceUrl);
 			}
