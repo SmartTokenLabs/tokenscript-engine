@@ -45,6 +45,10 @@ export class NewViewer {
 	componentWillLoad(){
 		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
 			for (const id in this.myTokenScripts){
+
+				if (!this.myTokenScripts[id].tokenScript)
+					continue;
+
 				if (walletConnection){
 					this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
 				} else {

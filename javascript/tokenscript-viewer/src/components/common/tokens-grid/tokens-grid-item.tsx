@@ -106,8 +106,6 @@ export class TokensGridItem {
 			details = this.token.name;
 		} else {
 			title = this.token.name;
-			if ("decimals" in this.token)
-				details = "Balance: " + EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals);
 		}
 
 		return (
@@ -123,6 +121,11 @@ export class TokensGridItem {
 					{
 						details ?
 							<span title={details}>{previewAddr(details)}</span>
+							: ''
+					}
+					{
+						this.token.tokenType !== "erc721" ?
+							<span title={details}>Balance: {EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals)}</span>
 							: ''
 					}
 					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>

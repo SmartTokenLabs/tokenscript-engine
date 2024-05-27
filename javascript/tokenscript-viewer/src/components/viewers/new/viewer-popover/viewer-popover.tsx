@@ -95,7 +95,7 @@ export class ViewerPopover {
 
 		const sourceInfo = this.tokenScript.getSourceInfo();
 
-		if (sourceInfo.source !== ScriptSourceType.UNKNOWN){
+		if (sourceInfo.source !== ScriptSourceType.UNKNOWN && !params.has("emulator")){
 			if (sourceInfo.source === ScriptSourceType.SCRIPT_URI){
 				const [chain, contract] = sourceInfo.tsId.split("-");
 				if (contract){
