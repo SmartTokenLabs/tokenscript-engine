@@ -205,7 +205,6 @@ export class SmartTokenStoreViewer {
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
 						</a>
 					</div>
-					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					<div class="actions">
 						{this.cardButtons ?
