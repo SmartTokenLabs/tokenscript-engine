@@ -16,6 +16,7 @@ import {EthersAdapter} from "../../../../../engine-js/src/wallet/EthersAdapter";
 import {EthUtils} from "../../../../../engine-js/src/ethereum/EthUtils";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
+import { previewAddr } from '@tokenscript/engine-js/src/utils';
 
 @Component({
 	tag: 'sts-viewer',
@@ -281,12 +282,12 @@ export class SmartTokenStoreViewer {
 								</div>
 								<div class="info-container">
 									<div class="main-info">
-										<h1 class="token-title">{this.tokenDetails?.name ?? this.collectionDetails.name}</h1>
+										<h1 class="token-title">{previewAddr(this.tokenDetails?.name ?? this.collectionDetails.name)}</h1>
 										<div class="owner-count">
 											<span style={{color: '#3D45FB'}}>
 												{this.collectionDetails.tokenType === "erc20" ?
 													'balance: ' + EthUtils.calculateDecimalValue(this.collectionDetails.balance, this.collectionDetails.decimals) :
-													this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) : '#' + this.tokenDetails.tokenId
+													this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) : '#' + previewAddr(this.tokenDetails.tokenId)
 												}
 											</span>
 										</div>
