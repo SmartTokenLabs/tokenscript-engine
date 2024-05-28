@@ -282,12 +282,17 @@ export class SmartTokenStoreViewer {
 								</div>
 								<div class="info-container">
 									<div class="main-info">
-										<h1 class="token-title">{previewAddr(this.tokenDetails?.name ?? this.collectionDetails.name)}</h1>
+										<h1 class="token-title">
+											{previewAddr(this.tokenDetails?.name ?? this.collectionDetails.name)}
+											{this.tokenDetails ? <copy-icon copyText={this.tokenDetails.tokenId}/> : ''}
+										</h1>
 										<div class="owner-count">
 											<span style={{color: '#3D45FB'}}>
 												{this.collectionDetails.tokenType === "erc20" ?
 													'balance: ' + EthUtils.calculateDecimalValue(this.collectionDetails.balance, this.collectionDetails.decimals) :
-													this.collectionDetails.tokenType !== 'erc721' ? 'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) : '#' + previewAddr(this.tokenDetails.tokenId)
+													this.collectionDetails.tokenType !== 'erc721' ?
+														'balance: ' + (this.tokenDetails?.balance ?? this.collectionDetails.balance ?? 0) :
+														'#' + previewAddr(this.tokenDetails.tokenId)
 												}
 											</span>
 										</div>

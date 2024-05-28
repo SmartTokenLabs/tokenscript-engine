@@ -75,6 +75,10 @@ export namespace Components {
     interface ConfirmTxPopover {
         "confirmTransaction": (txInfo: ITxValidationInfo) => Promise<boolean>;
     }
+    interface CopyIcon {
+        "copyText": string;
+        "height": string;
+    }
     interface InputField {
         "getFile": () => Promise<File>;
         "label": string;
@@ -389,6 +393,12 @@ declare global {
     var HTMLConfirmTxPopoverElement: {
         prototype: HTMLConfirmTxPopoverElement;
         new (): HTMLConfirmTxPopoverElement;
+    };
+    interface HTMLCopyIconElement extends Components.CopyIcon, HTMLStencilElement {
+    }
+    var HTMLCopyIconElement: {
+        prototype: HTMLCopyIconElement;
+        new (): HTMLCopyIconElement;
     };
     interface HTMLInputFieldElement extends Components.InputField, HTMLStencilElement {
     }
@@ -707,6 +717,7 @@ declare global {
         "card-view": HTMLCardViewElement;
         "confirm-step": HTMLConfirmStepElement;
         "confirm-tx-popover": HTMLConfirmTxPopoverElement;
+        "copy-icon": HTMLCopyIconElement;
         "input-field": HTMLInputFieldElement;
         "integration-viewer": HTMLIntegrationViewerElement;
         "loading-spinner": HTMLLoadingSpinnerElement;
@@ -781,6 +792,10 @@ declare namespace LocalJSX {
         "viewer"?: IntegrationViewer;
     }
     interface ConfirmTxPopover {
+    }
+    interface CopyIcon {
+        "copyText"?: string;
+        "height"?: string;
     }
     interface InputField {
         "label"?: string;
@@ -942,6 +957,7 @@ declare namespace LocalJSX {
         "card-view": CardView;
         "confirm-step": ConfirmStep;
         "confirm-tx-popover": ConfirmTxPopover;
+        "copy-icon": CopyIcon;
         "input-field": InputField;
         "integration-viewer": IntegrationViewer;
         "loading-spinner": LoadingSpinner;
@@ -990,6 +1006,7 @@ declare module "@stencil/core" {
             "card-view": LocalJSX.CardView & JSXBase.HTMLAttributes<HTMLCardViewElement>;
             "confirm-step": LocalJSX.ConfirmStep & JSXBase.HTMLAttributes<HTMLConfirmStepElement>;
             "confirm-tx-popover": LocalJSX.ConfirmTxPopover & JSXBase.HTMLAttributes<HTMLConfirmTxPopoverElement>;
+            "copy-icon": LocalJSX.CopyIcon & JSXBase.HTMLAttributes<HTMLCopyIconElement>;
             "input-field": LocalJSX.InputField & JSXBase.HTMLAttributes<HTMLInputFieldElement>;
             "integration-viewer": LocalJSX.IntegrationViewer & JSXBase.HTMLAttributes<HTMLIntegrationViewerElement>;
             "loading-spinner": LocalJSX.LoadingSpinner & JSXBase.HTMLAttributes<HTMLLoadingSpinnerElement>;

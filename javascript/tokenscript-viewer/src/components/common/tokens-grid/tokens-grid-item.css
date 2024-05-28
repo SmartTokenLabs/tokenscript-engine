@@ -10,7 +10,7 @@
 	position: relative;
 }
 
-.tokens-grid-item img {
+.tokens-grid-item token-icon img {
 	width: 100%;
 }
 
@@ -23,6 +23,8 @@
 .tokens-grid-item h5 {
 	margin: 10px 20px 5px 0;
 	font-size: 18px;
+	display: flex;
+	align-items: center;
 }
 
 .tokens-grid-item span {

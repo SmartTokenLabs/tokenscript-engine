@@ -117,7 +117,7 @@ export class TokensGridItem {
 					}
 					imageTitle={this.token.name}/>
 				<div class="tg-item-details">
-					<h5>{previewAddr(title)}</h5>
+					<h5>{previewAddr(title)}{"tokenId" in this.token ? <copy-icon copyText={this.token.tokenId} /> : ''}</h5>
 					{
 						details ?
 							<span title={details}>{previewAddr(details)}</span>
