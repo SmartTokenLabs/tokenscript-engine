@@ -2,8 +2,6 @@ import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from '@stenci
 import {AppRoot, ShowToastEventArgs} from '../../app/app';
 import {TokenScript} from '@tokenscript/engine-js/src/TokenScript';
 import {ITokenDetail} from '@tokenscript/engine-js/src/tokens/ITokenDetail';
-import {ITokenCollection} from '@tokenscript/engine-js/src/tokens/ITokenCollection';
-import {ITokenDiscoveryAdapter} from '@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter';
 import {getSingleTokenMetadata} from '../util/getSingleTokenMetadata';
 import {getHardcodedDescription} from '../util/getHardcodedDescription';
 import {SLNAdapter} from '../../../integration/slnAdapter';
@@ -13,6 +11,7 @@ import {IFrameProvider} from '../../../providers/iframeProvider';
 import {EthersAdapter} from '@tokenscript/engine-js/src/wallet/EthersAdapter';
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
+import {previewAddr} from "@tokenscript/engine-js/src/utils";
 
 @Component({
 	tag: 'token-viewer',
@@ -187,10 +186,15 @@ export class TokenViewer {
 									<div class="main-info">
 										<div class="title-row">
 											<div class="title-container">
-												<h1>{this.tokenDetails.name}</h1>
+												<h1 title={this.tokenDetails.name}>
+													{previewAddr(this.tokenDetails.name)}
+													{this.tokenDetails ? <copy-icon copyText={this.tokenDetails.tokenId}/> : ''}
+												</h1>
 												<div class="owner-count">
 													<span style={{ color: '#3D45FB' }}>
-														{this.tokenDetails.collectionDetails.tokenType === 'erc1155' ? 'balance: ' + this.tokenDetails.balance : '#' + this.tokenDetails.tokenId}
+														{this.tokenDetails.collectionDetails.tokenType === 'erc1155' ?
+															'balance: ' + this.tokenDetails.balance :
+															'#' + previewAddr(this.tokenDetails.tokenId)}
 													</span>
 												</div>
 											</div>
@@ -202,7 +206,7 @@ export class TokenViewer {
 												src={this.tokenDetails.collectionDetails.image}
 												imageTitle={this.tokenDetails.collectionDetails.name}
 											/>
-											<h4>{this.tokenDetails.collectionDetails.name ?? this.tokenDetails.name}</h4>
+											<h4>{this.tokenDetails.collectionDetails.name}</h4>
 											<span>{this.tokenDetails.collectionDetails.tokenType.toUpperCase()}</span>
 										</div>
 									</div>

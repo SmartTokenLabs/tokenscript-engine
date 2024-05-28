@@ -282,7 +282,7 @@ export class SmartTokenStoreViewer {
 								</div>
 								<div class="info-container">
 									<div class="main-info">
-										<h1 class="token-title">
+										<h1 class="token-title" title={this.tokenDetails?.name ?? this.collectionDetails.name}>
 											{previewAddr(this.tokenDetails?.name ?? this.collectionDetails.name)}
 											{this.tokenDetails ? <copy-icon copyText={this.tokenDetails.tokenId}/> : ''}
 										</h1>

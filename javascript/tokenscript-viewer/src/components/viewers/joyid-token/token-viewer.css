@@ -46,8 +46,10 @@ token-viewer:has(> card-popover .open) {
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 20px;
-	margin: 0;
+	margin: 0 0 5px 0;
 	padding: 0;
+	display: flex;
+	align-items: center;
 }
 
 .extra-info {
@@ -73,6 +75,7 @@ token-viewer:has(> card-popover .open) {
 	display: flex;
 	align-items: center;
 	margin: 16px 0 0;
+	overflow: hidden;
 }
 
 .title-container {
@@ -213,4 +216,10 @@ action-bar {
 	/* width: 700px; */
 	height: 800px;
 	border: none;
+}
+
+.title-container span, .title-container h1 {
+	overflow: hidden;
+	max-width: 100%;
+	text-overflow: ellipsis ellipsis;
 }
