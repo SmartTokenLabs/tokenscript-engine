@@ -132,7 +132,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					description: tokenMeta.description,
 					attributes: tokenMeta.attributes ?? [],
 					image: tokenMeta.image,
-					balance: tokenMeta.balance ?? tokenMeta.data.balance,
+					balance: tokenMeta.balance ?? tokenMeta.data?.balance,
 					data: tokenMeta
 				});
 			}
