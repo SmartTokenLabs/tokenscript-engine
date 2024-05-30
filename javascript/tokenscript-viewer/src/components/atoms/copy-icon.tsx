@@ -16,15 +16,6 @@ export class CopyIcon {
   @State()
   clipboardAvailable: boolean = !!navigator.clipboard;
 
-  @State()
-  sameOrigin: boolean = false;
-
-  componentWillLoad() {
-    const parentOrigin = new URL(document.referrer).origin;
-    const iframeOrigin = window.location.origin;
-    this.sameOrigin = parentOrigin === iframeOrigin;
-  }
-
   copy() {
     if (this.clipboardAvailable) {
       navigator.clipboard.writeText(this.copyText);
@@ -34,15 +25,7 @@ export class CopyIcon {
   render() {
     return (
       <Host style={{ height: this.height }}>
-        {this.clipboardAvailable && this.sameOrigin && (
-          <img
-            class="copy-icon"
-            alt="copy"
-            title="Copy"
-            src="/assets/icon/copy.svg"
-            onClick={() => this.copy()}
-          />
-        )}
+        {this.clipboardAvailable && <img class="copy-icon" alt="copy" title="Copy" src="/assets/icon/copy.svg" onClick={() => this.copy()} />}
       </Host>
     );
   }
