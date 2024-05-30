@@ -1,29 +1,49 @@
-import {Component, h, Host, Prop} from "@stencil/core";
+import { Component, h, Host, Prop, State } from '@stencil/core';
 
 @Component({
-	tag: 'copy-icon',
-	styleUrl: 'copy-icon.css',
-	shadow: false,
-	scoped: false
+  tag: 'copy-icon',
+  styleUrl: 'copy-icon.css',
+  shadow: false,
+  scoped: false,
 })
 export class CopyIcon {
+  @Prop()
+  copyText: string;
 
-	@Prop()
-	copyText: string;
+  @Prop()
+  height: string = '18px';
 
-	@Prop()
-	height: string = "18px";
+  @State()
+  clipboardAvailable: boolean = !!navigator.clipboard;
 
-	copy(){
-		navigator.clipboard.writeText(this.copyText);
-	}
+  @State()
+  sameOrigin: boolean = false;
 
-	render(){
-		return (
-			<Host style={{height: this.height}}>
-				<img class="copy-icon" alt="copy" title="Copy"
-				     src="/assets/icon/copy.svg" onClick={() => this.copy()}/>
-			</Host>
-		);
-	}
+  componentWillLoad() {
+    const parentOrigin = new URL(document.referrer).origin;
+    const iframeOrigin = window.location.origin;
+    this.sameOrigin = parentOrigin === iframeOrigin;
+  }
+
+  copy() {
+    if (this.clipboardAvailable) {
+      navigator.clipboard.writeText(this.copyText);
+    }
+  }
+
+  render() {
+    return (
+      <Host style={{ height: this.height }}>
+        {this.clipboardAvailable && this.sameOrigin && (
+          <img
+            class="copy-icon"
+            alt="copy"
+            title="Copy"
+            src="/assets/icon/copy.svg"
+            onClick={() => this.copy()}
+          />
+        )}
+      </Host>
+    );
+  }
 }
