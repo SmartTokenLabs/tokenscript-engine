@@ -22,7 +22,7 @@ export class ActionOverflowModal {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{maxWidth: "380px"}}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{maxWidth: "380px"}} dialogClasses={["ts-token-container"]}>
 				<slot></slot>
 			</popover-dialog>
 		)

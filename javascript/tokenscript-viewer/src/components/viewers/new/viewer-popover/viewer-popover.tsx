@@ -161,7 +161,12 @@ export class ViewerPopover {
 	async close(){
 		this.tokenScript = null;
 		const location = new URL(document.location.href);
-		location.search = "";
+		const params = new URLSearchParams(document.location.search);
+		params.delete("chain");
+		params.delete("contract");
+		params.delete("tsId");
+		params.delete("tokenscriptUrl");
+		location.search = params.toString();
 		history.pushState(undefined, undefined, location);
 	}
 

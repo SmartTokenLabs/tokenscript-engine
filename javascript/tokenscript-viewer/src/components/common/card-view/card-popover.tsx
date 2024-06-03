@@ -170,6 +170,7 @@ export class CardPopover implements IViewBinding {
 		newIframe.style.display = "";
 
 		this.iframe = await AbstractViewBinding.injectContentView(newIframe, card, this.tokenScript.getViewController());
+		this.el.getElementsByClassName("iframe-wrapper")[0].innerHTML = "";
 		this.el.getElementsByClassName("iframe-wrapper")[0].appendChild(this.iframe);
 		this.iframe.onload = () => {
 			this.hideLoader()

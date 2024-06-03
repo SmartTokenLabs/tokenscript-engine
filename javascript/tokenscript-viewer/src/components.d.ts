@@ -106,6 +106,7 @@ export namespace Components {
     }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
+        "dialogClasses": string[];
         "dialogStyles": {[cssProp: string]: string};
         "disableClose": boolean;
         "fullScreen": boolean;
@@ -829,6 +830,7 @@ declare namespace LocalJSX {
         "onShowToast"?: (event: OpenseaViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface PopoverDialog {
+        "dialogClasses"?: string[];
         "dialogStyles"?: {[cssProp: string]: string};
         "disableClose"?: boolean;
         "fullScreen"?: boolean;

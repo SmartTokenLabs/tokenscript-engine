@@ -122,7 +122,6 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'https://arb1.arbitrum.io/rpc',
 		explorer: 'https://arbiscan.io/tx/'
 	},
-	//421613: 'https://arb-goerli.g.alchemy.com/v2/nFrflomLgsQQL5NWjGileAVqIGGxZWce', // Arbitrum goerli,
 	[ChainID.OPTIMISM]: {
 		rpc: 'https://mainnet.optimism.io',
 		explorer: 'https://optimistic.etherscan.io/tx/'
@@ -139,15 +138,6 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'http://127.0.0.1:8545/',
 		explorer: ''
 	}
-	//43113: 'https://api.avax-test.network/ext/bc/C/rpc', // Fuji testnet
-	/*25: {
-		rpc: 'https://evm-cronos.crypto.org',
-		explorer: ''
-	},
-	338: {
-		rpc: 'https://evm-t3.cronos.org',
-		explorer: ''
-	},*/
 }
 
 export const ERC721_ABI_JSON = [

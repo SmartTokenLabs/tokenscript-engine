@@ -11,6 +11,10 @@ export class ViewStyles {
 		"padding",
 		"font-family",
 		"font-size",
+		"text-transform",
+		"height",
+		"padding",
+		"opacity"
 	];
 
 	// The keys must be valid regex
@@ -19,7 +23,8 @@ export class ViewStyles {
 		"@font-face": [], // All properties allowed when empty
 		"\.ts-token-container": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
-		"\.ts-action-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES
+		"\.ts-action-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
+		"\.ts-overflow-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES
 	}
 
 	constructor(private xml: XMLDocument) {
