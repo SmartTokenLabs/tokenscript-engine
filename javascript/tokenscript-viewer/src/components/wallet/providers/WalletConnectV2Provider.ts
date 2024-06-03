@@ -17,6 +17,8 @@ export const WC_DEFAULT_RPC_MAP = {
 	42161: 'https://arb1.arbitrum.io/rpc', // Arbitrum
 	421613: 'https://arb-goerli.g.alchemy.com/v2/nFrflomLgsQQL5NWjGileAVqIGGxZWce', // Arbitrum goerli,
 	10: 'https://mainnet.optimism.io', // Optimism
+	5000: 'https://rpc.mantle.xyz', // Mantle
+	5003: 'https://rpc.sepolia.mantle.xyz' // Mantle Sepolia
 }
 
 /*export const WC_V2_DEFAULT_CHAINS = [
@@ -45,6 +47,8 @@ export const WC_V2_DEFAULT_CHAINS = [
 	97, // BSC testnet
 	42161, // Arbitrum
 	10, // Optimism
+	5000, // Mantle
+	5003 // Mantle Sepolia
 ]
 
 export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: boolean) => {

@@ -21,7 +21,9 @@ export enum ChainID {
 	FANTOM = 250,
 	KLAYTN = 8217,
 	BAOBAB = 1001,
-	HARDHAT_LOCALHOST = 31337
+	HARDHAT_LOCALHOST = 31337,
+	MANTLE = 5000,
+	MANTLE_SEPOLIA = 5003
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -40,7 +42,9 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.FANTOM]: "fantom",
 	[ChainID.KLAYTN]: "cypress",
 	[ChainID.BAOBAB]: "baobab",
-	[ChainID.HARDHAT_LOCALHOST]: "hardhat-localhost"
+	[ChainID.HARDHAT_LOCALHOST]: "hardhat-localhost",
+	[ChainID.MANTLE]: "mantle",
+	[ChainID.MANTLE_SEPOLIA]: "mantle-sepolia"
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -58,7 +62,9 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.FANTOM]: "Fantom",
 	[ChainID.KLAYTN]: "Cypress (Klaytn Mainnet)",
 	[ChainID.BAOBAB]: "Baobab (Klaytn Testnet)",
-	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)"
+	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)",
+	[ChainID.MANTLE]: "Mantle",
+	[ChainID.MANTLE_SEPOLIA]: "Mantle (Sepolia)"
 };
 
 export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
@@ -138,6 +144,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.HARDHAT_LOCALHOST]: {
 		rpc: 'http://127.0.0.1:8545/',
 		explorer: ''
+	},
+	[ChainID.MANTLE]: {
+		rpc: 'https://rpc.mantle.xyz',
+		explorer: 'https://explorer.mantle.xyz/tx/'
+	},
+	[ChainID.MANTLE_SEPOLIA]: {
+		rpc: 'https://rpc.sepolia.mantle.xyz',
+		explorer: 'https://explorer.sepolia.mantle.xyz/tx/'
 	}
 	//43113: 'https://api.avax-test.network/ext/bc/C/rpc', // Fuji testnet
 	/*25: {
