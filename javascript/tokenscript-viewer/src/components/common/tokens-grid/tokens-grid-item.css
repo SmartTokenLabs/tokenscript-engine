@@ -68,9 +68,10 @@
 	border-radius: 25px !important;
 	border: none !important;
 	padding: 0;
+	background: transparent !important;
 }
 
-.info-btn img:hover {
+.info-btn svg:hover {
 	filter: opacity(80%);
 }
 

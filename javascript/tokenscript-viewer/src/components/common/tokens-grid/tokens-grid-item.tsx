@@ -117,34 +117,46 @@ export class TokensGridItem {
 					}
 					imageTitle={this.token.name}/>
 				<div class="tg-item-details">
-					<h5>{previewAddr(title)}{"tokenId" in this.token ? <copy-icon copyText={this.token.tokenId} /> : ''}</h5>
-					{
-						details ?
-							<span title={details}>{previewAddr(details)}</span>
-							: ''
-					}
-					{
-						this.token.tokenType !== "erc721" ?
-							<span title={details}>Balance: {EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals)}</span>
-							: ''
-					}
+					<div class="tg-item-heading">
+						<h5>{previewAddr(title)}{"tokenId" in this.token ? <copy-icon copyText={this.token.tokenId} /> : ''}</h5>
+						{
+							details ?
+								<span title={details}>{previewAddr(details)}</span>
+								: ''
+						}
+						{
+							this.token.tokenType !== "erc721" ?
+								<span title={details}>Balance: {EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals)}</span>
+								: ''
+						}
+					</div>
 					<button class="btn btn-secondary info-btn" onClick={() => this.showTokenInfo(this.token)}>
-						<img alt="info" src="/assets/icon/info.svg" />
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"
+						     xmlns="http://www.w3.org/2000/svg">
+							<path
+								d="M10.8335 6.16634H13.1668V8.49967H10.8335V6.16634ZM10.8335 10.833H13.1668V17.833H10.8335V10.833ZM12.0002 0.333008C5.56016 0.333008 0.333496 5.55967 0.333496 11.9997C0.333496 18.4397 5.56016 23.6663 12.0002 23.6663C18.4402 23.6663 23.6668 18.4397 23.6668 11.9997C23.6668 5.55967 18.4402 0.333008 12.0002 0.333008ZM12.0002 21.333C6.85516 21.333 2.66683 17.1447 2.66683 11.9997C2.66683 6.85467 6.85516 2.66634 12.0002 2.66634C17.1452 2.66634 21.3335 6.85467 21.3335 11.9997C21.3335 17.1447 17.1452 21.333 12.0002 21.333Z"
+								fill="currentColor" stroke="currentColor"/>
+							<path
+								d="M10.8335 6.16634H13.1668V8.49967H10.8335V6.16634ZM10.8335 10.833H13.1668V17.833H10.8335V10.833ZM12.0002 0.333008C5.56016 0.333008 0.333496 5.55967 0.333496 11.9997C0.333496 18.4397 5.56016 23.6663 12.0002 23.6663C18.4402 23.6663 23.6668 18.4397 23.6668 11.9997C23.6668 5.55967 18.4402 0.333008 12.0002 0.333008ZM12.0002 21.333C6.85516 21.333 2.66683 17.1447 2.66683 11.9997C2.66683 6.85467 6.85516 2.66634 12.0002 2.66634C17.1452 2.66634 21.3335 6.85467 21.3335 11.9997C21.3335 17.1447 17.1452 21.333 12.0002 21.333Z"
+								fill="currentColor" stroke="currentColor"/>
+						</svg>
 					</button>
 					<div class="actions">
-						{ this.cardButtons ?
+						{this.cardButtons ?
 							this.cardButtons :
-							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}} />
+							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
 						}
-						{ this.overflowCardButtons?.length ?
-							(<button class="btn more-actions-btn ts-overflow-button" onClick={() => this.openActionOverflowModal(this.overflowCardButtons)}>
+						{this.overflowCardButtons?.length ?
+							(<button class="btn more-actions-btn ts-overflow-button"
+							         onClick={() => this.openActionOverflowModal(this.overflowCardButtons)}>
 								+ More actions
 							</button>) : ''
 						}
 					</div>
 				</div>
-				<token-security-status tokenScript={this.tokenScript} originId={this.token.originId} />
-				{this.token?.data?.type === "eas" ? <button class="delete-attest-btn" title="Delete attestation" onClick={() => this.deleteAttestation()}>X</button> : '' }
+				<token-security-status tokenScript={this.tokenScript} originId={this.token.originId}/>
+				{this.token?.data?.type === "eas" ? <button class="delete-attest-btn" title="Delete attestation"
+				                                            onClick={() => this.deleteAttestation()}>X</button> : ''}
 			</Host>
 		)
 	}
