@@ -7,6 +7,8 @@ export class ViewStyles {
 		"border-color",
 		"background",
 		"background-color",
+		"background-position",
+		"background-size",
 		"color",
 		"padding",
 		"font-family",
@@ -21,7 +23,8 @@ export class ViewStyles {
 	private static ALLOWED_SELECTORS_AND_PROPERTIES = {
 		// TODO: Add font-face
 		"@font-face": [], // All properties allowed when empty
-		"\.ts-token-container": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
+		"\.ts-token-background": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
+		"\.ts-token-container.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-action-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-overflow-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES

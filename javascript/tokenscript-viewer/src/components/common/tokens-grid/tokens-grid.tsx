@@ -146,7 +146,7 @@ export class TokensGrid {
 
 	render() {
 		return (
-			<Host style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
+			<Host class="ts-token-background" style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
 				<div class="bg-blur">
 					<div class="tokens-grid">
 						<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>

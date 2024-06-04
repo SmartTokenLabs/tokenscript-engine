@@ -166,7 +166,9 @@ export class SmartTokenStoreViewer {
 		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
 		if (this.tokenScript.getMetadata().backgroundImageUrl){
-			document.getElementsByTagName("body")[0].style.backgroundImage = `url(${this.tokenScript.getMetadata().backgroundImageUrl})`;
+			const body = document.getElementsByTagName("body")[0];
+			body.classList.add("ts-token-background");
+			body.style.backgroundImage = `url(${this.tokenScript.getMetadata().backgroundImageUrl})`;
 		}
 
 		// Reload cards after the token is updated
