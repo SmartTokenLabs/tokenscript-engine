@@ -17,6 +17,7 @@ import {EthUtils} from "../../../../../engine-js/src/ethereum/EthUtils";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import { previewAddr } from '@tokenscript/engine-js/src/utils';
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'sts-viewer',
@@ -115,7 +116,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad() {
 
-		const {chain, contract, tokenId, tokenscriptUrl, wallet} = getTokenUrlParams();
+		let {chain, contract, tokenId, tokenscriptUrl, wallet, emulator} = getTokenUrlParams();
 
 		let slnAdapter;
 
@@ -147,6 +148,14 @@ export class SmartTokenStoreViewer {
 			console.log('Token meta loaded!', this.collectionDetails, this.tokenDetails);
 
 			this.app.hideTsLoader();
+
+			if (emulator){
+				const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+				tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+				connectEmulatorSocket(emulatorUrl, async() => {
+					await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+				});
+			}
 
 			await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 		}
@@ -329,7 +338,7 @@ export class SmartTokenStoreViewer {
 									<loading-spinner color={'#595959'} size={'small'} style={{textAlign: 'center'}}/>}
 								{this.overflowCardButtons?.length
 									? [
-										<button class="btn more-actions-btn"
+										<button class="btn more-actions-btn ts-overflow-button"
 												onClick={() => this.overflowDialog.openDialog()}>
 											+ More actions
 										</button>,

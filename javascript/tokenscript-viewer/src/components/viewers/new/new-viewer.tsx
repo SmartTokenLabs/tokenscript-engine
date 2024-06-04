@@ -6,6 +6,7 @@ import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {CHAIN_MAP} from "../../../integration/constants";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 type LoadedTokenScript = (TokenScriptsMeta & {tokenScript?: TokenScript});
 
@@ -113,43 +114,17 @@ export class NewViewer {
 			const emulator = query.get("emulator") ? new URL(decodeURIComponent(query.get("emulator"))).origin : document.location.origin;
 			const tsId = emulator + "/tokenscript.tsml";
 			tsMeta = await this.addFormSubmit("url", {tsId})
-			this.connectEmulatorSocket(tsId, emulator);
+			connectEmulatorSocket(emulator, async() => {
+				const tsMeta = await this.addFormSubmit("url", {tsId});
+				await this.viewerPopover.close();
+				this.viewerPopover.open(tsMeta.tokenScript);
+			});
 		}
 
 		console.log("open TS", tsMeta);
 
 		if (tsMeta)
 			this.viewerPopover.open(tsMeta.tokenScript);
-	}
-
-	connectEmulatorSocket(tsId: string, host: string){
-
-		try {
-			const webSocket = new WebSocket("ws://" + new URL(host).host + "/ws");
-
-			webSocket.onopen = (event) => {
-				console.log("connected: ", event.type);
-				webSocket.send("Websocket client connected!");
-			};
-
-			webSocket.onmessage = async (event) => {
-
-				if (event.data != "BUILD_UPDATED")
-					return;
-
-				// TODO: Implement build started and build error events
-				try {
-					const tsMeta = await this.addFormSubmit("url", {tsId});
-					await this.viewerPopover.close();
-					this.viewerPopover.open(tsMeta.tokenScript);
-				} catch (e){
-					console.error(e);
-					alert("Failed to reload TokenScript changes");
-				}
-			}
-		} catch (e){
-			console.error(e);
-		}
 	}
 
 	private async init(){

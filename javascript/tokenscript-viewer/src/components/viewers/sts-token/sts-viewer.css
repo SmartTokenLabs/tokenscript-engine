@@ -20,6 +20,7 @@ sts-viewer {
 	display: flex;
 	flex-direction: column;
 	background: #fff;
+	overflow: hidden;
 }
 
 body {
