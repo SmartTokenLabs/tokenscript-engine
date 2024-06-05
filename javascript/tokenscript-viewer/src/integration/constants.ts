@@ -11,11 +11,9 @@ export enum ChainID {
 	OPTIMISM = 10,
 	BSC = 56,
 	BSC_TESTNET = 97,
-	GOERLI = 5, // TODO: Remove soon
 	SEPOLIA = 11155111,
 	HOLESKY = 17000,
 	KOVAN = 42,
-	MUMBAI = 80001, // TODO: Remove soon
 	AMOY = 80002,
 	AVALANCH = 43114,
 	FANTOM = 250,
@@ -23,7 +21,9 @@ export enum ChainID {
 	BAOBAB = 1001,
 	HARDHAT_LOCALHOST = 31337,
 	MANTLE = 5000,
-	MANTLE_SEPOLIA = 5003
+	MANTLE_SEPOLIA = 5003,
+	BASE = 8453,
+	BASE_SEPOLIA= 84532
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -31,12 +31,10 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.POLYGON]: "polygon",
 	[ChainID.ARBITRUM]: "arbitrum",
 	[ChainID.OPTIMISM]: "optimism",
-	[ChainID.GOERLI]: "goerli", // TODO: Remove soon
 	[ChainID.SEPOLIA]: "sepolia",
 	[ChainID.HOLESKY]: 'holesky',
 	[ChainID.KOVAN]: "kovan",
 	[ChainID.BSC]: "bsc",
-	[ChainID.MUMBAI]: "mumbai", // TODO: Remove soon
 	[ChainID.AMOY]: "amoy",
 	[ChainID.AVALANCH]: "avalanche",
 	[ChainID.FANTOM]: "fantom",
@@ -44,16 +42,16 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.BAOBAB]: "baobab",
 	[ChainID.HARDHAT_LOCALHOST]: "hardhat-localhost",
 	[ChainID.MANTLE]: "mantle",
-	[ChainID.MANTLE_SEPOLIA]: "mantle-sepolia"
+	[ChainID.MANTLE_SEPOLIA]: "mantle-sepolia",
+	[ChainID.BASE]: "base",
+	[ChainID.BASE_SEPOLIA]: "base-sepolia",
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.ETHEREUM]: "Ethereum Mainnet",
-	[ChainID.GOERLI]: "Goerli (Ethereum Testnet)", // TODO: Remove soon
 	[ChainID.SEPOLIA]: "Sepolia (Ethereum Testnet)",
 	[ChainID.HOLESKY]: 'Holesky (Ethereum Testnet)',
 	[ChainID.POLYGON]: "Polygon",
-	[ChainID.MUMBAI]: "Mumbai (Polygon Testnet)", // TODO: Remove soon
 	[ChainID.AMOY]: "Amoy (Polygon Testnet)",
 	[ChainID.ARBITRUM]: "Arbitrum",
 	[ChainID.OPTIMISM]: "Optimism",
@@ -64,25 +62,22 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.BAOBAB]: "Baobab (Klaytn Testnet)",
 	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)",
 	[ChainID.MANTLE]: "Mantle",
-	[ChainID.MANTLE_SEPOLIA]: "Mantle (Sepolia)"
+	[ChainID.MANTLE_SEPOLIA]: "Mantle (Sepolia Testnet)",
+	[ChainID.BASE]: "Base",
+	[ChainID.BASE_SEPOLIA]: "Base (Sepolia Testnet)"
 };
 
 export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
   [ChainID.ETHEREUM]: '0xA7b39296258348C78294F95B872b282326A97BDF',
   [ChainID.SEPOLIA]: '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0',
   [ChainID.POLYGON]: '0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7',
-  [ChainID.MUMBAI]: '0x55D26f9ae0203EF95494AE4C170eD35f4Cf77797', // TODO: Remove soon & add amoy
+  // TODO: Add amoy and other chains
 };
 
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
 		rpc: 'https://mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
 		explorer: 'https://etherscan.com/tx/'
-	},
-	// TODO: Remove soon
-	[ChainID.GOERLI]: {
-		rpc: 'https://eth-goerli.g.alchemy.com/v2/yVhq9zPJorAWsw-F87fEabSUl7cCU6z4',
-		explorer: 'https://goerli.etherscan.io/tx/'
 	},
 	[ChainID.SEPOLIA]: {
 		rpc: 'https://sepolia.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
@@ -98,11 +93,6 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 			//'https://polygon.meowrpc.com'
 		],
 		explorer: 'https://polygonscan.com/tx/'
-	},
-	// TODO: Remove soon
-	[ChainID.MUMBAI]: {
-		rpc: 'https://polygon-mumbai.g.alchemy.com/v2/rVI6pOV4irVsrw20cJxc1fxK_1cSeiY0',
-		explorer: 'https://mumbai.polygonscan.com/tx/'
 	},
 	[ChainID.AMOY]: {
 		rpc: 'https://polygon-amoy.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
@@ -151,6 +141,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.MANTLE_SEPOLIA]: {
 		rpc: 'https://rpc.sepolia.mantle.xyz',
 		explorer: 'https://explorer.sepolia.mantle.xyz/tx/'
+	},
+	[ChainID.BASE]: {
+		rpc: 'https://base-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+		explorer: 'https://basescan.org/tx/'
+	},
+	[ChainID.BASE_SEPOLIA]: {
+		rpc: 'https://base-sepolia.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+		explorer: 'https://sepolia.basescan.org/tx/'
 	}
 }
 
