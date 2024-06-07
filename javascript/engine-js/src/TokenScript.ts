@@ -607,7 +607,7 @@ export class TokenScript {
 					collectionId: tokenDetails.collectionId,
 					tokenId: tokenDetails.tokenId,
 					type: tokenContext.tokenType,
-					name: tokenDetails.name ?? tokenDetails.data.title,
+					name: tokenDetails.name ?? tokenDetails.data?.title,
 					description: tokenDetails.description,
 					image: tokenDetails.image,
 					attributes: tokenDetails.attributes ?? [],
