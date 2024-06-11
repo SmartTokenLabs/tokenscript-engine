@@ -135,14 +135,18 @@ export class SecurityInfo {
 		if (this.originStatuses[originId])
 			return this.originStatuses[originId];
 
-		const contract = this.tokenScript.getContractByName(originId);
+		try {
+			if (originId){
+				this.tokenScript.getContractByName(originId);
+				return new Origin(this.tokenScript, originId, "contract").getOriginSecurityStatus(this.securityInfo);
+			}
+		} catch (e){
+			console.warn(originId);
+		}
 
-		if (!contract)
-			return <IOriginSecurityInfo>{
-				status: SecurityStatus.INVALID
-			};
-
-		return new Origin(this.tokenScript, originId, "contract").getOriginSecurityStatus(this.securityInfo);
+		return <IOriginSecurityInfo>{
+			status: SecurityStatus.INVALID
+		};
 	}
 
 	public async getAllOriginInfo(){
