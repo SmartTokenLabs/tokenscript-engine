@@ -20586,7 +20586,6 @@ function create_fragment$9(ctx) {
     }
   };
 }
-const openSeaLink = "https://testnets.opensea.io/assets/baobab/0x7decc880ab70436fa56e2b9d993b646d66cfa106/";
 function instance$8($$self, $$props, $$invalidate) {
   let { token } = $$props;
   let { dragonState } = $$props;
@@ -20618,6 +20617,7 @@ function instance$8($$self, $$props, $$invalidate) {
     $$invalidate(1, dragElem.scrollLeft = scrollLeft - scroll, dragElem);
     didDrag = true;
   };
+  const openSeaLink = `https://testnets.opensea.io/assets/${chainID == "1001" ? "baobab" : "klaytn"}/${token.contractAddress}/`;
   const shareToTwitter = (type) =&gt; {
     if (didDrag)
       return;
@@ -21239,8 +21239,8 @@ function create_if_block_1$2(ctx) {
       $$slots: {
         default: [
           create_default_slot$1,
-          ({ friend }) =&gt; ({ 10: friend }),
-          ({ friend }) =&gt; friend ? 1024 : 0
+          ({ friend }) =&gt; ({ 11: friend }),
+          ({ friend }) =&gt; friend ? 2048 : 0
         ]
       },
       $$scope: { ctx }
@@ -21261,7 +21261,7 @@ function create_if_block_1$2(ctx) {
         friendslist_changes.friendsList = /*friendsList*/
         ctx2[2];
       if (dirty &amp; /*$$scope, friend*/
-      3072) {
+      6144) {
         friendslist_changes.$$scope = { dirty, ctx: ctx2 };
       }
       friendslist.$set(friendslist_changes);
@@ -21291,14 +21291,14 @@ function create_default_slot$1(ctx) {
   let t1;
   let t2_value = (
     /*friend*/
-    ctx[10].tokenId + ""
+    ctx[11].tokenId + ""
   );
   let t2;
   let t3;
   let span;
   let t4_value = getLevelLabel(
     /*friend*/
-    ctx[10].level
+    ctx[11].level
   ) + "";
   let t4;
   let t5;
@@ -21308,13 +21308,13 @@ function create_default_slot$1(ctx) {
   nfticon = new NftIcon({
     props: { tokenUri: (
       /*friend*/
-      ctx[10].tokenUri
+      ctx[11].tokenUri
     ) }
   });
   owneraddress = new OwnerAddress({
     props: { address: (
       /*friend*/
-      ctx[10].owner
+      ctx[11].owner
     ) }
   });
   return {
@@ -21358,25 +21358,25 @@ function create_default_slot$1(ctx) {
     p(ctx2, dirty) {
       const nfticon_changes = {};
       if (dirty &amp; /*friend*/
-      1024)
+      2048)
         nfticon_changes.tokenUri = /*friend*/
-        ctx2[10].tokenUri;
+        ctx2[11].tokenUri;
       nfticon.$set(nfticon_changes);
       if ((!current || dirty &amp; /*friend*/
-      1024) &amp;&amp; t2_value !== (t2_value = /*friend*/
-      ctx2[10].tokenId + ""))
+      2048) &amp;&amp; t2_value !== (t2_value = /*friend*/
+      ctx2[11].tokenId + ""))
         set_data(t2, t2_value);
       if ((!current || dirty &amp; /*friend*/
-      1024) &amp;&amp; t4_value !== (t4_value = getLevelLabel(
+      2048) &amp;&amp; t4_value !== (t4_value = getLevelLabel(
         /*friend*/
-        ctx2[10].level
+        ctx2[11].level
       ) + ""))
         set_data(t4, t4_value);
       const owneraddress_changes = {};
       if (dirty &amp; /*friend*/
-      1024)
+      2048)
         owneraddress_changes.address = /*friend*/
-        ctx2[10].owner;
+        ctx2[11].owner;
       owneraddress.$set(owneraddress_changes);
     },
     i(local) {
@@ -21420,17 +21420,20 @@ function create_fragment$8(ctx) {
   let label1;
   let t6;
   let span1;
-  let t8;
+  let t9;
   let div6;
   let div3;
+  let a;
   let t10;
+  let a_href_value;
+  let t11;
   let div5;
   let div4;
   let div5_class_value;
-  let t12;
   let t13;
   let t14;
   let t15;
+  let t16;
   let loader;
   let current;
   let mounted;
@@ -21471,25 +21474,27 @@ function create_fragment$8(ctx) {
       label1.textContent = "Altitude";
       t6 = space();
       span1 = element("span");
-      span1.textContent = `${"TBA"}`;
-      t8 = space();
+      span1.textContent = `${/*getAltitude*/
+      ctx[5]()}m`;
+      t9 = space();
       div6 = element("div");
       div3 = element("div");
-      div3.innerHTML = `&lt;a href="https://www.smartlayer.network/smartcat/suitup/browse" target="_blank"&gt;View&lt;/a&gt;`;
-      t10 = space();
+      a = element("a");
+      t10 = text("View");
+      t11 = space();
       div5 = element("div");
       div4 = element("div");
       div4.textContent = "Share on X";
-      t12 = space();
+      t13 = space();
       if (if_block0)
         if_block0.c();
-      t13 = space();
+      t14 = space();
       if (if_block1)
         if_block1.c();
-      t14 = space();
+      t15 = space();
       if (if_block2)
         if_block2.c();
-      t15 = space();
+      t16 = space();
       create_component(loader.$$.fragment);
       attr(div0, "class", "score-box");
       set_style(div0, "flex", "50%");
@@ -21498,6 +21503,10 @@ function create_fragment$8(ctx) {
       set_style(div2, "display", "flex");
       set_style(div2, "gap", "8px");
       set_style(div2, "margin-top", "24px");
+      attr(a, "href", a_href_value = `https://${chainID == "1001" ? "testnets." : ""}opensea.io/assets/${chainID == "1001" ? "baobab" : "klaytn"}/${/*token*/
+      ctx[0].contractAddress}/${/*token*/
+      ctx[0].tokenId}`);
+      attr(a, "target", "_blank");
       attr(div3, "class", "link-button svelte-15fudxx");
       set_style(div3, "flex", "50%");
       attr(div4, "class", "svelte-15fudxx");
@@ -21526,22 +21535,24 @@ function create_fragment$8(ctx) {
       append(div1, label1);
       append(div1, t6);
       append(div1, span1);
-      append(div7, t8);
+      append(div7, t9);
       append(div7, div6);
       append(div6, div3);
-      append(div6, t10);
+      append(div3, a);
+      append(a, t10);
+      append(div6, t11);
       append(div6, div5);
       append(div5, div4);
-      append(div8, t12);
+      append(div8, t13);
       if (if_block0)
         if_block0.m(div8, null);
-      append(div8, t13);
+      append(div8, t14);
       if (if_block1)
         if_block1.m(div8, null);
-      append(div8, t14);
+      append(div8, t15);
       if (if_block2)
         if_block2.m(div8, null);
-      append(div8, t15);
+      append(div8, t16);
       mount_component(loader, div8, null);
       current = true;
       if (!mounted) {
@@ -21549,7 +21560,7 @@ function create_fragment$8(ctx) {
           div4,
           "click",
           /*click_handler*/
-          ctx[5]
+          ctx[6]
         );
         mounted = true;
       }
@@ -21559,6 +21570,12 @@ function create_fragment$8(ctx) {
       1) &amp;&amp; t3_value !== (t3_value = /*token*/
       ctx2[0].level + ""))
         set_data(t3, t3_value);
+      if (!current || dirty &amp; /*token*/
+      1 &amp;&amp; a_href_value !== (a_href_value = `https://${chainID == "1001" ? "testnets." : ""}opensea.io/assets/${chainID == "1001" ? "baobab" : "klaytn"}/${/*token*/
+      ctx2[0].contractAddress}/${/*token*/
+      ctx2[0].tokenId}`)) {
+        attr(a, "href", a_href_value);
+      }
       if (!current || dirty &amp; /*shareOpened*/
       16 &amp;&amp; div5_class_value !== (div5_class_value = "link-button " + /*shareOpened*/
       (ctx2[4] ? "opened" : "") + " svelte-15fudxx")) {
@@ -21578,7 +21595,7 @@ function create_fragment$8(ctx) {
           if_block0 = create_if_block_3$2(ctx2);
           if_block0.c();
           transition_in(if_block0, 1);
-          if_block0.m(div8, t13);
+          if_block0.m(div8, t14);
         }
       } else if (if_block0) {
         group_outros();
@@ -21601,7 +21618,7 @@ function create_fragment$8(ctx) {
           if_block1 = create_if_block_2$2(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
-          if_block1.m(div8, t14);
+          if_block1.m(div8, t15);
         }
       } else if (if_block1) {
         group_outros();
@@ -21624,7 +21641,7 @@ function create_fragment$8(ctx) {
           if_block2 = create_if_block$3(ctx2);
           if_block2.c();
           transition_in(if_block2, 1);
-          if_block2.m(div8, t15);
+          if_block2.m(div8, t16);
         }
       } else if (if_block2) {
         group_outros();
@@ -21706,8 +21723,34 @@ function instance$7($$self, $$props, $$invalidate) {
     $$invalidate(0, token = value.token);
     await loadInfo();
   });
+  function getAltitude() {
+    switch (parseInt(token.level)) {
+      case 1:
+        return 10;
+      case 2:
+        return 50;
+      case 3:
+        return 100;
+      case 4:
+        return 200;
+      case 5:
+        return 500;
+      case 6:
+        return 900;
+      case 7:
+        return 1200;
+    }
+  }
   const click_handler = () =&gt; $$invalidate(4, shareOpened = !shareOpened);
-  return [token, dragonState, friendsList, loading, shareOpened, click_handler];
+  return [
+    token,
+    dragonState,
+    friendsList,
+    loading,
+    shareOpened,
+    getAltitude,
+    click_handler
+  ];
 }
 class Info extends SvelteComponent {
   constructor(options) {
@@ -25005,4 +25048,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>Z9NERGfQXyT6U9CG6uQpo2TsxD7ZByaB11SKPqdoBq8=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>fClFFv8FhM8bskrr55KJLQG70Ek/IHBOKnBFNGUOIZs+6iDqtTpres9ZKVgp0DYGZFm7Dc01eXnTMxZmY3FzDw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>xksUWglo9lsjL9GiRz6H7lp8kihtba+aK+wZJ0P+TTM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>HS5zWNyjzI1hVKc5L0m333r30fCZTVA4MnjMmyfpfr32eNcNhEHUok1Z7XkOoAniSboCFOKOEucMe6KHifBVdA==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
