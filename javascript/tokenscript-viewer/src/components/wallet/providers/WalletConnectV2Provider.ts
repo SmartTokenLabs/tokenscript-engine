@@ -1,5 +1,6 @@
 // import UniversalProvider from '@walletconnect/universal-provider'
 import EthereumProvider from "@walletconnect/ethereum-provider";
+import {CHAIN_MAP} from "../../../integration/constants";
 
 export const WC_DEFAULT_RPC_MAP = {
 	1: 'https://ethereum.publicnode.com', // mainnet
@@ -37,19 +38,7 @@ export const WC_DEFAULT_RPC_MAP = {
 	'eip155:10', // Optimism
 ]*/
 
-export const WC_V2_DEFAULT_CHAINS = [
-	1, // Mainnet
-	5, // Goerli
-	11155111, // Sepolia
-	137, // Polygon
-	80001, // Mumbai
-	56, // BSC
-	97, // BSC testnet
-	42161, // Arbitrum
-	10, // Optimism
-	5000, // Mantle
-	5003 // Mantle Sepolia
-]
+export const WC_V2_DEFAULT_CHAINS = Object.keys(CHAIN_MAP).map(id => parseInt(id));
 
 export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: boolean) => {
 	// @ts-ignore
@@ -57,6 +46,12 @@ export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: bo
 		projectId: '2ec7ead81da1226703ad789c0b2f7b30',
 		methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData'],
 		events: ['chainChanged', 'accountsChanged'],
+		metadata: {
+			name: "Smart Token Viewer",
+			description: "TokenScript Viewer is an easy way to run TokenScripts in your browser if you don't have a TokenScript compatible wallet.",
+			url: `${location.origin}`,
+			icons: [`${location.origin}/assets/icon/icon.png`]
+		},
 		showQrModal: !checkConnectionOnly,
 		optionalChains: WC_V2_DEFAULT_CHAINS
 	});
