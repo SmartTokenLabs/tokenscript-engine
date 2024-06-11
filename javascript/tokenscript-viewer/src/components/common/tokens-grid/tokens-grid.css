@@ -10,7 +10,7 @@
 }
 
 .bg-blur {
-	backdrop-filter: blur(3px);
+	/*backdrop-filter: blur(3px);*/
 	height: 100%;
 }
 

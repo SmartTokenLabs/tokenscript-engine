@@ -16,7 +16,6 @@ tokens-grid {
 	background-attachment: fixed;
 	background-position: center;
 	background-size: cover;
-	backdrop-filter: blur(5px);
 }
 
 viewer-popover.open {
