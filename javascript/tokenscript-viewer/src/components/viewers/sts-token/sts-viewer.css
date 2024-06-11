@@ -23,6 +23,13 @@ sts-viewer {
 	overflow: hidden;
 }
 
+@media only screen and (max-width: 656px) {
+	.token-viewer {
+		border: none !important;
+		border-radius: 0 !important;
+	}
+}
+
 body {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
