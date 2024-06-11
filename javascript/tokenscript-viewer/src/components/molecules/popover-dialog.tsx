@@ -15,6 +15,9 @@ export class PopoverDialog {
 	dialogStyles: {[cssProp: string]: string} = {};
 
 	@Prop()
+	modalStyles: {[cssProp: string]: string} = {};
+
+	@Prop()
 	dialogClasses: string[] = [];
 
 	@Prop()
@@ -38,7 +41,7 @@ export class PopoverDialog {
 
 	render(){
 		return (
-			<div class={"popover-modal" + (this.open ? ' open' : '')}>
+			<div class={"popover-modal" + (this.open ? ' open' : '')} style={this.modalStyles}>
 				<div class={"popover-container" + (this.fullScreen ? ' fullscreen ' : '') + " " + this.dialogClasses.join(" ")} style={this.dialogStyles}>
 					<button class="close-btn" disabled={this.disableClose} onClick={() => {
 						this.open = false;

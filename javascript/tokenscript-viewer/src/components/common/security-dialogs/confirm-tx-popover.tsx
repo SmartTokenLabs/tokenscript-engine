@@ -33,7 +33,7 @@ export class ConfirmTxPopover {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{maxWidth: "380px"}}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{maxWidth: "380px"}} modalStyles={{zIndex: "200"}}>
 				{this.txInfo ?
 					(
 						<div class="tx-confirm-dialog">

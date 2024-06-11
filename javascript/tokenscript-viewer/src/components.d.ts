@@ -110,6 +110,7 @@ export namespace Components {
         "dialogStyles": {[cssProp: string]: string};
         "disableClose": boolean;
         "fullScreen": boolean;
+        "modalStyles": {[cssProp: string]: string};
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
     }
     interface SecurityStatus {
@@ -834,6 +835,7 @@ declare namespace LocalJSX {
         "dialogStyles"?: {[cssProp: string]: string};
         "disableClose"?: boolean;
         "fullScreen"?: boolean;
+        "modalStyles"?: {[cssProp: string]: string};
     }
     interface SecurityStatus {
         "size"?: "large"|"small";
