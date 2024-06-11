@@ -112,7 +112,9 @@ export class AppRoot {
 					}
 				],
 				txValidationCallback: (txInfo) => {
-					return this.confirmTxPopover.confirmTransaction(txInfo);
+					// TODO: This is temporarily disabled to add support for contracts not defined in the tokenscript
+					return true;
+					//return this.confirmTxPopover.confirmTransaction(txInfo);
 				}
 			}
 		);
