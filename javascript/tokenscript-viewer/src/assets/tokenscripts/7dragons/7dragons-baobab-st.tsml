@@ -24725,7 +24725,6 @@ p.light {
 .score-box label {
 	font-size: 16px;
 	color: #DDD;
-	text-transform: uppercase;
 }
 
 .score-box span {
@@ -24807,6 +24806,7 @@ input:focus:invalid + label {
 	font-size: 16px;
 	font-weight: 600;
 	text-decoration: none;
+	text-transform: uppercase;
 }
 
 .btn {
@@ -25212,4 +25212,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>mKjex80k9tiBGk8D+V8QRjoO4WoMVDAu4aFsxttndEI=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>i+5IoJASVK+BUBQoLJH4ujXu9MxuEO7kVQIAaqwP302dN1CboC1DikIMPvhFbSwebgXWsK9APGZmbQRF+4Tn1Q==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>BtisT0/JTQyDk5DB5cLMKlyd7Mp2dpBFSKfHQMkIHJI=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>f1A/Ns3BrU0Iz09gmAvWrG8cPKF5rZ18usYzTWxPf4d8j7MunZKDpj6ekRE3RniqlBqsNf9xgXOCxTjonETlrQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
