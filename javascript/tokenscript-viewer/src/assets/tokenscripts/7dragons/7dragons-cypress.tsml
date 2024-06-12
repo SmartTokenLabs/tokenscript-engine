@@ -17,13 +17,13 @@
 		
 		
 		
-		<ts:address network="8217">0xa92556deb1Ce7cF6bB3078c1012cf66bAd82e4f6</ts:address>
+		<ts:address network="8217">0xE39dC2CBe826EAC3d736C54Ef0c4045B2054a43e</ts:address>
 	</ts:contract>
 	<ts:contract name="SevenDragonsScore">
 		
 		
 		
-		<ts:address network="8217">0x601bc9fa3d38fe78a43c6b4cc4a885823d336288</ts:address>
+		<ts:address network="8217">0xbf85C15539619387401eAB673a833DE594035C85</ts:address>
 		<ts:abi>
 			
 			[
@@ -261,7 +261,7 @@
 			
 		<style>/*&lt;![CDATA[*/ 
 
-.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-ln32o1{background:url("https://viewer.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-ln32o1{overflow:hidden;top:12%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-ln32o1{position:relative;width:75%;aspect-ratio:5 / 1;top:25%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-ln32o1{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-ln32o1:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-ln32o1:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-ln32o1:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-ln32o1{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-1vc0199.svelte-1vc0199{display:flex;flex-direction:column}.dragon-details.svelte-1vc0199.svelte-1vc0199{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199,.dragon-stats.svelte-1vc0199 div.svelte-1vc0199{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-1vc0199.svelte-1vc0199{max-width:200px;margin:0 auto}.dragon-stats.svelte-1vc0199.svelte-1vc0199{color:#DDD;display:flex;align-items:center;justify-content:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
+.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-14cpm6p{background:url("https://viewer.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-14cpm6p{overflow:hidden;margin-top:14.5%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-14cpm6p{position:relative;width:75%;aspect-ratio:5 / 1;margin-top:15%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-14cpm6p{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-14cpm6p:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-14cpm6p:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-14cpm6p:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-14cpm6p{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-1vc0199.svelte-1vc0199{display:flex;flex-direction:column}.dragon-details.svelte-1vc0199.svelte-1vc0199{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199,.dragon-stats.svelte-1vc0199 div.svelte-1vc0199{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-1vc0199.svelte-1vc0199{max-width:200px;margin:0 auto}.dragon-stats.svelte-1vc0199.svelte-1vc0199{color:#DDD;display:flex;align-items:center;justify-content:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
 			90deg,
 			rgba(255, 255, 255, 0) 0,
 			rgba(255, 255, 255, 0.2) 20%,
@@ -1202,15 +1202,15 @@ function create_fragment$k(ctx) {
       if (button_slot)
         button_slot.c();
       attr(div0, "id", "tg-content");
-      attr(div0, "class", "svelte-ln32o1");
+      attr(div0, "class", "svelte-14cpm6p");
       attr(button, "id", "tg-button-inner");
       button.disabled = /*disableButton*/
       ctx[1];
-      attr(button, "class", "svelte-ln32o1");
+      attr(button, "class", "svelte-14cpm6p");
       attr(div1, "id", "tg-button-ctnr");
-      attr(div1, "class", "svelte-ln32o1");
+      attr(div1, "class", "svelte-14cpm6p");
       attr(div2, "id", "tg-container");
-      attr(div2, "class", "svelte-ln32o1");
+      attr(div2, "class", "svelte-14cpm6p");
     },
     m(target, anchor) {
       insert(target, div2, anchor);
@@ -19573,7 +19573,7 @@ function getEthersProvider() {
 }
 function getContract(_token) {
   const provider = getEthersProvider();
-  const CONTRACT_ADDRESS = "0x601bc9fa3d38fe78a43c6b4cc4a885823d336288";
+  const CONTRACT_ADDRESS = "0xbf85C15539619387401eAB673a833DE594035C85";
   return new Contract(CONTRACT_ADDRESS, [
     {
       "inputs": [],
@@ -20815,7 +20815,7 @@ function instance$8($$self, $$props, $$invalidate) {
         tweetText = `🐉! My #sevendragon is lonely. Dragon #${token.tokenId} is looking for a friend to fly with. Please invite me.`;
         break;
       case "show":
-        tweetText = `🐲! Who have I not followed? Let’s connect &amp; Follow each other on X ${openSeaLink}${token.tokenId} https://sevendragons.knightfury.io/`;
+        tweetText = `🐲! Who have I not followed? Let’s connect &amp; Follow each other on X ${openSeaLink}${token.tokenId}`;
         break;
       case "impress":
         tweetText = `🐉! My #sevendragon #${token.tokenId} is now on level ${token.level}! Check it out ${openSeaLink}${token.tokenId}`;
@@ -25156,4 +25156,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>6kbLxb4L7qgdoB90qrAG2QkuoSzlnhyzhf/IoRjQQPw=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>Mrn8pw3Dcyl4b4jjp9RRP1pmo3rpvEqfJvzKK15q73D7AFJsdH3NoN2MI4X+FJopydcFzPyEmZx6IGE2P8O3Sw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>Xn8iPdFtWJvCnK5/2BaQD4LwgZiF4NJQ6V7h+sXEAZY=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>9t55bTEzwEezF5u7eFMN24a8oJo0q1qUqUJlyBXID/LReFCUUjFephrj/OlV9/CytCYJzhOuhUHVsIgF0B6P7A==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
