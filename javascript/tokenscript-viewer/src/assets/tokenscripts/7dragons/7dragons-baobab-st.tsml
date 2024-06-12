@@ -259,7 +259,7 @@
 			
 		<style>/*&lt;![CDATA[*/ 
 
-.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-mf5d1x{background:url("https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-mf5d1x{overflow:hidden;top:12%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-mf5d1x{position:relative;width:75%;aspect-ratio:5 / 1;top:25%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-mf5d1x{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-mf5d1x:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-mf5d1x:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-mf5d1x:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-mf5d1x{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-okjfwj.svelte-okjfwj{display:flex;flex-direction:column}.dragon-details.svelte-okjfwj.svelte-okjfwj{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-okjfwj h2.svelte-okjfwj{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-okjfwj h2.svelte-okjfwj,.dragon-stats.svelte-okjfwj div.svelte-okjfwj{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-okjfwj.svelte-okjfwj{max-width:200px;margin:0 auto}.dragon-stats.svelte-okjfwj.svelte-okjfwj{color:#DDD;display:flex;align-items:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
+.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-mf5d1x{background:url("https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-mf5d1x{overflow:hidden;top:12%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-mf5d1x{position:relative;width:75%;aspect-ratio:5 / 1;top:25%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-mf5d1x{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-mf5d1x:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-mf5d1x:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-mf5d1x:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-mf5d1x{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-1vc0199.svelte-1vc0199{display:flex;flex-direction:column}.dragon-details.svelte-1vc0199.svelte-1vc0199{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199,.dragon-stats.svelte-1vc0199 div.svelte-1vc0199{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-1vc0199.svelte-1vc0199{max-width:200px;margin:0 auto}.dragon-stats.svelte-1vc0199.svelte-1vc0199{color:#DDD;display:flex;align-items:center;justify-content:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
 			90deg,
 			rgba(255, 255, 255, 0) 0,
 			rgba(255, 255, 255, 0.2) 20%,
@@ -4813,11 +4813,11 @@ function create_if_block$7(ctx) {
   };
 }
 function create_fragment$h(ctx) {
-  let div4;
+  let div6;
   let div0;
   let dragonimage;
   let t0;
-  let div3;
+  let div5;
   let t1;
   let h2;
   let t2;
@@ -4837,6 +4837,15 @@ function create_fragment$h(ctx) {
   let t6;
   let t7;
   let copyicon;
+  let t8;
+  let div4;
+  let div3;
+  let t9;
+  let t10_value = (
+    /*token*/
+    ctx[1].level + ""
+  );
+  let t10;
   let current;
   dragonimage = new DragonImage({
     props: {
@@ -4858,11 +4867,11 @@ function create_fragment$h(ctx) {
   });
   return {
     c() {
-      div4 = element("div");
+      div6 = element("div");
       div0 = element("div");
       create_component(dragonimage.$$.fragment);
       t0 = space();
-      div3 = element("div");
+      div5 = element("div");
       if (if_block)
         if_block.c();
       t1 = space();
@@ -4876,32 +4885,45 @@ function create_fragment$h(ctx) {
       t6 = text(t6_value);
       t7 = space();
       create_component(copyicon.$$.fragment);
-      attr(div0, "class", "dragon-icon svelte-okjfwj");
-      attr(h2, "class", "svelte-okjfwj");
-      attr(div1, "class", "svelte-okjfwj");
-      attr(div2, "class", "dragon-stats svelte-okjfwj");
-      attr(div3, "class", "dragon-details svelte-okjfwj");
-      attr(div4, "class", "dragon-header svelte-okjfwj");
+      t8 = space();
+      div4 = element("div");
+      div3 = element("div");
+      t9 = text("Level ");
+      t10 = text(t10_value);
+      attr(div0, "class", "dragon-icon svelte-1vc0199");
+      attr(h2, "class", "svelte-1vc0199");
+      attr(div1, "class", "svelte-1vc0199");
+      attr(div2, "class", "dragon-stats svelte-1vc0199");
+      set_style(div2, "margin-bottom", "10px");
+      attr(div3, "class", "svelte-1vc0199");
+      attr(div4, "class", "dragon-stats svelte-1vc0199");
+      attr(div5, "class", "dragon-details svelte-1vc0199");
+      attr(div6, "class", "dragon-header svelte-1vc0199");
     },
     m(target, anchor) {
-      insert(target, div4, anchor);
-      append(div4, div0);
+      insert(target, div6, anchor);
+      append(div6, div0);
       mount_component(dragonimage, div0, null);
-      append(div4, t0);
-      append(div4, div3);
+      append(div6, t0);
+      append(div6, div5);
       if (if_block)
-        if_block.m(div3, null);
-      append(div3, t1);
-      append(div3, h2);
+        if_block.m(div5, null);
+      append(div5, t1);
+      append(div5, h2);
       append(h2, t2);
       append(h2, t3);
-      append(div3, t4);
-      append(div3, div2);
+      append(div5, t4);
+      append(div5, div2);
       append(div2, div1);
       append(div1, t5);
       append(div1, t6);
       append(div2, t7);
       mount_component(copyicon, div2, null);
+      append(div5, t8);
+      append(div5, div4);
+      append(div4, div3);
+      append(div3, t9);
+      append(div3, t10);
       current = true;
     },
     p(ctx2, [dirty]) {
@@ -4920,7 +4942,7 @@ function create_fragment$h(ctx) {
         } else {
           if_block = create_if_block$7(ctx2);
           if_block.c();
-          if_block.m(div3, t1);
+          if_block.m(div5, t1);
         }
       } else if (if_block) {
         if_block.d(1);
@@ -4944,6 +4966,10 @@ function create_fragment$h(ctx) {
         copyicon_changes.copyText = /*token*/
         ctx2[1].tokenId;
       copyicon.$set(copyicon_changes);
+      if ((!current || dirty &amp; /*token*/
+      2) &amp;&amp; t10_value !== (t10_value = /*token*/
+      ctx2[1].level + ""))
+        set_data(t10, t10_value);
     },
     i(local) {
       if (current)
@@ -4959,7 +4985,7 @@ function create_fragment$h(ctx) {
     },
     d(detaching) {
       if (detaching) {
-        detach(div4);
+        detach(div6);
       }
       destroy_component(dragonimage);
       if (if_block)
@@ -21564,39 +21590,23 @@ function create_default_slot$1(ctx) {
   };
 }
 function create_fragment$8(ctx) {
-  let div8;
-  let div7;
-  let header;
-  let t0;
-  let div2;
-  let div0;
-  let label0;
-  let t2;
-  let span0;
-  let t3_value = (
-    /*token*/
-    ctx[0].level + ""
-  );
-  let t3;
-  let t4;
-  let div1;
-  let label1;
-  let t6;
-  let span1;
-  let t9;
-  let div6;
-  let div3;
-  let a;
-  let t10;
-  let a_href_value;
-  let t11;
   let div5;
   let div4;
-  let div5_class_value;
-  let t13;
-  let t14;
-  let t15;
-  let t16;
+  let header;
+  let t0;
+  let div3;
+  let div0;
+  let a;
+  let t1;
+  let a_href_value;
+  let t2;
+  let div2;
+  let div1;
+  let div2_class_value;
+  let t4;
+  let t5;
+  let t6;
+  let t7;
   let loader;
   let current;
   let mounted;
@@ -21620,119 +21630,80 @@ function create_fragment$8(ctx) {
   ) } });
   return {
     c() {
-      div8 = element("div");
-      div7 = element("div");
-      create_component(header.$$.fragment);
-      t0 = space();
-      div2 = element("div");
-      div0 = element("div");
-      label0 = element("label");
-      label0.textContent = "Level";
-      t2 = space();
-      span0 = element("span");
-      t3 = text(t3_value);
-      t4 = space();
-      div1 = element("div");
-      label1 = element("label");
-      label1.textContent = "Altitude";
-      t6 = space();
-      span1 = element("span");
-      span1.textContent = `${/*getAltitude*/
-      ctx[5]()}m`;
-      t9 = space();
-      div6 = element("div");
-      div3 = element("div");
-      a = element("a");
-      t10 = text("View");
-      t11 = space();
       div5 = element("div");
       div4 = element("div");
-      div4.textContent = "Share on X";
-      t13 = space();
+      create_component(header.$$.fragment);
+      t0 = space();
+      div3 = element("div");
+      div0 = element("div");
+      a = element("a");
+      t1 = text("View");
+      t2 = space();
+      div2 = element("div");
+      div1 = element("div");
+      div1.textContent = "Share on X";
+      t4 = space();
       if (if_block0)
         if_block0.c();
-      t14 = space();
+      t5 = space();
       if (if_block1)
         if_block1.c();
-      t15 = space();
+      t6 = space();
       if (if_block2)
         if_block2.c();
-      t16 = space();
+      t7 = space();
       create_component(loader.$$.fragment);
-      attr(div0, "class", "score-box");
-      set_style(div0, "flex", "50%");
-      attr(div1, "class", "score-box");
-      set_style(div1, "flex", "50%");
-      set_style(div2, "display", "flex");
-      set_style(div2, "gap", "8px");
-      set_style(div2, "margin-top", "24px");
       attr(a, "href", a_href_value = `https://${chainID == "1001" ? "testnets." : ""}opensea.io/assets/${chainID == "1001" ? "baobab" : "klaytn"}/${/*token*/
       ctx[0].contractAddress}/${/*token*/
       ctx[0].tokenId}`);
       attr(a, "target", "_blank");
-      attr(div3, "class", "link-button svelte-15fudxx");
-      set_style(div3, "flex", "50%");
-      attr(div4, "class", "svelte-15fudxx");
-      attr(div5, "class", div5_class_value = "link-button " + /*shareOpened*/
+      attr(div0, "class", "link-button svelte-15fudxx");
+      set_style(div0, "flex", "50%");
+      attr(div1, "class", "svelte-15fudxx");
+      attr(div2, "class", div2_class_value = "link-button " + /*shareOpened*/
       (ctx[4] ? "opened" : "") + " svelte-15fudxx");
-      set_style(div5, "flex", "50%");
-      set_style(div6, "display", "flex");
-      set_style(div6, "gap", "8px");
-      set_style(div6, "margin", "24px 0");
-      set_style(div7, "padding", "15px 15px 0");
-      set_style(div8, "width", "100%");
+      set_style(div2, "flex", "50%");
+      set_style(div3, "display", "flex");
+      set_style(div3, "gap", "8px");
+      set_style(div3, "margin", "24px 0");
+      set_style(div4, "padding", "15px 15px 0");
+      set_style(div5, "width", "100%");
     },
     m(target, anchor) {
-      insert(target, div8, anchor);
-      append(div8, div7);
-      mount_component(header, div7, null);
-      append(div7, t0);
-      append(div7, div2);
-      append(div2, div0);
-      append(div0, label0);
-      append(div0, t2);
-      append(div0, span0);
-      append(span0, t3);
-      append(div2, t4);
-      append(div2, div1);
-      append(div1, label1);
-      append(div1, t6);
-      append(div1, span1);
-      append(div7, t9);
-      append(div7, div6);
-      append(div6, div3);
-      append(div3, a);
-      append(a, t10);
-      append(div6, t11);
-      append(div6, div5);
+      insert(target, div5, anchor);
       append(div5, div4);
-      append(div8, t13);
+      mount_component(header, div4, null);
+      append(div4, t0);
+      append(div4, div3);
+      append(div3, div0);
+      append(div0, a);
+      append(a, t1);
+      append(div3, t2);
+      append(div3, div2);
+      append(div2, div1);
+      append(div5, t4);
       if (if_block0)
-        if_block0.m(div8, null);
-      append(div8, t14);
+        if_block0.m(div5, null);
+      append(div5, t5);
       if (if_block1)
-        if_block1.m(div8, null);
-      append(div8, t15);
+        if_block1.m(div5, null);
+      append(div5, t6);
       if (if_block2)
-        if_block2.m(div8, null);
-      append(div8, t16);
-      mount_component(loader, div8, null);
+        if_block2.m(div5, null);
+      append(div5, t7);
+      mount_component(loader, div5, null);
       current = true;
       if (!mounted) {
         dispose = listen(
-          div4,
+          div1,
           "click",
           /*click_handler*/
-          ctx[6]
+          ctx[5]
         );
         mounted = true;
       }
     },
     p(ctx2, [dirty]) {
-      if ((!current || dirty &amp; /*token*/
-      1) &amp;&amp; t3_value !== (t3_value = /*token*/
-      ctx2[0].level + ""))
-        set_data(t3, t3_value);
       if (!current || dirty &amp; /*token*/
       1 &amp;&amp; a_href_value !== (a_href_value = `https://${chainID == "1001" ? "testnets." : ""}opensea.io/assets/${chainID == "1001" ? "baobab" : "klaytn"}/${/*token*/
       ctx2[0].contractAddress}/${/*token*/
@@ -21740,9 +21711,9 @@ function create_fragment$8(ctx) {
         attr(a, "href", a_href_value);
       }
       if (!current || dirty &amp; /*shareOpened*/
-      16 &amp;&amp; div5_class_value !== (div5_class_value = "link-button " + /*shareOpened*/
+      16 &amp;&amp; div2_class_value !== (div2_class_value = "link-button " + /*shareOpened*/
       (ctx2[4] ? "opened" : "") + " svelte-15fudxx")) {
-        attr(div5, "class", div5_class_value);
+        attr(div2, "class", div2_class_value);
       }
       if (
         /*shareOpened*/
@@ -21758,7 +21729,7 @@ function create_fragment$8(ctx) {
           if_block0 = create_if_block_3$2(ctx2);
           if_block0.c();
           transition_in(if_block0, 1);
-          if_block0.m(div8, t14);
+          if_block0.m(div5, t5);
         }
       } else if (if_block0) {
         group_outros();
@@ -21781,7 +21752,7 @@ function create_fragment$8(ctx) {
           if_block1 = create_if_block_2$2(ctx2);
           if_block1.c();
           transition_in(if_block1, 1);
-          if_block1.m(div8, t15);
+          if_block1.m(div5, t6);
         }
       } else if (if_block1) {
         group_outros();
@@ -21804,7 +21775,7 @@ function create_fragment$8(ctx) {
           if_block2 = create_if_block$3(ctx2);
           if_block2.c();
           transition_in(if_block2, 1);
-          if_block2.m(div8, t16);
+          if_block2.m(div5, t7);
         }
       } else if (if_block2) {
         group_outros();
@@ -21840,7 +21811,7 @@ function create_fragment$8(ctx) {
     },
     d(detaching) {
       if (detaching) {
-        detach(div8);
+        detach(div5);
       }
       destroy_component(header);
       if (if_block0)
@@ -21886,34 +21857,8 @@ function instance$7($$self, $$props, $$invalidate) {
     $$invalidate(0, token = value.token);
     await loadInfo();
   });
-  function getAltitude() {
-    switch (parseInt(token.level)) {
-      case 1:
-        return 10;
-      case 2:
-        return 50;
-      case 3:
-        return 100;
-      case 4:
-        return 200;
-      case 5:
-        return 500;
-      case 6:
-        return 900;
-      case 7:
-        return 1200;
-    }
-  }
   const click_handler = () =&gt; $$invalidate(4, shareOpened = !shareOpened);
-  return [
-    token,
-    dragonState,
-    friendsList,
-    loading,
-    shareOpened,
-    getAltitude,
-    click_handler
-  ];
+  return [token, dragonState, friendsList, loading, shareOpened, click_handler];
 }
 class Info extends SvelteComponent {
   constructor(options) {
@@ -25212,4 +25157,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>BtisT0/JTQyDk5DB5cLMKlyd7Mp2dpBFSKfHQMkIHJI=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>f1A/Ns3BrU0Iz09gmAvWrG8cPKF5rZ18usYzTWxPf4d8j7MunZKDpj6ekRE3RniqlBqsNf9xgXOCxTjonETlrQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>zEm86FCSFCoSG/NsWio1UD79ermC3t0m6Rt+fKsAfPQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>IL3lgCfNaoH59TgH/YqHC5n3aWwmrzYXrznBiQ1PiapfiYAxiBbEfHPWYzmRWvarRNst6smygBO4sAtZUySbfQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
