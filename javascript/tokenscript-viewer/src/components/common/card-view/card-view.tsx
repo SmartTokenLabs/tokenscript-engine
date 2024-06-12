@@ -16,6 +16,7 @@ export class CardView {
 						<loading-spinner/>
 					</div>
 					<iframe class="tokenscript-frame"
+					        allow="clipboard-write"
 							sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 					</iframe>
 				</div>
