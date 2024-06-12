@@ -109,6 +109,11 @@ export class AppRoot {
 						issuerName: "Smart Token Labs",
 						valueType: "ethAddress",
 						value: "0xf68b9DbfC6C3EE3323Eb9A3D4Ed8eb9d2Cb45A30"
+					},
+					{
+						issuerName: "Smart Token Labs",
+						valueType: "ethAddress",
+						value: "0x8646DF47d7b16Bf9c13Da881a2D8CDacDa8f5490"
 					}
 				],
 				txValidationCallback: (txInfo) => {
