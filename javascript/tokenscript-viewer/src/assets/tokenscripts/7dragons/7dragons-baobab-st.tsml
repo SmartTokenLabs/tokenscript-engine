@@ -9,7 +9,7 @@
 	<ts:meta>
 		<ts:description xml:lang="en">A description is required for smart dragons</ts:description>
 		<ts:aboutUrl xml:lang="en">https://sevendragons.knightfury.io/</ts:aboutUrl>
-		<ts:backgroundImageUrl>https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/7dragons-flames.png</ts:backgroundImageUrl>
+		<ts:backgroundImageUrl>https://viewer.tokenscript.org/assets/tokenscripts/7dragons/7dragons-flames.png</ts:backgroundImageUrl>
 		<ts:aboutUrl>https://sevendragons.knightfury.io/</ts:aboutUrl>
 	</ts:meta>
 
@@ -259,7 +259,7 @@
 			
 		<style>/*&lt;![CDATA[*/ 
 
-.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-mf5d1x{background:url("https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-mf5d1x{overflow:hidden;top:12%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-mf5d1x{position:relative;width:75%;aspect-ratio:5 / 1;top:25%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-mf5d1x{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-mf5d1x:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-mf5d1x:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-mf5d1x:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-mf5d1x{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-1vc0199.svelte-1vc0199{display:flex;flex-direction:column}.dragon-details.svelte-1vc0199.svelte-1vc0199{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199,.dragon-stats.svelte-1vc0199 div.svelte-1vc0199{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-1vc0199.svelte-1vc0199{max-width:200px;margin:0 auto}.dragon-stats.svelte-1vc0199.svelte-1vc0199{color:#DDD;display:flex;align-items:center;justify-content:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
+.dragon-image-container.svelte-1gnopfa.svelte-1gnopfa{width:100%;max-width:400px;position:relative;margin:0 auto;height:fit-content;display:flex}.dragon-image-container.svelte-1gnopfa img.svelte-1gnopfa{width:100%;border-radius:12px}#tg-container.svelte-14cpm6p{background:url("https://viewer.tokenscript.org/assets/tokenscripts/7dragons/tamagochi-container.png");background-size:100% 100%;width:100%;position:relative;margin:0 auto;aspect-ratio:1 / 1.2}#tg-content.svelte-14cpm6p{overflow:hidden;margin-top:14.5%;position:relative;left:13%;width:73.8%;aspect-ratio:1 / 0.88;border-radius:28px;color:#000}#tg-button-ctnr.svelte-14cpm6p{position:relative;width:75%;aspect-ratio:5 / 1;margin-top:15%;left:12%;border-radius:16.236px;background:linear-gradient(180deg, #D6ACFF 18.57%, #715091 202.86%);box-shadow:0px 2.165px 0px 0px rgba(0, 0, 0, 0.25);padding:2%}#tg-button-inner.svelte-14cpm6p{width:100%;height:100%;border-radius:11.907px;border:1px solid rgba(80, 20, 138, 0.50);background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%);box-shadow:0 2px 0 0 rgba(49, 49, 49, 0.25);display:flex;align-items:center;justify-content:center;cursor:pointer}#tg-button-inner.svelte-14cpm6p:hover{background:linear-gradient(180deg, #FFA96B 0%, #E88558 53%, #D47742 100%)}#tg-button-inner:hover .tg-button-text{color:#BA6239;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}#tg-button-inner.svelte-14cpm6p:active{background:linear-gradient(180deg, #A65417 0%, #D47742 100%);box-shadow:0 4px 1.4px 0 rgba(0, 0, 0, 0.15) inset}#tg-button-inner.svelte-14cpm6p:disabled{opacity:0.6;cursor:not-allowed;color:#321304 !important;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55) !important}#tg-button-inner:active .tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1px 0 rgba(255, 255, 255, 0.55)}.tg-button-text{color:#321304;text-align:center;font-feature-settings:'clig' off, 'liga' off;text-shadow:0 1.082px 0 rgba(255, 255, 255, 0.55);text-transform:uppercase;font-weight:700;font-size:25px}#token-container:has(#tg-container){background:transparent !important;border:none !important;border-radius:unset !important;max-width:600px;display:flex;align-items:center;justify-content:center}@media(max-width: 700px){#tg-container.svelte-14cpm6p{max-width:95% !important;width:100%}.tg-button-text{font-size:20px}}@media(max-width: 450px){.tg-button-text{font-size:16px}}.copy-icon.svelte-15sds8n{display:inline-block;padding:0 5px;height:100%;cursor:pointer}.dragon-header.svelte-1vc0199.svelte-1vc0199{display:flex;flex-direction:column}.dragon-details.svelte-1vc0199.svelte-1vc0199{flex-grow:1;padding:10px;text-align:left;max-width:300px;margin:10px auto;overflow:hidden}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199{margin-top:0;margin-bottom:10px;color:#F9DE4E}.dragon-details.svelte-1vc0199 h2.svelte-1vc0199,.dragon-stats.svelte-1vc0199 div.svelte-1vc0199{white-space:nowrap;overflow:hidden}.dragon-icon.svelte-1vc0199.svelte-1vc0199{max-width:200px;margin:0 auto}.dragon-stats.svelte-1vc0199.svelte-1vc0199{color:#DDD;display:flex;align-items:center;justify-content:center}.image-icon.svelte-1inff93.svelte-1inff93{position:relative;border-radius:8px;overflow:hidden}.image-icon.svelte-1inff93 img.svelte-1inff93{border-radius:8px;width:100%}.shimmer.svelte-1inff93.svelte-1inff93{display:inline-block;background-color:#dddbdd;width:100%;height:100%}.shimmer.svelte-1inff93.svelte-1inff93:after{position:absolute;top:0;right:0;bottom:0;left:0;transform:translateX(-100%);background-image:linear-gradient(
 			90deg,
 			rgba(255, 255, 255, 0) 0,
 			rgba(255, 255, 255, 0.2) 20%,
@@ -1200,15 +1200,15 @@ function create_fragment$k(ctx) {
       if (button_slot)
         button_slot.c();
       attr(div0, "id", "tg-content");
-      attr(div0, "class", "svelte-mf5d1x");
+      attr(div0, "class", "svelte-14cpm6p");
       attr(button, "id", "tg-button-inner");
       button.disabled = /*disableButton*/
       ctx[1];
-      attr(button, "class", "svelte-mf5d1x");
+      attr(button, "class", "svelte-14cpm6p");
       attr(div1, "id", "tg-button-ctnr");
-      attr(div1, "class", "svelte-mf5d1x");
+      attr(div1, "class", "svelte-14cpm6p");
       attr(div2, "id", "tg-container");
-      attr(div2, "class", "svelte-mf5d1x");
+      attr(div2, "class", "svelte-14cpm6p");
     },
     m(target, anchor) {
       insert(target, div2, anchor);
@@ -20816,7 +20816,7 @@ function instance$8($$self, $$props, $$invalidate) {
         tweetText = `🐉! My #sevendragon is lonely. Dragon #${token.tokenId} is looking for a friend to fly with. Please invite me.`;
         break;
       case "show":
-        tweetText = `🐲! Who have I not followed? Let’s connect &amp; Follow each other on X ${openSeaLink}${token.tokenId} https://sevendragons.knightfury.io/`;
+        tweetText = `🐲! Who have I not followed? Let’s connect &amp; Follow each other on X ${openSeaLink}${token.tokenId}`;
         break;
       case "impress":
         tweetText = `🐉! My #sevendragon #${token.tokenId} is now on level ${token.level}! Check it out ${openSeaLink}${token.tokenId}`;
@@ -21911,11 +21911,11 @@ function create_content_slot$3(ctx) {
       img1 = element("img");
       attr(img0, "class", "gif svelte-mr1m1a");
       attr(img0, "alt", "hunting");
-      if (!src_url_equal(img0.src, img0_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/hunt.gif"))
+      if (!src_url_equal(img0.src, img0_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/hunt.gif"))
         attr(img0, "src", img0_src_value);
       attr(img1, "class", "static svelte-mr1m1a");
       attr(img1, "alt", "hunting");
-      if (!src_url_equal(img1.src, img1_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/hunt.png"))
+      if (!src_url_equal(img1.src, img1_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/hunt.png"))
         attr(img1, "src", img1_src_value);
       attr(div0, "class", div0_class_value = "gif-container " + /*hunting*/
       (ctx[0] ? "hunt" : "") + " svelte-mr1m1a");
@@ -22624,7 +22624,7 @@ function create_content_slot$2(ctx) {
       input = element("input");
       attr(img, "class", "gif svelte-1408suu");
       attr(img, "alt", "flying");
-      if (!src_url_equal(img.src, img_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/fly.gif"))
+      if (!src_url_equal(img.src, img_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/fly.gif"))
         attr(img, "src", img_src_value);
       attr(div0, "class", div0_class_value = "gif-container " + /*showAnimation*/
       (ctx[4] ? "show" : "") + " svelte-1408suu");
@@ -23531,7 +23531,7 @@ function create_content_slot$1(ctx) {
       create_component(loader1.$$.fragment);
       attr(img, "class", "gif svelte-9p8g1h");
       attr(img, "alt", "flying");
-      if (!src_url_equal(img.src, img_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/fly.gif"))
+      if (!src_url_equal(img.src, img_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/fly.gif"))
         attr(img, "src", img_src_value);
       attr(div0, "class", div0_class_value = "gif-container " + /*showAnimation*/
       (ctx[6] ? "show" : "") + " svelte-9p8g1h");
@@ -23964,11 +23964,11 @@ function create_content_slot(ctx) {
       img1 = element("img");
       attr(img0, "class", "gif svelte-1o8on8");
       attr(img0, "alt", "breathing fire");
-      if (!src_url_equal(img0.src, img0_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/breath-fire.gif"))
+      if (!src_url_equal(img0.src, img0_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/breath-fire.gif"))
         attr(img0, "src", img0_src_value);
       attr(img1, "class", "static svelte-1o8on8");
       attr(img1, "alt", "breathing fire");
-      if (!src_url_equal(img1.src, img1_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/breath-fire.png"))
+      if (!src_url_equal(img1.src, img1_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/breath-fire.png"))
         attr(img1, "src", img1_src_value);
       attr(div0, "class", div0_class_value = "gif-container " + /*fire*/
       (ctx[0] ? "fire" : "") + " svelte-1o8on8");
@@ -24366,7 +24366,7 @@ function create_fragment$1(ctx) {
     }
   };
 }
-const CloudImage = "https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/cloud.png";
+const CloudImage = "https://viewer.tokenscript.org/assets/tokenscripts/7dragons/cloud.png";
 function instance$1($$self, $$props, $$invalidate) {
   let token;
   context.data.subscribe((value) =&gt; {
@@ -24941,7 +24941,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 }
 
 .card-background {
-	background-image: url("https://viewer-staging.tokenscript.org/assets/tokenscripts/7dragons/7dragons-flames.png");
+	background-image: url("https://viewer.tokenscript.org/assets/tokenscripts/7dragons/7dragons-flames.png");
 	background-size: 100% 100%;
 	display: flex;
 	align-items: center;
@@ -25157,4 +25157,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>zEm86FCSFCoSG/NsWio1UD79ermC3t0m6Rt+fKsAfPQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>IL3lgCfNaoH59TgH/YqHC5n3aWwmrzYXrznBiQ1PiapfiYAxiBbEfHPWYzmRWvarRNst6smygBO4sAtZUySbfQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>Vvs9Kht1dmU3hm4lXQqZZ9870IO9sQYx5ctSp21FkTQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>+hUYLDf1S+1Ea+wRroEAY9S1L48pvbgjxlx5tw0bHBtVV4GKelbU+m3w1w3meLV6twdRYZCZLQdG9kI1qwB01w==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
