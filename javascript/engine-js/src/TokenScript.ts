@@ -798,45 +798,29 @@ export class TokenScript {
 	 */
 	public async executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation: boolean = true){
 
-		try {
+		const wallet = await this.engine.getWalletAdapter();
+		const transInfo = transaction.getTransactionInfo();
 
-			const wallet = await this.engine.getWalletAdapter();
-			const transInfo = transaction.getTransactionInfo();
+		// TODO: confirm with James exact use cases of having multiple address in a contract element
+		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
+		const contract = transInfo.contract.getAddressByChain(chain, true);
 
-			// TODO: confirm with James exact use cases of having multiple address in a contract element
-			const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-			const contract = transInfo.contract.getAddressByChain(chain, true);
+		// If validation callback returns false we abort silently
+		if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
+			return false;
 
-			// If validation callback returns false we abort silently
-			if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
-				return false;
+		const errorAbi = transInfo.contract.getAbi("error");
 
-			const errorAbi = transInfo.contract.getAbi("error");
+		const ethParams = [];
 
-			const ethParams = [];
-
-			for (let i in transInfo.args){
-				ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
-			}
-
-			const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
-
-			listener({status: 'started'});
-
-			await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
-
-			return true;
-
-		} catch (e){
-
-			if (
-				e.message.indexOf("ACTION_REJECTED") > -1 ||
-				e.message.indexOf("Rejected by the user") > -1 ||
-				e.message.indexOf("User denied") > -1
-			)
-				throw new Error("Transaction rejected");
-
-			throw e;
+		for (let i in transInfo.args){
+			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
 		}
+
+		const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
+
+		listener({status: 'started'});
+
+		return await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
 	}
 }

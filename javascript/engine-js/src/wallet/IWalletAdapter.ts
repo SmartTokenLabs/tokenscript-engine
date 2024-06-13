@@ -43,11 +43,11 @@ export interface IWalletAdapter {
 		method: string,
 		args: any[],
 		outputTypes: string[],
-		value?: BigInt,
+		value?: bigint,
 		waitForConfirmation?: boolean,
 		listener?: ITransactionListener,
 		errorAbi?: any[]
-	): Promise<any>;
+	): Promise<any|false>;
 	getChain(): Promise<number>;
 	getRpcUrls(chainId: number): string[];
 	rpcProxy(request: RpcRequest): Promise<any>;

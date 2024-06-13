@@ -1,5 +1,13 @@
 import {IWalletAdapter, RpcRequest} from "./IWalletAdapter";
-import {Contract, ContractRunner, ContractTransaction, ethers, EventLog, FetchRequest, Network} from "ethers";
+import {
+	Contract,
+	ContractRunner,
+	ContractTransaction,
+	ethers,
+	EventLog,
+	getBigInt,
+	Network, Overrides
+} from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 
@@ -48,18 +56,24 @@ export class EthersAdapter implements IWalletAdapter {
 		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
 	}
 
-	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: BigInt, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
+	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: bigint, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
 
 		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
 
-		await this.switchChain(chain);
+		const res = await this.switchChain(chain);
+
+		// User rejection
+		if (!res)
+			return false;
 
 		// TODO: if no method is set, send raw transaction? Is this allowed?
 		// TODO: handle no-method transaction
 
 		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, value ? "payable" : "nonpayable", errorAbi);
 
-		const overrides: any = {};
+		const overrides: Overrides = {
+			chainId: chain
+		};
 
 		if (value)
 			overrides.value = value;
@@ -72,6 +86,10 @@ export class EthersAdapter implements IWalletAdapter {
 		try {
 			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
 		} catch (e: any){
+
+			if (EthersAdapter.isTransactionRejection(e))
+				return false;
+
 			const errDecoder = ErrorDecoder.create(errorAbi)
 			const decodedError = await errDecoder.decode(e);
 			console.error(e);
@@ -127,6 +145,14 @@ export class EthersAdapter implements IWalletAdapter {
 			});
 
 		return tx;
+	}
+
+	private static isTransactionRejection(e: any){
+		return (
+			e.message.indexOf("ACTION_REJECTED") > -1 ||
+			e.message.indexOf("Rejected by the user") > -1 ||
+			e.message.indexOf("User denied") > -1
+		);
 	}
 
 	private async getEthersContractInstance(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[]|any[], stateMutability: string, errorAbi: any[] = []){
@@ -187,21 +213,62 @@ export class EthersAdapter implements IWalletAdapter {
 		return Number(network.chainId);
 	}
 
-	private async switchChain(chain: number){
+	private async switchChain(chain: number, tryToAdd = true): Promise<boolean> {
 
 		const ethersProvider = await this.getEthersProvider();
 
-		if (chain != await this.getChain()){
+		// TODO: Metamask is currently returning an old chain ID when chain is switched via the metamask UI, so we need to call this everytime
+		//console.log("Current chain: ", await this.getChain());
+		//if (chain != await this.getChain()){
 
 			console.log("Switch chain: ", chain);
 
 			try {
 				await ethersProvider.send("wallet_switchEthereumChain", [{chainId: "0x" + chain.toString(16)}]);
+				return true;
 			} catch (e){
 				console.error(e);
+				if (EthersAdapter.isTransactionRejection(e))
+					return false;
+
+				if (tryToAdd){
+					await this.addChain(chain);
+					return this.switchChain(chain, false);
+				}
 				throw new Error("Connected to wrong chain, please switch the chain to chainId: " + chain + ", error: " + e.message);
 			}
-		}
+		//}
+	}
+
+	private async addChain(chain: number){
+		console.info("Trying to add ethereumChain");
+
+		if (!this.chainConfig[chain])
+			throw new Error("Chain is not defined in TS engine config");
+
+		const chainList = await fetch("https://chainid.network/chains.json").then((res) => res.json()) as any[];
+
+		const chainMeta = chainList.find((meta) => meta.chainId === chain);
+
+		if (!chainMeta)
+			throw new Error("Could not find chain config at chainid.network");
+
+		const chainIcons = await fetch("https://chainid.network/chain_icons.json").then((res) => res.json()) as any[];
+
+		const icon = chainIcons.find((meta) => meta.name === chainMeta.icon);
+
+		// TODO: Convert IPFS URLs
+		const icons = icon ? [icon.icons[0].url] : [];
+
+		const ethersProvider = await this.getEthersProvider();
+		await ethersProvider.send("wallet_addEthereumChain", [{
+			chainId: "0x" + chain.toString(16),
+			chainName: chainMeta.name,
+			iconUrls: icons,
+			rpcUrls: chainMeta.rpc.filter(url => url.indexOf("${INFURA_API_KEY}") === -1),
+			nativeCurrency: chainMeta.nativeCurrency,
+			blockExplorerUrls: chainMeta.explorers ? chainMeta.explorers.map(explorer => explorer.url) : []
+		}]);
 	}
 
 	async getCurrentWalletAddress() {
