@@ -16,12 +16,12 @@
 	<ts:contract interface="erc721" name="SevenDragonsNFT">
 		
 		
-		<ts:address network="1001">0x7decc880ab70436fa56e2b9d993b646d66cfa106</ts:address>
+		<ts:address network="1001">0x73148b2C977586305F5aAA63b473a7AF96619296</ts:address>
 	</ts:contract>
 	<ts:contract name="SevenDragonsScore">
 		
 		
-		<ts:address network="1001">0x3D02CB2126d963cf07C2F8f05522d7b75eF27B6e</ts:address>
+		<ts:address network="1001">0x867CF6EdFf458312BF0881FC56577F6d92290F4b</ts:address>
 		<ts:abi>
 			
 			[
@@ -19573,7 +19573,7 @@ function getContract(_token) {
   const provider = getEthersProvider();
   const CONTRACT_ADDRESS = (
     //"0x7573933eB12Fa15D5557b74fDafF845B3BaF0ba2"; // Cypress mainnet
-    "0x3D02CB2126d963cf07C2F8f05522d7b75eF27B6e"
+    "0x867CF6EdFf458312BF0881FC56577F6d92290F4b"
   );
   return new Contract(CONTRACT_ADDRESS, [
     {
@@ -25157,4 +25157,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>Vvs9Kht1dmU3hm4lXQqZZ9870IO9sQYx5ctSp21FkTQ=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>+hUYLDf1S+1Ea+wRroEAY9S1L48pvbgjxlx5tw0bHBtVV4GKelbU+m3w1w3meLV6twdRYZCZLQdG9kI1qwB01w==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>WdTsYQ7VXwFg666BZZLW1X2Y5Rcd1JohCkuJANpSSgo=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>HqZbC4cJnoYWmYYH8m48cP3b/WZXkZvXjfxlNVjAlM7SqV/bPgcrmgKn3E7AMRR6OkERLiTVzBkGgSIwCcFrDw==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
