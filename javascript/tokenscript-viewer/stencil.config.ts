@@ -3,6 +3,7 @@ import {Config} from '@stencil/core';
 //import builtins from 'rollup-plugin-node-builtins';
 //import globals from 'rollup-plugin-node-globals';
 import nodePolyfills from "rollup-plugin-node-polyfills";
+import 'dotenv/config'
 
 // https://stenciljs.com/docs/config
 
@@ -19,6 +20,9 @@ export const config: Config = {
 			polyfills: false
 		},
 	],
+	env: {
+		INFURA_API_KEY: process.env.INFURA_API_KEY
+	},
 	nodeResolve: {
 		module: true,
 		browser: true,

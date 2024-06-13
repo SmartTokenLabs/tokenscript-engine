@@ -1,4 +1,5 @@
 import {IChainConfig} from "@tokenscript/engine-js/src/wallet/EthersAdapter";
+import {Env} from "@stencil/core";
 
 export interface ChainMapInterface {
 	[key: number]: string;
@@ -67,6 +68,8 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.BASE_SEPOLIA]: "Base (Sepolia Testnet)"
 };
 
+const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
+
 export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
   [ChainID.ETHEREUM]: '0xA7b39296258348C78294F95B872b282326A97BDF',
   [ChainID.SEPOLIA]: '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0',
@@ -76,26 +79,26 @@ export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
 
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
-		rpc: 'https://mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+		rpc: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://etherscan.com/tx/'
 	},
 	[ChainID.SEPOLIA]: {
-		rpc: 'https://sepolia.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
+		rpc: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://sepolia.etherscan.io/tx/'
 	},
 	[ChainID.HOLESKY]: {
-		rpc: 'https://holesky.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
+		rpc: `https://holesky.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://holesky.etherscan.io/tx/'
 	},
 	[ChainID.POLYGON]: {
 		rpc: [
-			'https://polygon-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+			`https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
 			//'https://polygon.meowrpc.com'
 		],
 		explorer: 'https://polygonscan.com/tx/'
 	},
 	[ChainID.AMOY]: {
-		rpc: 'https://polygon-amoy.infura.io/v3/9f79b2f9274344af90b8d4e244b580ef',
+		rpc: `https://polygon-amoy.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://amoy.polygonscan.com/tx/'
 	},
 	[ChainID.BSC]: {
@@ -143,11 +146,11 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://explorer.sepolia.mantle.xyz/tx/'
 	},
 	[ChainID.BASE]: {
-		rpc: 'https://base-mainnet.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+		rpc: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://basescan.org/tx/'
 	},
 	[ChainID.BASE_SEPOLIA]: {
-		rpc: 'https://base-sepolia.infura.io/v3/3ca8f1ba91f84e1f97c99f6218fe3743',
+		rpc: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://sepolia.basescan.org/tx/'
 	}
 }

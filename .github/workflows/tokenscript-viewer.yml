@@ -35,6 +35,8 @@ jobs:
           cd "${PROJ_PATH}"
           npm ci
           npm run build
+        env:
+          INFURA_API_KEY: ${{ vars.INFURA_API_KEY }}
       - uses: actions/upload-artifact@v4
         with:
           name: tokenscript-viewer
