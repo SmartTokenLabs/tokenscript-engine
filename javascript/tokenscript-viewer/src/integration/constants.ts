@@ -24,7 +24,9 @@ export enum ChainID {
 	MANTLE = 5000,
 	MANTLE_SEPOLIA = 5003,
 	BASE = 8453,
-	BASE_SEPOLIA= 84532
+	BASE_SEPOLIA= 84532,
+	BLAST = 81457,
+	BLAST_SEPOLIA = 168587773,
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -46,6 +48,8 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.MANTLE_SEPOLIA]: "mantle-sepolia",
 	[ChainID.BASE]: "base",
 	[ChainID.BASE_SEPOLIA]: "base-sepolia",
+	[ChainID.BLAST]: 'blast',
+	[ChainID.BLAST_SEPOLIA]: 'blast-sepolia',
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -65,7 +69,9 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.MANTLE]: "Mantle",
 	[ChainID.MANTLE_SEPOLIA]: "Mantle (Sepolia Testnet)",
 	[ChainID.BASE]: "Base",
-	[ChainID.BASE_SEPOLIA]: "Base (Sepolia Testnet)"
+	[ChainID.BASE_SEPOLIA]: "Base (Sepolia Testnet)",
+	[ChainID.BLAST]: 'Blast',
+	[ChainID.BLAST_SEPOLIA]: 'Blast (Sepolia Testnet)',
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -152,7 +158,15 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.BASE_SEPOLIA]: {
 		rpc: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://sepolia.basescan.org/tx/'
-	}
+	},
+	[ChainID.BLAST]: {
+		rpc: `https://blast-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+		explorer: 'https://basescan.org/tx/',
+	},
+	[ChainID.BLAST_SEPOLIA]: {
+		rpc: `https://blast-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+		explorer: 'https://sepolia.basescan.org/tx/',
+	},
 }
 
 export const ERC721_ABI_JSON = [
