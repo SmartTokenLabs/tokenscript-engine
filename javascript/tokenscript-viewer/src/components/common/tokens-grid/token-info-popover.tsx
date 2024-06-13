@@ -56,7 +56,7 @@ export class TokenInfoPopover {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogClasses={["ts-token-container"]}>
 			{ this.token ?
 				<div>
 					<h4>{this.token.name}</h4>
