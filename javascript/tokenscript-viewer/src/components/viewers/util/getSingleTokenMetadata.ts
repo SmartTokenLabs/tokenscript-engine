@@ -44,7 +44,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 				collectionId: tokenMeta.collection,
 				description: tokenMeta.description,
 				image: tokenMeta.image,
-				name: tokenMeta.title,
+				name: tokenMeta.name ?? tokenMeta.title,
 				tokenId: tokenMeta.tokenId,
 				balance: tokenMeta.balance
 			}

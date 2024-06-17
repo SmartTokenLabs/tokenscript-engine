@@ -72,6 +72,10 @@ export function uint8tohex(uint8: Uint8Array): string {
 }
 
 export function previewAddr(inputString: string) {
+
+	if (!inputString)
+		return "";
+
 	if (inputString.length < 24 || !isPredominantlyNumerical(inputString)) {
 		return inputString;
 	} else {
