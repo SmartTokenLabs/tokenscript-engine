@@ -1,3 +1,4 @@
+# NOTICE: The Kotlin engine development has been abandoned in favour of the TypeScript implementation due to library availability & other considerations
 
 # Tokenscript Engine
 

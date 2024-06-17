@@ -18,4 +18,6 @@ This app serves as an example implementation of the engine, as well as providing
 
 # Kotlin multiplatform library
 
-[The Kotlin library](multiplatform/) is a WIP to provide a multiplatform implementation of the TokenScript engine.
+~~[The Kotlin library](multiplatform/) is a WIP to provide a multiplatform implementation of the TokenScript engine.~~
+
+The Kotlin library is no longer under development. Instead, integration methods for engine-js are being developed for native applications.  
