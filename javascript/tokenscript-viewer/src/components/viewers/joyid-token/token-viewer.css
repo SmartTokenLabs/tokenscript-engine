@@ -168,8 +168,8 @@ token-viewer:has(> card-popover .open) {
 	color: #201F2266;
 }
 
-.popover-container .close-btn {
-	top: 10px !important;
+.popover-container .close-btn, .popover-container.fullscreen .close-btn {
+	top: 8px !important;
 	color: #000 !important;
 	width: 24px;
 	height: 24px;
@@ -193,11 +193,12 @@ token-viewer:has(> card-popover .open) {
 }
 
 .popover-container {
-	max-height: calc(100dvh - 50px) !important;
+	margin-top: 0 !important;
+	height: 100dvh !important;
 }
 
 .card-container {
-	height: calc(100dvh - 50px) !important;
+	flex-grow: 1;
 }
 
 .tokenscript-frame, .card-container, .iframe-wrapper {
