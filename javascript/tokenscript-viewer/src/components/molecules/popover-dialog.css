@@ -75,7 +75,7 @@
 }
 
 .popover-container.fullscreen .close-btn {
-	top: -40px !important;
+	top: -40px;
 }
 
 .close-btn {
