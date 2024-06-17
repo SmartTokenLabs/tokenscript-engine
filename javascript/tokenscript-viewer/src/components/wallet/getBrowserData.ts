@@ -41,6 +41,7 @@ export const getBrowserData = () => {
 	const isOkxWallet = window.okxwallet?.isOkxWallet
 	const isImToken = !!navigator.userAgent.match(/\simToken\//)
 	const isGateWallet = !!window.gatewallet;
+	const isKaikas = windowEthereum.isKaikas;
 
 	const isMetaMask = isTouchDevice && !!windowEthereum.isMetaMask && !isTrust && !isBrave
 
@@ -55,7 +56,8 @@ export const getBrowserData = () => {
 		imToken: isImToken,
 		brave: isBrave,
 		okx: isOkxWallet,
-		gateWallet: isGateWallet
+		gateWallet: isGateWallet,
+		kaikas: isKaikas
 	}
 
 	return browserData;
