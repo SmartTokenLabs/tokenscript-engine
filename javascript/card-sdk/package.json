@@ -2,6 +2,11 @@
   "name": "@tokenscript/card-sdk",
   "version": "1.2.1",
   "description": "Provides common code and types for interacting from the TokenScript engine from a card view",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SmartTokenLabs/tokenscript-engine.git",
+    "directory": "javascript/card-sdk"
+  },
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
