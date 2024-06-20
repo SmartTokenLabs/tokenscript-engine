@@ -21123,15 +21123,13 @@ function create_if_block_2$2(ctx) {
         /*dragonState*/
         ctx[1].levelThresholds.hunt
       ),
-      threshold: (
+      threshold: getCurrentLevelThreshold(
         /*dragonState*/
-        ctx[1].level &lt; 5 ? (
-          /*dragonState*/
-          ctx[1].levelThresholds.hunt
-        ) : (
-          /*dragonState*/
-          ctx[1].levelThresholds.hunt * 3
-        )
+        ctx[1].numHunts,
+        /*dragonState*/
+        ctx[1].level,
+        /*dragonState*/
+        ctx[1].levelThresholds.hunt
       )
     }
   });
@@ -21153,15 +21151,13 @@ function create_if_block_2$2(ctx) {
         /*dragonState*/
         ctx[1].levelThresholds.breathFire
       ),
-      threshold: (
+      threshold: getCurrentLevelThreshold(
         /*dragonState*/
-        ctx[1].level &lt; 5 ? (
-          /*dragonState*/
-          ctx[1].levelThresholds.breathFire
-        ) : (
-          /*dragonState*/
-          ctx[1].levelThresholds.breathFire * 3
-        )
+        ctx[1].numFires,
+        /*dragonState*/
+        ctx[1].level,
+        /*dragonState*/
+        ctx[1].levelThresholds.breathFire
       )
     }
   });
@@ -21183,15 +21179,13 @@ function create_if_block_2$2(ctx) {
         /*dragonState*/
         ctx[1].levelThresholds.fly
       ),
-      threshold: (
+      threshold: getCurrentLevelThreshold(
         /*dragonState*/
-        ctx[1].level &lt; 5 ? (
-          /*dragonState*/
-          ctx[1].levelThresholds.fly
-        ) : (
-          /*dragonState*/
-          ctx[1].levelThresholds.fly * 3
-        )
+        ctx[1].numFlies,
+        /*dragonState*/
+        ctx[1].level,
+        /*dragonState*/
+        ctx[1].levelThresholds.fly
       )
     }
   });
@@ -21337,13 +21331,13 @@ function create_if_block_2$2(ctx) {
         );
       if (dirty &amp; /*dragonState*/
       2)
-        levelprogress0_changes.threshold = /*dragonState*/
-        ctx2[1].level &lt; 5 ? (
+        levelprogress0_changes.threshold = getCurrentLevelThreshold(
+          /*dragonState*/
+          ctx2[1].numHunts,
+          /*dragonState*/
+          ctx2[1].level,
           /*dragonState*/
           ctx2[1].levelThresholds.hunt
-        ) : (
-          /*dragonState*/
-          ctx2[1].levelThresholds.hunt * 3
         );
       levelprogress0.$set(levelprogress0_changes);
       const countdowntimer1_changes = {};
@@ -21365,13 +21359,13 @@ function create_if_block_2$2(ctx) {
         );
       if (dirty &amp; /*dragonState*/
       2)
-        levelprogress1_changes.threshold = /*dragonState*/
-        ctx2[1].level &lt; 5 ? (
+        levelprogress1_changes.threshold = getCurrentLevelThreshold(
+          /*dragonState*/
+          ctx2[1].numFires,
+          /*dragonState*/
+          ctx2[1].level,
           /*dragonState*/
           ctx2[1].levelThresholds.breathFire
-        ) : (
-          /*dragonState*/
-          ctx2[1].levelThresholds.breathFire * 3
         );
       levelprogress1.$set(levelprogress1_changes);
       const countdowntimer2_changes = {};
@@ -21393,13 +21387,13 @@ function create_if_block_2$2(ctx) {
         );
       if (dirty &amp; /*dragonState*/
       2)
-        levelprogress2_changes.threshold = /*dragonState*/
-        ctx2[1].level &lt; 5 ? (
+        levelprogress2_changes.threshold = getCurrentLevelThreshold(
+          /*dragonState*/
+          ctx2[1].numFlies,
+          /*dragonState*/
+          ctx2[1].level,
           /*dragonState*/
           ctx2[1].levelThresholds.fly
-        ) : (
-          /*dragonState*/
-          ctx2[1].levelThresholds.fly * 3
         );
       levelprogress2.$set(levelprogress2_changes);
     },
@@ -21968,10 +21962,31 @@ function create_fragment$8(ctx) {
   };
 }
 function getCurrentLevelProgress(total, level, threshold) {
-  const levelsCompleted = Number(level) - 1;
-  const levelsLt14 = level &gt; 5 ? 5 : levelsCompleted;
-  const levelsGte14 = level &gt; 5 ? levelsCompleted - 5 : 0;
-  return Number(total) - Number(threshold) * levelsLt14 - Number(threshold) * levelsGte14 * 3;
+  level = Number(level);
+  total = Number(total);
+  const levelsCompleted = level - 1;
+  if (levelsCompleted &lt; 4) {
+    return total - threshold * levelsCompleted;
+  }
+  let currentProgressTotal = threshold * 4;
+  const level6total = currentProgressTotal + threshold * 3;
+  if (level === 6 &amp;&amp; total &lt;= level6total) {
+    currentProgressTotal += threshold;
+  } else {
+    currentProgressTotal += threshold * (levelsCompleted - 4) * 3;
+  }
+  return Number(total) - currentProgressTotal;
+}
+function getCurrentLevelThreshold(total, level, threshold) {
+  level = Number(level);
+  total = Number(total);
+  if (level &lt; 5)
+    return threshold;
+  const required = threshold * 3;
+  const level6total = 4 * threshold + required;
+  if (level === 6 &amp;&amp; total &lt;= level6total)
+    return required * 2;
+  return required;
 }
 function instance$7($$self, $$props, $$invalidate) {
   parseInt(chainID);
@@ -25298,4 +25313,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>j51C5X4p5JLjjmYAXi1Bxj9IK6ttjyCAuZzgO5yjXXo=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>em98cEFjTQjs8U3ws10FQILzoWixiKnjBVbMNLp/AqVGzVvXUQBWWsV5nfKoIx8RFF/GjB4KysuR2/nTCLjPVg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>fvDhbJcLD8O9XXMCdTR1uuYeXR/gbqBpYXHrvbOXWIw=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>j3PXtb94ET9oU+ooAHySPA0sOHOrxJ8M3/H5S2W9wFvjQSbI7Q6LllAyH8VC5QpHLwRJztm2gHgGwxBd+zNjbg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
