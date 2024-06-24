@@ -28,7 +28,7 @@ export enum ChainID {
 	BLAST = 81457,
 	BLAST_SEPOLIA = 168587773,
 	MINT = 185,
-	MINT_SEPOLIA = 1686
+	MINT_SEPOLIA = 1687
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -191,7 +191,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://explorer.mintchain.io/tx/',
 	},
 	[ChainID.MINT_SEPOLIA]: {
-		rpc: `https://testnet-rpc.mintchain.io`,
+		rpc: `https://sepolia-testnet-rpc.mintchain.io`,
 		explorer: 'https://sepolia-testnet-explorer.mintchain.io/tx/',
 	},
 }
