@@ -14,15 +14,19 @@ with the TokenScript userspace code.
 
 To include SDK type in your TokenScript project, install the SDK as a developer dependency:
 
-``
+```
 npm i -D @tokenscript/card-sdk
-``
+```
 
 Then include the tokenscript.d.ts in the entrypoint of your application (e.g. index.ts/main.ts):
 
-``
+```
 import "@tokenscript/card-sdk/src/tokenscript.d.ts";
-``
+```
+OR
+```
+///<reference path="../node_modules/@tokenscript/card-sdk/src/tokenscript.d.ts""/>
+```
 
 ## Bundled libraries
 
