@@ -183,7 +183,11 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://sepolia.basescan.org/tx/',
 	},
 	[ChainID.MINT]: {
-		rpc: `https://rpc.mintchain.io`,
+		rpc: [
+			'https://rpc.mintchain.io',
+			'https://asia.rpc.mintchain.io',
+			'https://global.rpc.mintchain.io'
+		],
 		explorer: 'https://explorer.mintchain.io/tx/',
 	},
 	[ChainID.MINT_SEPOLIA]: {
