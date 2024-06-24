@@ -27,6 +27,8 @@ export enum ChainID {
 	BASE_SEPOLIA= 84532,
 	BLAST = 81457,
 	BLAST_SEPOLIA = 168587773,
+	MINT = 185,
+	MINT_SEPOLIA = 1686
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -50,6 +52,8 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.BASE_SEPOLIA]: "base-sepolia",
 	[ChainID.BLAST]: 'blast',
 	[ChainID.BLAST_SEPOLIA]: 'blast-sepolia',
+	[ChainID.MINT]: 'mint',
+	[ChainID.MINT_SEPOLIA]: 'mint-sepolia',
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -72,6 +76,8 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.BASE_SEPOLIA]: "Base (Sepolia Testnet)",
 	[ChainID.BLAST]: 'Blast',
 	[ChainID.BLAST_SEPOLIA]: 'Blast (Sepolia Testnet)',
+	[ChainID.MINT]: 'Mint',
+	[ChainID.MINT_SEPOLIA]: 'Mint (Sepolia Testnet)',
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -132,12 +138,21 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://optimistic.etherscan.io/tx/'
 	},
 	[ChainID.KLAYTN]: {
-		rpc: 'https://public-en-cypress.klaytn.net',
-		explorer: 'https://scope.klaytn.com/tx/'
+		rpc: [
+			'https://public-en-cypress.klaytn.net',
+			'https://rpc.ankr.com/klaytn',
+			'https://klaytn-pokt.nodies.app',
+			'https://1rpc.io/klay',
+		],
+		explorer: 'https://scope.klaytn.com/tx/',
 	},
 	[ChainID.BAOBAB]: {
-		rpc: 'https://public-en-baobab.klaytn.net',
-		explorer: 'https://baobab.scope.klaytn.com/tx/'
+		rpc: [
+			'https://public-en-baobab.klaytn.net',
+			'https://rpc.ankr.com/klaytn_testnet',
+			'https://klaytn-baobab.blockpi.network/v1/rpc/public',
+		],
+		explorer: 'https://baobab.scope.klaytn.com/tx/',
 	},
 	[ChainID.HARDHAT_LOCALHOST]: {
 		rpc: 'http://127.0.0.1:8545/',
@@ -166,6 +181,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.BLAST_SEPOLIA]: {
 		rpc: `https://blast-sepolia.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://sepolia.basescan.org/tx/',
+	},
+	[ChainID.MINT]: {
+		rpc: `https://rpc.mintchain.io`,
+		explorer: 'https://explorer.mintchain.io/tx/',
+	},
+	[ChainID.MINT_SEPOLIA]: {
+		rpc: `https://testnet-rpc.mintchain.io`,
+		explorer: 'https://sepolia-testnet-explorer.mintchain.io/tx/',
 	},
 }
 

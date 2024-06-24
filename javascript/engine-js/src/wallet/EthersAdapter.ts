@@ -21,7 +21,9 @@ export interface IChainConfig {
  */
 export class EthersAdapter implements IWalletAdapter {
 
-	private ethersProvider: ethers.BrowserProvider
+	private ethersProvider: ethers.BrowserProvider;
+
+	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|ethers.FallbackProvider} = {};
 
 	constructor(
 		public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>,
@@ -304,19 +306,30 @@ export class EthersAdapter implements IWalletAdapter {
 
 	private getRpcProvider(chain: number){
 
+		if (this.rpcProviders[chain])
+			return this.rpcProviders[chain];
+
 		const rpcUrls = this.getRpcUrls(chain);
 
 		if (rpcUrls.length > 1){
-			const providers = [];
-			for (const url of rpcUrls){
-				providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
-			}
-			return new ethers.FallbackProvider(providers, chain, {
-
-			});
+			this.rpcProviders[chain] = new ethers.FallbackProvider(
+				rpcUrls.map((url, index) => {
+					return {
+						provider: new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }),
+						stallTimeout: 1500,
+						priority: index + 1,
+					}
+				}),
+				chain,
+				{
+					quorum: 2
+				}
+			);
 		} else {
-			return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
+			this.rpcProviders[chain] = new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
 		}
+
+		return this.rpcProviders[chain];
 	}
 
 	// TODO: Handle chain switching
