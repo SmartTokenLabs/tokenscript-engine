@@ -13,4 +13,4 @@ The Typescript implementation of the TokenScript framework
 
 ## Developing TokenScripts
 
-To start developing TokenScript applications, checkout the [TokenScript CLI](https://github.com/SmartTokenLabs/TokenScript-SDK)
+To start developing TokenScript applications, checkout the [TokenScript CLI](https://github.com/SmartTokenLabs/tokenscript-cli)
