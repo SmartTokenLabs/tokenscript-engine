@@ -46,6 +46,11 @@ export abstract class AbstractDependencyBranch implements IArgument {
 				const walletProvider = await this.tokenScript.getEngine().getWalletAdapter();
 				return await walletProvider.getCurrentWalletAddress();
 
+			case "contractAddress":
+				if (!tokenContext)
+					throw new Error("contractAddress reference cannot be resolved as no token context is set.");
+				return this.tokenScript.getContractByName(tokenContext.originId).getAddressByChain(tokenContext.chainId);
+
 			default:
 				// First, check if values is provided in TokenContextData
 				const contextData = this.tokenScript.getTokenContextData(tokenContext);
@@ -123,7 +128,7 @@ export abstract class AbstractDependencyBranch implements IArgument {
 	}
 
 	private isSpecialRef(){
-		return ["tokenId", "ownerAddress"].indexOf(this.ref) > -1;
+		return ["tokenId", "ownerAddress", "contractAddress"].indexOf(this.ref) > -1;
 	}
 
 	protected abstract resolveValue(tokenContext?: ITokenIdContext): Promise<any>;
