@@ -5,6 +5,7 @@ declare global {
 		ethereum: any;
 		okxwallet: any;
 		gatewallet: any;
+		foxwallet: any;
 		klaytn: any;
 	}
 }

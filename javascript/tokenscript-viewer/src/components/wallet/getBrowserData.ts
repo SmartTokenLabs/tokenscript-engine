@@ -22,15 +22,7 @@ export const getBrowserData = () => {
 	let windowEthereum = window.ethereum
 
 	if (typeof window.ethereum === 'undefined') {
-		windowEthereum = {
-			isMetaMask: false,
-			isAlphaWallet: false,
-			isTrust: false,
-			isStatusWallet: false,
-			isGoWallet: false,
-			// this prop is TRUE when Metamask disabled or not installed
-			isBraveWallet: false,
-		}
+		windowEthereum = {}
 	}
 
 	const isAlphaWallet = isTouchDevice && !!windowEthereum.isAlphaWallet
@@ -43,6 +35,9 @@ export const getBrowserData = () => {
 	const isGateWallet = !!window.gatewallet;
 	const isKaikas = windowEthereum.isKaikas || !!window.klaytn;
 	const isOneKey = windowEthereum.isOneKey;
+	const isTokenPocket = !!windowEthereum.isTokenPocket;
+	const isFoxWallet = !!window.foxwallet;
+	const isCoin98 = !!windowEthereum.isCoin98;
 
 	const isMetaMask = isTouchDevice && !!windowEthereum.isMetaMask && !isTrust && !isBrave
 
@@ -59,7 +54,10 @@ export const getBrowserData = () => {
 		okx: isOkxWallet,
 		gateWallet: isGateWallet,
 		kaikas: isKaikas,
-		oneKey: isOneKey
+		oneKey: isOneKey,
+		tokenPocket: isTokenPocket,
+		foxWallet: isFoxWallet,
+		coin98Wallet: isCoin98,
 	}
 
 	return browserData;
