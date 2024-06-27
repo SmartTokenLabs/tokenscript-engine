@@ -152,7 +152,7 @@ export class TokenViewData {
 
 	public getViewDataId(){
 		if (!this.viewContainerId){
-			this.viewContainerId = "token-card-" + this.tokenScript.getCurrentTokenContext()?.selectedTokenId;
+			this.viewContainerId = "token-card-" + (this.tokenScript.getCurrentTokenContext()?.selectedTokenId ?? "");
 		}
 
 		return this.viewContainerId;

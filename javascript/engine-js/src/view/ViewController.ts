@@ -130,7 +130,7 @@ export class ViewController {
 
 		let shouldRefresh = false;
 
-		const scopeId = this.tokenScript.getCurrentTokenContext().selectedTokenId ?? "-1";
+		const scopeId = this.tokenScript.getCurrentTokenContext()?.selectedTokenId ?? "-1";
 
 		if (!this.userEntryValues[scopeId])
 			this.userEntryValues[scopeId] = {};
