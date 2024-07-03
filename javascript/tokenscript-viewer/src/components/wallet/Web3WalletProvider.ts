@@ -1,4 +1,4 @@
-import {Eip1193Provider, ethers} from 'ethers'
+import {ethers} from 'ethers'
 
 declare global {
 	interface Window {
@@ -158,6 +158,8 @@ class Web3WalletProviderObj {
 	}*/
 
 	private async deleteConnections() {
+		if (window.ethereum?.removeAllListeners)
+			window.ethereum.removeAllListeners();
 		this.connections = {}
 
 		let data = localStorage.getItem(Web3WalletProviderObj.LOCAL_STORAGE_KEY)
@@ -283,7 +285,8 @@ class Web3WalletProviderObj {
 		blockchain: SupportedBlockchainsParam,
 		eip1193Provider: any
 	) {
-
+		if (window.ethereum?.removeAllListeners)
+			window.ethereum.removeAllListeners();
 		this.connections = {};
 		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain, ethers };
 
@@ -313,13 +316,10 @@ class Web3WalletProviderObj {
 			this.saveConnections()
 
 			this.emitWalletChangeEvent(Object.values(this.connections)[0])
-
-			//this.client.getTokenStore().clearCachedTokens()
-			//this.client.enrichTokenLookupDataOnChainTokens()
 		})
 
 		eip1193Provider.on('chainChanged', (_chainId: any) => {
-			this.registerNewWalletAddress(address, _chainId, providerType, provider, 'evm', eip1193Provider)
+			this.connections[address.toLowerCase()].chainId = _chainId;
 
 			this.saveConnections()
 
@@ -448,9 +448,7 @@ class Web3WalletProviderObj {
 				} else {
 					// @ts-ignore
 					connect = walletConnectV2.connect({
-						chains: [1],
-						optionalChains: preSavedWalletOptions?.walletConnectV2?.chains ?? walletConnectProvider.WC_V2_DEFAULT_CHAINS,
-						rpcMap: preSavedWalletOptions?.walletConnectV2?.rpcMap ?? walletConnectProvider.WC_DEFAULT_RPC_MAP,
+						chains: [1]
 					})
 				}
 

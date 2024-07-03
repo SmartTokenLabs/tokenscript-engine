@@ -153,7 +153,8 @@ export class EthersAdapter implements IWalletAdapter {
 		return (
 			e.message.indexOf("ACTION_REJECTED") > -1 ||
 			e.message.indexOf("Rejected by the user") > -1 ||
-			e.message.indexOf("User denied") > -1
+			e.message.indexOf("User denied") > -1 ||
+			e.message.indexOf("User rejected") > -1
 		);
 	}
 

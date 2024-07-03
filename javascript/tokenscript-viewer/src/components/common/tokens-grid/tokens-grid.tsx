@@ -4,7 +4,7 @@ import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollecti
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
-import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
+import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {ShowToastEventArgs} from "../../app/app";
 
 @Component({
@@ -51,6 +51,19 @@ export class TokensGrid {
 
 
 	async componentDidLoad() {
+		// TODO: stencil.js seems to copy the tokenscript object by value rather than reference from the new-viewer component,
+		//  so we need to register a separate wallet change listener to reload the tokens grid.
+		//  This is okay for now but it would be better to solve in a different way, possibly by using stencil events, or implementing a central store for tokenscript instances.
+		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
+			if (!this.tokenScript)
+				return;
+
+			if (walletConnection){
+				this.tokenScript.getTokenMetadata(true);
+			} else {
+				this.tokenScript.setTokenMetadata([]);
+			}
+		});
 		await this.initTokenScript();
 	}
 
