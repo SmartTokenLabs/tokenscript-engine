@@ -186,8 +186,10 @@ export class Card {
 		const processed = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
 
 		// User rejection
-		if (processed === false)
+		if (processed === false) {
+			listener({status: "aborted"})
 			return;
+		}
 
 		// TODO: transactions should specify which attributes should be invalidated
 		this.getAttributes().invalidate();

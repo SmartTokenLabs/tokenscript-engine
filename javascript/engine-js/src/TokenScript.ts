@@ -45,7 +45,7 @@ export type EventHandler = (data: any) => Promise<void>|void;
 export type TokenMetadataMap = { [contractName: string]: ITokenCollection };
 
 export interface ITransactionStatus {
-	status: 'started'|'submitted'|'confirmed',
+	status: 'started'|'aborted'|'submitted'|'confirmed',
 	txNumber?: string,
 	txLink?: string,
 	txRecord?: any
