@@ -74,9 +74,9 @@ export class TokensGrid {
 			document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
 		}*/
 
-		this.tokenScript.on("TOKENS_UPDATED", (data) => {
-			this.populateTokens(data.tokens)
-			this.invokeUrlAction();
+		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
+			await this.populateTokens(data.tokens)
+			await this.invokeUrlAction();
 		}, "grid")
 
 		this.tokenScript.on("TOKENS_LOADING", () => {
@@ -87,7 +87,7 @@ export class TokensGrid {
 
 		setTimeout(async () => {
 			await this.populateTokens(await this.tokenScript.getTokenMetadata());
-			this.invokeUrlAction();
+			await this.invokeUrlAction();
 		}, 500);
 	}
 
