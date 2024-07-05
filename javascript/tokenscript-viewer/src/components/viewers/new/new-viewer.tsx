@@ -117,7 +117,7 @@ export class NewViewer {
 			connectEmulatorSocket(emulator, async() => {
 				const tsMeta = await this.addFormSubmit("url", {tsId});
 				await this.viewerPopover.close();
-				this.viewerPopover.open(tsMeta.tokenScript);
+				await this.viewerPopover.open(tsMeta.tokenScript);
 			});
 		}
 

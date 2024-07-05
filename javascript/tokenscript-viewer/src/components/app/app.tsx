@@ -1,6 +1,6 @@
 import "../../integration/rum"
 
-import {Component, Element, h, Host, JSX, Listen, Method} from '@stencil/core';
+import {Component, Element, h, Host, JSX, Listen, Method, State} from '@stencil/core';
 import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
@@ -164,13 +164,17 @@ export class AppRoot {
 
 	loadTimer = null;
 
+	@State()
+	showLoader = false;
+
 	@Listen("showLoader")
 	showLoaderHandler(_event: CustomEvent<void>){
 		this.showTsLoader();
 	}
 
 	showTsLoader(){
-		this.loadTimer = setTimeout(() => document.getElementById("ts-loader").style.display = "flex", 50);
+		if (!this.loadTimer)
+			this.loadTimer = setTimeout(() => this.showLoader = true, 50);
 	}
 
 	@Listen("hideLoader")
@@ -180,7 +184,8 @@ export class AppRoot {
 
 	hideTsLoader(){
 		clearTimeout(this.loadTimer);
-		document.getElementById("ts-loader").style.display = "none";
+		this.loadTimer = null;
+		this.showLoader = false;
 	}
 
 	@Method()
@@ -277,11 +282,13 @@ export class AppRoot {
 
 					<confirm-tx-popover ref={(elem) => this.confirmTxPopover = elem}/>
 
-					<div id="ts-loader">
-						<loading-spinner/>
-					</div>
+					{this.showLoader ?
+						<div id="ts-loader">
+							<loading-spinner/>
+						</div> : ''
+					}
 				</div>
-				{ !this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
+				{!this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 						<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
 			</Host>
