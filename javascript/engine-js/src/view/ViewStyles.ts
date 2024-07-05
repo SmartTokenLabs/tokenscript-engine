@@ -13,6 +13,7 @@ export class ViewStyles {
 		"padding",
 		"font-family",
 		"font-size",
+		"font-weight",
 		"text-transform",
 		"height",
 		"padding",

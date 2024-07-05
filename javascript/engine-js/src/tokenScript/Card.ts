@@ -198,24 +198,21 @@ export class Card {
 		// Pause to let token discovery service update
 		await new Promise(resolve => setTimeout(resolve, 3000));
 
+		const context = this.tokenScript.getCurrentTokenContext();
+		const reloadCard = await this.isEnabledOrReason(context) === true;
+
+		if (!reloadCard && this.tokenScript.hasViewBinding()){
+			await this.tokenScript.getViewController().unloadTokenCard();
+		}
+
 		// TODO: transactions should declare specific triggers such as the need to reload tokens
 		const tokens = await this.tokenScript.getTokenMetadata(true, true);
 
 		if (!this.tokenScript.hasViewBinding())
 			return;
 
-		const context = this.tokenScript.getCurrentTokenContext();
-
-		// Close view if token no longer exists for current tokenContext or action is no longer allowed
-		if (
-			tokens[context.originId]?.[context.selectedTokenIndex] &&
-			await this.isEnabledOrReason(context)
-		){
-			if (updateViewData)
-				await this.tokenScript.getViewController().updateCardData();
-		} else {
-			await this.tokenScript.getViewController().unloadTokenCard();
-		}
+		if (reloadCard && updateViewData && tokens[context.originId]?.[context.selectedTokenIndex])
+			await this.tokenScript.getViewController().updateCardData();
 	}
 
 }

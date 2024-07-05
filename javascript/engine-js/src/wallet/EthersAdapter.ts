@@ -235,7 +235,12 @@ export class EthersAdapter implements IWalletAdapter {
 					return false;
 
 				if (tryToAdd){
-					await this.addChain(chain);
+					try {
+						await this.addChain(chain);
+					} catch (e){
+						console.error(e);
+						throw new Error("Failed to add or switch EVM chain, please manually add the chain from your wallet. Check console for more details.");
+					}
 					return this.switchChain(chain, false);
 				}
 				throw new Error("Connected to wrong chain, please switch the chain to chainId: " + chain + ", error: " + e.message);

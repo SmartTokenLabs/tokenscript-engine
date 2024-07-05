@@ -76,6 +76,7 @@ export class TokensGrid {
 
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.populateTokens(data.tokens)
+			this.invokeUrlAction();
 		}, "grid")
 
 		this.tokenScript.on("TOKENS_LOADING", () => {
@@ -84,7 +85,6 @@ export class TokensGrid {
 			console.log("Tokens loading");
 		}, "grid")
 
-		// TODO: Move to parent component OR ensure parent component is rendered before calling
 		setTimeout(async () => {
 			await this.populateTokens(await this.tokenScript.getTokenMetadata());
 			this.invokeUrlAction();
@@ -150,11 +150,12 @@ export class TokensGrid {
 			}
 		}
 
-		this.showToast.emit({
-			type: 'error',
-			title: "No supported tokens",
-			description: "None of your tokens support the " + action + " action."
-		});
+		if (this.currentTokensFlat.length)
+			this.showToast.emit({
+				type: 'error',
+				title: "No supported tokens",
+				description: "None of your tokens support the " + action + " action."
+			});
 	}
 
 	render() {

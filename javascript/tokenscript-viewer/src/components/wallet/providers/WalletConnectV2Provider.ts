@@ -11,7 +11,7 @@ export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: bo
 	// @ts-ignore
 	return await EthereumProvider.init({
 		projectId: '2ec7ead81da1226703ad789c0b2f7b30',
-		methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData', "wallet_switchEthereumChain", "wallet_addEthereumChain"],
+		methods: ['eth_sendTransaction', 'eth_signTransaction', 'eth_sign', 'personal_sign', 'eth_signTypedData', "wallet_addEthereumChain"],
 		events: ['chainChanged', 'accountsChanged'],
 		metadata: {
 			name: "Smart Token Viewer",
