@@ -1,4 +1,4 @@
-import {Contract, ethers, Network} from "ethers";
+import {BrowserProvider, Contract, ethers, Network} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
@@ -159,11 +159,14 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
                 abi: contractData.abi
             };
         },
-        getContractInstance: (name: string, chain?: number) => {
+        getContractInstance: (name: string, chain?: number, writable = false) => {
             const addressInfo = this.eth.getContractInfo(name, chain);
-            const provider = this.eth.getRpcProvider(addressInfo.chain);
-            return new Contract(addressInfo.address, addressInfo.abi, provider);
-        }
+            return new Contract(
+                addressInfo.address,
+                addressInfo.abi,
+                writable ? new BrowserProvider(window.ethereum, Network.from(addressInfo.chain)) : this.eth.getRpcProvider(addressInfo.chain)
+            );
+        },
     }
 }
 
