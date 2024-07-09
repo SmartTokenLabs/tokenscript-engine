@@ -1,4 +1,4 @@
-import {ethers, Network} from "ethers";
+import {Contract, ethers, Network} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
@@ -15,6 +15,11 @@ export interface IInstanceData {
     engineOrigin: string,
     localStorageData: {[key: string]: string},
     chainConfig: {[key: string]: IChainConfig}
+    env: {[key: string]: string}
+    contractData: {[name: string]: {
+        abi: any[],
+        addresses: {[chain: number]: string}
+    }}
 }
 
 class Web3LegacySDK implements IWeb3LegacySDK {
@@ -105,6 +110,10 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
         this.localStorageAdapter = new LocalStorageAdapter(this);
     }
 
+    public get env() {
+        return this.instanceData.env;
+    };
+
     public readonly eth = {
         getRpcProvider: (chain: number) => {
 
@@ -116,7 +125,7 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
                     providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
                 }
                 return new ethers.FallbackProvider(providers, chain, {
-
+                    quorum: 2
                 });
             } else {
                 return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
@@ -130,6 +139,30 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
             const rpc = this.instanceData.chainConfig[chainId].rpc;
 
             return typeof rpc === "string" ? [rpc]: rpc;
+        },
+        getContractInfo: (name: string, chain?: number) => {
+
+            const contractData = this.instanceData.contractData[name];
+            if (!contractData)
+                throw new Error(`Named contract '${name} does not exist`);
+
+            if (!chain)
+                chain = Number(Object.keys(contractData.addresses)[0]);
+
+            const address = contractData.addresses[chain];
+            if (!address)
+                throw new Error(`Named contract '${name} does not have an address for chain ${chain}`);
+
+            return {
+                chain,
+                address,
+                abi: contractData.abi
+            };
+        },
+        getContractInstance: (name: string, chain?: number) => {
+            const addressInfo = this.eth.getContractInfo(name, chain);
+            const provider = this.eth.getRpcProvider(addressInfo.chain);
+            return new Contract(addressInfo.address, addressInfo.abi, provider);
         }
     }
 }

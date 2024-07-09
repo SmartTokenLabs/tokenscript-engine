@@ -7,7 +7,7 @@ export class Meta {
 
 	private static META_TAGS = ["description", "aboutUrl", "iconUrl", "imageUrl", "backgroundImageUrl"];
 
-	private readonly meta: {[metaTag: string]: string} = {};
+	private readonly meta: {[metaTag: string]: string|any} = {};
 
 	constructor(private parentElem: Element) {
 
@@ -26,6 +26,15 @@ export class Meta {
 				const langLabels = elements.filter((elem) => elem.getAttribute("xml:lang") === "en")
 
 				this.meta[tag] = langLabels.length ? langLabels[0].textContent : elements[0].textContent;
+			}
+
+			// Collect environment variables
+			this.meta.env = {};
+
+			const elements: Element[] = [].slice.call(meta[0].getElementsByTagName("ts:env"));
+
+			for (const elem of elements){
+				this.meta.env[elem.getAttribute("name")] = elem.textContent;
 			}
 		}
 	}
@@ -60,5 +69,9 @@ export class Meta {
 
 	get backgroundImageUrl(){
 		return this.getValue("backgroundImageUrl")
+	}
+
+	get env(){
+		return this.getValue("env")
 	}
 }

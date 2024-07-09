@@ -5,7 +5,7 @@ export class Contract {
 
 	private name?;
 	private interface?;
-	private addresses: {[key: string]: IContractAddress} = {};
+	private addresses: {[key: number]: IContractAddress} = {};
 	private abi = [];
 
 	constructor(

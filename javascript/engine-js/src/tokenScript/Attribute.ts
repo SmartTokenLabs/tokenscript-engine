@@ -187,7 +187,7 @@ export class Attribute {
 				console.log("Resolving attribute: " + this.getName() + " for token context " + tokenContext?.selectedTokenId);
 
 				const contractName = origin.getAttribute("contract")
-				const contract = this.tokenScript.getContractByName(contractName);
+				const contract = this.tokenScript.getContracts().getContractByName(contractName);
 				const wallet = await this.tokenScript.getEngine().getWalletAdapter();
 				const chain = tokenContext?.chainId ?? await wallet.getChain();
 				const contractAddr = contract.getAddressByChain(chain, true);

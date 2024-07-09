@@ -71,7 +71,7 @@ export class Origin {
 
 		if (this.type === "contract"){
 			// Resolve contract owner or deployer address
-			const contract = this.tokenScript.getContractByName(this.name);
+			const contract = this.tokenScript.getContracts().getContractByName(this.name);
 
 			try {
 				// TODO: Handle per address/chain statuses when tokens are loaded
@@ -134,7 +134,7 @@ export class Origin {
 
 	private async validateByContractScriptUri(ipfsCid: string){
 
-		const contract = this.tokenScript.getContractByName(this.name);
+		const contract = this.tokenScript.getContracts().getContractByName(this.name);
 
 		const scriptSource = this.tokenScript.getSourceInfo();
 		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");

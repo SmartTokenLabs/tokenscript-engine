@@ -43,7 +43,7 @@ export class Transaction {
 
 		this.transaction = {
 			as: as,
-			contract: this.tokenScript.getContractByName(contractName),
+			contract: this.tokenScript.getContracts().getContractByName(contractName),
 			contractName: contractName,
 			function: transInfo[0].getAttribute("function"),
 			args: new Arguments(this.tokenScript, transInfo[0], this.localAttrContext).getArguments(),

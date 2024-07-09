@@ -172,7 +172,9 @@ export class TokenViewData {
 
 		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
 		const localStorageData = JSON.parse(String.raw \`${JSON.stringify(await this.localStorageProxy.getLocalStorageDictionary()).replace(/`/g, "")}\`);
-		const rpcURLs = JSON.parse(String.raw \`${JSON.stringify(walletAdapter.chainConfig).replace(/`/g, "")}\`);
+		const chainConfig = JSON.parse(String.raw \`${JSON.stringify(walletAdapter.chainConfig).replace(/`/g, "")}\`);
+		const env = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getMetadata().env).replace(/`/g, "")}\`);
+		const contractData = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getContracts().getContractViewData()).replace(/`/g, "")}\`);
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
 		const rpcURL = "${rpcURLs[0]}";
@@ -182,24 +184,12 @@ export class TokenViewData {
 		// Injected card SDK
 		${CARD_SDK_V1}
 
-		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin, localStorageData, rpcURLs});
+		window.tokenscript.setInstanceData({currentTokenInstance, engineOrigin, localStorageData, chainConfig, env, contractData});
 
 		// TODO: Move to SDK
 		// Extra initialisation
 		function refresh() {
 		   web3.tokens.dataChanged('test', web3.tokens.data, '${this.getViewDataId()}') //TODO: Cache previous value of token to feed into first arg
-		}
-
-		//window.onload = refresh;
-
-		web3.eth = {
-		walletBalance: 0
-		}
-		web3.eth_1 = {
-		walletBalance: 0
-		}
-		web3.eth_8217 = {
-		walletBalance: 0
 		}
 
 		document.addEventListener("DOMContentLoaded", function() {
@@ -212,4 +202,3 @@ export class TokenViewData {
 	}
 }
 
-export const initTokenScript = '';

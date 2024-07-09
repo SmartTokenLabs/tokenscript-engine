@@ -16,7 +16,7 @@ export class TransactionValidator {
 
 	public async validateContractAddress(chain: number, address: string){
 
-		for (const contract of Object.values(this.tokenScript.getContracts()) as Contract[]){
+		for (const contract of this.tokenScript.getContracts()){
 			if (Object.values(contract.getAddresses()).find((contractAddr) => {
 				return contractAddr.chain === chain && contractAddr.address.toLowerCase() === address.toLowerCase()
 			})){

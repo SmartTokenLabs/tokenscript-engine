@@ -137,7 +137,7 @@ export class SecurityInfo {
 
 		try {
 			if (originId){
-				this.tokenScript.getContractByName(originId);
+				this.tokenScript.getContracts().getContractByName(originId);
 				return new Origin(this.tokenScript, originId, "contract").getOriginSecurityStatus(this.securityInfo);
 			}
 		} catch (e){

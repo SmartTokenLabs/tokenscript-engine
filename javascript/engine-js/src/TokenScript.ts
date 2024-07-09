@@ -1,6 +1,5 @@
 import {ScriptSourceType, TokenScriptEngine} from "./Engine";
 import {Card} from "./tokenScript/Card";
-import {Contract} from "./tokenScript/Contract";
 import {Transaction} from "./tokenScript/Transaction";
 import {ITokenCollection} from "./tokens/ITokenCollection";
 import {Attributes} from "./tokenScript/Attributes";
@@ -18,6 +17,7 @@ import {Meta} from "./tokenScript/Meta";
 import {ethers} from "ethers";
 import {ViewStyles} from "./view/ViewStyles";
 import {TransactionValidator} from "./security/TransactionValidator";
+import {Contracts} from "./tokenScript/Contracts";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -69,7 +69,7 @@ export class TokenScript {
 
 	private origins?: { [originName: string]: Origin };
 
-	private contracts?: { [contractName: string]: Contract };
+	private contracts?: Contracts;
 
 	private tokenMetadata?: TokenMetadataMap;
 
@@ -325,33 +325,10 @@ export class TokenScript {
 	 * Contracts for the TokenScript
 	 * @param originsOnly
 	 */
-	public getContracts(originsOnly = false) {
+	public getContracts() {
 
 		if (!this.contracts) {
-
-			let contractXml = this.tokenDef.documentElement.getElementsByTagName('ts:contract');
-
-			this.contracts = {};
-
-			for (let i in contractXml) {
-
-				if (!contractXml.hasOwnProperty(i))
-					continue;
-
-				const contract = new Contract(contractXml[i]);
-
-				this.contracts[contract.getName()] = contract;
-			}
-		}
-
-		if (originsOnly){
-			const origins = this.getOrigins();
-			const originContracts = {};
-			for (const name in this.contracts){
-				if (origins[name])
-					originContracts[name] = this.contracts[name];
-			}
-			return originContracts;
+			this.contracts = new Contracts(this);
 		}
 
 		return this.contracts;
@@ -389,20 +366,6 @@ export class TokenScript {
 		}
 
 		return this.origins;
-	}
-
-	/**
-	 * Returns the contract object with the provided name
-	 * @param name The contract name as defined by the "name" object in the XML
-	 */
-	getContractByName(name: string) {
-
-		const contracts = this.getContracts();
-
-		if (!contracts[name])
-			throw new Error("Contract with name " + name + " was not found in the TSML");
-
-		return contracts[name];
 	}
 
 	/**
@@ -622,7 +585,7 @@ export class TokenScript {
 			}
 
 		} else {
-			const contracts = this.getContracts(true);
+			const contracts = this.getContracts().getContractsMap(true);
 
 			const primaryAddr = contracts[Object.keys(contracts)[0]].getFirstAddress();
 
@@ -658,7 +621,7 @@ export class TokenScript {
 	 */
 	private buildTokenDiscoveryData(originOnly = true){
 
-		const originContracts = this.getContracts(originOnly);
+		const originContracts = this.getContracts().getContractsMap(originOnly);
 
 		const initialTokenDetails: ITokenCollection[] = [];
 

@@ -1,7 +1,7 @@
 import {ITokenContextData} from "./tokenData";
 import {IEngineAdapter} from "../messaging/IEngineAdapter";
 import {IInstanceData} from "../index";
-import {AbstractProvider} from "ethers";
+import {AbstractProvider, Contract} from "ethers";
 export {ITokenContextData};
 
 export type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
@@ -37,5 +37,8 @@ export interface ITokenScriptSDK extends IWeb3LegacySDK {
 	eth: {
 		getRpcUrls: (chain: number) => string[]
 		getRpcProvider: (chain: number) => AbstractProvider
+		getContractInfo: (name: string, chain?: number) => {chain: number, address: string, abi: any}
+		getContractInstance: (name: string, chain?: number) => Contract
 	}
+	env: {[key: string]: string}
 }
