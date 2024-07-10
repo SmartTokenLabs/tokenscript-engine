@@ -48,11 +48,18 @@ export abstract class AbstractDependencyBranch implements IArgument {
 
 			case "contractAddress":
 				if (!tokenContext)
-					throw new Error("contractAddress reference cannot be resolved as no token context is set.");
-				return this.tokenScript.getContracts().getContractByName(tokenContext.originId).getAddressByChain(tokenContext.chainId);
+					throw new Error("contractAddress reference cannot be resolved as no token context is set. Use a fully qualified reference instead.");
+				return this.tokenScript.getContracts().getContractByName(tokenContext.originId).getAddressByChain(tokenContext.chainId).address;
 
 			default:
-				// First, check if values is provided in TokenContextData
+				// First we check if the value is a contract address reference
+				if (this.ref.indexOf("contractAddress_") === 0){
+					const parts = this.ref.split("_");
+					const contract = this.tokenScript.getContracts().getContractByName(parts[1]);
+					return contract.getAddressByChain(Number(parts[2]), !parts[2]).address;
+				}
+
+				// Then check if values is provided in TokenContextData
 				const contextData = this.tokenScript.getTokenContextData(tokenContext);
 
 				if (contextData[this.ref])

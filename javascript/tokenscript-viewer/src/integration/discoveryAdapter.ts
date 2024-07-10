@@ -106,7 +106,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		token = {
 			...token,
-			...collectionData
+			...collectionData,
+			originId: token.originId // Must not be overridden in case two tokenscripts use the same contract
 		}
 
 		if (token.chainId === ChainID.HARDHAT_LOCALHOST){

@@ -34,7 +34,7 @@ export class Contracts implements Iterable<Contract | undefined> {
 
 		if (originsOnly){
 			const origins = this.tokenScript.getOrigins();
-			const originContracts = {};
+			const originContracts: {[contractName: string]: Contract} = {};
 			for (const name in this.contracts){
 				if (origins[name])
 					originContracts[name] = this.contracts[name];

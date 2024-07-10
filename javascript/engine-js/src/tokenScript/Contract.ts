@@ -99,7 +99,7 @@ export class Contract {
 	 * @param chain
 	 * @param returnDefault If true, return the default (first) address for any chain rather than throwing an exception
 	 */
-	public getAddressByChain(chain: number, returnDefault = false){
+	public getAddressByChain(chain: number, returnDefault = false): IContractAddress {
 
 		if (!this.addresses[chain]) {
 			if (returnDefault){
