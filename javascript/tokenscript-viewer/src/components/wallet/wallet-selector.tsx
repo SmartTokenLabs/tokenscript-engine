@@ -1,6 +1,6 @@
 import {Component, h, Method, State} from "@stencil/core";
 import {SupportedWalletProviders} from "./Web3WalletProvider";
-import {getWalletInfo, WalletInfo} from "./WalletInfo";
+import {foxWallet, getWalletInfo, WalletInfo} from "./WalletInfo";
 
 @Component({
 	tag: 'wallet-selector',
@@ -41,6 +41,15 @@ export class WalletSelector {
 
 		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
 		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnectV2));
+
+		// Show FoxWallet option to trigger WalletConnect if the user is not using FoxWallet DApp browser
+		if (!window.foxwallet){
+			providers.push({
+				name: SupportedWalletProviders.WalletConnectV2,
+				...foxWallet
+			} as WalletInfo);
+		}
+
 		providers.push(getWalletInfo(SupportedWalletProviders.Torus));
 
 		if (typeof window.gatewallet !== 'undefined') {
