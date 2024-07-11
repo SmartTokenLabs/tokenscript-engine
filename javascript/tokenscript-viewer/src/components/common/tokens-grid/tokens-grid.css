@@ -9,6 +9,11 @@
 	position: relative;
 }
 
+.tokens-grid h3 {
+	color: white;
+	mix-blend-mode: difference;
+}
+
 .bg-blur {
 	/*backdrop-filter: blur(3px);*/
 	height: 100%;

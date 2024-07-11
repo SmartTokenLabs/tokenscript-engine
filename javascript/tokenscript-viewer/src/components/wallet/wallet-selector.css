@@ -1,18 +1,30 @@
 
-.wallet-btn {
-	width: 100%;
+.wallets-list {
 	display: flex;
-	margin: 10px 0;
+	flex-wrap: wrap;
+	gap: 5px;
+}
+
+.wallet-btn {
+	flex: calc(50% - 5px);
+	display: flex;
+	margin: 5px 0;
 	height: 60px !important;
 	align-items: center;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+@media (max-width: 500px) {
+	.wallet-btn {
+		flex: 100% !important;
+	}
 }
 
 .wallet-name {
 	text-align: center;
 	font-weight: bold;
 	font-size: 14px;
-	position: absolute;
-	width: 99%;
 }
 
 .wallet-icon {

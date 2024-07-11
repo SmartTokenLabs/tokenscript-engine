@@ -24,7 +24,7 @@
 	height: 0.45em;
 	left: 0.15em;
 	position: relative;
-	top: 0.15em;
+	top: 0.12em;
 	transform: rotate(135deg);
 	vertical-align: top;
 	width: 0.45em;
@@ -56,10 +56,20 @@
 	background: linear-gradient(0deg, #CECECE, #CECECE), #DDDDDD;
 }
 
-.status-dot {
+/*.status-dot {
 	border-radius: 50%;
 	background: #3DBD00;
 	width: 8px;
 	height: 8px;
 	margin: 5px;
+}*/
+
+.icon-container {
+	height: 20px;
+	margin: 0 6px;
+}
+
+.icon-container img, .icon-container svg {
+	height: 100%;
+	width: auto;
 }

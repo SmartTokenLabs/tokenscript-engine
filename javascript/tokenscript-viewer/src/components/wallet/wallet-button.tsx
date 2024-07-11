@@ -63,7 +63,7 @@ export class WalletButton {
 					}
 				}}>
 					{ this.walletInfo ? ([
-						<div class="status-dot"></div>,
+						<div class="icon-container" innerHTML={this.walletInfo.icon}></div>,
 						<div title={this.walletInfo.label + ": " + this.walletInfo.address}>{this.formatWalletAddress(this.walletInfo.address)}</div>,
 						<div class="chevron"></div>
 					]) : 'Connect Wallet'}

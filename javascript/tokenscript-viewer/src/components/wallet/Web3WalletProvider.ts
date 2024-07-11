@@ -64,13 +64,13 @@ class Web3WalletProviderObj {
 
 	walletChangeListeners: WalletChangeListener[] = [];
 
-	injectedProviders: {[uuid: string]: EIP6963ProviderDetail} = {};
+	injectedProviders: {[id: string]: EIP6963ProviderDetail} = {};
 
 	constructor() {
 		window.addEventListener(
 			"eip6963:announceProvider",
 			(event: EIP6963AnnounceProviderEvent) => {
-				this.injectedProviders[event.detail.info.uuid] = event.detail;
+				this.injectedProviders[event.detail.info.rdns] = event.detail;
 				console.log("AnnounceProvider...", event.detail)
 			}
 		);
@@ -83,13 +83,16 @@ class Web3WalletProviderObj {
 		const providers: WalletInfo[] = [];
 
 		if (typeof window.ethereum !== 'undefined') {
-			providers.push(getWalletInfo(StaticProviders.MetaMask));
+			const providerInfo = getWalletInfo(StaticProviders.MetaMask);
+			// Only include this wallet if it isn't already available via EIP6963
+			if (!Object.values(this.injectedProviders).find((provider) => provider.info.name === providerInfo.label))
+				providers.push(providerInfo);
 		}
 
-		for (const uuid in this.injectedProviders){
-			const providerInfo = this.injectedProviders[uuid].info;
+		for (const id in this.injectedProviders){
+			const providerInfo = this.injectedProviders[id].info;
 			providers.push(<WalletInfo>{
-				id: `EIP6963_${uuid}`,
+				id: `EIP6963_${id}`,
 				label: providerInfo.name,
 				icon: `<img src="${providerInfo.icon}" />`
 			});
@@ -118,12 +121,12 @@ class Web3WalletProviderObj {
 		if (id.indexOf("EIP6963_") === -1)
 			return getWalletInfo(id);
 
-		const [_tag, uuid] = id.split("_");
+		const [_tag, walletId] = id.split("_");
 
-		const providerInfo = this.injectedProviders[uuid].info;
+		const providerInfo = this.injectedProviders[walletId].info;
 
 		return <WalletInfo>{
-			id: `EIP6963_${uuid}`,
+			id,
 			label: providerInfo.name,
 			icon: `<img src="${providerInfo.icon}" />`
 		}
@@ -292,7 +295,7 @@ class Web3WalletProviderObj {
 
 	/**
 	 *
-	 * @param walletType a defined provider OR an EIP693 provider denoted using the format `EIP6963_${uuid}`
+	 * @param walletType a defined provider OR an EIP693 provider denoted using the format `EIP6963_${id}`
 	 * @param checkConnectionOnly
 	 */
 	async connectWith(walletType: SupportedWalletProviders, checkConnectionOnly = false) {
@@ -318,7 +321,7 @@ class Web3WalletProviderObj {
 					address = await this.Torus();
 					break;
 				default:
-					// Connect to EIP-6963 injected provider using the provided uuid
+					// Connect to EIP-6963 injected provider using the provided id (rdns value)
 					if (walletType.indexOf("EIP6963_") === -1)
 						throw new Error('Wallet type not found');
 
@@ -362,7 +365,7 @@ class Web3WalletProviderObj {
 	}
 
 	getConnectedWalletData(blockchain: SupportedBlockchainsParam) {
-		return Object.values(this.connections).filter((connection) => connection.blockchain === blockchain)
+		return Object.values(this.connections).filter((connection) => !connection.blockchain || connection.blockchain === blockchain)
 	}
 
 	registerNewWalletAddress(
@@ -455,16 +458,21 @@ class Web3WalletProviderObj {
 
 	async EIP6963(id: `EIP6963_${string}`) {
 
-		const [_tag, uuid] = id.split("_");
+		const [_tag, walletId] = id.split("_");
 
-		if (!this.injectedProviders[uuid])
-			throw new Error(`EIP6963 provider with uuid ${uuid} not found`);
+		if (!this.injectedProviders[walletId])
+			throw new Error(`EIP6963 provider with rdns id ${walletId} not found`);
 
-		await this.injectedProviders[uuid].provider.request({
-			method: 'eth_requestAccounts',
-		});
+		if ("enable" in this.injectedProviders[walletId].provider){
+			// @ts-ignore
+			await this.injectedProviders[walletId].provider.enable();
+		} else {
+			await this.injectedProviders[walletId].provider.request({
+				method: 'eth_requestAccounts',
+			});
+		}
 
-		const provider = new ethers.BrowserProvider(this.injectedProviders[uuid].provider, 'any')
+		const provider = new ethers.BrowserProvider(this.injectedProviders[walletId].provider, 'any')
 
 		return this.registerEvmProvider(provider, id, window.gatewallet);
 	}

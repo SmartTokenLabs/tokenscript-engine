@@ -44,6 +44,7 @@ export class WalletSelector {
 			<popover-dialog ref={el => this.dialog = el as HTMLPopoverDialogElement}>
 				<h4>Select Wallet</h4>
 				<p>You need to connect your wallet to get access to your tokens.</p>
+				<div class="wallets-list">
 				{
 					this.providerList.map((provider) => {
 						return (
@@ -59,6 +60,7 @@ export class WalletSelector {
 						)
 					})
 				}
+				</div>
 			</popover-dialog>
 		)
 	}

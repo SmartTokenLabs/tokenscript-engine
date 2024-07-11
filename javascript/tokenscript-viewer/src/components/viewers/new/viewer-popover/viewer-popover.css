@@ -83,6 +83,10 @@ viewer-popover .onboarding-cards {
 	margin: 0 25px 24px;
 }
 
+viewer-popover .view-toolbar-buttons > div {
+	display: flex;
+}
+
 .onboarding-cards {
 	display: flex;
 	gap: 10px;
