@@ -41,7 +41,9 @@ export class WalletButton {
 			return;
 		}
 
-		this.walletInfo = {...wallet, ...getWalletInfo(wallet.providerType)};
+		this.walletInfo = {...wallet, ...Web3WalletProvider.getProviderInfo(wallet.providerType)};
+
+		console.log(this.walletInfo);
 	}
 
 	private formatWalletAddress(address: string){
@@ -62,7 +64,7 @@ export class WalletButton {
 				}}>
 					{ this.walletInfo ? ([
 						<div class="status-dot"></div>,
-						<div title={this.walletInfo.providerType + ": " + this.walletInfo.address}>{this.formatWalletAddress(this.walletInfo.address)}</div>,
+						<div title={this.walletInfo.label + ": " + this.walletInfo.address}>{this.formatWalletAddress(this.walletInfo.address)}</div>,
 						<div class="chevron"></div>
 					]) : 'Connect Wallet'}
 				</button>

@@ -1,5 +1,5 @@
 import {Component, h, Method, State} from "@stencil/core";
-import {SupportedWalletProviders} from "./Web3WalletProvider";
+import {SupportedWalletProviders, Web3WalletProvider} from "./Web3WalletProvider";
 import {foxWallet, getWalletInfo, WalletInfo} from "./WalletInfo";
 
 @Component({
@@ -25,40 +25,14 @@ export class WalletSelector {
 			this.closeCallback("Wallet connection aborted.")
 		});
 
-		return new Promise((resolve, reject) => {
+		return new Promise<SupportedWalletProviders>((resolve, reject) => {
 			this.selectCallback = resolve;
 			this.closeCallback = reject;
 		});
 	}
 
 	componentWillLoad(){
-
-		const providers = [];
-
-		if (typeof window.ethereum !== 'undefined') {
-			providers.push(getWalletInfo(SupportedWalletProviders.MetaMask));
-		}
-
-		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
-		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnectV2));
-
-		providers.push(getWalletInfo(SupportedWalletProviders.CoinbaseSmartWallet));
-
-		// Show FoxWallet option to trigger WalletConnect if the user is not using FoxWallet DApp browser
-		if (!window.foxwallet){
-			providers.push({
-				name: SupportedWalletProviders.WalletConnectV2,
-				...foxWallet
-			} as WalletInfo);
-		}
-
-		providers.push(getWalletInfo(SupportedWalletProviders.Torus));
-
-		if (typeof window.gatewallet !== 'undefined') {
-			providers.push(getWalletInfo(SupportedWalletProviders.Gate));
-		}
-
-		this.providerList = providers
+		this.providerList = Web3WalletProvider.getAvailableProviders();
 	}
 
 	componentDidLoad(){
@@ -75,11 +49,11 @@ export class WalletSelector {
 						return (
 							<button class="btn wallet-btn" onClick={
 								() => {
-									this.selectCallback(provider.name);
+									this.selectCallback(provider.id);
 									this.dialog.closeDialog();
 								}
 							}>
-								<div class="wallet-icon" innerHTML={provider.imgBig} style={{overflow: "hidden"}}></div>
+								<div class="wallet-icon" innerHTML={provider.icon} style={{overflow: "hidden"}}></div>
 								<div class="wallet-name">{provider.label}</div>
 							</button>
 						)

@@ -1,5 +1,6 @@
 import {ethers} from 'ethers'
-//import {EIP1193Provider} from "@walletconnect/ethereum-provider/dist/types/types";
+import {EIP1193Provider} from "@walletconnect/ethereum-provider/dist/types/types";
+import {foxWallet, getWalletInfo, WalletInfo} from "./WalletInfo";
 
 declare global {
 	interface Window {
@@ -15,13 +16,6 @@ interface WalletConnectionState {
 	[index: string]: WalletConnection
 }
 
-export interface WalletOptionsInterface {
-	walletConnectV2?: {
-		chains?: number[]
-		rpcMap: { [chainId: string]: string }
-	}
-}
-
 type SupportedBlockchainsParam = 'evm';
 
 export interface WalletConnection {
@@ -33,15 +27,16 @@ export interface WalletConnection {
 	ethers?: any
 }
 
-export enum SupportedWalletProviders {
+export type SupportedWalletProviders = StaticProviders|`EIP6963_${string}`
+
+export enum StaticProviders {
 	MetaMask = 'MetaMask',
-	Gate = 'Gate',
 	CoinbaseSmartWallet = 'CoinbaseSmartWallet',
 	WalletConnectV2 = 'WalletConnectV2',
 	Torus = 'Torus',
 }
 
-/*interface EIP6963ProviderInfo {
+interface EIP6963ProviderInfo {
 	uuid: string;
 	name: string;
 	icon: string;
@@ -56,7 +51,7 @@ interface EIP6963ProviderDetail {
 interface EIP6963AnnounceProviderEvent extends CustomEvent {
 	type: "eip6963:announceProvider";
 	detail: EIP6963ProviderDetail;
-}*/
+}
 
 export type WalletChangeListener = (walletConnection?: WalletConnection) => {};
 
@@ -69,10 +64,10 @@ class Web3WalletProviderObj {
 
 	walletChangeListeners: WalletChangeListener[] = [];
 
-	//injectedProviders: {[uuid: string]: EIP6963ProviderDetail} = {};
+	injectedProviders: {[uuid: string]: EIP6963ProviderDetail} = {};
 
-	constructor(private walletOptions?: WalletOptionsInterface) {
-		/*window.addEventListener(
+	constructor() {
+		window.addEventListener(
 			"eip6963:announceProvider",
 			(event: EIP6963AnnounceProviderEvent) => {
 				this.injectedProviders[event.detail.info.uuid] = event.detail;
@@ -80,7 +75,58 @@ class Web3WalletProviderObj {
 			}
 		);
 
-		window.dispatchEvent(new Event("eip6963:requestProvider"));*/
+		window.dispatchEvent(new Event("eip6963:requestProvider"));
+	}
+
+	getAvailableProviders(){
+
+		const providers: WalletInfo[] = [];
+
+		if (typeof window.ethereum !== 'undefined') {
+			providers.push(getWalletInfo(StaticProviders.MetaMask));
+		}
+
+		for (const uuid in this.injectedProviders){
+			const providerInfo = this.injectedProviders[uuid].info;
+			providers.push(<WalletInfo>{
+				id: `EIP6963_${uuid}`,
+				label: providerInfo.name,
+				icon: `<img src="${providerInfo.icon}" />`
+			});
+		}
+
+		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
+		providers.push(getWalletInfo(StaticProviders.WalletConnectV2));
+
+		providers.push(getWalletInfo(StaticProviders.CoinbaseSmartWallet));
+
+		// Show FoxWallet option to trigger WalletConnect if the user is not using FoxWallet DApp browser
+		/*if (!window.foxwallet){
+			providers.push({
+				id: StaticProviders.WalletConnectV2,
+				...foxWallet
+			} as WalletInfo);
+		}*/
+
+		providers.push(getWalletInfo(StaticProviders.Torus));
+
+		return providers;
+	}
+
+	getProviderInfo(id: SupportedWalletProviders): WalletInfo {
+
+		if (id.indexOf("EIP6963_") === -1)
+			return getWalletInfo(id);
+
+		const [_tag, uuid] = id.split("_");
+
+		const providerInfo = this.injectedProviders[uuid].info;
+
+		return <WalletInfo>{
+			id: `EIP6963_${uuid}`,
+			label: providerInfo.name,
+			icon: `<img src="${providerInfo.icon}" />`
+		}
 	}
 
 	setWalletSelectorCallback(callback: () => Promise<SupportedWalletProviders>){
@@ -120,7 +166,7 @@ class Web3WalletProviderObj {
 			if (!connect)
 				return null;
 
-			return new Promise(async (resolve, reject) => {
+			return new Promise<WalletConnection>(async (resolve, reject) => {
 
 				try {
 					const providerName = await this.selectorCallback();
@@ -175,18 +221,6 @@ class Web3WalletProviderObj {
 		localStorage.setItem(Web3WalletProviderObj.LOCAL_STORAGE_KEY, JSON.stringify(savedConnections))
 	}
 
-	emitSavedConnection(address: string) {
-		this.emitWalletChangeEvent(this.connections[address])
-	}
-
-	/*emitNetworkChange(chainId: string) {
-		if (chainId) {
-			this.client.eventSender('network-change', chainId)
-
-			return chainId
-		}
-	}*/
-
 	private async deleteConnections() {
 		if (window.ethereum?.removeAllListeners)
 			window.ethereum.removeAllListeners();
@@ -200,7 +234,7 @@ class Web3WalletProviderObj {
 					let provider = state[item].providerType
 					switch (provider) {
 
-						case 'WalletConnectV2':
+						case StaticProviders.WalletConnectV2:
 							{
 								let walletConnect2Provider = await import('./providers/WalletConnectV2Provider')
 
@@ -218,7 +252,7 @@ class Web3WalletProviderObj {
 							}
 							break
 
-						case 'SmartWallet':
+						case StaticProviders.CoinbaseSmartWallet:
 							{
 								const coinbaseProvider = await (await import('./providers/CoinbaseProvider')).getCoinbaseProviderInstance();
 								await coinbaseProvider.disconnect();
@@ -252,22 +286,44 @@ class Web3WalletProviderObj {
 			} catch (e) {
 				delete state[address]
 				this.saveConnections()
-				//this.emitSavedConnection(address)
 			}
 		}
 	}
 
-	async connectWith(walletType: string, checkConnectionOnly = false) {
+	/**
+	 *
+	 * @param walletType a defined provider OR an EIP693 provider denoted using the format `EIP6963_${uuid}`
+	 * @param checkConnectionOnly
+	 */
+	async connectWith(walletType: SupportedWalletProviders, checkConnectionOnly = false) {
 
 		if (!walletType) throw new Error('Please provide a Wallet type to connect with.')
-
-		if (!this[walletType as keyof Web3WalletProviderObj]) throw new Error('Wallet type not found')
 
 		try {
 			if (!checkConnectionOnly) this.showLoader(true);
 
-			// @ts-ignore
-			let address = await this[walletType as keyof Web3WalletProviderObj](checkConnectionOnly)
+			let address;
+
+			switch (walletType){
+				case StaticProviders.MetaMask:
+					address = await this.MetaMask();
+					break;
+				case StaticProviders.WalletConnectV2:
+					address = await this.WalletConnectV2(checkConnectionOnly)
+					break;
+				case StaticProviders.CoinbaseSmartWallet:
+					address = await this.CoinbaseSmartWallet();
+					break;
+				case StaticProviders.Torus:
+					address = await this.Torus();
+					break;
+				default:
+					// Connect to EIP-6963 injected provider using the provided uuid
+					if (walletType.indexOf("EIP6963_") === -1)
+						throw new Error('Wallet type not found');
+
+					address = await this.EIP6963(walletType);
+			}
 
 			if (!address) throw new Error("Wallet didn't connect")
 
@@ -320,7 +376,7 @@ class Web3WalletProviderObj {
 		if (window.ethereum?.removeAllListeners)
 			window.ethereum.removeAllListeners();
 		this.connections = {};
-		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain, ethers };
+		this.connections[address.toLowerCase()] = { address, chainId, providerType, provider, blockchain };
 
 		eip1193Provider.on('accountsChanged', (accounts) => {
 
@@ -384,58 +440,34 @@ class Web3WalletProviderObj {
 		return curAccount
 	}
 
-	async MetaMask(checkConnectionOnly: boolean) {
+	async MetaMask() {
 
 		if (typeof window.ethereum !== 'undefined') {
 			await window.ethereum.enable()
 
 			const provider = new ethers.BrowserProvider(window.ethereum, 'any')
 
-			return this.registerEvmProvider(provider, SupportedWalletProviders.MetaMask, window.ethereum);
+			return this.registerEvmProvider(provider, StaticProviders.MetaMask, window.ethereum);
 		} else {
 			throw new Error('MetaMask is not available. Please check the extension is supported and active.')
 		}
 	}
 
-	async Gate(checkConnectionOnly: boolean) {
+	async EIP6963(id: `EIP6963_${string}`) {
 
-		if (typeof window.gatewallet !== 'undefined') {
+		const [_tag, uuid] = id.split("_");
 
-			console.log("connecting on gate");
+		if (!this.injectedProviders[uuid])
+			throw new Error(`EIP6963 provider with uuid ${uuid} not found`);
 
-			await window.gatewallet.enable()
+		await this.injectedProviders[uuid].provider.request({
+			method: 'eth_requestAccounts',
+		});
 
-			const provider = new ethers.BrowserProvider(window.gatewallet, 'any')
+		const provider = new ethers.BrowserProvider(this.injectedProviders[uuid].provider, 'any')
 
-			return this.registerEvmProvider(provider, SupportedWalletProviders.Gate, window.gatewallet);
-		} else {
-			throw new Error('MetaMask is not available. Please check the extension is supported and active.')
-		}
+		return this.registerEvmProvider(provider, id, window.gatewallet);
 	}
-
-	/*async WalletConnect(checkConnectionOnly: boolean) {
-
-		const walletConnectProvider = await import('./providers/WalletConnectProvider')
-
-		const walletConnect = await walletConnectProvider.getWalletConnectProviderInstance(checkConnectionOnly)
-
-		return new Promise((resolve, reject) => {
-			if (checkConnectionOnly) {
-				walletConnect.connector.on('display_uri', (err, payload) => {
-					reject(new Error('Connection expired'))
-				})
-			}
-
-			walletConnect
-				.enable()
-				.then(() => {
-					const provider = new ethers.BrowserProvider(walletConnect, 'any')
-
-					resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnect))
-				})
-				.catch((e) => reject(e))
-		})
-	}*/
 
 	private showLoader(show: boolean){
 		document.getElementsByTagName("app-root")[0].dispatchEvent(new CustomEvent(show ? "showLoader" : "hideLoader"));
@@ -464,8 +496,6 @@ class Web3WalletProviderObj {
 			this.disconnectWallet()
 		})
 
-		let preSavedWalletOptions = this.walletOptions
-
 		return new Promise((resolve, reject) => {
 			if (checkConnectionOnly && !walletConnectV2.session) {
 				reject('Not connected')
@@ -485,7 +515,7 @@ class Web3WalletProviderObj {
 					.then(() => {
 						//QRCodeModal?.close()
 						const provider = new ethers.BrowserProvider(walletConnectV2, 'any')
-						resolve(this.registerEvmProvider(provider, SupportedWalletProviders.WalletConnectV2, walletConnectV2))
+						resolve(this.registerEvmProvider(provider, StaticProviders.WalletConnectV2, walletConnectV2))
 					})
 					.catch((e) => {
 						//QRCodeModal?.close()
@@ -495,7 +525,7 @@ class Web3WalletProviderObj {
 		})
 	}
 
-	async Torus(checkConnectionOnly: boolean) {
+	async Torus() {
 		const TorusProvider = await import('./providers/TorusProvider')
 
 		const torus = await TorusProvider.getTorusProviderInstance()
@@ -506,10 +536,10 @@ class Web3WalletProviderObj {
 
 		const provider = new ethers.BrowserProvider(torus.provider, 'any')
 
-		return this.registerEvmProvider(provider, SupportedWalletProviders.Torus, torus.provider)
+		return this.registerEvmProvider(provider, StaticProviders.Torus, torus.provider)
 	}
 
-	async CoinbaseSmartWallet(checkConnectionOnly: boolean) {
+	async CoinbaseSmartWallet() {
 
 		const coinbaseProvider = await (await import('./providers/CoinbaseProvider')).getCoinbaseProviderInstance();
 
@@ -519,7 +549,7 @@ class Web3WalletProviderObj {
 
 		const provider = new ethers.BrowserProvider(coinbaseProvider);
 
-		return this.registerEvmProvider(provider, SupportedWalletProviders.CoinbaseSmartWallet, coinbaseProvider);
+		return this.registerEvmProvider(provider, StaticProviders.CoinbaseSmartWallet, coinbaseProvider);
 	}
 }
 

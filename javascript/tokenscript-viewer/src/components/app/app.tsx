@@ -15,6 +15,7 @@ import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDi
 import {dbProvider} from "../../providers/databaseProvider";
 import {showToastNotification} from "../viewers/util/showToast";
 import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
+import {StaticProviders} from "../wallet/Web3WalletProvider";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -144,7 +145,7 @@ export class AppRoot {
 			providerFactory = async () => {
 				const WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
 				if (!WalletProvider.isWalletConnected())
-					await WalletProvider.connectWith("MetaMask");
+					await WalletProvider.connectWith(StaticProviders.MetaMask);
 				return (await WalletProvider.getWallet(true)).provider;
 			}
 		} else {
