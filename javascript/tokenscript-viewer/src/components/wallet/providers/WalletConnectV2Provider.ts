@@ -20,6 +20,11 @@ export const getWalletConnectV2ProviderInstance = async (checkConnectionOnly: bo
 			icons: [`${location.origin}/assets/icon/icon.png`]
 		},
 		showQrModal: !checkConnectionOnly,
+		qrModalOptions: {
+			themeVariables: {
+				"--wcm-z-index": "200"
+			}
+		},
 		optionalChains: WC_V2_DEFAULT_CHAINS,
 		rpcMap: WC_V2_RPC_MAP
 	});

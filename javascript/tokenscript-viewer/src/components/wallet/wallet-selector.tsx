@@ -42,6 +42,8 @@ export class WalletSelector {
 		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
 		providers.push(getWalletInfo(SupportedWalletProviders.WalletConnectV2));
 
+		providers.push(getWalletInfo(SupportedWalletProviders.CoinbaseSmartWallet));
+
 		// Show FoxWallet option to trigger WalletConnect if the user is not using FoxWallet DApp browser
 		if (!window.foxwallet){
 			providers.push({
