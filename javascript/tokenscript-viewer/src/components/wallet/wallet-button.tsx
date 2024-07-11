@@ -42,8 +42,6 @@ export class WalletButton {
 		}
 
 		this.walletInfo = {...wallet, ...Web3WalletProvider.getProviderInfo(wallet.providerType)};
-
-		console.log(this.walletInfo);
 	}
 
 	private formatWalletAddress(address: string){

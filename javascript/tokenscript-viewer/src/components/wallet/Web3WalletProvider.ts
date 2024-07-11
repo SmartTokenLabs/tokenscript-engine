@@ -71,7 +71,7 @@ class Web3WalletProviderObj {
 			"eip6963:announceProvider",
 			(event: EIP6963AnnounceProviderEvent) => {
 				this.injectedProviders[event.detail.info.rdns] = event.detail;
-				console.log("AnnounceProvider...", event.detail)
+				console.log("EIP-6963 wallet registered: ", event.detail.info.rdns)
 			}
 		);
 
@@ -463,18 +463,13 @@ class Web3WalletProviderObj {
 		if (!this.injectedProviders[walletId])
 			throw new Error(`EIP6963 provider with rdns id ${walletId} not found`);
 
-		if ("enable" in this.injectedProviders[walletId].provider){
-			// @ts-ignore
-			await this.injectedProviders[walletId].provider.enable();
-		} else {
-			await this.injectedProviders[walletId].provider.request({
-				method: 'eth_requestAccounts',
-			});
-		}
+		await this.injectedProviders[walletId].provider.request({
+			method: 'eth_requestAccounts',
+		});
 
 		const provider = new ethers.BrowserProvider(this.injectedProviders[walletId].provider, 'any')
 
-		return this.registerEvmProvider(provider, id, window.gatewallet);
+		return this.registerEvmProvider(provider, id, this.injectedProviders[walletId].provider);
 	}
 
 	private showLoader(show: boolean){
