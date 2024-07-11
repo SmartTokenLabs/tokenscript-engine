@@ -87,7 +87,8 @@ export class TokensGrid {
 
 		setTimeout(async () => {
 			await this.populateTokens(await this.tokenScript.getTokenMetadata());
-			await this.invokeUrlAction();
+			if (Web3WalletProvider.isWalletConnected())
+				await this.invokeUrlAction();
 		}, 500);
 	}
 

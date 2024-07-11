@@ -53,17 +53,19 @@ export abstract class AbstractDependencyBranch implements IArgument {
 
 			default:
 				// First we check if the value is a contract address reference
-				if (this.ref.indexOf("contractAddress_") === 0){
-					const parts = this.ref.split("_");
-					const contract = this.tokenScript.getContracts().getContractByName(parts[1]);
-					return contract.getAddressByChain(Number(parts[2]), !parts[2]).address;
+				if (this.ref) {
+					if (this.ref.indexOf("contractAddress_") === 0) {
+						const parts = this.ref.split("_");
+						const contract = this.tokenScript.getContracts().getContractByName(parts[1]);
+						return contract.getAddressByChain(Number(parts[2]), !parts[2]).address;
+					}
+
+					// Then check if values is provided in TokenContextData
+					const contextData = await this.tokenScript.getTokenContextData(tokenContext);
+
+					if (contextData?.[this.ref])
+						return contextData[this.ref];
 				}
-
-				// Then check if values is provided in TokenContextData
-				const contextData = this.tokenScript.getTokenContextData(tokenContext);
-
-				if (contextData[this.ref])
-					return contextData[this.ref];
 
 				return await this.resolveValue(tokenContext);
 		}

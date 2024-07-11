@@ -139,7 +139,7 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 		} catch (e){
 
 			// local-ref can be used to get attributes defined by a view that aren't explicitly defined in the tokenscript
-			const value = this.tokenScript.getViewController().getUserEntryValue(this.localRef, tokenContext.selectedTokenId ?? "-1");
+			const value = this.tokenScript.getViewController().getUserEntryValue(this.localRef, tokenContext?.selectedTokenId ?? "-1");
 
 			if (!value){
 				throw e;

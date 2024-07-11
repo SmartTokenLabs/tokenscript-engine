@@ -32,6 +32,8 @@ export const showTransactionNotification = async (data: ITransactionStatus, show
 
 export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToastEventArgs>) => {
 
+	console.error(e);
+
 	let message = e.message;
 
 	const revertMatch = message.match(/reverted with reason string '(.*)'/);

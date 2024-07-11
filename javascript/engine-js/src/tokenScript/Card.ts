@@ -211,7 +211,8 @@ export class Card {
 		if (!this.tokenScript.hasViewBinding())
 			return;
 
-		if (reloadCard && updateViewData && tokens[context.originId]?.[context.selectedTokenIndex])
+		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
+		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.[context.selectedTokenIndex]))
 			await this.tokenScript.getViewController().updateCardData();
 	}
 
