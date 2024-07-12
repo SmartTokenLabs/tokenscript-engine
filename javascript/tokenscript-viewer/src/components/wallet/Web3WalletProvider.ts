@@ -1,6 +1,6 @@
 import {ethers} from 'ethers'
 import {EIP1193Provider} from "@walletconnect/ethereum-provider/dist/types/types";
-import {getWalletInfo, WalletInfo} from "./WalletInfo";
+import {getWalletInfo, WALLET_LIST, WalletInfo} from "./WalletInfo";
 
 declare global {
 	interface Window {
@@ -94,10 +94,11 @@ class Web3WalletProviderObj {
 
 		for (const id in this.injectedProviders){
 			const providerInfo = this.injectedProviders[id].info;
+
 			providers.push(<WalletInfo>{
 				id: `EIP6963_${id}`,
 				label: providerInfo.name,
-				icon: `<img src="${providerInfo.icon}" />`
+				icon: this.getReplacementIcon(providerInfo)
 			});
 		}
 
@@ -131,7 +132,19 @@ class Web3WalletProviderObj {
 		return <WalletInfo>{
 			id,
 			label: providerInfo.name,
-			icon: `<img src="${providerInfo.icon}" />`
+			icon: this.getReplacementIcon(providerInfo)
+		}
+	}
+
+	private getReplacementIcon(providerInfo: EIP6963ProviderInfo){
+
+		switch (providerInfo.rdns){
+			case "com.brave.wallet":
+				return WALLET_LIST.braveWallet.icon;
+			case "io.gate.wallet":
+				return WALLET_LIST.gateWallet.icon;
+			default:
+				return `<img alt="${providerInfo.name}" src="${providerInfo.icon}" />`;
 		}
 	}
 

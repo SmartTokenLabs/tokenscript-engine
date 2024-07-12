@@ -107,7 +107,7 @@ export const WALLET_LIST: {[key: string]: Omit<WalletInfo, "id">} = {
 				</g>
 			</svg>
 		`,
-		label: 'Brave',
+		label: 'Brave Wallet',
 		onboardingLink: "https://brave.com/"
 	},
 	mew: {
