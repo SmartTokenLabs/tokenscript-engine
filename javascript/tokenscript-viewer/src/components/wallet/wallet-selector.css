@@ -1,4 +1,17 @@
 
+wallet-selector .wallet-list-heading, wallet-selector p {
+	color: #545454;
+	margin: 10px 0;
+}
+
+wallet-selector h3 {
+	margin: 10px 0;
+}
+
+.wallet-list-heading {
+	margin-bottom: 8px;
+}
+
 .wallets-list {
 	display: flex;
 	flex-wrap: wrap;

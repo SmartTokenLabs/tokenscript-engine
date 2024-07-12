@@ -1,6 +1,6 @@
 import {ethers} from 'ethers'
 import {EIP1193Provider} from "@walletconnect/ethereum-provider/dist/types/types";
-import {foxWallet, getWalletInfo, WalletInfo} from "./WalletInfo";
+import {getWalletInfo, WalletInfo} from "./WalletInfo";
 
 declare global {
 	interface Window {
@@ -9,6 +9,7 @@ declare global {
 		gatewallet: any;
 		foxwallet: any;
 		klaytn: any;
+		coin98: any;
 	}
 }
 
@@ -70,6 +71,8 @@ class Web3WalletProviderObj {
 		window.addEventListener(
 			"eip6963:announceProvider",
 			(event: EIP6963AnnounceProviderEvent) => {
+				if (this.injectedProviders[event.detail.info.rdns])
+					return;
 				this.injectedProviders[event.detail.info.rdns] = event.detail;
 				console.log("EIP-6963 wallet registered: ", event.detail.info.rdns)
 			}
@@ -365,7 +368,7 @@ class Web3WalletProviderObj {
 	}
 
 	getConnectedWalletData(blockchain: SupportedBlockchainsParam) {
-		return Object.values(this.connections).filter((connection) => !connection.blockchain || connection.blockchain === blockchain)
+		return Object.values(this.connections).filter((connection) => !connection?.blockchain || connection.blockchain === blockchain)
 	}
 
 	registerNewWalletAddress(
@@ -463,13 +466,16 @@ class Web3WalletProviderObj {
 		if (!this.injectedProviders[walletId])
 			throw new Error(`EIP6963 provider with rdns id ${walletId} not found`);
 
-		await this.injectedProviders[walletId].provider.request({
+		// TODO: Temporary fix for coin98 EIP6963 not working, remove once fixed
+		const injectedProvider = walletId !== "coin98.com" ? this.injectedProviders[walletId].provider : window.coin98.provider
+
+		await injectedProvider.request({
 			method: 'eth_requestAccounts',
 		});
 
-		const provider = new ethers.BrowserProvider(this.injectedProviders[walletId].provider, 'any')
+		const provider = new ethers.BrowserProvider(injectedProvider, 'any')
 
-		return this.registerEvmProvider(provider, id, this.injectedProviders[walletId].provider);
+		return this.registerEvmProvider(provider, id, injectedProvider);
 	}
 
 	private showLoader(show: boolean){
