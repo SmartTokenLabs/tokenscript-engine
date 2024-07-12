@@ -26,31 +26,33 @@ wallet-selector h3 {
 }
 
 .wallet-btn {
-	flex: calc(50% - 6px);
+	flex: calc(33% - 3px);
 	display: flex;
-	margin: 3px 0;
-	height: 60px !important;
+	height: unset !important;
 	align-items: center;
 	flex-grow: 0;
 	flex-shrink: 0;
+	flex-direction: column;
+	padding: 10px 0;
+	gap: 6px;
 }
 
 @media (max-width: 500px) {
 	.wallet-btn {
-		flex: 100% !important;
+		flex: calc(50% - 6px) !important;
+		max-width: calc(50% - 3px);
 	}
 }
 
 .wallet-name {
 	text-align: center;
-	font-weight: bold;
+	font-weight: 500;
 	font-size: 14px;
 }
 
 .wallet-icon {
 	display: flex;
 	align-items: center;
-	padding: 10px;
 }
 
 .wallet-icon svg, .wallet-icon img {
