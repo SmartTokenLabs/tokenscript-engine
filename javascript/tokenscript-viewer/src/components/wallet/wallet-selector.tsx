@@ -54,6 +54,7 @@ export class WalletSelector {
 			<popover-dialog ref={el => this.dialog = el as HTMLPopoverDialogElement}>
 				<h3>Select Wallet</h3>
 				<p>You need to connect your wallet to get access to your tokens.</p>
+				<small>Choose WalletConnect if you have a mobile or desktop wallet that supports it.</small>
 				<h4 class="wallet-list-heading">Your wallets</h4>
 				<div class="wallets-list">
 				{

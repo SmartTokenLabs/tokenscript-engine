@@ -226,7 +226,7 @@ export function getWalletInfo(providerType: SupportedWalletProviders): WalletInf
 		case StaticProviders.WalletConnectV2:
 			return {
 				id: providerType,
-				label: 'WalletConnect V2',
+				label: 'WalletConnect',
 				icon: walletConnectV2SVG,
 			}
 		case StaticProviders.Torus:

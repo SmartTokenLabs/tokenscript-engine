@@ -1,27 +1,34 @@
 
-wallet-selector .wallet-list-heading, wallet-selector p {
+wallet-selector p {
 	color: #545454;
 	margin: 10px 0;
 }
 
+wallet-selector small {
+	color: #545454;
+}
+
 wallet-selector h3 {
-	margin: 10px 0;
+	margin: 5px 0;
 }
 
 .wallet-list-heading {
-	margin-bottom: 8px;
+	color: #545454;
+	margin-top: 15px !important;
+	margin-bottom: 10px;
 }
 
 .wallets-list {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 5px;
+	gap: 6px;
+	margin-bottom: 5px;
 }
 
 .wallet-btn {
-	flex: calc(50% - 5px);
+	flex: calc(50% - 6px);
 	display: flex;
-	margin: 5px 0;
+	margin: 3px 0;
 	height: 60px !important;
 	align-items: center;
 	flex-grow: 0;
