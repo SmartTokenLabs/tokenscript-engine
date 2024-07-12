@@ -79,7 +79,7 @@ export class WalletSelector {
 						return (
 							<button class="btn wallet-btn" onClick={
 								() => {
-
+									window.open(walletInfo.onboardingLink, "_blank");
 								}
 							}>
 								<div class="wallet-icon" innerHTML={walletInfo.icon} style={{overflow: "hidden"}}></div>
