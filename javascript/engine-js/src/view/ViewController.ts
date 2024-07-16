@@ -280,7 +280,7 @@ export class ViewController {
 	 * Reload card attributes & dispatch the TOKENS_UPDATED event to the card Javascript
 	 */
 	async updateCardData(){
-		this.viewAdapter.viewLoading();
+		//this.viewAdapter.viewLoading();
 
 		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), this.tokenViewData.getViewDataId());
 	}

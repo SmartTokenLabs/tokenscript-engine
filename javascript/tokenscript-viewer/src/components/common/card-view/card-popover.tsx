@@ -132,7 +132,7 @@ export class CardPopover implements IViewBinding {
 
 				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id});
 
-				this.hideLoader();
+				//this.hideLoader();
 				return;
 
 			case ViewEvent.EXECUTE_CALLBACK:
