@@ -14,17 +14,17 @@ export class PostMessageAdapter implements IEngineAdapter {
 			closing();
 		}.bind(this);
 
-		this.listenForUserValueChanges()
+		//this.listenForUserValueChanges()
 	}
 
 	// TODO: Move into SDK - this class should only me for messaging, not logic
-	private listenForUserValueChanges(){
+	/*private listenForUserValueChanges(){
 		window.addEventListener('change', (evt) => {
 			if (!("id" in evt.target) || !evt.target.id || (evt.target as HTMLElement).getAttribute("data-ts-prop") === "false")
 				return;
 			this.sendUserInputValues();
 		});
-	}
+	}*/
 
 	private handleMessageResponse(event: MessageEvent){
 
@@ -53,7 +53,9 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 	private sendUserInputValues(){
 
-		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => !!elem.id) as (HTMLInputElement|HTMLTextAreaElement)[];
+		const inputs = Array.from(document.querySelectorAll("textarea,input")).filter((elem) => {
+			return !!elem.id && elem.getAttribute("data-ts-prop") !== "false"
+		}) as (HTMLInputElement|HTMLTextAreaElement)[];
 
 		if (!inputs.length)
 			return;

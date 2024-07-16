@@ -2,6 +2,7 @@ import {ITokenIdContext, ITransactionListener, TokenScript} from "../TokenScript
 import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
+import {ViewEvent} from "../view/ViewController";
 
 export type CardType = "onboarding"|"token"|"action"|"activity";
 
@@ -182,6 +183,9 @@ export class Card {
 	async executeTransaction(listener?: ITransactionListener, waitForConfirmation = true, updateViewData = true){
 
 		const transaction = this.getTransaction();
+
+		if (this.tokenScript.hasViewBinding())
+			this.tokenScript.getViewController().dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
 
 		const processed = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
 
