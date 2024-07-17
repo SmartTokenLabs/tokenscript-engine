@@ -17,6 +17,7 @@ export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
 	CLOSE = "close",
+	OPEN_CARD = "openCard",
 	ETH_RPC = "ethRpc",
 	LOCAL_STORAGE = "localStorage",
 	// UI methods must be handled by the view adapter, not forwarded to the engine
@@ -203,6 +204,29 @@ export class ViewController {
 
 			case RequestFromView.CLOSE:
 				this.unloadTokenCard()
+				break;
+
+			case RequestFromView.OPEN_CARD:
+				const {name, originId, tokenId} = params as {name: string, originId?: string, tokenId?: string};
+
+				// Switch token context if requested
+				if (originId){
+					this.tokenScript.setCurrentTokenContext(originId, null, tokenId);
+				}
+
+				const card = this.tokenScript.getCards(originId, undefined).find((card) => {
+					return card.name === name;
+				});
+
+				if (!card)
+					throw new Error(`Cannot open card. A card with name ${name} does not exist`);
+
+				const availableOrReason = await card.isEnabledOrReason();
+
+				if (availableOrReason !== true)
+					throw new Error(`Cannot open card. The selected card is not available for the specified origin or token ID. ${typeof availableOrReason == "string" ? availableOrReason : ''}`);
+
+				await this.showOrExecuteCard(card);
 				break;
 
 			case RequestFromView.LOCAL_STORAGE:

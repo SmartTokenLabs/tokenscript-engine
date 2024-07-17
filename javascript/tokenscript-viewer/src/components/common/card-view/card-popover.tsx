@@ -67,7 +67,7 @@ export class CardPopover implements IViewBinding {
 		return VIEW_BINDING_JAVASCRIPT;
 	}
 
-	protected handlePostMessageFromView(event: MessageEvent) {
+	protected async handlePostMessageFromView(event: MessageEvent) {
 
 		if (!this.iframe)
 			return;
@@ -79,7 +79,7 @@ export class CardPopover implements IViewBinding {
 		if (!event.data?.method)
 			return;
 
-		this.handleMessageFromView(event.data.method, event.data?.params);
+		await this.handleMessageFromView(event.data.method, event.data?.params);
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
@@ -95,14 +95,14 @@ export class CardPopover implements IViewBinding {
 				}
 				break;
 			case RequestFromView.SHOW_TX_TOAST:
-				showTransactionNotification({
+				await showTransactionNotification({
 					status: params.status,
 					txLink: CHAIN_CONFIG[params?.chain].explorer ?  CHAIN_CONFIG[params?.chain].explorer + params.txHash : null,
 					txNumber: params.txHash
 				}, this.showToast)
 				break;
 			case RequestFromView.SHOW_TOAST:
-				showToastNotification(params.type, params.title, params.description);
+				await showToastNotification(params.type, params.title, params.description);
 				break;
 			case RequestFromView.SET_BUTTON:
 				const newOptions = {...this.buttonOptions};
@@ -112,7 +112,7 @@ export class CardPopover implements IViewBinding {
 				this.buttonOptions = newOptions;
 				break;
 			case RequestFromView.EXEC_TRANSACTION:
-				this.confirmAction();
+				await this.confirmAction();
 				break;
 			default:
 				await this.tokenScript.getViewController().handleMessageFromView(method, params);

@@ -77,8 +77,6 @@ class Web3LegacySDK implements IWeb3LegacySDK {
     public readonly action = {
         setProps: function (msgParams) {
             this.engineAdapter.request(RequestFromView.PUT_USER_INPUT, msgParams);
-            // @ts-ignore
-            // alpha.setValues(JSON.stringify(msgParams));
         }.bind(this),
         showLoader: () => {
             this.engineAdapter.request(RequestFromView.SET_LOADER, { show: true });
@@ -97,6 +95,12 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         },
         showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TOAST, { type, title, description });
+        },
+        closeCard: () => {
+            this.engineAdapter.request(RequestFromView.CLOSE, undefined);
+        },
+        openCard: (name: string, originId?: string, tokenId?: string) => {
+            this.engineAdapter.request(RequestFromView.OPEN_CARD, {name, originId, tokenId});
         }
     }
 }

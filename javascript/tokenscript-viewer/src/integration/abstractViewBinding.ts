@@ -130,7 +130,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
-	protected handlePostMessageFromView(event: MessageEvent) {
+	protected async handlePostMessageFromView(event: MessageEvent) {
 
 		if (!this.iframe)
 			return;
@@ -148,7 +148,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 		//console.log("Event from view: ", event.data);
 
-		this.handleMessageFromView(event.data.method, event.data?.params);
+		await this.handleMessageFromView(event.data.method, event.data?.params);
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {

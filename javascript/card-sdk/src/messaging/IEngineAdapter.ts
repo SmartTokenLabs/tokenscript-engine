@@ -11,6 +11,7 @@ export enum RequestFromView {
 	SIGN_PERSONAL_MESSAGE = "signPersonalMessage",
 	PUT_USER_INPUT = "putUserInput",
 	CLOSE = "close",
+	OPEN_CARD = "openCard",
 	ETH_RPC = "ethRpc",
 	LOCAL_STORAGE = "localStorage",
 	// UI methods must be handled by the view adapter, not forwarded to the engine

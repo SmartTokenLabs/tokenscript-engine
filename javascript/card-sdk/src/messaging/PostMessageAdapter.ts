@@ -10,7 +10,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 		// TODO: Move into SDK - this class should only me for messaging, not logic
 		const closing = window.close;
 		window.close = function () {
-			this.postMessageToEngine("close", undefined);
+			this.postMessageToEngine(RequestFromView.CLOSE, undefined);
 			closing();
 		}.bind(this);
 
@@ -67,7 +67,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 		this.postMessageToEngine(RequestFromView.PUT_USER_INPUT, values);
 	}
 
-	private postMessageToEngine(method, params){
+	private postMessageToEngine(method: RequestFromView, params){
 		window.parent.postMessage({method, params}, {
 			targetOrigin: this.sdk.instanceData.engineOrigin
 		});
