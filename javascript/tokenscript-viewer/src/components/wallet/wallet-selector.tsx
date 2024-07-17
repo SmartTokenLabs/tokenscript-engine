@@ -34,15 +34,45 @@ export class WalletSelector {
 		});
 	}
 
+	shuffle(array) {
+		let currentIndex = array.length;
+
+		// While there remain elements to shuffle...
+		while (currentIndex != 0) {
+
+			// Pick a remaining element...
+			let randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+
+			// And swap it with the current element.
+			[array[currentIndex], array[randomIndex]] = [
+				array[randomIndex], array[currentIndex]];
+		}
+	}
+
 	componentWillLoad(){
 		this.providerList = Web3WalletProvider.getAvailableProviders();
-		this.otherWallets = Object.values(WALLET_LIST).filter((walletInfo) => {
+
+		let walletList = Object.values(WALLET_LIST).filter((walletInfo) => {
 			if ("Embedded Wallet" === walletInfo.label)
+				return false;
+			if (!walletInfo.onboardingLink)
 				return false;
 			return !this.providerList.find((providerInfo) => {
 				return providerInfo.label === walletInfo.label
 			});
-		})
+		});
+
+		this.shuffle(walletList);
+
+		// FoxWallet always first for now
+		const foxWalletIndex = walletList.findIndex((wallet) => wallet.label === "FoxWallet");
+		if (foxWalletIndex > -1) {
+			const foxWallet = walletList.splice(foxWalletIndex, 1);
+			walletList.unshift(...foxWallet);
+		}
+
+		this.otherWallets = walletList;
 	}
 
 	componentDidLoad(){
@@ -73,7 +103,7 @@ export class WalletSelector {
 					})
 				}
 				</div>
-				<h4 class="wallet-list-heading">Other</h4>
+				<h4 class="wallet-list-heading">Partner Wallets</h4>
 				<div class="wallets-list">
 				{
 					this.otherWallets.map((walletInfo) => {
