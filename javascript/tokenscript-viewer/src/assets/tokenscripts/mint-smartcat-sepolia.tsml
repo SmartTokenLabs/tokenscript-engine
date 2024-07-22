@@ -1,18 +1,18 @@
-<ts:token xmlns:ethereum="urn:ethereum:constantinople" xmlns:ts="http://tokenscript.org/2024/01/tokenscript" xmlns:xhmtl="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="SmartCat" xsi:schemaLocation="http://tokenscript.org/2024/01/tokenscript https://www.tokenscript.org/schemas/2024-01/tokenscript.xsd">
+<ts:token xmlns:ethereum="urn:ethereum:constantinople" xmlns:ts="http://tokenscript.org/2024/01/tokenscript" xmlns:xhmtl="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="MintCats" xsi:schemaLocation="http://tokenscript.org/2024/01/tokenscript https://www.tokenscript.org/schemas/2024-01/tokenscript.xsd">
 	<ts:label>
 		<ts:plurals xml:lang="en">
-			<ts:string quantity="one">SmartCat</ts:string>
-			<ts:string quantity="other">SmartCats</ts:string>
+			<ts:string quantity="one">Mint Cat</ts:string>
+			<ts:string quantity="other">Mint Cats</ts:string>
 		</ts:plurals>
 	</ts:label>
 
 	<ts:meta>
 		<ts:description xml:lang="en">Adopt a cat and boost their intelligence through fun care tasks.</ts:description>
 		<ts:aboutUrl xml:lang="en">https://medium.com/alphawallet/the-smart-cat-is-out-of-the-bag-b631d2588de2</ts:aboutUrl>
-		<ts:backgroundImageUrl xml:lang="en">https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background.png</ts:backgroundImageUrl>
+		<ts:backgroundImageUrl xml:lang="en">https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background2.png</ts:backgroundImageUrl>
 	</ts:meta>
 
-	<ts:contract interface="erc721" name="SmartCatNFT">
+	<ts:contract interface="erc721" name="MintCatNFT">
 		
 		
 		
@@ -138,7 +138,7 @@
 
 	<ts:origins>
 		
-		<ts:ethereum contract="SmartCatNFT"/>
+		<ts:ethereum contract="MintCatNFT"/>
 	</ts:origins>
 
 	<ts:selection filter="canFeed=FALSE" name="alreadyFed">
@@ -232,6 +232,11 @@
 
 .bg-blur {
 	backdrop-filter: none !important;
+}
+
+.ts-token-background {
+	background-position: top right;
+	background-attachment: unset;
 }
 
 .ts-token-container .info-btn, .ts-token-container .info-btn svg {
@@ -1116,16 +1121,16 @@ function create_fragment$j(ctx) {
       h30.textContent = "Once upon a time...";
       t2 = space();
       p0 = element("p");
-      p0.textContent = "There was a cat that was pretty cool, but it also wanted to be smart.\n		So it went to Smart Layer Labs and got a TokenScript Microchip to boost its mind.";
+      p0.textContent = "There was a Smart Cat on Polygon that has discovered the world of Mint Blockchain.";
       t4 = space();
       div0 = element("div");
       create_component(catimage.$$.fragment);
       t5 = space();
       p1 = element("p");
-      p1.textContent = "Now this cat needs someone to adopt it and help to train its skills. Let's give the cat an initial feed to win it over.\n		It's free to adopt and play but you'll need some MATIC to pay for transaction fees on the Polygon network.\n		Transactions are generally 0.01 MATIC, starting off with 0.5 MATIC is recommended.";
+      p1.textContent = "Now this cat needs someone to adopt it to help explore the Mint Blockchain.\n		Let’s give this cat an initial feed to win it over! It is free to adopt and play but you’ll need some $ETH on Mint Blockchain to pay for transactions fees on this network.";
       t7 = space();
       h31 = element("h3");
-      h31.textContent = "Adopt your cat Now!";
+      h31.textContent = "Adopt your new Mint Cat now!";
       attr(img, "alt", "smartcat gameboy");
       if (!src_url_equal(img.src, img_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/Gameboy.png"))
         attr(img, "src", img_src_value);
@@ -20024,14 +20029,17 @@ function create_fragment$9(ctx) {
   let label;
   let t2;
   let span;
-  let t3_value = getLevelLabel(
+  let t3_value = (
     /*token*/
-    ctx[0].level
-  ) + "";
+    ctx[0].level + ""
+  );
   let t3;
   let t4;
   let div5;
   let div2;
+  let a;
+  let t5;
+  let a_href_value;
   let t6;
   let div4;
   let div3;
@@ -20046,7 +20054,7 @@ function create_fragment$9(ctx) {
   let dispose;
   header = new Header({ props: { catName: (
     /*catName*/
-    ctx[5]
+    ctx[6]
   ) } });
   let if_block0 = (
     /*shareOpened*/
@@ -20080,7 +20088,8 @@ function create_fragment$9(ctx) {
       t4 = space();
       div5 = element("div");
       div2 = element("div");
-      div2.innerHTML = `&lt;a href="https://www.smartlayer.network/smartcat/suitup/browse" target="_blank"&gt;View&lt;/a&gt;`;
+      a = element("a");
+      t5 = text("View");
       t6 = space();
       div4 = element("div");
       div3 = element("div");
@@ -20101,6 +20110,11 @@ function create_fragment$9(ctx) {
       set_style(div1, "display", "flex");
       set_style(div1, "gap", "8px");
       set_style(div1, "margin-top", "24px");
+      attr(a, "href", a_href_value = `https://${/*chainId*/
+      ctx[5] == "1687" ? "beta" : "www"}.mintswap.finance/nfts/detail/${/*token*/
+      ctx[0].contractAddress}/${/*token*/
+      ctx[0].tokenId}`);
+      attr(a, "target", "_blank");
       attr(div2, "class", "link-button svelte-1pz771r");
       set_style(div2, "flex", "50%");
       attr(div3, "class", "svelte-1pz771r");
@@ -20127,6 +20141,8 @@ function create_fragment$9(ctx) {
       append(div6, t4);
       append(div6, div5);
       append(div5, div2);
+      append(div2, a);
+      append(a, t5);
       append(div5, t6);
       append(div5, div4);
       append(div4, div3);
@@ -20147,18 +20163,23 @@ function create_fragment$9(ctx) {
           div3,
           "click",
           /*click_handler*/
-          ctx[6]
+          ctx[7]
         );
         mounted = true;
       }
     },
     p(ctx2, [dirty]) {
       if ((!current || dirty &amp; /*token*/
-      1) &amp;&amp; t3_value !== (t3_value = getLevelLabel(
-        /*token*/
-        ctx2[0].level
-      ) + ""))
+      1) &amp;&amp; t3_value !== (t3_value = /*token*/
+      ctx2[0].level + ""))
         set_data(t3, t3_value);
+      if (!current || dirty &amp; /*token*/
+      1 &amp;&amp; a_href_value !== (a_href_value = `https://${/*chainId*/
+      ctx2[5] == "1687" ? "beta" : "www"}.mintswap.finance/nfts/detail/${/*token*/
+      ctx2[0].contractAddress}/${/*token*/
+      ctx2[0].tokenId}`)) {
+        attr(a, "href", a_href_value);
+      }
       if (!current || dirty &amp; /*shareOpened*/
       16 &amp;&amp; div4_class_value !== (div4_class_value = "link-button " + /*shareOpened*/
       (ctx2[4] ? "opened" : "") + " svelte-1pz771r")) {
@@ -20293,7 +20314,7 @@ function getCurrentLevelThreshold(total, level, threshold) {
   return threshold * 3;
 }
 function instance$7($$self, $$props, $$invalidate) {
-  parseInt(chainID);
+  const chainId = parseInt(chainID);
   let token;
   let catState = null;
   let friendsList = null;
@@ -20319,7 +20340,16 @@ function instance$7($$self, $$props, $$invalidate) {
     await loadInfo();
   });
   const click_handler = () =&gt; $$invalidate(4, shareOpened = !shareOpened);
-  return [token, catState, friendsList, loading, shareOpened, catName, click_handler];
+  return [
+    token,
+    catState,
+    friendsList,
+    loading,
+    shareOpened,
+    chainId,
+    catName,
+    click_handler
+  ];
 }
 class Info extends SvelteComponent {
   constructor(options) {
@@ -22256,10 +22286,10 @@ function create_default_slot(ctx) {
   let label;
   let t4;
   let span;
-  let t5_value = getLevelLabel(
+  let t5_value = (
     /*token*/
-    ctx[0].level
-  ) + "";
+    ctx[0].level + ""
+  );
   let t5;
   return {
     c() {
@@ -22325,10 +22355,8 @@ function create_default_slot(ctx) {
         );
       }
       if (dirty &amp; /*token*/
-      1 &amp;&amp; t5_value !== (t5_value = getLevelLabel(
-        /*token*/
-        ctx2[0].level
-      ) + ""))
+      1 &amp;&amp; t5_value !== (t5_value = /*token*/
+      ctx2[0].level + ""))
         set_data(t5, t5_value);
     },
     d(detaching) {
@@ -23076,7 +23104,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 
 		
 
-		<ts:card exclude="notAdoptedYet" name="Info" origins="SmartCatNFT" type="token">
+		<ts:card exclude="notAdoptedYet" name="Info" origins="MintCatNFT" type="token">
 			<ts:label>
 				<ts:string xml:lang="en">Cat Bio</ts:string>
 			</ts:label>
@@ -23085,7 +23113,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card exclude="adopted" name="adopt" origins="SmartCatNFT" type="action">
+		<ts:card exclude="adopted" name="adopt" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Adopt</ts:string>
 			</ts:label>
@@ -23101,7 +23129,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card exclude="cantLevelUp" name="levelUp" origins="SmartCatNFT" type="action">
+		<ts:card exclude="cantLevelUp" name="levelUp" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Level Up!</ts:string>
 			</ts:label>
@@ -23117,7 +23145,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card exclude="alreadyFed" name="feedCat" origins="SmartCatNFT" type="action">
+		<ts:card exclude="alreadyFed" name="feedCat" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Feed Cat</ts:string>
 			</ts:label>
@@ -23133,7 +23161,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card exclude="alreadyCleaned" name="cleanCat" origins="SmartCatNFT" type="action">
+		<ts:card exclude="alreadyCleaned" name="cleanCat" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Clean Cat</ts:string>
 			</ts:label>
@@ -23151,7 +23179,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 
 		
 
-		<ts:card exclude="alreadyPlayed" name="playDateRequests" origins="SmartCatNFT" type="action">
+		<ts:card exclude="alreadyPlayed" name="playDateRequests" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Accept Playdates</ts:string>
 			</ts:label>
@@ -23174,7 +23202,7 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 			</ts:view>
 		</ts:card>
 
-		<ts:card exclude="notAdoptedYet" name="inviteCat" origins="SmartCatNFT" type="action">
+		<ts:card exclude="notAdoptedYet" name="inviteCat" origins="MintCatNFT" type="action">
 			<ts:label>
 				<ts:string xml:lang="en">Invite Cat for Playdate</ts:string>
 			</ts:label>
@@ -23265,4 +23293,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>p26DDv3nkjO9LC5aJY6Zb03ihKxqO/PNVUXgQiCOt3c=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>cyZGPkjyCjWIEJh6ibpL8/cvW/dc1MfmWWGKgnCMMJ2K27h2uGX++subJ1nEX9HUR8Z+kQsPaiuRs8P7Y6lehQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>QfG7FyJwLoyPhQ0UMngk0QWb2l6Uzr7lb31k5CvZ6OA=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>D2oVMK7GHqxaP4zsI0m4e/R3jT+NNfuxNgZjvqT10j3NX8Rn9JJ8KaYe4nvEsv48Ss1gxTRocY9pA9OsMu+gMg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
