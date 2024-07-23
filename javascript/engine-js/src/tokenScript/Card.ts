@@ -160,9 +160,22 @@ export class Card {
 	}
 
 	/**
-	 * Get the transaction record associated with this card
+	 * Get the transaction record associated with this card, or another named transaction
 	 */
-	getTransaction(){
+	getTransaction(txName?: string){
+
+		// Get named transaction
+		if (txName){
+			// TODO: Only check top-level transaction definitions
+			const transactionXml =
+				Array.from(this.tokenScript.tokenDef.getElementsByTagName("ts:transaction"))
+					.find((tx) => tx.getAttribute("name") === txName);
+
+			if (!transactionXml)
+				throw new Error(`Could not find named transaction '${txName}'`);
+
+			return new Transaction(this.tokenScript, transactionXml, this.getAttributes());
+		}
 
 		if (!this.transaction){
 			const transactionsXml = this.cardDef.getElementsByTagName("ts:transaction");
@@ -177,12 +190,13 @@ export class Card {
 	/**
 	 * Execute the transaction for the card
 	 * @param listener
+	 * @param txName
 	 * @param waitForConfirmation
 	 * @param updateViewData
 	 */
-	async executeTransaction(listener?: ITransactionListener, waitForConfirmation = true, updateViewData = true){
+	async executeTransaction(listener?: ITransactionListener, txName?: string, waitForConfirmation = true, updateViewData = true){
 
-		const transaction = this.getTransaction();
+		const transaction = this.getTransaction(txName);
 
 		if (this.tokenScript.hasViewBinding())
 			this.tokenScript.getViewController().dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
@@ -216,7 +230,7 @@ export class Card {
 			return;
 
 		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
-		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.[context.selectedTokenIndex]))
+		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]))
 			await this.tokenScript.getViewController().updateCardData();
 	}
 

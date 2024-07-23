@@ -112,7 +112,9 @@ export class CardPopover implements IViewBinding {
 				this.buttonOptions = newOptions;
 				break;
 			case RequestFromView.EXEC_TRANSACTION:
-				await this.confirmAction();
+				// TODO: This function should be part of view controller.
+				//  The reason that it's here for now is because ITransactionListener cannot be set globally for a tokenscript instance or specified in IViewBinding.
+				await this.confirmAction(params.txName);
 				break;
 			default:
 				await this.tokenScript.getViewController().handleMessageFromView(method, params);
@@ -211,14 +213,14 @@ export class CardPopover implements IViewBinding {
 		this.loading = true;
 	}
 
-	async confirmAction(){
+	async confirmAction(txName?: string){
 
 		this.loading = true;
 
 		try {
-			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+			await this.tokenScript.getViewController().executeTransaction((data: ITransactionStatus) => {
 				showTransactionNotification(data, this.showToast);
-			});
+			}, txName);
 		} catch (e){
 			handleTransactionError(e, this.showToast);
 		}

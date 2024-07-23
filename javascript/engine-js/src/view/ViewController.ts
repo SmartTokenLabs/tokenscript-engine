@@ -70,9 +70,9 @@ export class ViewController {
 		return this._tokenViewData;
 	}
 
-	async executeTransaction(card: Card, transactionListener?: ITransactionListener){
+	async executeTransaction(transactionListener?: ITransactionListener, txName?: string){
 
-		const transaction = this.currentCard.getTransaction();
+		const transaction = this.currentCard.getTransaction(txName);
 
 		if (transaction){
 
@@ -83,7 +83,7 @@ export class ViewController {
 					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, "0");
 					if (transactionListener)
 						transactionListener(data);
-				});
+				}, txName);
 			} catch (e){
 				this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message}, "0");
 				throw e;

@@ -101,7 +101,12 @@ export class TokensGrid {
 		this.currentTokensFlat = getTokensFlat(this.currentTokens);
 	}
 
+	private urlActionInvoked = false;
+
 	private async invokeUrlAction(){
+
+		if (this.urlActionInvoked)
+			return;
 
 		const params = new URLSearchParams(document.location.hash.substring(1));
 
@@ -127,6 +132,7 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason() === true
 			) {
 				this.showCard(cardRes.card);
+				this.urlActionInvoked = true;
 				return;
 			}
 		}
@@ -147,6 +153,7 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason(context) === true
 			) {
 				this.showCard(cardRes.card, token, cardRes.index);
+				this.urlActionInvoked = true;
 				return;
 			}
 		}
