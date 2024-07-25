@@ -163,7 +163,7 @@ export class TokensGrid {
 		return (
 			<Host class="ts-token-background" style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
 				<div class="bg-blur">
-					<div class="tokens-grid">
+					<div class="ts-tokens-grid">
 						<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
 						{
 							this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
@@ -176,7 +176,7 @@ export class TokensGrid {
 										openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
 								);
 							}) :  (
-								!this.loading ? (<h3>{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
+								!this.loading ? (<h3 class="no-tokens-message">{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
 							)
 						}
 					</div>

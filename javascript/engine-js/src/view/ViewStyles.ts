@@ -26,6 +26,7 @@ export class ViewStyles {
 		"@font-face": [], // All properties allowed when empty
 		"\.ts-token-background": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.bg-blur": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
+		"\.ts-tokens-grid.*": [],
 		"\.ts-token-container.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-card-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,
 		"\.ts-action-button.*": ViewStyles.DEFAULT_ALLOWED_PROPERTIES,

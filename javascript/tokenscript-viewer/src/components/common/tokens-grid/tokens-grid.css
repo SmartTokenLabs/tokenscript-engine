@@ -1,7 +1,7 @@
 
 
 
-.tokens-grid {
+.ts-tokens-grid {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 15px;
@@ -9,7 +9,7 @@
 	position: relative;
 }
 
-.tokens-grid h3 {
+.ts-tokens-grid h3 {
 	color: white;
 	mix-blend-mode: difference;
 }
@@ -20,7 +20,7 @@
 }
 
 @media (max-width: 768px) and (min-width: 571px) {
-	.tokens-grid {
+	.ts-tokens-grid {
 		justify-content: space-evenly;
 	}
 	.tokens-grid-item {
@@ -29,7 +29,7 @@
 }
 
 @media (max-width: 570px) {
-	.tokens-grid {
+	.ts-tokens-grid {
 		justify-content: center;
 	}
 	.tokens-grid-item {
