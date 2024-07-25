@@ -46,8 +46,6 @@ export class Label {
 	 */
 	public getValue(pluralQty?: number){
 
-		console.log("Plural: ", this.label)
-
 		if (!this.label)
 			return null;
 

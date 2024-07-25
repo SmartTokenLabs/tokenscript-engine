@@ -3,7 +3,6 @@
 
 .ts-tokens-grid {
 	display: flex;
-	justify-content: center;
 	flex-wrap: wrap;
 	padding: 15px;
 	margin: 0 auto;
@@ -11,6 +10,8 @@
 }
 
 .ts-tokens-grid .no-tokens-message {
+	display: flex;
+	justify-content: center;
 	color: white;
 	mix-blend-mode: difference;
 }
