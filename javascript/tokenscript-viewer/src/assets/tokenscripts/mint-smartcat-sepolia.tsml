@@ -7,21 +7,18 @@
 	</ts:label>
 
 	<ts:meta>
-		<ts:description xml:lang="en">Adopt a cat and boost their intelligence through fun care tasks.</ts:description>
-		<ts:aboutUrl xml:lang="en">https://medium.com/alphawallet/the-smart-cat-is-out-of-the-bag-b631d2588de2</ts:aboutUrl>
-		<ts:backgroundImageUrl xml:lang="en">https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background2.png</ts:backgroundImageUrl>
+		<ts:description xml:lang="en">Mint Cats is a special collaboration between Mint Blockchain and Smart Layer to provide an opportunity to participate in the Mint Blockchain airdrop. 20,000 exclusively reserved for Smart Layer Launchpad</ts:description>
+		<ts:aboutUrl xml:lang="en">https://mintcats.launchpad.smartlayer.network/</ts:aboutUrl>
+		<ts:iconUrl xml:lang="en">https://resources.smartlayer.network/smart-token-store/images/mint/market-tile-2.png</ts:iconUrl>
+		<ts:backgroundImageUrl xml:lang="en">https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background2.png</ts:backgroundImageUrl>
 	</ts:meta>
 
 	<ts:contract interface="erc721" name="MintCatNFT">
 		
 		
-		
-		
 		<ts:address network="1687">0xce8FEC9a10D4642368f124593098f2E4dD643652</ts:address>
 	</ts:contract>
 	<ts:contract name="SmartCatScore">
-		
-		
 		
 		
 		<ts:address network="1687">0x71a212f304EFE4Ba1AFE54D1E64940927a8b8891</ts:address>
@@ -237,6 +234,16 @@
 .ts-token-background {
 	background-position: top right;
 	background-attachment: unset;
+}
+
+.ts-tokens-grid .no-tokens-message {
+	color: #000 !important;
+	margin-top: 150px;
+	mix-blend-mode: unset !important;
+}
+
+.ts-tokens-grid loading-spinner {
+	margin-top: 150px;
 }
 
 .ts-token-container .info-btn, .ts-token-container .info-btn svg {
@@ -961,9 +968,6 @@ function writable(value, start = noop) {
 const data = writable({
   token: null
 });
-const pendingGames = writable(null);
-const publicGames = writable(null);
-const SLNBalance = writable(null);
 function setToken(token) {
   data.set({
     ...data,
@@ -972,12 +976,12 @@ function setToken(token) {
 }
 const context = {
   data,
-  pendingGames,
-  publicGames,
-  setToken,
+  //pendingGames,
+  //publicGames,
+  setToken
   //getMessageClient,
   //getGameClient,
-  SLNBalance
+  //SLNBalance
 };
 const CatImage_svelte_svelte_type_style_lang = "";
 function create_fragment$k(ctx) {
@@ -17977,9 +17981,7 @@ function getEthersProvider() {
 function getContract(_token) {
   const provider = getEthersProvider();
   const CONTRACT_ADDRESS = (
-    //"0x7573933eB12Fa15D5557b74fDafF845B3BaF0ba2"; // Polygon mainnet
-    //"0xDDC2388Bd646432DFf29B75A361060D26C2f8397"; // Polygon mumbai
-    //"0x46ca2A3de9E4eF30217DA0c83A04FA6294218151"; // Sepolia
+    //"0xe48974CA12AD33b7327332eC444c59E474a58075"; // Mint mainnet
     "0x71a212f304EFE4Ba1AFE54D1E64940927a8b8891"
   );
   return new Contract(CONTRACT_ADDRESS, [
@@ -20414,11 +20416,11 @@ function create_fragment$7(ctx) {
       p.textContent = "Feed him something tasty to keep him happy!";
       attr(img0, "class", "gif svelte-ygkdxn");
       attr(img0, "alt", "smart food");
-      if (!src_url_equal(img0.src, img0_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/SmartFood-mint.gif"))
+      if (!src_url_equal(img0.src, img0_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/SmartFood-mint.gif"))
         attr(img0, "src", img0_src_value);
       attr(img1, "class", "static svelte-ygkdxn");
       attr(img1, "alt", "smart food");
-      if (!src_url_equal(img1.src, img1_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/SmartFood-mint.png"))
+      if (!src_url_equal(img1.src, img1_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/SmartFood-mint.png"))
         attr(img1, "src", img1_src_value);
       attr(div0, "class", div0_class_value = "gif-container " + /*feeding*/
       (ctx[0] ? "play" : "") + " svelte-ygkdxn");
@@ -21813,7 +21815,7 @@ function create_fragment$4(ctx) {
       attr(div6, "class", "tabs svelte-gtxyef");
       attr(img, "class", "gif svelte-gtxyef");
       attr(img, "alt", "flying");
-      if (!src_url_equal(img.src, img_src_value = "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/invite-mint.gif"))
+      if (!src_url_equal(img.src, img_src_value = "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/invite-mint.gif"))
         attr(img, "src", img_src_value);
       attr(div8, "class", div8_class_value = "gif-container " + /*showAnimation*/
       (ctx[6] ? "show" : "") + " svelte-gtxyef");
@@ -22681,7 +22683,7 @@ new App({
 					
 @font-face {
 	font-family: 'ClassicComic';
-	src: url('https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/fonts/ClassicComic.woff') format("woff2-variations");
+	src: url('https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/fonts/ClassicComic.woff') format("woff2-variations");
 }
 
 .mint-container * {
@@ -22706,7 +22708,7 @@ body, body > div, #token-container {
 }
 
 body {
-	background-image: url('https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background.png');
+	background-image: url('https://viewer.tokenscript.org/assets/tokenscripts/smart-cat/images/mint-background.png');
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;
@@ -23293,4 +23295,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>QfG7FyJwLoyPhQ0UMngk0QWb2l6Uzr7lb31k5CvZ6OA=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>D2oVMK7GHqxaP4zsI0m4e/R3jT+NNfuxNgZjvqT10j3NX8Rn9JJ8KaYe4nvEsv48Ss1gxTRocY9pA9OsMu+gMg==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>4rGd7f0XC8lpt4ECoymePIvKj6LAm3+9aNuup/2YiWg=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>NpIq1dgOAARwCq3okCT4Pry5W/ljrTK4Z5645+LBXyfweS2V2NCJsAGbDU+CyxPFldlX2/KBSNp846AbIFEmmQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>GArce62FNf1uRokupqwUN2YyYFR/1+Q+xXwWeFttUhI=</ecdsa:X><ecdsa:Y>q+HEYgdxa3OmT2PC8QnvoT6GWYAPSTn2k8/4EjqSLSY=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue></ds:KeyInfo></ds:Signature></ts:token>
