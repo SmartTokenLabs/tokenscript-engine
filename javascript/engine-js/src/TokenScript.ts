@@ -259,13 +259,14 @@ export class TokenScript {
 
 	/**
 	 * The label for the TokenScript
+	 * @param pluralQty
 	 */
-	public getLabel(){
+	public getLabel(pluralQty?: number){
 
 		if (!this.label)
 			this.label = new Label(this.tokenDef.documentElement);
 
-		return this.label.getValue() ?? this.getName() ?? "Unnamed TokenScript";
+		return this.label.getValue(pluralQty) ?? this.getName() ?? "Unnamed TokenScript";
 	}
 
 	/**

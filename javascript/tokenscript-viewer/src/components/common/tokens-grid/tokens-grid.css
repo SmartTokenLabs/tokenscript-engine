@@ -9,9 +9,14 @@
 	position: relative;
 }
 
-.ts-tokens-grid h3 {
+.ts-tokens-grid .no-tokens-message {
 	color: white;
 	mix-blend-mode: difference;
+}
+
+.ts-tokens-grid .no-tokens-message, .ts-tokens-grid loading-spinner {
+	flex-grow: 1;
+	text-align: center;
 }
 
 .bg-blur {

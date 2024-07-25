@@ -177,7 +177,7 @@ export class ViewerPopover {
 				<div class="toolbar">
 					<div class="view-heading">
 						<button class="btn" onClick={() => this.close()}>&lt;</button>
-						<h3>{this.tokenScript.getLabel() ?? this.tokenScript.getName()}</h3>
+						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
 						<security-status tokenScript={this.tokenScript}/>

@@ -19,14 +19,17 @@ export class Label {
 			// TODO: get label based on locale
 			const langLabels = elements.filter((elem) => elem.getAttribute("xml:lang") === "en")
 
+			console.log("Labels: ", langLabels);
+
 			if (langLabels.length){
 
 				if (langLabels[0].tagName === "ts:plurals" && langLabels[0].children.length > 0){
 
 					this.label = {};
 
-					for (let i of langLabels[0].children){
-						const plural = langLabels[0].children[0];
+
+					for (let i= 0; i < langLabels[0].children.length; i++){
+						const plural = langLabels[0].children[i];
 						this.label[plural.getAttribute("quantity")] = plural.textContent;
 					}
 
@@ -42,6 +45,8 @@ export class Label {
 	 * @param pluralQty
 	 */
 	public getValue(pluralQty?: number){
+
+		console.log("Plural: ", this.label)
 
 		if (!this.label)
 			return null;
