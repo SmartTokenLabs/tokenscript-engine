@@ -49,6 +49,7 @@ export class TokensGrid {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
+	private urlActionInvoked = false;
 
 	async componentDidLoad() {
 		// TODO: stencil.js seems to copy the tokenscript object by value rather than reference from the new-viewer component,
@@ -76,6 +77,8 @@ export class TokensGrid {
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
+			if (this.urlActionInvoked)
+				return;
 			await this.invokeUrlAction();
 		}, "grid")
 
@@ -101,12 +104,7 @@ export class TokensGrid {
 		this.currentTokensFlat = getTokensFlat(this.currentTokens);
 	}
 
-	private urlActionInvoked = false;
-
 	private async invokeUrlAction(){
-
-		if (this.urlActionInvoked)
-			return;
 
 		const params = new URLSearchParams(document.location.hash.substring(1));
 

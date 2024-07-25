@@ -24,7 +24,7 @@ export interface IWeb3LegacySDK {
 		showLoader: () => void,
 		hideLoader: () => void,
 		setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => void,
-		executeTransaction: () => void,
+		executeTransaction: (txName: string) => void,
 		showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => void,
 		showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => void,
 		closeCard: () => void,
