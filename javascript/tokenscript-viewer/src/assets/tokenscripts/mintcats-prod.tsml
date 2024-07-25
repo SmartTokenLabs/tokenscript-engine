@@ -21,7 +21,7 @@
 	<ts:contract name="SmartCatScore">
 		
 		
-		<ts:address network="185">0xE28A5183fA93C8f380acB8C3bF2052E5b67a2408</ts:address>
+		<ts:address network="185">0xe48974CA12AD33b7327332eC444c59E474a58075</ts:address>
 		<ts:abi>
 			
 			[
@@ -969,9 +969,6 @@ function writable(value, start = noop) {
 const data = writable({
   token: null
 });
-const pendingGames = writable(null);
-const publicGames = writable(null);
-const SLNBalance = writable(null);
 function setToken(token) {
   data.set({
     ...data,
@@ -980,12 +977,12 @@ function setToken(token) {
 }
 const context = {
   data,
-  pendingGames,
-  publicGames,
-  setToken,
+  //pendingGames,
+  //publicGames,
+  setToken
   //getMessageClient,
   //getGameClient,
-  SLNBalance
+  //SLNBalance
 };
 const CatImage_svelte_svelte_type_style_lang = "";
 function create_fragment$k(ctx) {
@@ -17984,7 +17981,7 @@ function getEthersProvider() {
 }
 function getContract(_token) {
   const provider = getEthersProvider();
-  const CONTRACT_ADDRESS = "0xE28A5183fA93C8f380acB8C3bF2052E5b67a2408";
+  const CONTRACT_ADDRESS = "0xe48974CA12AD33b7327332eC444c59E474a58075";
   return new Contract(CONTRACT_ADDRESS, [
     {
       "inputs": [],
@@ -23296,4 +23293,4 @@ body::-webkit-scrollbar:hover, ::-webkit-scrollbar:active {
 		</ts:origins>
 	</ts:attribute>
 
-<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>G/PgA2R70jiaD37Yu9zE5nsoNkaYm3qHdctp8OOTdR4=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>bUSA86W6FgC9E1hl+69kD/wF0EJn2I1K7gS3Iqrjt4HiBgUI5k/4in/o+3F95wnR/JE2I4bbD/VFLoUG2wX15g==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"/><ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>cFV6BgfNi5wRCuIlReqCmXC1lC87kyAAY+eQiiL0q8k=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>o0LaJvDT4ANCmD1iL+My9tQrs91w0n3U7EcHQVosOmM7Uhl5PQrIqD2+aqra1c3bEc3TfHKZzemsYH3NUvwBaQ==</ds:SignatureValue><ds:KeyInfo><ds:KeyValue><ecdsa:ECDSAKeyValue xmlns:ecdsa="http://www.w3.org/2001/04/xmldsig-more#"><ecdsa:DomainParameters><ecdsa:NamedCurve URI="urn:oid:1.3.132.0.10"/></ecdsa:DomainParameters><ecdsa:PublicKey><ecdsa:X>4AQVAWD3IY5tHmASnBn38RKHrVTFodVnV4IAFStb3sg=</ecdsa:X><ecdsa:Y>ZmUq25j5e065TtcZyDY7FqHBTk8aJ2Jc/Kq5kHYq2mQ=</ecdsa:Y></ecdsa:PublicKey></ecdsa:ECDSAKeyValue></ds:KeyValue><ds:X509Data><ds:X509Certificate>MIIBxjCCAWygAwIBAgIBATAKBggqhkjOPQQDAjATMREwDwYDVQQDEwhTbWFydENhdDAeFw0yMzEwMjcwMjA5NTVaFw0yNTEwMjcwMjA5NTVaMBUxEzARBgNVBAMTCm1pY2N5Mi5ldGgwVjAQBgcqhkjOPQIBBgUrgQQACgNCAATgBBUBYPchjm0eYBKcGffxEoetVMWh1WdXggAVK1veyGZlKtuY+XtOuU7XGcg2OxahwU5PGidiXPyquZB2Ktpko4GxMIGuMA8GA1UdEwEB/wQFMAMCAQAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBT3uFcb7xlllKr0HM1DFQJHJ8hyejAfBgNVHSMEGDAWgBQTK5vtCxgRHrj6QrtB/Rla2wPb6zBLBgNVHRIBAf8EQQQiMGC8T8daGKYhMWFsHwmZeRV1aawywGcGKDKIC6NV7LE1OxsmNRtSSKXkJJkhw8SYX8B8XYadL2Tsb1LMgUVfMAoGCCqGSM49BAMCA0gAMEUCIFDiOxh1gdQLKpGTgWvfYstsEd4uDZGlz9JEfC+nIApKAiEA1Onj6C8Bu0X3mUU++GnbV3wW01mxM7eQPzi7ebd10ek=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></ds:Signature></ts:token>
