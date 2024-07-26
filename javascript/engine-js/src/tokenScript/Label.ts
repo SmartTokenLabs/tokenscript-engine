@@ -19,8 +19,6 @@ export class Label {
 			// TODO: get label based on locale
 			const langLabels = elements.filter((elem) => elem.getAttribute("xml:lang") === "en")
 
-			console.log("Labels: ", langLabels);
-
 			if (langLabels.length){
 
 				if (langLabels[0].tagName === "ts:plurals" && langLabels[0].children.length > 0){

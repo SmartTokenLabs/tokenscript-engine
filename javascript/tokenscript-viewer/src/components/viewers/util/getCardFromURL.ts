@@ -10,7 +10,7 @@ export const getCardFromURL = (tokenScript: TokenScript) => {
 
 	const action = params.get("card");
 
-	const {card, index} = findCardByUrlParam(action, tokenScript);
+	const cardRes = findCardByUrlParam(action, tokenScript);
 
-	return {card, action};
+	return {card: cardRes?.card, action};
 };

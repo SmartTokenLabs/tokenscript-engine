@@ -8,7 +8,10 @@ export const invokeDeeplink = async (tokenScript: TokenScript, showToast: EventE
 
 	const cardRes = getCardFromURL(tokenScript);
 
-	if (!cardRes){
+	if (!cardRes)
+		return;
+
+	if (!cardRes.card){
 		showToast.emit({
 			type: 'error',
 			title: "Card not found",
