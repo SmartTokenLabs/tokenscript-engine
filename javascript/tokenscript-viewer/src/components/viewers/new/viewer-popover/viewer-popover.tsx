@@ -138,10 +138,6 @@ export class ViewerPopover {
 				await showTransactionNotification(data, this.showToast);
 			});
 
-			// TODO: set only card param rather than updating the whole hash query
-			if (card.view)
-				history.replaceState(undefined, undefined, "#card=" + (card.name ?? cardIndex) + ((token && "tokenId" in token) ? "&tokenId=" + token.tokenId : ''));
-
 		} catch(e){
 			console.error(e);
 			this.hideLoader.emit();

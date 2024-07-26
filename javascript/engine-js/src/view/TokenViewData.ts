@@ -71,6 +71,10 @@ export class TokenViewData {
 			body = this.processTags(part, body);
 		}
 
+		// TODO: Due to a floor in the svelte template routing, card param injection for deeplinks will need to be added
+		//       to the card SDK so it does not conflict with current usage of document.location.hash which would break existing TokenScripts
+		//const browserParams = new URLSearchParams(document.location.hash.substring(1));
+
 		return `
 			<!DOCTYPE html>
 				<html lang="en">

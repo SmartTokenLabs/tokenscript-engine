@@ -176,6 +176,18 @@ export class CardPopover implements IViewBinding {
 			this.hideLoader()
 		}
 
+		if (card.view){
+			const currentParams = new URLSearchParams(location.hash.substring(1));
+			currentParams.set("card", card.name);
+
+			const token = this.tokenScript.getCurrentTokenContext();
+			if (token && "selectedTokenId" in token){
+				currentParams.set("tokenId", token.selectedTokenId);
+			}
+
+			history.replaceState(undefined, undefined, "#" + currentParams.toString());
+		}
+
 		await this.dialog.openDialog(() => this.unloadTokenView());
 	}
 
@@ -185,9 +197,10 @@ export class CardPopover implements IViewBinding {
 		//this.iframe.srcdoc = "<!DOCTYPE html>";
 		this.iframe.remove();
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
-		const newUrl = new URL(document.location.href);
-		newUrl.hash = "";
-		history.replaceState(undefined, undefined, newUrl);
+		const currentParams = new URLSearchParams(location.hash.substring(1));
+		currentParams.delete("card");
+		currentParams.delete("tokenId");
+		history.replaceState(undefined, undefined, "#" + currentParams.toString());
 	}
 
 	viewError(error: Error) {
