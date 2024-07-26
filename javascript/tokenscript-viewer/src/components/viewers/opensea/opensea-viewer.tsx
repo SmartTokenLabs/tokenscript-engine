@@ -2,12 +2,11 @@ import {Component, Element, Event, EventEmitter, h, Host, JSX, Prop, State} from
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
-import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
-import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
 import {ViewBinding} from "../tabbed/viewBinding";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
+import {getCardFromURL} from "../util/getCardFromURL";
 
 @Component({
 	tag: 'opensea-viewer',
@@ -117,10 +116,15 @@ export class OpenseaViewer {
 	}
 
 	private displayInfoCard(){
-		const infoCard = this.tokenScript.getCards().find((card) => card.type === "token");
 
-		if (infoCard) {
-			this.tokenScript.showOrExecuteTokenCard(infoCard);
+		let {card} = getCardFromURL(this.tokenScript);
+
+		// If card isn't explicitly set, we show the info card by default
+		if (!card)
+			card = this.tokenScript.getCards().find((card) => card.type === "token");
+
+		if (card) {
+			this.tokenScript.showOrExecuteTokenCard(card);
 			this.showInfoCard = true
 		}
 	}

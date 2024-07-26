@@ -5,6 +5,8 @@ import {handleTransactionError, showTransactionNotification} from "../util/showT
 import {ShowToastEventArgs} from "../../app/app";
 import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
+import {getCardFromURL} from "../util/getCardFromURL";
+import {invokeDeeplink} from "../util/invokeDeeplink";
 
 @Component({
 	tag: 'action-bar',
@@ -54,17 +56,19 @@ export class ActionBar {
 
 	@Watch("tokenScript")
 	private async initTokenScript (){
-		this.loadCardButtons();
+		await this.loadCardButtons();
+		await invokeDeeplink(this.tokenScript, this.showToast, this.showCard.bind(this));
+		console.log("URL loading");
 
-		this.tokenScript.on("TOKENS_UPDATED", () => {
+		this.tokenScript.on("TOKENS_UPDATED", async () => {
 			this.cardButtons = undefined;
-			this.loadCardButtons();
+			await this.loadCardButtons();
 		})
 	}
 
-	componentDidLoad(){
+	async componentDidLoad(){
 		if (this.tokenScript)
-			this.initTokenScript();
+			await this.initTokenScript();
 	}
 
 	// TODO: This is copied from tokens-grid-item, dedupe required

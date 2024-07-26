@@ -194,7 +194,6 @@ token-viewer:has(> card-popover .open) {
 
 .popover-container {
 	margin-top: 0 !important;
-	height: 100dvh !important;
 }
 
 .card-container {

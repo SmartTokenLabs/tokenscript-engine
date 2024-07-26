@@ -92,7 +92,7 @@ export class TabbedViewer {
 
 		tab.tabHeader.tabView = this;
 		tab.tabHeader.tabId = id;
-		tab.tabHeader.tabTitle = tokenScript.getLabel();
+		tab.tabHeader.tabTitle = tokenScript.getLabel(2);
 
 		tab.content.app = this.app;
 		tab.content.tabId = id;

@@ -18,6 +18,8 @@ import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import { previewAddr } from '@tokenscript/engine-js/src/utils';
 import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
+import {getCardFromURL} from "../util/getCardFromURL";
+import {invokeDeeplink} from "../util/invokeDeeplink";
 
 @Component({
 	tag: 'sts-viewer',
@@ -178,7 +180,8 @@ export class SmartTokenStoreViewer {
 			this.loadCards();
 		}, "grid")
 
-		this.loadCards();
+		await this.loadCards();
+		await invokeDeeplink(this.tokenScript, this.showToast, this.showCard.bind(this));
 	}
 
 	private async loadIframe(url: string) {

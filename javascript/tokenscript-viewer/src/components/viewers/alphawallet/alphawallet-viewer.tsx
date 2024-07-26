@@ -10,6 +10,7 @@ import {ViewBinding} from "../tabbed/viewBinding";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
+import {invokeDeeplink} from "../util/invokeDeeplink";
 
 @Component({
 	tag: 'alphawallet-viewer',
@@ -102,7 +103,8 @@ export class SmartTokenStoreViewer {
 			this.loadCards();
 		}, "grid");
 
-		this.loadCards();
+		await this.loadCards();
+		await invokeDeeplink(this.tokenScript, this.showToast, this.showCard.bind(this));
 	}
 
 	// TODO: Deduplicate logic in common/tokens-grid-item.tsx & viewers/joyid-token/action-bar.tsx

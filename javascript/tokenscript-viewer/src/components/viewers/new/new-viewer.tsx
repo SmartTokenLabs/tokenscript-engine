@@ -224,7 +224,7 @@ export class NewViewer {
 				meta = {
 					tokenScriptId,
 					loadType: type,
-					name: tokenScript.getLabel() ?? tokenScript.getName() ?? "Unknown TokenScript",
+					name: tokenScript.getLabel(2) ?? tokenScript.getName() ?? "Unknown TokenScript",
 					xml: type === "file" ? tokenScript.getXmlString() : null
 				};
 
