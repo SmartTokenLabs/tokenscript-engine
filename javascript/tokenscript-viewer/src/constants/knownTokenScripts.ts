@@ -37,6 +37,24 @@ export const knownTokenScripts: TokenScriptsMeta[] = [
 		name: "Sablier Polygon",
 		iconUrl: "https://api.thegraph.com/ipfs/api/v0/cat?arg=QmZCYxNUHghpEg7V59a2dXYC1C7DdxEayiwrYpJV9jwoaN"
 	},
+	/*{
+		tokenScriptId: "137-0xf925027b8C521939f25CE633FEFd7777a1660D86",
+		loadType: "resolve",
+		name: "Redbrick",
+		iconUrl: "https://resources.smartlayer.network/smart-token-store/images/seven-dragon/market-tile.png"
+	},*/
+	{
+		tokenScriptId: "8217-0x4e3f3a3dba12cec714cba0508a1bab8ead85af31",
+		loadType: "resolve",
+		name: "Seven Dragons",
+		iconUrl: "https://resources.smartlayer.network/smart-token-store/images/seven-dragon/market-tile.png"
+	},
+	{
+		tokenScriptId: "185-0x80A6da00140C4798bAba3b3f362839b6f87b6fc6",
+		loadType: "resolve",
+		name: "Mint Cats",
+		iconUrl: "https://resources.smartlayer.network/smart-token-store/images/mint/market-tile-2.png"
+	},
 ];
 
 export const getKnownTokenScriptMetaById = (tsId: string) => {
