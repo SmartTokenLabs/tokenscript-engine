@@ -11,6 +11,7 @@ import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {invokeDeeplink} from "../util/invokeDeeplink";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'mooar-viewer',
@@ -76,7 +77,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad(){
 
-		const {chain, contract, tokenId, tokenscriptUrl} = getTokenUrlParams();
+		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		this.app.showTsLoader();
 
@@ -87,6 +88,14 @@ export class SmartTokenStoreViewer {
 		console.log("Token meta loaded!", this.collectionDetails, this.tokenDetails);
 
 		this.app.hideTsLoader();
+
+		if (emulator){
+			const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+			tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+			connectEmulatorSocket(emulatorUrl, async() => {
+				await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			});
+		}
 
 		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
@@ -112,6 +121,7 @@ export class SmartTokenStoreViewer {
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
+		this.infoCard = null;
 
 		const cards = this.tokenScript.getCards();
 

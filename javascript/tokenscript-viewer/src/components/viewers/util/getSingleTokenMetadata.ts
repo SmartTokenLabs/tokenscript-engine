@@ -1,5 +1,5 @@
 import {CHAIN_MAP} from "../../../integration/constants";
-import {BASE_TOKEN_DISCOVERY_URL, DiscoveryAdapter} from "../../../integration/discoveryAdapter";
+import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "../../../../../engine-js/src/tokens/ITokenCollection";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
@@ -27,28 +27,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 
 	if (selectedOrigin.tokenType !== "erc20") {
 
-		const tokenUrl = `/get-token?chain=${CHAIN_MAP[chain]}&collectionAddress=${contract}&tokenId=${tokenId}`;
-
-		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + tokenUrl);
-
-		if (!(response.status >= 200 && response.status <= 299)) {
-			throw new Error("Failed to load token details");
-		}
-
-		const tokenMeta =  await response.json()
-
-		selectedOrigin.tokenDetails = [
-			{
-				collectionDetails: selectedOrigin,
-				attributes: tokenMeta.attributes,
-				collectionId: tokenMeta.collection,
-				description: tokenMeta.description,
-				image: tokenMeta.image,
-				name: tokenMeta.name ?? tokenMeta.title,
-				tokenId: tokenMeta.tokenId,
-				balance: tokenMeta.balance
-			}
-		]
+		selectedOrigin = await discoveryAdapter.getTokenById(selectedOrigin, tokenId);
 
 	} else {
 

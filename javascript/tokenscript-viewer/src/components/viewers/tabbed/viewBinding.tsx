@@ -59,7 +59,7 @@ export class ViewBinding extends AbstractViewBinding {
 		this.showLoader();
 
 		try {
-			await this.tokenScript.getViewController().executeTransaction((data: ITransactionStatus) => {
+			await this.viewController.executeTransaction((data: ITransactionStatus) => {
 				showTransactionNotification(data, this.showToast);
 			}, txName);
 		} catch (e){

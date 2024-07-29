@@ -7,6 +7,7 @@ import {ViewBinding} from "../tabbed/viewBinding";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {getCardFromURL} from "../util/getCardFromURL";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'opensea-viewer',
@@ -88,7 +89,7 @@ export class OpenseaViewer {
 
 	async processUrlLoad(){
 
-		const {chain, contract, tokenId, tokenscriptUrl} = getTokenUrlParams();
+		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -97,6 +98,14 @@ export class OpenseaViewer {
 		this.tokenDetails = res.detail;
 
 		console.log("Token meta loaded!", this.tokenDetails);
+
+		if (emulator){
+			const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+			tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+			connectEmulatorSocket(emulatorUrl, async() => {
+				await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			});
+		}
 
 		this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}

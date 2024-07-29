@@ -12,6 +12,7 @@ import {EthersAdapter} from '@tokenscript/engine-js/src/wallet/EthersAdapter';
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {previewAddr} from "@tokenscript/engine-js/src/utils";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'token-viewer',
@@ -96,7 +97,7 @@ export class TokenViewer {
 
 	async processUrlLoad() {
 
-		const {query, chain, contract, tokenId, tokenscriptUrl, wallet} = getTokenUrlParams();
+		let {query, chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -128,6 +129,14 @@ export class TokenViewer {
 			console.log('Token meta loaded!', this.tokenDetails);
 
 			this.app.hideTsLoader();
+
+			if (emulator){
+				const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+				tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+				connectEmulatorSocket(emulatorUrl, async() => {
+					await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+				});
+			}
 
 			this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 		}
