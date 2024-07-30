@@ -117,8 +117,7 @@ export class OpenseaViewer {
 
 	private displayInfoCard(){
 
-		let {card} = getCardFromURL(this.tokenScript);
-
+		let card = getCardFromURL(this.tokenScript)?.card;
 		// If card isn't explicitly set, we show the info card by default
 		if (!card)
 			card = this.tokenScript.getCards().find((card) => card.type === "token");
