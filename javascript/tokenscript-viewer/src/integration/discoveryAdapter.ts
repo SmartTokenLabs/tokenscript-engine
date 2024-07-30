@@ -331,7 +331,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			name: name ?? "Test collection",
 			symbol: symbol,
 			description: description ?? "",
-			image: image ?? "",
+			image,
 		}
 	}
 
@@ -348,7 +348,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					tokenId: tokenId.toString(),
 					name: meta.name ?? "Test token #" + tokenId,
 					description: meta.description ?? "",
-					image: meta.image ?? "",
+					image: meta.image,
 					collectionDetails: token
 				}
 			];

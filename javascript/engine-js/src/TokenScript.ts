@@ -550,6 +550,8 @@ export class TokenScript {
 
 			const balance = tokenContext.balance ? tokenContext.balance.toString() : "0"; // bigint can't be json serialized, so it must always be string
 
+			const image = this.getMetadata().imageUrl ?? tokenDetails?.image ?? this.getMetadata().iconUrl;
+
 			data = {
 				name: tokenDetails?.name ?? tokenContext.name,
 				description: tokenDetails?.description ?? tokenContext.description,
@@ -562,7 +564,7 @@ export class TokenScript {
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
 				ownerAddress: await this.getCurrentOwnerAddress(),
-				image_preview_url: tokenDetails?.image ?? tokenContext.image,
+				image_preview_url: image,
 			};
 
 			if (tokenDetails) {
@@ -573,7 +575,7 @@ export class TokenScript {
 					type: tokenContext.tokenType,
 					name: tokenDetails.name ?? tokenDetails.data?.title,
 					description: tokenDetails.description,
-					image: tokenDetails.image,
+					image,
 					attributes: tokenDetails.attributes ?? [],
 					data: tokenDetails.data
 				}

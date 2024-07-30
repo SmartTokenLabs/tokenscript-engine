@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
+import {Component, Event, EventEmitter, h, Host, JSX, Prop, State, Element} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
@@ -12,6 +12,7 @@ import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSi
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {invokeDeeplink} from "../util/invokeDeeplink";
 import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
+import {ViewController} from "@tokenscript/engine-js/src/view/ViewController";
 
 @Component({
 	tag: 'mooar-viewer',
@@ -39,6 +40,8 @@ export class SmartTokenStoreViewer {
 	private infoCard?: Card;
 
 	private infoCardView: HTMLElement;
+
+	private infoViewController: ViewController;
 
 	@Event({
 		eventName: 'showToast',
@@ -132,10 +135,12 @@ export class SmartTokenStoreViewer {
 			if (card.type === "token" && !this.infoCard){
 				// Show first info card
 				this.infoCard = card;
-				const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
-				const viewController = this.tokenScript.getViewController(infoViewBinding);
-				infoViewBinding.setViewController(viewController);
-				viewController.showOrExecuteCard(this.infoCard, undefined);
+				if (!this.infoViewController) {
+					const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
+					this.infoViewController = this.tokenScript.getViewController(infoViewBinding);
+					infoViewBinding.setViewController(this.infoViewController);
+				}
+				this.infoViewController.showOrExecuteCard(this.infoCard, undefined);
 				continue;
 			}
 
