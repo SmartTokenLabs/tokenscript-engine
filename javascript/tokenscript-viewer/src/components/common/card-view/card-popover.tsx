@@ -147,12 +147,12 @@ export class CardPopover implements IViewBinding {
 	}
 
 	protected postMessageToView(method: ViewEvent, params: any) {
-		if (this.iframe.contentWindow)
+		if (this.iframe?.contentWindow)
 			this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
 	dispatchRpcResult(response: RpcResponse) {
-		if (this.iframe.contentWindow)
+		if (this.iframe?.contentWindow)
 			return this.iframe.contentWindow.postMessage(response, "*");
 	}
 

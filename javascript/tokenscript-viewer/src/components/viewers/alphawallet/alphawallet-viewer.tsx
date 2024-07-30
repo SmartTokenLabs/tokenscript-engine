@@ -208,26 +208,28 @@ export class SmartTokenStoreViewer {
 				<div class="aw-viewer">
 					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
-					<div class="actions">
-						{this.cardButtons ?
-							this.cardButtons :
-							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
-						}
-						{this.overflowCardButtons?.length ?
-							[
-								(<button class="btn more-actions-btn"
-										 onClick={() => this.overflowDialog.openDialog()}>
-									+ More actions
-								</button>),
-								(<action-overflow-modal
-									ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
-									<div class="actions">
-										{this.overflowCardButtons}
-									</div>
-								</action-overflow-modal>)
-							] : ''
-						}
-					</div>
+					{this.cardButtons?.length !== 0 ?
+						<div class="actions">
+							{this.cardButtons ?
+								this.cardButtons :
+								<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
+							}
+							{this.overflowCardButtons?.length ?
+								[
+									(<button class="btn more-actions-btn"
+											 onClick={() => this.overflowDialog.openDialog()}>
+										+ More actions
+									</button>),
+									(<action-overflow-modal
+										ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
+										<div class="actions">
+											{this.overflowCardButtons}
+										</div>
+									</action-overflow-modal>)
+								] : ''
+							}
+						</div>
+					: ''}
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>

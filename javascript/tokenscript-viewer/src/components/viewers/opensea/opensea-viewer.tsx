@@ -107,7 +107,7 @@ export class OpenseaViewer {
 			});
 		}
 
-		this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
@@ -125,6 +125,12 @@ export class OpenseaViewer {
 	}
 
 	private displayInfoCard(){
+
+		if (!this.viewBinding){
+			this.viewBinding = new ViewBinding(this.host, this.showToast);
+		}
+		this.viewBinding.setTokenScript(this.tokenScript);
+		this.tokenScript.setViewBinding(this.viewBinding);
 
 		let card = getCardFromURL(this.tokenScript)?.card;
 		// If card isn't explicitly set, we show the info card by default
@@ -144,7 +150,7 @@ export class OpenseaViewer {
 				<div class="opensea-viewer">
 				{ this.tokenDetails ?
 					[
-						<div class="opensea-img-container" style={{backgroundImage: "url(" + this.tokenDetails.image + ")"}} title={this.tokenDetails.name}>
+						<div class="opensea-img-container" style={{backgroundImage: "url(" + (this.tokenDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().imageUrl ?? this.tokenScript.getMetadata().iconUrl : '')) + ")"}} title={this.tokenDetails.name}>
 							<div class="info-button-container">
 								{ this.tokenScript ?
 									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>

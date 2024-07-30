@@ -314,17 +314,21 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		//console.log("Contract URI: ", contractUri);
 
 		if (contractUri){
-			const contractMeta = await (await fetch(contractUri, {
-				headers: {
-					'Accept': 'text/plain'
-				}
-			})).json();
-			if (contractMeta.name || contractMeta.title)
-				name = contractMeta.name ?? contractMeta.title;
-			if (contractMeta.description)
-				description = contractMeta.description;
-			if (contractMeta.image)
-				image = contractMeta.image;
+			try {
+				const contractMeta = await (await fetch(contractUri, {
+					headers: {
+						'Accept': 'text/plain'
+					}
+				})).json();
+				if (contractMeta.name || contractMeta.title)
+					name = contractMeta.name ?? contractMeta.title;
+				if (contractMeta.description)
+					description = contractMeta.description;
+				if (contractMeta.image)
+					image = contractMeta.image;
+			} catch (e){
+				console.error(e);
+			}
 		}
 
 		return <ITokenCollection>{
@@ -392,8 +396,6 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					} catch (e){
 						console.warn("Failed to load token metadata:", e);
 					}
-
-					console.log(meta);
 
 					tokenDetails.push({
 						collectionId: token.originId,
