@@ -200,7 +200,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				attributes: tokenMeta.attributes,
 				collectionId: tokenMeta.collection,
 				description: tokenMeta.description,
-				image: tokenMeta.image,
+				image: tokenMeta.image || null,
 				name: tokenMeta.name ?? tokenMeta.title,
 				tokenId: tokenMeta.tokenId,
 				balance: tokenMeta.balance
