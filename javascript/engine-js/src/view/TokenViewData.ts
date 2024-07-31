@@ -2,6 +2,7 @@ import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
 import CARD_SDK_V1 from "./sdk/v1.txt";
 import {LocalStorageProxy} from "./data/LocalStorageProxy";
+import {EthUtils} from "../ethereum/EthUtils";
 
 /**
  * TokenView data contains helper functions for
@@ -170,18 +171,18 @@ export class TokenViewData {
 		console.log(tokenData);
 
 		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
-		const rpcURLs = walletAdapter.getRpcUrls(tokenData.chainId);
+		const rpcURLs = tokenData.chainId ? walletAdapter.getRpcUrls(tokenData.chainId) : [];
 
 		return `
 
-		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(tokenData).replace(/`/g, "")}\`);
+		const currentTokenInstance = JSON.parse(String.raw \`${JSON.stringify(EthUtils.bigIntsToString(tokenData)).replace(/`/g, "")}\`);
 		const localStorageData = JSON.parse(String.raw \`${JSON.stringify(await this.localStorageProxy.getLocalStorageDictionary()).replace(/`/g, "")}\`);
 		const chainConfig = JSON.parse(String.raw \`${JSON.stringify(walletAdapter.chainConfig).replace(/`/g, "")}\`);
 		const env = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getMetadata().env).replace(/`/g, "")}\`);
 		const contractData = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getContracts().getContractViewData()).replace(/`/g, "")}\`);
 		const walletAddress = '${tokenData.ownerAddress}'
 		const addressHex = "${tokenData.ownerAddress}";
-		const rpcURL = "${rpcURLs[0]}";
+		const rpcURL = "${rpcURLs?.[0] ?? ''}";
 		const chainID = "${tokenData.chainId}";
 		const engineOrigin = "${document.location.origin}";
 

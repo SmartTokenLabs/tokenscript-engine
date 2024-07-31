@@ -1,6 +1,6 @@
 import {
 	decodeBase64ZippedBase64,
-	EAS,
+	EAS, EASOptions,
 	Offchain, OFFCHAIN_ATTESTATION_TYPES, SchemaEncoder, SchemaRecord,
 	SchemaRegistry,
 	SignedOffchainAttestation
@@ -33,6 +33,7 @@ export class Attestation {
 	private signerPublicKey: string;
 	private schemaRecord?: SchemaRecord;
 	private decodedData?: {[name: string]: any}
+	private provider;
 
 	constructor(
 		private type: string,
@@ -58,15 +59,7 @@ export class Attestation {
 			chainId: domain.chainId
 		}, this.attestation.version, this.eas);
 
-		const provider = new ethers.JsonRpcProvider(EAS_RPC_CONFIG[chainIdStr], domain.chainId, { staticNetwork: new Network(domain.chainId.toString(), domain.chainId)});
-
-		this.eas = new EAS(domain.verifyingContract, {
-			signerOrProvider: provider
-		})
-
-		this.schemaRegistry = new SchemaRegistry(EAS_REGISTRY_CONFIG[chainIdStr], {
-			signerOrProvider: provider
-		})
+		this.provider = new ethers.JsonRpcProvider(EAS_RPC_CONFIG[chainIdStr], domain.chainId, { staticNetwork: new Network(domain.chainId.toString(), domain.chainId)});
 
 		this.recoverSignerInfo();
 	}
@@ -92,6 +85,9 @@ export class Attestation {
 	public async getSchemaRecord(){
 
 		if (!this.schemaRecord) {
+			this.schemaRegistry = new SchemaRegistry(EAS_REGISTRY_CONFIG[this.attestation.domain.chainId.toString()], {
+				signer: this.provider
+			})
 			this.schemaRecord = await this.schemaRegistry.getSchema({uid: this.attestation.message.schema});
 		}
 
@@ -117,6 +113,11 @@ export class Attestation {
 
 		if (!schemaRecord.revocable)
 			return;
+
+		if (!this.eas)
+			this.eas = new EAS(this.attestation.domain.verifyingContract, <EASOptions>{
+				signer: this.provider
+			})
 
 		const revoked = await this.eas.getRevocationOffchain(this.signerAddress, this.attestation.uid);
 

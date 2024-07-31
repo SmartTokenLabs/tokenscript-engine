@@ -26,7 +26,7 @@
   "dependencies": {
     "@coinbase/wallet-sdk": "^4.0.4",
     "@datadog/browser-rum": "^5.21.0",
-    "@ethereum-attestation-service/eas-sdk": "1.4.2",
+    "@ethereum-attestation-service/eas-sdk": "2.5.0",
     "@joyid/ethereum-provider": "^1.0.7",
     "@peculiar/x509": "^1.11.0",
     "@stencil/core": "4.12.1",
@@ -51,6 +51,7 @@
     },
     "xmldsigjs": {
       "pkijs": "3.0.11"
-    }
+    },
+    "elliptic": "^6.5.4"
   }
 }

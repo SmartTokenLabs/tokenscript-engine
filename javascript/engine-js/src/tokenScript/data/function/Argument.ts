@@ -35,9 +35,16 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 	 */
 	public async getEthersArgument(tokenContext: ITokenIdContext, name: string = ""){
 
+		let overrideValue;
+
+		if (this.ref === "attestation"){
+			const ctx = await this.tokenScript.getTokenContextData(tokenContext);
+			overrideValue = ctx.tokenInfo.data.decodedToken.message
+		}
+
 		let arg: Partial<IEthersArgument> = {
 			name,
-			value: await this.getValue(tokenContext)
+			value: overrideValue ?? await this.getValue(tokenContext)
 		};
 
 		if (this.type === "struct"){
