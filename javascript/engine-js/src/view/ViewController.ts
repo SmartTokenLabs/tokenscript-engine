@@ -305,6 +305,8 @@ export class ViewController {
 	 */
 	async updateCardData(){
 		//this.viewAdapter.viewLoading();
+		if (!this.tokenViewData)
+			return;
 
 		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), this.tokenViewData.getViewDataId());
 	}
