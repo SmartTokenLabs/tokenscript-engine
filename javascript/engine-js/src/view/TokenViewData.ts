@@ -167,8 +167,7 @@ export class TokenViewData {
 
 		const tokenData = await this.getCurrentTokenData();
 
-		console.log("Loading view with data:");
-		console.log(tokenData);
+		console.trace("Loading view with data:", tokenData);
 
 		const walletAdapter = await this.tokenScript.getEngine().getWalletAdapter();
 		const rpcURLs = tokenData.chainId ? walletAdapter.getRpcUrls(tokenData.chainId) : [];

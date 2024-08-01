@@ -52,13 +52,16 @@ export class ViewController {
 	 */
 	async showOrExecuteCard(card: Card, transactionListener?: ITransactionListener){
 
+		this.currentCard = card;
+
 		if (!card.view){
 			// Transaction-only card
-			return card.executeTransaction(transactionListener);
+			await this.executeTransactionAndProcessTriggers(transactionListener);
+			this.currentCard = null;
+			return;
 		}
 
 		//this.userEntryValues = {};
-		this.currentCard = card;
 		this._tokenViewData = new TokenViewData(this.tokenScript, this.currentCard);
 
 		this.viewAdapter.viewLoading();
@@ -79,7 +82,7 @@ export class ViewController {
 			console.log(transaction.getTransactionInfo());
 
 			try {
-				await this.currentCard.executeTransaction((data: ITransactionStatus) => {
+				await this.executeTransactionAndProcessTriggers((data: ITransactionStatus) => {
 					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, "0");
 					if (transactionListener)
 						transactionListener(data);
@@ -92,6 +95,30 @@ export class ViewController {
 		} else {
 			this.dispatchViewEvent(ViewEvent.ON_CONFIRM, {}, "0");
 		}
+	}
+
+	private async executeTransactionAndProcessTriggers(listener?: ITransactionListener, txName?: string, updateViewData = true){
+
+		this.dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
+
+		await this.currentCard.executeTransaction(listener, txName);
+
+		// Pause to let token discovery service update
+		await new Promise(resolve => setTimeout(resolve, 3000));
+
+		const context = this.tokenScript.getCurrentTokenContext();
+		const reloadCard = await this.currentCard.isEnabledOrReason(context) === true;
+
+		if (!reloadCard && this.tokenScript.hasViewBinding()){
+			await this.unloadTokenCard();
+		}
+
+		// TODO: transactions should declare specific triggers such as the need to reload tokens
+		const tokens = await this.tokenScript.getTokenMetadata(true, true);
+
+		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
+		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]))
+			await this.updateCardData();
 	}
 
 	/**

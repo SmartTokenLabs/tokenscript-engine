@@ -108,8 +108,10 @@ export class TokensGrid {
 
 		const params = new URLSearchParams(document.location.hash.substring(1));
 
-		if (!params.has("card"))
+		if (!params.has("card")) {
+			this.urlActionInvoked = true;
 			return;
+		}
 
 		const action = params.get("card");
 		const tokenIdParam = params.get("tokenId");
@@ -122,6 +124,7 @@ export class TokensGrid {
 				title: "Card not found",
 				description: "The card '" + action + "' cannot be found."
 			});
+			this.urlActionInvoked = true;
 			return;
 		}
 
@@ -156,12 +159,14 @@ export class TokensGrid {
 			}
 		}
 
-		if (this.currentTokensFlat.length)
+		if (this.currentTokensFlat.length) {
 			this.showToast.emit({
 				type: 'error',
 				title: "No supported tokens",
 				description: "None of your tokens support the " + action + " action."
 			});
+			this.urlActionInvoked = true;
+		}
 	}
 
 	render() {
