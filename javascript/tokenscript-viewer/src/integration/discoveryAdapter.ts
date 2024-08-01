@@ -219,7 +219,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				collectionData = await this.fetchTokenMetadataRpc(token);
 			} else {
 				collectionData = await this.fetchTokenMetadata(token, chain);
-				if (collectionData.image == "")
+				if (collectionData && collectionData.image == "")
 					collectionData.image = null;
 			}
 
