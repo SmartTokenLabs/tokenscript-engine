@@ -6,6 +6,7 @@ import {handleTransactionError, showTransactionNotification} from "../../util/sh
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
 import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
+import { getTgUrl } from '../../util/tgUrl';
 
 @Component({
 	tag: 'viewer-popover',
@@ -23,6 +24,9 @@ export class ViewerPopover {
 
 	@State()
 	onboardingCards?: Card[];
+
+	@State()
+	showTgButton: boolean = false;
 
 	@Event({
 		eventName: 'showToast',
@@ -48,6 +52,20 @@ export class ViewerPopover {
 	@State()
 	private overflowCardButtons: JSX.Element[];
 	private overflowDialog: HTMLActionOverflowModalElement;
+
+	componentWillLoad() {
+		const storedSetting = localStorage.getItem('showTgButton');
+		this.showTgButton = storedSetting === 'true';
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const enableTg = urlParams.get('showTgButton');
+
+		if (enableTg === 'true') {
+			this.showTgButton = true;
+			localStorage.setItem('showTgButton', 'true');
+		}
+	}
+
 
 	@Method()
 	async open(tokenScript: TokenScript){
@@ -176,6 +194,17 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
+						{this.showTgButton && <div>
+							<a
+								href={getTgUrl()}
+								target='_blank'
+								class="btn"
+								style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
+								title="Share on Telegram"
+							>
+								<img src='https://telegram.org/img/apple-touch-icon.png' style={{width: '100%', height: '100%'}}/>
+							</a>
+						</div>}
 						<security-status tokenScript={this.tokenScript}/>
 						<div>
 							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
@@ -224,3 +253,4 @@ export class ViewerPopover {
 		)
 	}
 }
+
