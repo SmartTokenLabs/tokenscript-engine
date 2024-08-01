@@ -18,7 +18,6 @@ import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import { previewAddr } from '@tokenscript/engine-js/src/utils';
 import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
-import {getCardFromURL} from "../util/getCardFromURL";
 import {invokeDeeplink} from "../util/invokeDeeplink";
 
 @Component({
@@ -281,7 +280,7 @@ export class SmartTokenStoreViewer {
 	render(){
 
 		return (
-			<Host>
+			<Host class="ts-token-background">
 				<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 				<div class={"ts-token-container token-viewer " + (this.fullWidth ? 'full-width' : '')}>
 					{!this.isAttestation && this.tokenScript && (
@@ -289,9 +288,9 @@ export class SmartTokenStoreViewer {
 							<div class="details-container">
 								<div class="image-container">
 									<token-icon style={{minHeight: '100px;'}} src={
-										this.tokenScript && this.tokenScript.getMetadata().imageUrl ?
+										(this.tokenScript && this.tokenScript.getMetadata().imageUrl) ?
 											this.tokenScript.getMetadata().imageUrl :
-											this.tokenDetails?.image ?? this.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null)
+											(this.tokenDetails?.image ?? this.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null))
 									} imageTitle={this.tokenDetails?.name ?? this.collectionDetails.name}/>
 								</div>
 								<div class="info-container">
@@ -313,7 +312,7 @@ export class SmartTokenStoreViewer {
 										<div class="collection-details">
 											<token-icon
 												style={{width: '24px', borderRadius: '4px'}}
-												src={this.collectionDetails.image}
+												src={this.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null)}
 												imageTitle={this.collectionDetails.name}
 											/>
 											<h4>{this.collectionDetails.name}</h4>

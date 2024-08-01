@@ -187,6 +187,7 @@ export class TokenScriptEngine {
 			let tokenXml = parser.parseFromString(xml,"text/xml");
 			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding);
 		} catch (e){
+			this.repo.deleteTokenScript(sourceId); // TODO: Move parsing to repo so that this isn't required
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}
 	}
