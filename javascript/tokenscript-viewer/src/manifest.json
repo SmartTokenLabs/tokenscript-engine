@@ -1,6 +1,6 @@
 {
-  "name": "Stencil Starter",
-  "short_name": "Stencil",
+  "name": "Smart Token Viewer",
+  "short_name": "ST Viewer",
   "start_url": "/",
   "display": "standalone",
   "icons": [{
