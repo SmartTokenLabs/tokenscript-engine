@@ -128,6 +128,9 @@ export namespace Components {
         "tokenScript": TokenScript1;
         "viewer": IntegrationViewer;
     }
+    interface ShareToTgButton {
+        "style"?: { [key: string]: string };
+    }
     interface StartTab {
         "tabId": string;
         "tabView": TabbedViewer;
@@ -499,6 +502,12 @@ declare global {
         prototype: HTMLSelectStepElement;
         new (): HTMLSelectStepElement;
     };
+    interface HTMLShareToTgButtonElement extends Components.ShareToTgButton, HTMLStencilElement {
+    }
+    var HTMLShareToTgButtonElement: {
+        prototype: HTMLShareToTgButtonElement;
+        new (): HTMLShareToTgButtonElement;
+    };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
     var HTMLStartTabElement: {
@@ -730,6 +739,7 @@ declare global {
         "security-status": HTMLSecurityStatusElement;
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
+        "share-to-tg-button": HTMLShareToTgButtonElement;
         "start-tab": HTMLStartTabElement;
         "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
@@ -852,6 +862,9 @@ declare namespace LocalJSX {
         "tokenScript"?: TokenScript1;
         "viewer"?: IntegrationViewer;
     }
+    interface ShareToTgButton {
+        "style"?: { [key: string]: string };
+    }
     interface StartTab {
         "tabId"?: string;
         "tabView"?: TabbedViewer;
@@ -972,6 +985,7 @@ declare namespace LocalJSX {
         "security-status": SecurityStatus;
         "select-field": SelectField;
         "select-step": SelectStep;
+        "share-to-tg-button": ShareToTgButton;
         "start-tab": StartTab;
         "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
@@ -1021,6 +1035,7 @@ declare module "@stencil/core" {
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
+            "share-to-tg-button": LocalJSX.ShareToTgButton & JSXBase.HTMLAttributes<HTMLShareToTgButtonElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;

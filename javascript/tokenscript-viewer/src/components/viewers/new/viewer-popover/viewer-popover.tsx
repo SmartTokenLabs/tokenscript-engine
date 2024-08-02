@@ -178,17 +178,7 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
-						<div>
-							<a
-								href={getTgUrl()}
-								target='_blank'
-								class="btn"
-								style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
-								title="Share on Telegram"
-							>
-								<img src='https://telegram.org/img/apple-touch-icon.png' style={{width: '100%', height: '100%'}}/>
-							</a>
-						</div>
+						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>
 							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
