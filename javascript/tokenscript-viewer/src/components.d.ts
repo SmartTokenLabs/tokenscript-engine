@@ -112,6 +112,7 @@ export namespace Components {
         "fullScreen": boolean;
         "modalStyles": {[cssProp: string]: string};
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
+        "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
         "size": "large"|"small";
@@ -846,6 +847,7 @@ declare namespace LocalJSX {
         "disableClose"?: boolean;
         "fullScreen"?: boolean;
         "modalStyles"?: {[cssProp: string]: string};
+        "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
         "size"?: "large"|"small";
