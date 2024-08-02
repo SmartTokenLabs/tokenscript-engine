@@ -6,6 +6,7 @@ import {handleTransactionError, showTransactionNotification} from "../../util/sh
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
 import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
+import { getTgUrl } from '../../util/tgUrl';
 
 @Component({
 	tag: 'viewer-popover',
@@ -48,6 +49,7 @@ export class ViewerPopover {
 	@State()
 	private overflowCardButtons: JSX.Element[];
 	private overflowDialog: HTMLActionOverflowModalElement;
+
 
 	@Method()
 	async open(tokenScript: TokenScript){
@@ -176,6 +178,7 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
+						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>
 							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
@@ -224,3 +227,4 @@ export class ViewerPopover {
 		)
 	}
 }
+

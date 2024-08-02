@@ -50,6 +50,10 @@ export class PopoverDialog {
 							this.dismissCallback = null;
 						}
 					}}>x</button>
+					<div class='share-to-tg'>
+						<share-to-tg-button></share-to-tg-button>
+					</div>
+
 					<slot name="outer-content"/>
 					<div class="popover-inner">
 						<slot/>
