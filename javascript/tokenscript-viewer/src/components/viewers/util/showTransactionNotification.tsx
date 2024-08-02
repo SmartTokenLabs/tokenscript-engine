@@ -11,9 +11,10 @@ export const showTransactionNotification = async (data: ITransactionStatus, show
 				type: 'info',
 				title: "Transaction submitted",
 				description: (<span>
-						{"Processing TX, please wait.. "}<br/>
+					{"Processing TX, please wait.. "}<br/>
 					{"TX Number: " + data.txNumber}
-					</span>)
+					{data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
+				</span>)
 			});
 			break;
 		case "confirmed":
@@ -21,9 +22,9 @@ export const showTransactionNotification = async (data: ITransactionStatus, show
 				type: 'success',
 				title: "Transaction confirmed",
 				description: (<span>
-						{"TX " + data.txNumber + " confirmed!"}<br/>{
-						data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
-							</span>)
+					{"TX " + data.txNumber + " confirmed!"}<br/>
+					{data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
+				</span>)
 			});
 			break;
 	}
@@ -63,6 +64,23 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 	showToast.emit({
 		type: 'error',
 		title: "Transaction Error",
-		description: message
+		description: (
+			<div>
+				<p>{message}</p>
+				<button style={{
+							border: "2px solid #EF4444",
+							background: "#fff",
+							color: "#EF4444",
+							padding: "4px 8px 4px 0",
+							marginTop: "5px",
+							borderRadius: "5px",
+							fontWeight: "500"
+						}}
+				        onClick={() => navigator.clipboard.writeText(e.message)}>
+					<copy-icon style={{paddingLeft: "0 !important"}} height={"20px"} copyText={e.message}/>
+					Copy Error
+				</button>
+			</div>
+		)
 	});
 };
