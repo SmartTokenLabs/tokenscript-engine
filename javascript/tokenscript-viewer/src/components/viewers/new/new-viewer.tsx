@@ -8,6 +8,7 @@ import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {CHAIN_MAP} from "../../../integration/constants";
 import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 import { decodeSafeBase64QueryString } from '../util/tgUrl';
+import { patchOpen } from '../util/patchOpen';
 
 type LoadedTokenScript = (TokenScriptsMeta & {tokenScript?: TokenScript});
 
@@ -68,6 +69,7 @@ export class NewViewer {
 		const urlParams = new URLSearchParams(window.location.search);
 		const startParam = urlParams.get('tgWebAppStartParam');
 		if (startParam) {
+			patchOpen()
 			const query = decodeSafeBase64QueryString(startParam);
 			window.location.href = `${window.location.origin}${window.location.pathname}?${query}`;
 		}
