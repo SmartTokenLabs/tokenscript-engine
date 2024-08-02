@@ -230,7 +230,7 @@ export class CardPopover implements IViewBinding {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen} showShareToTg={true}>
 				<div slot="outer-content" class="view-loader" style={{display: this.loading ? "flex" : "none"}}>
 					<loading-spinner/>
 				</div>
