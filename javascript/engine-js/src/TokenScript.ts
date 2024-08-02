@@ -104,6 +104,9 @@ export class TokenScript {
 		private sourceUrl: string,
 		private viewBinding?: IViewBinding
 	) {
+		if (this.tokenDef?.documentElement?.tagName !== "ts:token")
+			throw new Error("The provided file is not a valid TokenScript");
+
 		this.securityInfo = new SecurityInfo(this);
 		this.viewStyles = new ViewStyles(this.tokenDef);
 		this.transactionValidator = new TransactionValidator(this);
