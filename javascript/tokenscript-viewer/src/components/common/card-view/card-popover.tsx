@@ -51,9 +51,9 @@ export class CardPopover implements IViewBinding {
 		this.tokenScript.setViewBinding(this);
 	}
 
-	componentDidLoad() {
+	async componentDidLoad() {
 		if (this.tokenScript)
-			this.loadTs();
+			await this.loadTs();
 
 		this.iframeTemplate = this.el.getElementsByClassName('tokenscript-frame')[0] as HTMLIFrameElement;
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
