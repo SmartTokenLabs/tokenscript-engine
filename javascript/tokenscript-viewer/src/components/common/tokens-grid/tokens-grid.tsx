@@ -73,8 +73,6 @@ export class TokensGrid {
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
-			if (this.urlActionInvoked)
-				return;
 			await this.invokeUrlAction();
 		}, "grid")
 
@@ -86,8 +84,7 @@ export class TokensGrid {
 
 		setTimeout(async () => {
 			await this.populateTokens(await this.tokenScript.getTokenMetadata());
-			if (Web3WalletProvider.isWalletConnected())
-				await this.invokeUrlAction();
+			await this.invokeUrlAction();
 		}, 500);
 	}
 
@@ -101,6 +98,9 @@ export class TokensGrid {
 	}
 
 	private async invokeUrlAction(){
+
+		if (this.urlActionInvoked || !Web3WalletProvider.isWalletConnected())
+			return;
 
 		const params = new URLSearchParams(document.location.hash.substring(1));
 
