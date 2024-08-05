@@ -101,7 +101,10 @@ export class ViewController {
 
 		this.dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
 
-		await this.currentCard.executeTransaction(listener, txName);
+		const processed = await this.currentCard.executeTransaction(listener, txName);
+
+		if (processed === false)
+			return;
 
 		// Pause to let token discovery service update
 		await new Promise(resolve => setTimeout(resolve, 3000));
