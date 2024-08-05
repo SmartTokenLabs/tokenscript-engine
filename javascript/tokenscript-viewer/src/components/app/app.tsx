@@ -248,7 +248,7 @@ export class AppRoot {
 
 	@Method()
 	async showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-		return showToastNotification(type, title, description);
+		return showToastNotification(type, title, description, this.viewerType !== "new" ? "top" : "top-right");
 	}
 
 	async componentDidLoad(){
