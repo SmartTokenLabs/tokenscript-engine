@@ -71,10 +71,6 @@ export class TokensGrid {
 	@Watch("tokenScript")
 	private async initTokenScript(){
 
-		/*if (this.tokenScript.getMetadata().backgroundImageUrl){
-			document.getElementsByTagName("body")[0].style.backgroundImage = `url(${tokenScript.getMetadata().backgroundImageUrl})`;
-		}*/
-
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
 			if (this.urlActionInvoked)
@@ -132,11 +128,14 @@ export class TokensGrid {
 			if (
 				await cardRes.card.isEnabledOrReason() === true
 			) {
-				this.showCard(cardRes.card);
 				this.urlActionInvoked = true;
+				this.showCard(cardRes.card);
 				return;
 			}
 		}
+
+		if (!this.currentTokensFlat.length)
+			return;
 
 		for (let token of this.currentTokensFlat){
 
@@ -153,20 +152,18 @@ export class TokensGrid {
 				cardRes.card.isAvailableForOrigin(token.originId) &&
 				await cardRes.card.isEnabledOrReason(context) === true
 			) {
-				this.showCard(cardRes.card, token, cardRes.index);
 				this.urlActionInvoked = true;
+				this.showCard(cardRes.card, token, cardRes.index);
 				return;
 			}
 		}
 
-		if (this.currentTokensFlat.length) {
-			this.showToast.emit({
-				type: 'error',
-				title: "No supported tokens",
-				description: "None of your tokens support the " + action + " action."
-			});
-			this.urlActionInvoked = true;
-		}
+		this.showToast.emit({
+			type: 'error',
+			title: "No supported tokens",
+			description: "None of your tokens support the " + action + " action."
+		});
+		this.urlActionInvoked = true;
 	}
 
 	render() {
