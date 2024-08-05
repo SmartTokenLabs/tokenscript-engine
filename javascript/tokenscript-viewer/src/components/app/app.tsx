@@ -118,6 +118,8 @@ export class AppRoot {
 					}
 				],
 				txValidationCallback: (txInfo) => {
+					if (this.params.has("emulator"))
+						return true;
 					// TODO: This is temporarily disabled to add support for contracts not defined in the tokenscript
 					return true;
 					//return this.confirmTxPopover.confirmTransaction(txInfo);
@@ -246,7 +248,7 @@ export class AppRoot {
 
 	@Method()
 	async showToast(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
-		return showToastNotification(type, title, description);
+		return showToastNotification(type, title, description, this.viewerType !== "new" ? "top" : "top-right");
 	}
 
 	async componentDidLoad(){

@@ -178,6 +178,38 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		return await this.fetchOwnerTokens(token, CHAIN_MAP[token.chainId], ownerAddress);
 	}
 
+	public async getTokenById(token: ITokenCollection, tokenId: string){
+
+		if (token.chainId === ChainID.HARDHAT_LOCALHOST){
+			return await this.fetchTokenByIdRpc(token, tokenId);
+		}
+
+		const tokenUrl = `/get-token?chain=${CHAIN_MAP[token.chainId]}&collectionAddress=${token.contractAddress}&tokenId=${tokenId}`;
+
+		const response = await fetch(BASE_TOKEN_DISCOVERY_URL + tokenUrl);
+
+		if (!(response.status >= 200 && response.status <= 299)) {
+			throw new Error("Failed to load token details");
+		}
+
+		const tokenMeta = await response.json()
+
+		token.tokenDetails = [
+			{
+				collectionDetails: token,
+				attributes: tokenMeta.attributes,
+				collectionId: tokenMeta.collection,
+				description: tokenMeta.description,
+				image: tokenMeta.image || null,
+				name: tokenMeta.name ?? tokenMeta.title,
+				tokenId: tokenMeta.tokenId,
+				balance: tokenMeta.balance
+			}
+		];
+
+		return token;
+	}
+
 	public async getCollectionMeta(token: ITokenCollection, chain: string){
 
 		let collectionData = await this.getCachedMeta(token);
@@ -187,6 +219,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				collectionData = await this.fetchTokenMetadataRpc(token);
 			} else {
 				collectionData = await this.fetchTokenMetadata(token, chain);
+				if (collectionData && collectionData.image == "")
+					collectionData.image = null;
 			}
 
 			await this.storeCachedMeta(token, collectionData);
@@ -282,25 +316,54 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		//console.log("Contract URI: ", contractUri);
 
 		if (contractUri){
-			const contractMeta = await (await fetch(contractUri, {
-				headers: {
-					'Accept': 'text/plain'
-				}
-			})).json();
-			if (contractMeta.name || contractMeta.title)
-				name = contractMeta.name ?? contractMeta.title;
-			if (contractMeta.description)
-				description = contractMeta.description;
-			if (contractMeta.image)
-				image = contractMeta.image;
+			try {
+				const contractMeta = await (await fetch(contractUri, {
+					headers: {
+						'Accept': 'text/plain'
+					}
+				})).json();
+				if (contractMeta.name || contractMeta.title)
+					name = contractMeta.name ?? contractMeta.title;
+				if (contractMeta.description)
+					description = contractMeta.description;
+				if (contractMeta.image)
+					image = contractMeta.image;
+			} catch (e){
+				console.error(e);
+			}
 		}
 
 		return <ITokenCollection>{
 			name: name ?? "Test collection",
 			symbol: symbol,
 			description: description ?? "",
-			image: image ?? "",
+			image,
 		}
+	}
+
+	private async fetchTokenByIdRpc(token: ITokenCollection, tokenId: string) {
+
+		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId, token.tokenType);
+
+		try {
+			const meta = await this.fetchTokenMetaFromId(contract, tokenId);
+
+			token.tokenDetails = [
+				{
+					collectionId: token.originId,
+					tokenId: tokenId.toString(),
+					name: meta.name ?? "Test token #" + tokenId,
+					description: meta.description ?? "",
+					image: meta.image,
+					collectionDetails: token
+				}
+			];
+
+		} catch (e){
+			console.error(e);
+		}
+
+		return token;
 	}
 
 	private async fetchOwnerTokensRpc(token: ITokenCollection,  owner: string) {
@@ -331,18 +394,10 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					let meta: any = {};
 
 					try {
-						const metaUri = await contract.tokenURI(tokenId);
-
-						meta = await (await fetch(metaUri, {
-							headers: {
-								'Accept': 'text/plain'
-							}
-						})).json();
+						meta = await this.fetchTokenMetaFromId(contract, tokenId);
 					} catch (e){
 						console.warn("Failed to load token metadata:", e);
 					}
-
-					console.log(meta);
 
 					tokenDetails.push({
 						collectionId: token.originId,
@@ -364,6 +419,17 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		}
 
 		return token;
+	}
+
+	private async fetchTokenMetaFromId(contract: Contract, tokenId: string){
+
+		const metaUri = await contract.tokenURI(tokenId);
+
+		return await (await fetch(metaUri, {
+			headers: {
+				'Accept': 'text/plain'
+			}
+		})).json();
 	}
 
 	private async getTokenIdsEnumerable(contract, owner){

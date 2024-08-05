@@ -34,6 +34,7 @@ export enum StaticProviders {
 	MetaMask = 'MetaMask',
 	CoinbaseSmartWallet = 'CoinbaseSmartWallet',
 	WalletConnectV2 = 'WalletConnectV2',
+	JoyID = 'JoyID',
 	Torus = 'Torus',
 }
 
@@ -102,19 +103,10 @@ class Web3WalletProviderObj {
 			});
 		}
 
-		// providers.push(getWalletInfo(SupportedWalletProviders.WalletConnect));
 		providers.push(getWalletInfo(StaticProviders.WalletConnectV2));
-
 		providers.push(getWalletInfo(StaticProviders.CoinbaseSmartWallet));
-
-		// Show FoxWallet option to trigger WalletConnect if the user is not using FoxWallet DApp browser
-		/*if (!window.foxwallet){
-			providers.push({
-				id: StaticProviders.WalletConnectV2,
-				...foxWallet
-			} as WalletInfo);
-		}*/
-
+		if (location.hostname !== "viewer.tokenscript.org")
+			providers.push(getWalletInfo(StaticProviders.JoyID));
 		providers.push(getWalletInfo(StaticProviders.Torus));
 
 		return providers;
@@ -332,6 +324,9 @@ class Web3WalletProviderObj {
 					break;
 				case StaticProviders.CoinbaseSmartWallet:
 					address = await this.CoinbaseSmartWallet();
+					break;
+				case StaticProviders.JoyID:
+					address = await this.JoyID();
 					break;
 				case StaticProviders.Torus:
 					address = await this.Torus();
@@ -572,6 +567,20 @@ class Web3WalletProviderObj {
 		const provider = new ethers.BrowserProvider(coinbaseProvider);
 
 		return this.registerEvmProvider(provider, StaticProviders.CoinbaseSmartWallet, coinbaseProvider);
+	}
+
+	async JoyID() {
+
+		const joyIdProvider = await (await import('./providers/JoyIDProvider')).getJoyIDProviderInstance() as unknown as EIP1193Provider;
+
+		// @ts-ignore
+		await joyIdProvider.request({
+			method: 'eth_requestAccounts',
+		});
+
+		const provider = new ethers.BrowserProvider(joyIdProvider );
+
+		return this.registerEvmProvider(provider, StaticProviders.JoyID, joyIdProvider);
 	}
 }
 

@@ -11,6 +11,8 @@ import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {invokeDeeplink} from "../util/invokeDeeplink";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
+import {ViewController} from "@tokenscript/engine-js/src/view/ViewController";
 
 @Component({
 	tag: 'alphawallet-viewer',
@@ -38,6 +40,8 @@ export class SmartTokenStoreViewer {
 	private infoCard?: Card;
 
 	private infoCardView: HTMLElement;
+
+	private infoViewController: ViewController;
 
 	@Event({
 		eventName: 'showToast',
@@ -76,7 +80,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad(){
 
-		const {chain, contract, tokenId, tokenscriptUrl} = getTokenUrlParams();
+		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		this.app.showTsLoader();
 
@@ -87,6 +91,14 @@ export class SmartTokenStoreViewer {
 		console.log("Token meta loaded!", this.collectionDetails, this.tokenDetails);
 
 		this.app.hideTsLoader();
+
+		if (emulator){
+			const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+			tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+			connectEmulatorSocket(emulatorUrl, async() => {
+				await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			});
+		}
 
 		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
@@ -112,6 +124,7 @@ export class SmartTokenStoreViewer {
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
+		this.infoCard = null;
 
 		const cards = this.tokenScript.getCards();
 
@@ -122,10 +135,12 @@ export class SmartTokenStoreViewer {
 			if (card.type === "token" && !this.infoCard){
 				// Show first info card
 				this.infoCard = card;
-				const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
-				const viewController = this.tokenScript.getViewController(infoViewBinding);
-				infoViewBinding.setViewController(viewController);
-				viewController.showOrExecuteCard(this.infoCard, undefined);
+				if (!this.infoViewController) {
+					const infoViewBinding = new ViewBinding(this.infoCardView, this.showToast);
+					this.infoViewController = this.tokenScript.getViewController(infoViewBinding);
+					infoViewBinding.setViewController(this.infoViewController);
+				}
+				this.infoViewController.showOrExecuteCard(this.infoCard, undefined);
 				continue;
 			}
 
@@ -193,26 +208,28 @@ export class SmartTokenStoreViewer {
 				<div class="aw-viewer">
 					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
-					<div class="actions">
-						{this.cardButtons ?
-							this.cardButtons :
-							<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
-						}
-						{this.overflowCardButtons?.length ?
-							[
-								(<button class="btn more-actions-btn"
-										 onClick={() => this.overflowDialog.openDialog()}>
-									+ More actions
-								</button>),
-								(<action-overflow-modal
-									ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
-									<div class="actions">
-										{this.overflowCardButtons}
-									</div>
-								</action-overflow-modal>)
-							] : ''
-						}
-					</div>
+					{this.cardButtons?.length !== 0 ?
+						<div class="actions">
+							{this.cardButtons ?
+								this.cardButtons :
+								<loading-spinner color={"#595959"} size={"small"} style={{textAlign: "center"}}/>
+							}
+							{this.overflowCardButtons?.length ?
+								[
+									(<button class="btn more-actions-btn"
+											 onClick={() => this.overflowDialog.openDialog()}>
+										+ More actions
+									</button>),
+									(<action-overflow-modal
+										ref={(el) => this.overflowDialog = el as HTMLActionOverflowModalElement}>
+										<div class="actions">
+											{this.overflowCardButtons}
+										</div>
+									</action-overflow-modal>)
+								] : ''
+							}
+						</div>
+					: ''}
 				</div>
 				<card-popover tokenScript={this.tokenScript}></card-popover>
 			</Host>

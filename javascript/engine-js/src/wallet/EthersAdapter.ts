@@ -82,11 +82,20 @@ export class EthersAdapter implements IWalletAdapter {
 
 		let tx;
 
-		// Getting a function only by name could be ambiguous, so we use the full signature
-		method = `${method}(${args.map((arg) => arg.type).join(",")})`;
+		// Getting a function only by name could be ambiguous, so we try the full signature first
+		// TODO: Add support for struct/tuple method signatures
+		let contractMethod
+		try {
+			contractMethod = contract.getFunction(`${method}(${args.map((arg) => arg.type).join(",")})`);
+		} catch (e) {
+			console.warn(e);
+			// TODO: This can be removed once the above TODO is implemented, currently required for attestation support
+			console.error("Could not find unambiguous method fragment, trying name-only fallback.");
+			contractMethod = contract.getFunction(`${method}`);
+		}
 
 		try {
-			tx = await contract[method](...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
+			tx = await contractMethod(...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
 		} catch (e: any){
 
 			if (EthersAdapter.isTransactionRejection(e))

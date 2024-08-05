@@ -1,6 +1,12 @@
 import { ISLNAdapter, ISLNAttestation } from '@tokenscript/engine-js/src/attestation/ISLNAdapter';
 import { CHAIN_EAS_SCHEMA_REGI_MAP, ChainID } from './constants';
-import { SchemaDecodedItem, SchemaEncoder, SchemaRegistry, SignedOffchainAttestation } from '@ethereum-attestation-service/eas-sdk';
+import {
+	SchemaDecodedItem,
+	SchemaEncoder,
+	SchemaRegistry,
+	SignedOffchainAttestation,
+	TransactionSigner
+} from '@ethereum-attestation-service/eas-sdk';
 import { Provider } from 'ethers';
 
 export class SLNAdapter implements ISLNAdapter {
@@ -49,7 +55,7 @@ export class SLNAdapter implements ISLNAdapter {
   private async getSchemaSignature(uid: string, chainId: ChainID, provider: Provider) {
     console.log(chainId, CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
     const schemaReg: SchemaRegistry = new SchemaRegistry(CHAIN_EAS_SCHEMA_REGI_MAP[chainId]);
-    schemaReg.connect(provider);
+    schemaReg.connect(provider as TransactionSigner);
     const schema = await schemaReg.getSchema({ uid });
     return schema.schema;
   }

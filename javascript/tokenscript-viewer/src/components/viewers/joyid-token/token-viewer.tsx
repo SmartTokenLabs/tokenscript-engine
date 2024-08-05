@@ -12,6 +12,7 @@ import {EthersAdapter} from '@tokenscript/engine-js/src/wallet/EthersAdapter';
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {previewAddr} from "@tokenscript/engine-js/src/utils";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'token-viewer',
@@ -96,7 +97,7 @@ export class TokenViewer {
 
 	async processUrlLoad() {
 
-		const {query, chain, contract, tokenId, tokenscriptUrl, wallet} = getTokenUrlParams();
+		let {query, chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -128,6 +129,14 @@ export class TokenViewer {
 			console.log('Token meta loaded!', this.tokenDetails);
 
 			this.app.hideTsLoader();
+
+			if (emulator){
+				const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+				tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+				connectEmulatorSocket(emulatorUrl, async() => {
+					await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+				});
+			}
 
 			this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 		}
@@ -180,7 +189,10 @@ export class TokenViewer {
 						<div>
 							<div class="details-container">
 								<div class="image-container">
-									<token-icon style={{ minHeight: '100px;' }} src={this.tokenDetails.image} imageTitle={this.tokenDetails.name} />
+									<token-icon style={{ minHeight: '100px;' }} src={(this.tokenScript && this.tokenScript.getMetadata().imageUrl) ?
+										this.tokenScript.getMetadata().imageUrl :
+										(this.tokenDetails?.image ?? this.tokenDetails?.collectionDetails?.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null))
+									} imageTitle={this.tokenDetails?.name ?? this.tokenDetails?.collectionDetails.name} />
 								</div>
 								<div class="info-container">
 									<div class="main-info">
@@ -203,7 +215,7 @@ export class TokenViewer {
 										<div class="collection-details">
 											<token-icon
 												style={{ width: '24px', borderRadius: '4px' }}
-												src={this.tokenDetails.collectionDetails.image}
+												src={this.tokenDetails.collectionDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().iconUrl : null)}
 												imageTitle={this.tokenDetails.collectionDetails.name}
 											/>
 											<h4>{this.tokenDetails.collectionDetails.name}</h4>
@@ -211,7 +223,7 @@ export class TokenViewer {
 										</div>
 									</div>
 									<div class="extra-info">
-										<p innerHTML={this.description.replace(/\n/g, '<br/>')}></p>
+										<p innerHTML={(this.description ?? "").replace(/\n/g, '<br/>')}></p>
 										<div class="attribute-container">
 											{this.tokenDetails.attributes?.length
 												? this.tokenDetails.attributes.map(attr => {

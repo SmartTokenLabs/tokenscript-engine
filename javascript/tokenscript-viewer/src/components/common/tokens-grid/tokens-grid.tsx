@@ -49,6 +49,7 @@ export class TokensGrid {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
+	private urlActionInvoked = false;
 
 	async componentDidLoad() {
 		// TODO: stencil.js seems to copy the tokenscript object by value rather than reference from the new-viewer component,
@@ -76,6 +77,8 @@ export class TokensGrid {
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
+			if (this.urlActionInvoked)
+				return;
 			await this.invokeUrlAction();
 		}, "grid")
 
@@ -105,8 +108,10 @@ export class TokensGrid {
 
 		const params = new URLSearchParams(document.location.hash.substring(1));
 
-		if (!params.has("card"))
+		if (!params.has("card")) {
+			this.urlActionInvoked = true;
 			return;
+		}
 
 		const action = params.get("card");
 		const tokenIdParam = params.get("tokenId");
@@ -119,6 +124,7 @@ export class TokensGrid {
 				title: "Card not found",
 				description: "The card '" + action + "' cannot be found."
 			});
+			this.urlActionInvoked = true;
 			return;
 		}
 
@@ -127,6 +133,7 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason() === true
 			) {
 				this.showCard(cardRes.card);
+				this.urlActionInvoked = true;
 				return;
 			}
 		}
@@ -147,16 +154,19 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason(context) === true
 			) {
 				this.showCard(cardRes.card, token, cardRes.index);
+				this.urlActionInvoked = true;
 				return;
 			}
 		}
 
-		if (this.currentTokensFlat.length)
+		if (this.currentTokensFlat.length) {
 			this.showToast.emit({
 				type: 'error',
 				title: "No supported tokens",
 				description: "None of your tokens support the " + action + " action."
 			});
+			this.urlActionInvoked = true;
+		}
 	}
 
 	render() {

@@ -1,6 +1,6 @@
 import {JSX} from "@stencil/core";
 
-export async function showToastNotification(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element){
+export async function showToastNotification(type: 'success'|'info'|'warning'|'error', title: string, description: string|JSX.Element, position: "top"|"top-right" = "top-right"){
 
 	const cbToast = document.querySelector(".toast") as HTMLCbToastElement;
 
@@ -8,7 +8,7 @@ export async function showToastNotification(type: 'success'|'info'|'warning'|'er
 		title,
 		description: description ?? "-",
 		timeOut: 30000,
-		position: 'top-right',
+		position,
 		type
 	});
 }

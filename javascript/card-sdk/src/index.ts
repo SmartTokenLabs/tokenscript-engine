@@ -77,8 +77,6 @@ class Web3LegacySDK implements IWeb3LegacySDK {
     public readonly action = {
         setProps: function (msgParams) {
             this.engineAdapter.request(RequestFromView.PUT_USER_INPUT, msgParams);
-            // @ts-ignore
-            // alpha.setValues(JSON.stringify(msgParams));
         }.bind(this),
         showLoader: () => {
             this.engineAdapter.request(RequestFromView.SET_LOADER, { show: true });
@@ -89,14 +87,20 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => {
             this.engineAdapter.request(RequestFromView.SET_BUTTON, options);
         },
-        executeTransaction:() => {
-            this.engineAdapter.request(RequestFromView.EXEC_TRANSACTION, { });
+        executeTransaction:(txName?: string) => {
+            this.engineAdapter.request(RequestFromView.EXEC_TRANSACTION, { txName });
         },
         showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TX_TOAST, { status, chain, txHash });
         },
         showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TOAST, { type, title, description });
+        },
+        closeCard: () => {
+            this.engineAdapter.request(RequestFromView.CLOSE, undefined);
+        },
+        openCard: (name: string, originId?: string, tokenId?: string) => {
+            this.engineAdapter.request(RequestFromView.OPEN_CARD, {name, originId, tokenId});
         }
     }
 }

@@ -160,9 +160,22 @@ export class Card {
 	}
 
 	/**
-	 * Get the transaction record associated with this card
+	 * Get the transaction record associated with this card, or another named transaction
 	 */
-	getTransaction(){
+	getTransaction(txName?: string){
+
+		// Get named transaction
+		if (txName){
+			// TODO: Only check top-level transaction definitions
+			const transactionXml =
+				Array.from(this.tokenScript.tokenDef.getElementsByTagName("ts:transaction"))
+					.find((tx) => tx.getAttribute("name") === txName);
+
+			if (!transactionXml)
+				throw new Error(`Could not find named transaction '${txName}'`);
+
+			return new Transaction(this.tokenScript, transactionXml, this.getAttributes());
+		}
 
 		if (!this.transaction){
 			const transactionsXml = this.cardDef.getElementsByTagName("ts:transaction");
@@ -177,15 +190,12 @@ export class Card {
 	/**
 	 * Execute the transaction for the card
 	 * @param listener
+	 * @param txName
 	 * @param waitForConfirmation
-	 * @param updateViewData
 	 */
-	async executeTransaction(listener?: ITransactionListener, waitForConfirmation = true, updateViewData = true){
+	async executeTransaction(listener?: ITransactionListener, txName?: string, waitForConfirmation = true){
 
-		const transaction = this.getTransaction();
-
-		if (this.tokenScript.hasViewBinding())
-			this.tokenScript.getViewController().dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
+		const transaction = this.getTransaction(txName);
 
 		const processed = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
 
@@ -198,26 +208,6 @@ export class Card {
 		// TODO: transactions should specify which attributes should be invalidated
 		this.getAttributes().invalidate();
 		this.tokenScript.getAttributes().invalidate();
-
-		// Pause to let token discovery service update
-		await new Promise(resolve => setTimeout(resolve, 3000));
-
-		const context = this.tokenScript.getCurrentTokenContext();
-		const reloadCard = await this.isEnabledOrReason(context) === true;
-
-		if (!reloadCard && this.tokenScript.hasViewBinding()){
-			await this.tokenScript.getViewController().unloadTokenCard();
-		}
-
-		// TODO: transactions should declare specific triggers such as the need to reload tokens
-		const tokens = await this.tokenScript.getTokenMetadata(true, true);
-
-		if (!this.tokenScript.hasViewBinding())
-			return;
-
-		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
-		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.[context.selectedTokenIndex]))
-			await this.tokenScript.getViewController().updateCardData();
 	}
 
 }

@@ -38,7 +38,7 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.OPTIMISM]: "optimism",
 	[ChainID.SEPOLIA]: "sepolia",
 	[ChainID.HOLESKY]: 'holesky',
-	[ChainID.KOVAN]: "kovan",
+	//[ChainID.KOVAN]: "kovan",
 	[ChainID.BSC]: "bsc",
 	[ChainID.AMOY]: "amoy",
 	[ChainID.AVALANCH]: "avalanche",

@@ -7,6 +7,7 @@ import {ViewBinding} from "../tabbed/viewBinding";
 import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {getTokenScriptWithSingleTokenContext} from "../util/getTokenScriptWithSingleTokenContext";
 import {getCardFromURL} from "../util/getCardFromURL";
+import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 
 @Component({
 	tag: 'opensea-viewer',
@@ -88,7 +89,7 @@ export class OpenseaViewer {
 
 	async processUrlLoad(){
 
-		const {chain, contract, tokenId, tokenscriptUrl} = getTokenUrlParams();
+		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -98,7 +99,15 @@ export class OpenseaViewer {
 
 		console.log("Token meta loaded!", this.tokenDetails);
 
-		this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		if (emulator){
+			const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
+			tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
+			connectEmulatorSocket(emulatorUrl, async() => {
+				await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			});
+		}
+
+		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
 	}
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
@@ -116,6 +125,12 @@ export class OpenseaViewer {
 	}
 
 	private displayInfoCard(){
+
+		if (!this.viewBinding){
+			this.viewBinding = new ViewBinding(this.host, this.showToast);
+		}
+		this.viewBinding.setTokenScript(this.tokenScript);
+		this.tokenScript.setViewBinding(this.viewBinding);
 
 		let card = getCardFromURL(this.tokenScript)?.card;
 		// If card isn't explicitly set, we show the info card by default
@@ -135,7 +150,7 @@ export class OpenseaViewer {
 				<div class="opensea-viewer">
 				{ this.tokenDetails ?
 					[
-						<div class="opensea-img-container" style={{backgroundImage: "url(" + this.tokenDetails.image + ")"}} title={this.tokenDetails.name}>
+						<div class="opensea-img-container" style={{backgroundImage: "url(" + (this.tokenDetails.image ?? (this.tokenScript ? this.tokenScript.getMetadata().imageUrl ?? this.tokenScript.getMetadata().iconUrl : '')) + ")"}} title={this.tokenDetails.name}>
 							<div class="info-button-container">
 								{ this.tokenScript ?
 									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>

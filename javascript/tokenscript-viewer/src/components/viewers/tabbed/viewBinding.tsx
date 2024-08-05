@@ -54,14 +54,14 @@ export class ViewBinding extends AbstractViewBinding {
 		elem.innerHTML = attrTable;
 	}
 
-	async confirmAction(){
+	async confirmAction(txName?: string){
 
 		this.showLoader();
 
 		try {
-			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+			await this.viewController.executeTransaction((data: ITransactionStatus) => {
 				showTransactionNotification(data, this.showToast);
-			});
+			}, txName);
 		} catch (e){
 			console.error(e);
 			handleTransactionError(e, this.showToast);
@@ -89,6 +89,9 @@ export class ViewBinding extends AbstractViewBinding {
 				break;
 			case RequestFromView.SHOW_TOAST:
 				showToastNotification(params.type, params.title, params.description);
+				break;
+			case RequestFromView.EXEC_TRANSACTION:
+				await this.confirmAction(params.txName);
 				break;
 			default:
 				await super.handleMessageFromView(method, params);

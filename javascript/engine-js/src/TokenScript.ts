@@ -286,9 +286,9 @@ export class TokenScript {
 	/**
 	 * An array of cards for the TokenScript
 	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
-	 * @param onboardingCards
+	 * @param onboardingCards null returns all cards, true returns onboarding card only & false returns token context cards only
 	 */
-	public getCards(tokenOrigin?: string, onboardingCards = false): Card[] {
+	public getCards(tokenOrigin?: string, onboardingCards: boolean|null = false): Card[] {
 
 		if (!tokenOrigin)
 			tokenOrigin = this.getCurrentTokenContext()?.originId;
@@ -311,7 +311,7 @@ export class TokenScript {
 		}
 
 		// Only return cards available for the specified token origins
-		let cards = this.cards.filter((card) => (
+		let cards = onboardingCards === null ? this.cards : this.cards.filter((card) => (
 			(!onboardingCards && card.type !== "onboarding") ||
 			(onboardingCards && card.type === "onboarding")
 		));
@@ -553,6 +553,8 @@ export class TokenScript {
 
 			const balance = tokenContext.balance ? tokenContext.balance.toString() : "0"; // bigint can't be json serialized, so it must always be string
 
+			const image = this.getMetadata().imageUrl ?? tokenDetails?.image ?? this.getMetadata().iconUrl;
+
 			data = {
 				name: tokenDetails?.name ?? tokenContext.name,
 				description: tokenDetails?.description ?? tokenContext.description,
@@ -565,7 +567,7 @@ export class TokenScript {
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
 				ownerAddress: await this.getCurrentOwnerAddress(),
-				image_preview_url: tokenDetails?.image ?? tokenContext.image,
+				image_preview_url: image,
 			};
 
 			if (tokenDetails) {
@@ -576,7 +578,7 @@ export class TokenScript {
 					type: tokenContext.tokenType,
 					name: tokenDetails.name ?? tokenDetails.data?.title,
 					description: tokenDetails.description,
-					image: tokenDetails.image,
+					image,
 					attributes: tokenDetails.attributes ?? [],
 					data: tokenDetails.data
 				}
@@ -668,20 +670,30 @@ export class TokenScript {
 	 * Any attribute using 'tokenId' reference will use this context to resolve attributes by default
 	 * @param contractName
 	 * @param tokenIndex
+	 * @param tokenId
 	 */
-	public setCurrentTokenContext(contractName: string, tokenIndex: number = null){
+	public setCurrentTokenContext(contractName: string, tokenIndex: number|null = null, tokenId: string|null = null){
 
 		if (!this.tokenMetadata[contractName]){
 			throw new Error("Cannot set token context: contractName was not found")
 		}
 
-		if (tokenIndex == null){
+		if (tokenIndex == null && tokenId){
 			this.tokenContext = this.tokenMetadata[contractName];
 			return;
 		}
 
-		if (!this.tokenMetadata[contractName].tokenDetails?.[tokenIndex]){
+		if (tokenIndex != null && !this.tokenMetadata[contractName].tokenDetails?.[tokenIndex]){
 			throw new Error("Cannot set token context: token index was not found")
+		}
+
+		if (tokenId != null){
+			const tokenDetails = this.tokenMetadata[contractName].tokenDetails;
+			if (!tokenDetails)
+				throw new Error("Cannot set token context: token ID was provided but the origin contract is a fungible token");
+			tokenIndex = tokenDetails.findIndex((tokenDetails) => tokenDetails.tokenId === tokenId);
+			if (tokenIndex === -1)
+				throw new Error(`Cannot set token context: a token with provided ID ${tokenId} was not found`);
 		}
 
 		this.tokenContext = this.tokenMetadata[contractName];

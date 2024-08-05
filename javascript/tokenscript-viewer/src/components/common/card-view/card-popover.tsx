@@ -67,7 +67,7 @@ export class CardPopover implements IViewBinding {
 		return VIEW_BINDING_JAVASCRIPT;
 	}
 
-	protected handlePostMessageFromView(event: MessageEvent) {
+	protected async handlePostMessageFromView(event: MessageEvent) {
 
 		if (!this.iframe)
 			return;
@@ -79,7 +79,7 @@ export class CardPopover implements IViewBinding {
 		if (!event.data?.method)
 			return;
 
-		this.handleMessageFromView(event.data.method, event.data?.params);
+		await this.handleMessageFromView(event.data.method, event.data?.params);
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
@@ -95,14 +95,14 @@ export class CardPopover implements IViewBinding {
 				}
 				break;
 			case RequestFromView.SHOW_TX_TOAST:
-				showTransactionNotification({
+				await showTransactionNotification({
 					status: params.status,
 					txLink: CHAIN_CONFIG[params?.chain].explorer ?  CHAIN_CONFIG[params?.chain].explorer + params.txHash : null,
 					txNumber: params.txHash
 				}, this.showToast)
 				break;
 			case RequestFromView.SHOW_TOAST:
-				showToastNotification(params.type, params.title, params.description);
+				await showToastNotification(params.type, params.title, params.description);
 				break;
 			case RequestFromView.SET_BUTTON:
 				const newOptions = {...this.buttonOptions};
@@ -112,7 +112,9 @@ export class CardPopover implements IViewBinding {
 				this.buttonOptions = newOptions;
 				break;
 			case RequestFromView.EXEC_TRANSACTION:
-				this.confirmAction();
+				// TODO: This function should be part of view controller.
+				//  The reason that it's here for now is because ITransactionListener cannot be set globally for a tokenscript instance or specified in IViewBinding.
+				await this.confirmAction(params.txName);
 				break;
 			default:
 				await this.tokenScript.getViewController().handleMessageFromView(method, params);
@@ -145,12 +147,12 @@ export class CardPopover implements IViewBinding {
 	}
 
 	protected postMessageToView(method: ViewEvent, params: any) {
-		if (this.iframe.contentWindow)
+		if (this.iframe?.contentWindow)
 			this.iframe.contentWindow.postMessage({method, params}, "*");
 	}
 
 	dispatchRpcResult(response: RpcResponse) {
-		if (this.iframe.contentWindow)
+		if (this.iframe?.contentWindow)
 			return this.iframe.contentWindow.postMessage(response, "*");
 	}
 
@@ -211,14 +213,14 @@ export class CardPopover implements IViewBinding {
 		this.loading = true;
 	}
 
-	async confirmAction(){
+	async confirmAction(txName?: string){
 
 		this.loading = true;
 
 		try {
-			await this.tokenScript.getViewController().executeTransaction(this.currentCard,(data: ITransactionStatus) => {
+			await this.tokenScript.getViewController().executeTransaction((data: ITransactionStatus) => {
 				showTransactionNotification(data, this.showToast);
-			});
+			}, txName);
 		} catch (e){
 			handleTransactionError(e, this.showToast);
 		}
@@ -228,7 +230,7 @@ export class CardPopover implements IViewBinding {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen} showShareToTg={true}>
 				<div slot="outer-content" class="view-loader" style={{display: this.loading ? "flex" : "none"}}>
 					<loading-spinner/>
 				</div>
