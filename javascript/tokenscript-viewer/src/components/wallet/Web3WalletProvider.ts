@@ -105,7 +105,8 @@ class Web3WalletProviderObj {
 
 		providers.push(getWalletInfo(StaticProviders.WalletConnectV2));
 		providers.push(getWalletInfo(StaticProviders.CoinbaseSmartWallet));
-		providers.push(getWalletInfo(StaticProviders.JoyID));
+		if (location.hostname !== "viewer.tokenscript.org")
+			providers.push(getWalletInfo(StaticProviders.JoyID));
 		providers.push(getWalletInfo(StaticProviders.Torus));
 
 		return providers;
