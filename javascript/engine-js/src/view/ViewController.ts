@@ -85,7 +85,7 @@ export class ViewController {
 
 			try {
 				await this.executeTransactionAndProcessTriggers((data: ITransactionStatus) => {
-					if (data.status === "completed")
+					if (data.status === "completed" || data.status === "aborted")
 						this.viewAdapter.showLoader(false);
 
 					this.tokenScript.emitEvent("TX_STATUS", data);
