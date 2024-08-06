@@ -2,7 +2,6 @@ import {ITokenIdContext, ITransactionListener, TokenScript} from "../TokenScript
 import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
-import {ViewEvent} from "../view/ViewController";
 
 export type CardType = "onboarding"|"token"|"action"|"activity";
 
@@ -201,7 +200,8 @@ export class Card {
 
 		// User rejection
 		if (tx === false) {
-			listener({status: "aborted"})
+			if (listener)
+				listener({status: "aborted"})
 			return false;
 		}
 

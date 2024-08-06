@@ -1,6 +1,6 @@
 import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
-import {ITransactionListener, ITransactionStatus, TokenScript} from "../TokenScript";
+import {ITransactionListener, ITransactionStatus, TokenScript, TokenScriptEvents} from "../TokenScript";
 import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
 import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
 import {TokenViewData} from "./TokenViewData";
@@ -73,9 +73,11 @@ export class ViewController {
 		return this._tokenViewData;
 	}
 
-	async executeTransaction(transactionListener?: ITransactionListener, txName?: string){
+	async executeTransaction(transactionListener?: ITransactionListener, options?: {id?: string, txName?: string}){
 
-		const transaction = this.currentCard.getTransaction(txName);
+		const transaction = this.currentCard.getTransaction(options?.txName);
+
+		this.viewAdapter.showLoader();
 
 		if (transaction){
 
@@ -83,18 +85,23 @@ export class ViewController {
 
 			try {
 				await this.executeTransactionAndProcessTriggers((data: ITransactionStatus) => {
-					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, "0");
+					this.tokenScript.emitEvent("TX_STATUS", data);
+					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, options?.id);
 					if (transactionListener)
 						transactionListener(data);
-				}, txName);
+				}, options?.txName);
 			} catch (e){
-				this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message}, "0");
+				this.tokenScript.emitEvent("TX_STATUS", {status: "error", message: e.message, error: e});
+				this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message, error: e}, options?.id);
+				this.viewAdapter.showLoader(false);
 				throw e;
 			}
 
 		} else {
-			this.dispatchViewEvent(ViewEvent.ON_CONFIRM, {}, "0");
+			this.dispatchViewEvent(ViewEvent.ON_CONFIRM, {}, options?.id);
 		}
+
+		this.viewAdapter.showLoader(false);
 	}
 
 	private async executeTransactionAndProcessTriggers(listener?: ITransactionListener, txName?: string, updateViewData = true){
@@ -122,6 +129,9 @@ export class ViewController {
 		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
 		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]))
 			await this.updateCardData();
+
+		if (listener)
+			listener({status: "completed"})
 	}
 
 	/**
@@ -261,6 +271,10 @@ export class ViewController {
 
 			case RequestFromView.LOCAL_STORAGE:
 				this.localStorageProxy.handleLocalStorageRequest(params as LocalStorageRequest);
+				break;
+
+			case RequestFromView.EXEC_TRANSACTION:
+				await this.executeTransaction(null, params);
 				break;
 
 			default:

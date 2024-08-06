@@ -1,6 +1,13 @@
 import {BrowserProvider, Contract, ethers, Network} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
-import {ITokenContextData, ITokenData, ITokenScriptSDK, IWeb3LegacySDK} from "./types";
+import {
+    ITokenContextData,
+    ITokenData,
+    ITokenScriptSDK,
+    ITransactionListener,
+    ITransactionStatus,
+    IWeb3LegacySDK, TXOptions
+} from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
 import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
 import {LocalStorageAdapter} from "./storage/localStorageAdapter";
@@ -87,8 +94,20 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => {
             this.engineAdapter.request(RequestFromView.SET_BUTTON, options);
         },
-        executeTransaction:(txName?: string) => {
-            this.engineAdapter.request(RequestFromView.EXEC_TRANSACTION, { txName });
+        executeTransaction: async (optionsOrTxName?: string|TXOptions, listener?: ITransactionListener) => {
+            if (typeof optionsOrTxName === "string")
+                optionsOrTxName = {txName: optionsOrTxName};
+
+            const result = await this.engineAdapter.request<ITransactionStatus>(RequestFromView.EXEC_TRANSACTION, optionsOrTxName, (event, data: ITransactionStatus) => {
+                if (listener)
+                    listener(data);
+                return data.status === "completed" || data.status === "aborted";
+            }) as ITransactionStatus;
+
+            if (result.status === "aborted")
+                return false;
+
+            return result;
         },
         showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TX_TOAST, { status, chain, txHash });

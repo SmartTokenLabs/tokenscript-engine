@@ -22,7 +22,7 @@ export interface IViewBinding {
 	 * @param data
 	 * @param id
 	 */
-	dispatchViewEvent(event: ViewEvent, data: any, id: string): Promise<void>|void
+	dispatchViewEvent(event: ViewEvent, data: any, id: string|null): Promise<void>|void
 	/**
 	 * Dispatch an event
 	 * @param response RpcResponse
@@ -46,4 +46,8 @@ export interface IViewBinding {
 	 * Indicate that an error has occurred while loading the view
 	 */
 	viewError(error: Error): Promise<void>|void
+	/**
+	 * Show or hide loader
+	 */
+	showLoader(show?: boolean): Promise<void>|void
 }

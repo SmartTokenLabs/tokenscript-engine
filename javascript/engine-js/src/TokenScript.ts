@@ -34,6 +34,7 @@ export interface ITokenIdContext {
 export interface TokenScriptEvents {
 	TOKENS_UPDATED: TokensUpdatedEventArgs
 	TOKENS_LOADING: void
+	TX_STATUS: ITransactionStatus
 }
 
 export interface TokensUpdatedEventArgs {
@@ -45,10 +46,12 @@ export type EventHandler = (data: any) => Promise<void>|void;
 export type TokenMetadataMap = { [contractName: string]: ITokenCollection };
 
 export interface ITransactionStatus {
-	status: 'started'|'aborted'|'submitted'|'confirmed',
+	status: 'started'|'aborted'|'submitted'|'confirmed'|'completed'|'error',
 	txNumber?: string,
 	txLink?: string,
-	txRecord?: any
+	txRecord?: any,
+	message?: string,
+	error?: any,
 }
 
 export interface ITransactionListener {
@@ -127,7 +130,7 @@ export class TokenScript {
 	 * @param params
 	 * @private
 	 */
-	private emitEvent<
+	public emitEvent<
 		T extends keyof TokenScriptEvents, // <- T points to a key
 		R extends (TokenScriptEvents)[T] // <- R points to the type of that key
 	>(eventType: T, params?: R) {

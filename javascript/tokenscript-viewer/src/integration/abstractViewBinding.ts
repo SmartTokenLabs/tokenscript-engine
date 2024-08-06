@@ -72,8 +72,12 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 	}
 
-	protected showLoader() {
-		this.loader.style.display = "flex";
+	public showLoader(show = true) {
+		if (show){
+			this.loader.style.display = "flex";
+		} else {
+			this.hideLoader();
+		}
 	}
 
 	protected hideLoader() {

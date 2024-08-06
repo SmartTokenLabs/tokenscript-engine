@@ -6,6 +6,21 @@ export {ITokenContextData};
 
 export type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
 
+export interface ITransactionStatus {
+	status: 'started'|'aborted'|'submitted'|'confirmed'|'completed',
+	txNumber?: string,
+	txLink?: string,
+	txRecord?: any
+}
+
+export interface ITransactionListener {
+	(data: ITransactionStatus): void|Promise<void>
+}
+
+export interface TXOptions {
+	txName?: string
+}
+
 export interface ITokenData {
 	currentInstance: ITokenContextData
 }
@@ -24,7 +39,7 @@ export interface IWeb3LegacySDK {
 		showLoader: () => void,
 		hideLoader: () => void,
 		setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => void,
-		executeTransaction: (txName: string) => void,
+		executeTransaction: (txName?: string|TXOptions, listener?: ITransactionListener) => Promise<any>,
 		showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => void,
 		showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => void,
 		closeCard: () => void,

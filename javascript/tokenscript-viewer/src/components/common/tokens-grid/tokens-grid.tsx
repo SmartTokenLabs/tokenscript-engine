@@ -71,6 +71,8 @@ export class TokensGrid {
 	@Watch("tokenScript")
 	private async initTokenScript(){
 
+		this.urlActionInvoked = false;
+
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
 			await this.invokeUrlAction();

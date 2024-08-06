@@ -49,6 +49,13 @@ export class CardPopover implements IViewBinding {
 	@Watch('tokenScript')
 	async loadTs(){
 		this.tokenScript.setViewBinding(this);
+		this.tokenScript.on("TX_STATUS", (data: ITransactionStatus) => {
+			if (data.status !== "error"){
+				showTransactionNotification(data, this.showToast);
+			} else {
+				handleTransactionError(data.error, this.showToast);
+			}
+		}, "card-popover");
 	}
 
 	async componentDidLoad() {
@@ -61,6 +68,14 @@ export class CardPopover implements IViewBinding {
 
 	hideLoader(){
 		setTimeout(() => this.loading = false, 200);
+	}
+
+	showLoader(show = true) {
+		if (show){
+			this.loading = true;
+		} else {
+			this.hideLoader();
+		}
 	}
 
 	getViewBindingJavascript(): string {
@@ -88,11 +103,7 @@ export class CardPopover implements IViewBinding {
 
 		switch (method){
 			case RequestFromView.SET_LOADER:
-				if (params.show == true){
-					this.loading = true;
-				} else {
-					this.hideLoader();
-				}
+				this.showLoader(params.show);
 				break;
 			case RequestFromView.SHOW_TX_TOAST:
 				await showTransactionNotification({
@@ -110,11 +121,6 @@ export class CardPopover implements IViewBinding {
 					newOptions[i] = params[i];
 				}
 				this.buttonOptions = newOptions;
-				break;
-			case RequestFromView.EXEC_TRANSACTION:
-				// TODO: This function should be part of view controller.
-				//  The reason that it's here for now is because ITransactionListener cannot be set globally for a tokenscript instance or specified in IViewBinding.
-				await this.confirmAction(params.txName);
 				break;
 			default:
 				await this.tokenScript.getViewController().handleMessageFromView(method, params);
@@ -213,19 +219,8 @@ export class CardPopover implements IViewBinding {
 		this.loading = true;
 	}
 
-	async confirmAction(txName?: string){
-
-		this.loading = true;
-
-		try {
-			await this.tokenScript.getViewController().executeTransaction((data: ITransactionStatus) => {
-				showTransactionNotification(data, this.showToast);
-			}, txName);
-		} catch (e){
-			handleTransactionError(e, this.showToast);
-		}
-
-		this.loading = false
+	async confirmAction(){
+		await this.tokenScript.getViewController().executeTransaction();
 	}
 
 	render(){
