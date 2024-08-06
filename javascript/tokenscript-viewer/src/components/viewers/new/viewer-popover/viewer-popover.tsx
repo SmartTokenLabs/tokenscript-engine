@@ -134,7 +134,7 @@ export class ViewerPopover {
 				if (data.status === "started")
 					this.showLoader.emit();
 
-				if (data.status === "confirmed")
+				if (data.status === "completed")
 					this.hideLoader.emit();
 
 				await showTransactionNotification(data, this.showToast);

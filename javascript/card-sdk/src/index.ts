@@ -35,8 +35,6 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
     private _instanceData: IInstanceData;
 
-    private web3CallBacks = {};
-
     public get instanceData () {
         return this._instanceData;
     }
@@ -50,25 +48,20 @@ class Web3LegacySDK implements IWeb3LegacySDK {
         this.tokens.data.currentInstance = this.instanceData.currentTokenInstance;
     }
 
-    // TODO: Move to postMessage adapter
-    public executeCallback (id: number, error: string, value: any) {
-        console.debug('Execute callback: ' + id + ' ' + value)
-        this.web3CallBacks[id](error, value)
-        delete this.web3CallBacks[id]
-    }
-
     public readonly personal = {
-        sign: (msgParams: {data: string, id?: number}, cb: (error, data) => void) => {
+        sign: async (msgParams: {data: string}, cb?: (error: any, data: string) => void) => {
 
-            if (!msgParams.id)
-                msgParams.id = Date.now();
+            try {
+                const res = await this.engineAdapter.request<{result: string}>(RequestFromView.SIGN_PERSONAL_MESSAGE, msgParams, true) as {result: string};
 
-            this.web3CallBacks[msgParams.id] = cb;
-
-            this.engineAdapter.request(RequestFromView.SIGN_PERSONAL_MESSAGE, msgParams);
-
-            // @ts-ignore
-            //alpha.signPersonalMessage(id, data);
+                if (!cb)
+                    return res.result;
+                cb(null, res.result);
+            } catch (e) {
+                if (!cb)
+                    throw e;
+                cb(e, null);
+            }
         }
     };
 
@@ -197,5 +190,4 @@ window.ethers = ethers;
 window.tokenscript = new TokenScriptSDK();
 window.web3 = window.tokenscript;
 window.ethereum = new IFrameEthereumProvider();
-window.executeCallback = (id: number, error: string, value: any) => window.web3.executeCallback(id, error, value);
 

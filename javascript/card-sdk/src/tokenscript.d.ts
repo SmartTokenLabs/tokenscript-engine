@@ -9,7 +9,6 @@ export declare global {
 		ethers: Ethers
 		web3: IWeb3LegacySDK,
 		tokenscript: ITokenScriptSDK,
-		executeCallback: (id: number, error: string, value: any) => void
 		onConfirm?: () => void|Promise<void>
 		ethereum: Eip1193Provider
 	}

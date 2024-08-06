@@ -4,7 +4,7 @@ import {IInstanceData} from "../index";
 import {AbstractProvider, Contract} from "ethers";
 export {ITokenContextData};
 
-export type SignPersonalFunc = (msgParams: {data: string}, callback: (error, data) => void) => void;
+export type SignPersonalFunc = (msgParams: {data: string}, callback?: (error: any, data: string) => void) => void|Promise<string>;
 
 export interface ITransactionStatus {
 	status: 'started'|'aborted'|'submitted'|'confirmed'|'completed',
@@ -28,12 +28,10 @@ export interface ITokenData {
 export interface IWeb3LegacySDK {
 	engineAdapter: IEngineAdapter;
 	instanceData: IInstanceData;
-
 	tokens: {
 		data: ITokenData,
 		dataChanged: (prevTokens: any, newTokens: ITokenData, id: string) => void
 	}
-	executeCallback: (id: number, error: string, value: any) => void
 	action: {
 		setProps: (data: any) => void,
 		showLoader: () => void,

@@ -44,10 +44,6 @@ export class PostMessageAdapter implements IEngineAdapter {
 				window.onConfirm();
 				break;
 
-			case ViewEvent.EXECUTE_CALLBACK:
-				this.sdk.executeCallback(params.id, params.error, params.result);
-				break;
-
 			case ViewEvent.GET_USER_INPUT:
 				this.sendUserInputValues();
 		}
@@ -101,7 +97,15 @@ export class PostMessageAdapter implements IEngineAdapter {
 		});
 	}
 
-	request(method: RequestFromView, params: any, listener?: true|IResponseListener<any>){
+	/**
+	 *
+	 * @param method The method to return to the view
+	 * @param params The data for the request
+	 * @param listener If true or a function, this function will return a promise which will be resolved once the request is completed
+	 *                 If true, the first response received from the engine with the matching request ID will resolve the promise
+	 *                 If a function is supplied, it is invoked to determine whether this is the last message and should resolve based on it's return boolean.
+	 */
+	async request(method: RequestFromView, params: any, listener?: true|IResponseListener<any>){
 
 		if (listener){
 
@@ -110,7 +114,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 				const id = Date.now();
 
 				this.responseListeners[id] = {
-					processResponse: (event: ViewEvent, data: any) => {
+					processResponse: async (event: ViewEvent, data: any) => {
 						if (typeof listener === "function")
 							return listener(event, data);
 						return true;

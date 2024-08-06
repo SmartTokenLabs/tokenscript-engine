@@ -24,7 +24,7 @@ export enum RequestFromView {
 
 export interface IEngineAdapter {
 	// TODO: Overload for each RequestFromView to provide params type
-	request<T>(method: RequestFromView, params: any, listener?: IResponseListener<T>): T | Promise<T>;
+	request<T>(method: RequestFromView, params: any, listener?: true|IResponseListener<T>): T | Promise<T>;
 }
 
 export type IResponseListener<T> = (event: ViewEvent, data: T) => boolean | Promise<boolean>;
