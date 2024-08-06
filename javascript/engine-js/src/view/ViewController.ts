@@ -77,31 +77,32 @@ export class ViewController {
 
 		const transaction = this.currentCard.getTransaction(options?.txName);
 
-		this.viewAdapter.showLoader();
-
 		if (transaction){
 
 			console.log(transaction.getTransactionInfo());
 
+			this.viewAdapter.showLoader();
+
 			try {
 				await this.executeTransactionAndProcessTriggers((data: ITransactionStatus) => {
+					if (data.status === "completed")
+						this.viewAdapter.showLoader(false);
+
 					this.tokenScript.emitEvent("TX_STATUS", data);
 					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, options?.id);
 					if (transactionListener)
 						transactionListener(data);
 				}, options?.txName);
 			} catch (e){
+				this.viewAdapter.showLoader(false);
 				this.tokenScript.emitEvent("TX_STATUS", {status: "error", message: e.message, error: e});
 				this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, {status: "error", message: e.message, error: e}, options?.id);
-				this.viewAdapter.showLoader(false);
 				throw e;
 			}
 
 		} else {
 			this.dispatchViewEvent(ViewEvent.ON_CONFIRM, {}, options?.id);
 		}
-
-		this.viewAdapter.showLoader(false);
 	}
 
 	private async executeTransactionAndProcessTriggers(listener?: ITransactionListener, txName?: string, updateViewData = true){

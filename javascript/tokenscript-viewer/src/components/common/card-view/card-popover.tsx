@@ -67,10 +67,10 @@ export class CardPopover implements IViewBinding {
 	}
 
 	hideLoader(){
-		setTimeout(() => this.loading = false, 200);
+		this.loading = false;
 	}
 
-	showLoader(show = true) {
+	showLoader(show= true) {
 		if (show){
 			this.loading = true;
 		} else {
