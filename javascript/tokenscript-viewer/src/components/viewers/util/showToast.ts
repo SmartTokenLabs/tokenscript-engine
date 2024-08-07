@@ -7,7 +7,7 @@ export async function showToastNotification(type: 'success'|'info'|'warning'|'er
 	await cbToast.Toast({
 		title,
 		description: description ?? "-",
-		timeOut: 30000,
+		timeOut: 10000,
 		position,
 		type
 	});
