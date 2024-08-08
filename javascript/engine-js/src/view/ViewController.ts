@@ -289,6 +289,7 @@ export class ViewController {
 	private async signPersonalMessage(id, data){
 
 		try {
+			this.viewAdapter.showLoader();
 			let res = await this.tokenScript.getEngine().signPersonalMessage(data);
 
 			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: null, result: res}, id);
@@ -297,6 +298,8 @@ export class ViewController {
 			console.error(e);
 			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: e.message, result: null}, id);
 		}
+
+		this.viewAdapter.showLoader(false);
 	}
 
 	/**
