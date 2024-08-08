@@ -171,15 +171,12 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 				console.log("ViewEvent.TOKENS_UPDATED");
 
-				//this.iframe.contentWindow.web3.tokens.dataChanged(tokens, tokens, cardId);
 				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id});
 
 				this.hideLoader();
 				return;
 
-			case ViewEvent.EXECUTE_CALLBACK:
-			case ViewEvent.GET_USER_INPUT:
-			case ViewEvent.ON_CONFIRM:
+			default:
 				this.postMessageToView(event, {...data, id});
 				return;
 		}

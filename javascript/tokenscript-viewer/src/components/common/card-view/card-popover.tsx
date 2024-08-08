@@ -139,14 +139,9 @@ export class CardPopover implements IViewBinding {
 				console.log("ViewEvent.TOKENS_UPDATED");
 
 				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id});
-
-				//this.hideLoader();
 				return;
 
-			case ViewEvent.EXECUTE_CALLBACK:
-			case ViewEvent.GET_USER_INPUT:
-			case ViewEvent.ON_CONFIRM:
-			case ViewEvent.TRANSACTION_EVENT:
+			default:
 				this.postMessageToView(event, {...data, id});
 				return;
 		}
