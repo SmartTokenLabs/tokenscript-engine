@@ -112,16 +112,11 @@ export class OpenseaViewer {
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
-		try {
-			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
-			this.viewBinding = new ViewBinding(this.host, this.showToast);
-			this.viewBinding.setTokenScript(this.tokenScript);
-			this.tokenScript.setViewBinding(this.viewBinding);
-
-		} catch (e){
-			console.warn(e.message);
-		}
+		this.viewBinding = new ViewBinding(this.host, this.showToast);
+		this.viewBinding.setTokenScript(this.tokenScript);
+		this.tokenScript.setViewBinding(this.viewBinding);
 	}
 
 	private displayInfoCard(){

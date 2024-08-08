@@ -148,11 +148,12 @@ export class TokenViewer {
 			this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
 		} catch (e) {
 			console.warn(e.message);
-			this.showToast.emit({
+			// We fail silently since joy.id uses this view for all NFT details, even ones without a tokenscript
+			/*this.showToast.emit({
 				type: 'error',
 				title: "Failed to load TokenScript",
 				description: e.message
-			});
+			});*/
 			this.description = this.tokenDetails.description;
 		}
 	}
