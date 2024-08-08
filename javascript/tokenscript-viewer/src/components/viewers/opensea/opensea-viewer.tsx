@@ -113,10 +113,6 @@ export class OpenseaViewer {
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
 		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
-
-		this.viewBinding = new ViewBinding(this.host, this.showToast);
-		this.viewBinding.setTokenScript(this.tokenScript);
-		this.tokenScript.setViewBinding(this.viewBinding);
 	}
 
 	private displayInfoCard(){
@@ -129,8 +125,15 @@ export class OpenseaViewer {
 
 		let card = getCardFromURL(this.tokenScript)?.card;
 		// If card isn't explicitly set, we show the info card by default
-		if (!card)
-			card = this.tokenScript.getCards().find((card) => card.type === "token");
+		if (!card) {
+			const publicCards = this.tokenScript.getCards().getPublicCards();
+			if (publicCards.length){
+				card = publicCards[0];
+			} else {
+				card = this.tokenScript.getCards()
+					.filterCards(undefined, ["token"])?.[0];
+			}
+		}
 
 		if (card) {
 			this.tokenScript.showOrExecuteTokenCard(card);

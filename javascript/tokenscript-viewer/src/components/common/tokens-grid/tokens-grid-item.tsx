@@ -45,7 +45,7 @@ export class TokensGridItem {
 			selectedTokenId: ("tokenId" in this.token) ? this.token.tokenId : undefined
 		}
 
-		const cards = this.tokenScript.getCards(this.token.originId);
+		const cards = this.tokenScript.getCards().filterCards(this.token.originId);
 
 		for (let [index, card] of cards.entries()){
 

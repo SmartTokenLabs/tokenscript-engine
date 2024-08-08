@@ -22,7 +22,8 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		this.loader = view.querySelector(".view-loader") as HTMLDivElement;
 		this.actionBar = view.querySelector(".action-bar") as HTMLDivElement;
 		this.actionBtn = view.querySelector(".action-btn") as HTMLButtonElement;
-		this.actionBtn.addEventListener('click', this.confirmAction.bind(this));
+		if (this.actionBtn)
+			this.actionBtn.addEventListener('click', this.confirmAction.bind(this));
 
 		window.addEventListener("message", this.handlePostMessageFromView.bind(this));
 	}

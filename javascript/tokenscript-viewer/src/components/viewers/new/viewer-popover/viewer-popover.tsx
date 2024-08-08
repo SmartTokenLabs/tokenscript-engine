@@ -55,7 +55,7 @@ export class ViewerPopover {
 	async open(tokenScript: TokenScript){
 		this.tokenScript = tokenScript;
 
-		const onboardingCards = tokenScript.getCards(null, true);
+		const onboardingCards = tokenScript.getCards().getOnboardingCards();
 
 		const enabledCards = [];
 
@@ -183,7 +183,7 @@ export class ViewerPopover {
 						<div>
 							<button class="btn" style={{marginRight: "5px", minWidth: "35px", fontSize: "16px"}}
 									onClick={() => {
-										this.tokenScript.getCards().forEach((card) => {
+										this.tokenScript.getCards().getAllCards().forEach((card) => {
 											card.getAttributes().invalidate()
 										})
 										this.tokenScript.getAttributes().invalidate()

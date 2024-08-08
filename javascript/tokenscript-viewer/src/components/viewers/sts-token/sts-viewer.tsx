@@ -213,7 +213,7 @@ export class SmartTokenStoreViewer {
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
 
-		const cards = this.tokenScript.getCards();
+		const cards = this.tokenScript.getCards().filterCards();
 
 		for (let [index, card] of cards.entries()){
 

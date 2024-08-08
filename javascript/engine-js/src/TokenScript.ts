@@ -18,6 +18,7 @@ import {ethers} from "ethers";
 import {ViewStyles} from "./view/ViewStyles";
 import {TransactionValidator} from "./security/TransactionValidator";
 import {Contracts} from "./tokenScript/Contracts";
+import {Cards} from "./tokenScript/Cards";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -76,7 +77,7 @@ export class TokenScript {
 
 	private tokenMetadata?: TokenMetadataMap;
 
-	private cards?: Card[];
+	private cards?: Cards;
 
 	private attributes?: Attributes;
 
@@ -287,50 +288,17 @@ export class TokenScript {
 	}
 
 	/**
-	 * An array of cards for the TokenScript
-	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
-	 * @param onboardingCards null returns all cards, true returns onboarding card only & false returns token context cards only
+	 * Cards for the TokenScript
 	 */
-	public getCards(tokenOrigin?: string, onboardingCards: boolean|null = false): Card[] {
-
-		if (!tokenOrigin)
-			tokenOrigin = this.getCurrentTokenContext()?.originId;
-
-		if (!this.cards) {
-
-			let cardsXml = this.tokenDef.documentElement.getElementsByTagName("ts:card");
-
-			this.cards = [];
-
-			for (let i in cardsXml) {
-
-				if (!cardsXml.hasOwnProperty(i))
-					continue;
-
-				const card = new Card(this, cardsXml[i]);
-
-				this.cards.push(card);
-			}
+	public getCards(): Cards {
+		if (!this.cards){
+			this.cards = new Cards(this);
 		}
-
-		// Only return cards available for the specified token origins
-		let cards = onboardingCards === null ? this.cards : this.cards.filter((card) => (
-			(!onboardingCards && card.type !== "onboarding") ||
-			(onboardingCards && card.type === "onboarding")
-		));
-
-		if (tokenOrigin){
-			cards = cards.filter((card) => {
-				return card.origins.length === 0 || card.origins.indexOf(tokenOrigin) > -1;
-			});
-		}
-
-		return cards;
+		return this.cards;
 	}
 
 	/**
 	 * Contracts for the TokenScript
-	 * @param originsOnly
 	 */
 	public getContracts() {
 

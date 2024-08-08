@@ -255,9 +255,7 @@ export class ViewController {
 					this.tokenScript.setCurrentTokenContext(originId, null, tokenId);
 				}
 
-				const card = this.tokenScript.getCards(originId, undefined).find((card) => {
-					return card.name === name;
-				});
+				const card = this.tokenScript.getCards().getCardByName(name);
 
 				if (!card)
 					throw new Error(`Cannot open card. A card with name ${name} does not exist`);

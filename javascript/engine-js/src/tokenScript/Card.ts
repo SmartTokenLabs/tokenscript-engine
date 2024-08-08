@@ -3,7 +3,7 @@ import {Transaction} from "./Transaction";
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
 
-export type CardType = "onboarding"|"token"|"action"|"activity";
+export type CardType = "onboarding"|"public"|"token"|"action"|"activity";
 
 export class Card {
 
