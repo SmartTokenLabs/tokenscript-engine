@@ -1,11 +1,11 @@
 import {IEngineAdapter, IResponseListener, IResponseListenerEntry, RequestFromView, ViewEvent} from "./IEngineAdapter";
-import {IWeb3LegacySDK} from "../types";
+import {ITokenScriptSDK} from "../types";
 
 export class PostMessageAdapter implements IEngineAdapter {
 
 	private responseListeners: Record<number, IResponseListenerEntry> = {};
 
-	constructor(private sdk: IWeb3LegacySDK) {
+	constructor(private sdk: ITokenScriptSDK) {
 
 		window.addEventListener("message", this.handleMessageResponse.bind(this));
 
@@ -35,6 +35,8 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 		const params = event.data?.params;
 
+		console.log("Event: ", event.data);
+
 		switch (event.data?.method) {
 			case ViewEvent.TOKENS_UPDATED:
 				this.sdk.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
@@ -46,6 +48,10 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 			case ViewEvent.GET_USER_INPUT:
 				this.sendUserInputValues();
+				break;
+
+			case ViewEvent.TRANSACTION_EVENT:
+				this.sdk.emitEvent("TRANSACTION_EVENT", params);
 		}
 
 		if (params?.id && this.responseListeners[params.id]) {
