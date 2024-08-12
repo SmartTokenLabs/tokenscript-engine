@@ -1,12 +1,14 @@
 import {BrowserProvider, Contract, ethers, Network} from "ethers";
 import {IFrameEthereumProvider} from "./ethereum/IframeEthereumProvider";
 import {
+    EventHandler,
     ITokenContextData,
     ITokenData,
     ITokenScriptSDK,
     ITransactionListener,
     ITransactionStatus,
-    IWeb3LegacySDK, TXOptions
+    TokenScriptEvents,
+    TXOptions
 } from "./types";
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
 import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
@@ -29,9 +31,13 @@ export interface IInstanceData {
     }}
 }
 
-class Web3LegacySDK implements IWeb3LegacySDK {
+class TokenScriptSDK  implements ITokenScriptSDK {
 
     public readonly engineAdapter: IEngineAdapter;
+
+    private readonly localStorageAdapter: LocalStorageAdapter;
+
+    private eventHandlers: {[eventName: string]: {[handlerId: string]: EventHandler}} = {};
 
     private _instanceData: IInstanceData;
 
@@ -41,6 +47,7 @@ class Web3LegacySDK implements IWeb3LegacySDK {
 
     constructor() {
         this.engineAdapter = new PostMessageAdapter(this);
+        this.localStorageAdapter = new LocalStorageAdapter(this);
     }
 
     public setInstanceData(instanceData: IInstanceData) {
@@ -115,16 +122,6 @@ class Web3LegacySDK implements IWeb3LegacySDK {
             this.engineAdapter.request(RequestFromView.OPEN_CARD, {name, originId, tokenId});
         }
     }
-}
-
-class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
-
-    private readonly localStorageAdapter: LocalStorageAdapter;
-
-    constructor() {
-        super();
-        this.localStorageAdapter = new LocalStorageAdapter(this);
-    }
 
     public get env() {
         return this.instanceData.env;
@@ -183,6 +180,56 @@ class TokenScriptSDK extends Web3LegacySDK implements ITokenScriptSDK {
                 writable ? new BrowserProvider(window.ethereum, Network.from(addressInfo.chain)) : this.eth.getRpcProvider(addressInfo.chain)
             );
         },
+    }
+
+    /**
+     * Emit a TokenScript engine event to the user-agent
+     * @param eventType
+     * @param params
+     * @private
+     */
+    public emitEvent<
+        T extends keyof TokenScriptEvents, // <- T points to a key
+        R extends (TokenScriptEvents)[T] // <- R points to the type of that key
+    >(eventType: T, params?: R) {
+        if (this.eventHandlers[eventType])
+            for (const handler of Object.values(this.eventHandlers[eventType])){
+                handler(params);
+            }
+    }
+
+    /**
+     * Register an event listener to receive TokenScript engine events
+     * @param eventType
+     * @param callback
+     * @param id - The ID of the event handler, used to avoid duplicate handlers & remove handlers
+     */
+    public on<
+        T extends keyof TokenScriptEvents,
+        R extends (data: ((TokenScriptEvents)[T])) => Promise<void>|void
+    >(eventType: T, callback: R, id: string = "default"){
+
+        if (!this.eventHandlers[eventType])
+            this.eventHandlers[eventType] = {};
+
+        this.eventHandlers[eventType][id] = callback;
+    }
+
+    /**
+     * Remove an event listener
+     * @param eventType
+     * @param id The ID of the handler to remove - if not specified then all handlers are removed.
+     */
+    public off<
+        T extends keyof TokenScriptEvents,
+    >(eventType: T, id?: string){
+
+        if (!id) {
+            delete this.eventHandlers[eventType];
+            return;
+        }
+
+        delete this.eventHandlers[eventType][id];
     }
 }
 

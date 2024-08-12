@@ -25,7 +25,15 @@ export interface ITokenData {
 	currentInstance: ITokenContextData
 }
 
-export interface IWeb3LegacySDK {
+export type EventHandler = (data: any) => Promise<void>|void;
+
+export type EventName = "TRANSACTION_EVENT";
+
+export interface TokenScriptEvents {
+	TRANSACTION_EVENT: ITransactionStatus
+}
+
+export interface ITokenScriptSDK {
 	engineAdapter: IEngineAdapter;
 	instanceData: IInstanceData;
 	tokens: {
@@ -46,9 +54,6 @@ export interface IWeb3LegacySDK {
 	personal: {
 		sign: SignPersonalFunc
 	}
-}
-
-export interface ITokenScriptSDK extends IWeb3LegacySDK {
 	eth: {
 		getRpcUrls: (chain: number) => string[]
 		getRpcProvider: (chain: number) => AbstractProvider
@@ -56,4 +61,13 @@ export interface ITokenScriptSDK extends IWeb3LegacySDK {
 		getContractInstance: (name: string, chain?: number) => Contract
 	}
 	env: {[key: string]: string}
+	emitEvent: <
+			T extends keyof TokenScriptEvents, // <- T points to a key
+			R extends (TokenScriptEvents)[T] // <- R points to the type of that key
+		>(eventType: T, params?: R) => void
+	on: <
+			T extends keyof TokenScriptEvents,
+			R extends (data: ((TokenScriptEvents)[T])) => Promise<void>|void
+		>(eventType: T, callback: R, id: string) => void
+	off: <T extends keyof TokenScriptEvents, >(eventType: T, id?: string) => void
 }
