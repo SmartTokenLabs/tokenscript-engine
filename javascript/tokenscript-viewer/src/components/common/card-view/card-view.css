@@ -29,6 +29,10 @@
 	display: flex;
 }
 
+.iframe-wrapper {
+	background: #fff;
+}
+
 .tokenscript-frame {
 	width: 100%;
 	flex-grow: 1;
