@@ -32,6 +32,9 @@ export class OpenseaViewer {
 	@State()
 	showInfoCard = false;
 
+	@State()
+	tsLoading = true;
+
 	viewBinding: ViewBinding;
 
 	urlRequest: URLSearchParams;
@@ -112,7 +115,13 @@ export class OpenseaViewer {
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		try {
+			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		} catch (e){
+			console.error("Failed to load TokenScript", e);
+		}
+
+		this.tsLoading = false;
 	}
 
 	private displayInfoCard(){
@@ -154,7 +163,7 @@ export class OpenseaViewer {
 									<div class="info-button" title="Token Information" onClick={() => this.displayInfoCard()}>
 										<img alt="Smart Layer" title="Token Information" src="/assets/icon/sl-icon-white.png" />
 									</div> :
-									<loading-spinner size="small" />
+									(this.tsLoading ? <loading-spinner size="small" /> : '')
 								}
 							</div>
 						</div>,

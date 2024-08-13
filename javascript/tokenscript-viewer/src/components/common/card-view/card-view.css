@@ -27,9 +27,6 @@
 	position: relative;
 	flex-grow: 1;
 	display: flex;
-}
-
-.iframe-wrapper {
 	background: #fff;
 }
 
