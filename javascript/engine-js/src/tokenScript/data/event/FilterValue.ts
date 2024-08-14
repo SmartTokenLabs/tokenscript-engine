@@ -1,5 +1,4 @@
 import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
-import {EthUtils} from "../../../ethereum/EthUtils";
 import {ITokenIdContext, TokenScript} from "../../../TokenScript";
 import {Attributes} from "../../Attributes";
 
@@ -23,8 +22,6 @@ export class FilterValue extends AbstractDependencyBranch {
 
 		const attr = this.getBackingAttribute();
 
-		const value = await attr.getValue(true, false, false, tokenContext);
-
-		return EthUtils.encodeTransactionParameter(this.type, value);
+		return await attr.getValue(true, false, false, tokenContext);
 	}
 }

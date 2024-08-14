@@ -1,3 +1,6 @@
+import {ITokenIdContext, TokenScript} from "../../TokenScript";
+import {FilterValue} from "../data/event/FilterValue";
+
 export enum TokenType {
 	Reserved = 'reserved',
 	Value = 'value',
@@ -86,20 +89,6 @@ export class ImplicitAttribute implements AttributeWrapper {
 
 	getValue(throwOnUndefined: boolean): Promise<any> {
 		return this.value;
-	}
-}
-
-export class FilterParser {
-	private expression: string;
-
-	constructor(expression: string) {
-		this.expression = expression;
-	}
-
-	public async parse(attributes: { [key: string]: AttributeWrapper }, ownerAddress: string, symbol: string, fungibleBalance?: bigint): Promise<boolean> {
-		const tokens: Token[] = new Lexer().tokenize(this.expression);
-		const implicitValues: { [key: string]: AttributeWrapper } = Parser.valuesWithImplicitValues(attributes, ownerAddress, symbol, fungibleBalance);
-		return await (new Parser(tokens, implicitValues).parse());
 	}
 }
 
@@ -255,41 +244,37 @@ interface AttributeValue {
 
 export class Parser {
 
-	private attributes: { [key: string]: AttributeWrapper };
 	private values: { [key: string]: AttributeValue } = {};
-	private tokens: Token[];
-
-	public static valuesWithImplicitValues(values: { [key: string]: AttributeWrapper }, ownerAddress: string, symbol: string, fungibleBalance?: bigint): { [key: string]: AttributeWrapper } {
-
-		//const todayString = (new Date()).toISOString(); // TODO: Confirm format
-
-		const implicitValues = {
-			"symbol": new ImplicitAttribute('string', symbol),
-			"today": new ImplicitAttribute('generalisedTime', (new Date()).getTime()),
-			"ownerAddress": new ImplicitAttribute('string', ownerAddress),
-		};
-
-		if (fungibleBalance !== undefined) {
-			implicitValues["balance"] = new ImplicitAttribute('integer', fungibleBalance);
-		}
-
-		return { ...values, ...implicitValues };
-	}
 
 	private async getAttributeValue(key: string){
+
 		if (!this.values[key]){
+
+			const attributeReference = new FilterValue(this.tokenscript, key);
+			const value = await attributeReference.getValue(this.tokenContext);
+			let type = "string"
+
+			switch (typeof value) {
+				case "boolean":
+					type = "bool";
+					break;
+			}
+
 			this.values[key] = {
-				type: this.attributes[key].getAsType(),
-				value: await this.attributes[key].getValue(false) // TODO: Maybe this should throw?
+				type,
+				value
 			}
 		}
 
 		return this.values[key];
 	}
 
-	public constructor(tokens: Token[], attributes: { [key: string]: AttributeWrapper }) {
-		this.tokens = tokens;
-		this.attributes = attributes;
+	public constructor(
+		private tokenscript: TokenScript,
+		private tokenContext: ITokenIdContext,
+		private tokens: Token[]
+	) {
+
 	}
 
 	private isExpected(expectedToken: Token): boolean {
@@ -472,7 +457,9 @@ export class Parser {
 			case 'uint':
 				return attributeValue.value.toString();
 			case 'generalisedTime':
-				return (new Date(attributeValue.value)).toISOString();
+				return typeof attributeValue.value === "string" ?
+					attributeValue.value :
+					(new Date(attributeValue.value * 1000)).toISOString();
 			default:
 				return '';
 		}
