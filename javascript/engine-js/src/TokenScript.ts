@@ -649,7 +649,7 @@ export class TokenScript {
 			throw new Error("Cannot set token context: contractName was not found")
 		}
 
-		if (tokenIndex == null && tokenId){
+		if (tokenIndex == null && tokenId == null){
 			this.tokenContext = this.tokenMetadata[contractName];
 			return;
 		}
