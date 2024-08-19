@@ -1,0 +1,36 @@
+diff --git a/node_modules/@joyid/ethereum-provider/dist/index.js b/node_modules/@joyid/ethereum-provider/dist/index.js
+index 994b6cc..922a08d 100644
+--- a/node_modules/@joyid/ethereum-provider/dist/index.js
++++ b/node_modules/@joyid/ethereum-provider/dist/index.js
+@@ -52,6 +52,7 @@ var EthereumProvider = class extends _eventemitter32.default {
+         }
+         case "wallet_switchEthereumChain": {
+           const [chainId] = args.params;
++		  this.switchChain(chainId);
+           this.emit("chainChanged", chainId);
+           return void 0;
+         }
+diff --git a/node_modules/@joyid/ethereum-provider/dist/index.mjs b/node_modules/@joyid/ethereum-provider/dist/index.mjs
+index e182344..3746b80 100644
+--- a/node_modules/@joyid/ethereum-provider/dist/index.mjs
++++ b/node_modules/@joyid/ethereum-provider/dist/index.mjs
+@@ -52,6 +52,7 @@ var EthereumProvider = class extends EventEmitter {
+         }
+         case "wallet_switchEthereumChain": {
+           const [chainId] = args.params;
++		  this.switchChain(chainId);
+           this.emit("chainChanged", chainId);
+           return void 0;
+         }
+diff --git a/node_modules/@joyid/ethereum-provider/src/index.ts b/node_modules/@joyid/ethereum-provider/src/index.ts
+index 2bb2aa8..0c55f0c 100644
+--- a/node_modules/@joyid/ethereum-provider/src/index.ts
++++ b/node_modules/@joyid/ethereum-provider/src/index.ts
+@@ -150,6 +150,7 @@ export class EthereumProvider extends EventEmitter {
+       }
+       case 'wallet_switchEthereumChain': {
+         const [chainId] = args.params as [chainId: string]
++        this.switchChain(chainId)
+         this.emit('chainChanged', chainId)
+         return undefined
+       }
