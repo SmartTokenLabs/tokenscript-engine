@@ -1,7 +1,7 @@
 import { EthereumProvider, EvmConfig } from "@joyid/ethereum-provider";
 import {WC_V2_DEFAULT_CHAINS} from "./WalletConnectV2Provider";
 import {Chain} from "viem";
-import {CHAIN_CONFIG} from "../../../integration/constants";
+import {CHAIN_CONFIG, CHAIN_NAME_MAP} from "../../../integration/constants";
 
 export const getJoyIDProviderInstance = async () => {
 
@@ -11,7 +11,7 @@ export const getJoyIDProviderInstance = async () => {
 
 		return <Chain>{
 			id: chainId,
-			name: "ChainID " + chainId,
+			name: CHAIN_NAME_MAP[chainId],
 			nativeCurrency: {
 				name: "Ethereum",
 				symbol: "ETH",
