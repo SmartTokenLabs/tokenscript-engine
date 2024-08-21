@@ -20,7 +20,7 @@ export class Repo {
 	/**
 	 * Repo cache TTL in seconds
 	 */
-	static REPO_TTL = 3600;
+	static REPO_TTL = 300;
 
 	constructor(protected context: TokenScriptEngine) {
 
