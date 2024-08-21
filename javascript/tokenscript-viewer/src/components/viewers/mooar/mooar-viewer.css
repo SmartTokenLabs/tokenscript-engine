@@ -4,7 +4,7 @@ header {
 }
 
 body, action-overflow-modal .popover-container {
-	background-color: rgb(33, 33, 33) !important;
+	background-color: #292929 !important;
 }
 
 * {
