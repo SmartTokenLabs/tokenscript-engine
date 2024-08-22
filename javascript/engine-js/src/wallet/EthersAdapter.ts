@@ -331,13 +331,13 @@ export class EthersAdapter implements IWalletAdapter {
 				rpcUrls.map((url, index) => {
 					return {
 						provider: new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }),
-						stallTimeout: 1500,
+						stallTimeout: 3000,
 						priority: index + 1,
 					}
 				}),
 				chain,
 				{
-					quorum: 2
+					quorum: 1
 				}
 			);
 		} else {
