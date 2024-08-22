@@ -31,18 +31,6 @@ export const knownTokenScripts: TokenScriptsMeta[] = [
 		name: "SmartCat Loot",
 		iconUrl: "/assets/tokenscripts/smart-cat/loot-meta/contract.png"
 	},
-	// {
-	// 	tokenScriptId: "1-0x3c7e352481f4b2fdec1e642a3f0018661c77513d",
-	// 	loadType: "resolve",
-	// 	name: "DevconVI",
-	// 	iconUrl: "https://cdn.jsdelivr.net/gh/SmartTokenLabs/resources/images/logos/devcon-vi.png"
-	// },
-	// {
-	// 	tokenScriptId: "1-0x0c8b0e8f975bf3dfb99904005385e825a391af81",
-	// 	loadType: "resolve",
-	// 	name: "Nifty Tailor Suit Up",
-	// 	iconUrl: "https://cdn.jsdelivr.net/gh/SmartTokenLabs/resources/images/logos/nifty-tailor-suit-up.png"
-	// },
 	{
 		tokenScriptId: "1-0xDb82c0d91E057E05600C8F8dc836bEb41da6df14",
 		loadType: "resolve",
