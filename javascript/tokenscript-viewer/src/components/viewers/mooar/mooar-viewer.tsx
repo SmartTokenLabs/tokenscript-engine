@@ -3,7 +3,7 @@ import {AppRoot, ShowToastEventArgs} from "../../app/app";
 import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";
-import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
+import {Card, CardType} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {getCardButtonClass} from "../util/getCardButtonClass";
 import {ViewBinding} from "../tabbed/viewBinding";
@@ -111,7 +111,6 @@ export class SmartTokenStoreViewer {
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
 			this.cardButtons = null;
 			this.overflowCardButtons = null;
-			this.infoCard = null;
 			this.loadCards();
 		}, "grid");
 
@@ -124,7 +123,6 @@ export class SmartTokenStoreViewer {
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
-		this.infoCard = null;
 
 		const cards = this.tokenScript.getCards().filterCards();
 
@@ -132,7 +130,11 @@ export class SmartTokenStoreViewer {
 
 			let label = card.label;
 
-			if (card.type === "token" && !this.infoCard){
+			if (card.type === "token"){
+				// The card is already loaded, we only need to update other card buttons
+				if (this.infoCard)
+					continue;
+
 				// Show first info card
 				this.infoCard = card;
 				if (!this.infoViewController) {
@@ -145,7 +147,7 @@ export class SmartTokenStoreViewer {
 			}
 
 			if (label === "Unnamed Card")
-				label = card.type === "token" ? "Token Info" : card.type + " Card";
+				label = (card.type as CardType) === "token" ? "Token Info" : card.type + " Card";
 
 			try {
 				const enabled = await card.isEnabledOrReason();
