@@ -191,7 +191,7 @@ export class CardPopover implements IViewBinding {
 			history.replaceState(undefined, undefined, "#" + currentParams.toString());
 		}
 
-		await this.dialog.openDialog(() => this.unloadTokenView());
+		await this.dialog.openDialog(() => this.tokenScript.getViewController().unloadTokenCard());
 	}
 
 	async unloadTokenView() {

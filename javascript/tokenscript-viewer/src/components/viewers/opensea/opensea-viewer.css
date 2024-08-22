@@ -117,8 +117,10 @@ opensea-viewer, .opensea-viewer, card-view, .card-container {
 	margin: 0 auto !important;
 	max-height: unset !important;
 	width: 100%;
+	background: #fff;
 }
 
 .tokenscript-frame {
 	border: none !important;
+	border-radius: 0 !important;
 }

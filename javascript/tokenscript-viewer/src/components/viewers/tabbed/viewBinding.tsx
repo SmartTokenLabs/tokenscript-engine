@@ -39,7 +39,6 @@ export class ViewBinding extends AbstractViewBinding {
 
 	async unloadTokenView(){
 		(this.view as HTMLDivElement).style.display = "none";
-		await super.unloadTokenView();
 	}
 
 	async renderAttributesTable(){

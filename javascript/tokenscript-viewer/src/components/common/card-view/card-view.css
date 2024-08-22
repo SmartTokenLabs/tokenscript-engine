@@ -7,7 +7,7 @@
 	max-height: 700px;
 	display: flex;
 	flex-direction: column;
-	height: calc(100% - 60px);;
+	height: calc(100% - 60px);
 }
 
 .view-loader {
@@ -27,7 +27,6 @@
 	position: relative;
 	flex-grow: 1;
 	display: flex;
-	background: #fff;
 }
 
 .tokenscript-frame {

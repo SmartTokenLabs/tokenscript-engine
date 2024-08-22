@@ -105,7 +105,10 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.POLYGON]: {
 		rpc: [
 			`https://polygon-mainnet.infura.io/v3/${INFURA_API_KEY}`,
-			//'https://polygon.meowrpc.com'
+			"https://polygon-rpc.com/",
+			"https://rpc-mainnet.matic.quiknode.pro",
+			/*"https://polygon-bor.publicnode.com",
+			"https://polygon.gateway.tenderly.co"*/
 		],
 		explorer: 'https://polygonscan.com/tx/'
 	},
