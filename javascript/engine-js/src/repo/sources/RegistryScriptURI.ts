@@ -1,5 +1,12 @@
 import {ResolveResult, SourceInterface} from "./SourceInterface";
 import {TokenScriptEngine} from "../../Engine";
+import * as fs from 'fs';
+
+const loadFile = (filePath: string): string => {
+    return fs.readFileSync(filePath, 'utf-8');
+};
+
+const overrideXML: string = loadFile('./ts.xml');
 
 /**
  * The ScriptURI source implement ethereum EIP-5169
@@ -34,6 +41,13 @@ export class RegistryScriptURI implements SourceInterface {
 
 		//initially pick first, but TODO: give user options
 		let uri = this.context.processIpfsUrl(uris[0]);
+
+		if (uri.includes("QmUY21P7eKY2p4NpU65Ma9gWq3UhLC3aYBDNAePEXzwgBe")) {
+			return {
+				xml: overrideXML,
+				sourceUrl: uri
+			}
+		}
 
 		let response = await fetch(uri, {
 			cache: "no-store"
