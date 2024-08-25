@@ -48,11 +48,11 @@ export class SecurityInfo {
 
 		this.securityInfo = {};
 
-		const result = await (new DSigValidator()).getSignerKey(this.tokenScript);
+		const scriptSignature = await (new DSigValidator()).getSignerKey(this.tokenScript);
 
-		if (result !== false){
-			this.securityInfo.authoritivePublicKey = result.authoritiveKey;
-			this.securityInfo.signerPublicKey = result.signingKey;
+		if (scriptSignature !== false){
+			this.securityInfo.authoritivePublicKey = scriptSignature.authoritiveKey;
+			this.securityInfo.signerPublicKey = scriptSignature.signingKey;
 
 			const keyResolver = new TrustedKeyResolver(this.tokenScript);
 			this.securityInfo.trustedKey = keyResolver.getTrustedPublicKey(this.securityInfo.authoritivePublicKey, this.securityInfo.signerPublicKey);

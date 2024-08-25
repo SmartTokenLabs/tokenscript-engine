@@ -1,4 +1,5 @@
 import {ResolveResult, SourceInterface} from "./SourceInterface";
+import {ScriptSourceType} from "../../Engine";
 
 /**
  * The TokenScript repo source accesses legacy TokenScript via a GH repo for contracts that do not support EIP-5169
@@ -21,7 +22,8 @@ export class TokenScriptRepo implements SourceInterface {
 
 		return {
 			xml: await response.text(),
-			sourceUrl: uri
+			sourceUrl: uri,
+			type: ScriptSourceType.URL
 		};
 	}
 }

@@ -1,5 +1,5 @@
 import {ResolveResult, SourceInterface} from "./SourceInterface";
-import {TokenScriptEngine} from "../../Engine";
+import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
 /**
  * The ScriptURI source implement ethereum EIP-5169
@@ -53,7 +53,8 @@ export class ScriptURI implements SourceInterface {
 
 		return {
 			xml: await response.text(),
-			sourceUrl: uri
+			sourceUrl: uri,
+			type: ScriptSourceType.SCRIPT_URI
 		};
 	}
 

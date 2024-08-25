@@ -1,5 +1,5 @@
 import {ResolveResult, SourceInterface} from "./SourceInterface";
-import {TokenScriptEngine} from "../../Engine";
+import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
 /**
  * The ScriptURI source implement ethereum EIP-5169
@@ -28,19 +28,13 @@ export class RegistryScriptURI implements SourceInterface {
 		if (uris.length == 0) {
 			return {
 				xml: "",
-				sourceUrl: ""
+				sourceUrl: "",
+				type: ScriptSourceType.SCRIPT_REGISTRY
 			};
 		}
 
 		//initially pick first, but TODO: give user options
 		let uri = this.context.processIpfsUrl(uris[0]);
-
-		/*if (uri.includes("QmUY21P7eKY2p4NpU65Ma9gWq3UhLC3aYBDNAePEXzwgBe")) {
-			return {
-				xml: await loadFile('./ts.xml'),
-				sourceUrl: uri
-			}
-		}*/
 
 		let response = await fetch(uri, {
 			cache: "no-store"
@@ -51,7 +45,8 @@ export class RegistryScriptURI implements SourceInterface {
 
 		return {
 			xml: await response.text(),
-			sourceUrl: uri
+			sourceUrl: uri,
+			type: ScriptSourceType.SCRIPT_REGISTRY
 		};
 	}
 

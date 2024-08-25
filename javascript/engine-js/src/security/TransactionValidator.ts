@@ -27,7 +27,7 @@ export class TransactionValidator {
 		return this.validateContract(chain, address);
 	}
 
-	public async validateContract(chain: number, address: string, contract?: Contract, method?: string){
+	public async validateContract(chain: number, address: string, contract?: Contract, method?: string) {
 
 		const secInfo = await this.tokenScript.getSecurityInfo().getContractSecurityInfo(contract ? contract.getName() : null);
 

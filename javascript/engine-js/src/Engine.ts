@@ -24,6 +24,7 @@ const DEFAULT_CONFIG: IEngineConfig = {
 };
 
 export enum ScriptSourceType {
+	SCRIPT_REGISTRY = "registry",
 	SCRIPT_URI = "scriptUri",
 	URL = "url",
 	UNKNOWN = "unknown",
@@ -31,7 +32,7 @@ export enum ScriptSourceType {
 
 // Development deployment of 7738 on Holesky only
 // TODO: Replace with multichain address once available
-const HOLESKY_DEV_7738 = "0x29a27A5D74Fe8ff01E2dA8b9fC64061A3DFBEe14";
+export const HOLESKY_DEV_7738 = "0x29a27A5D74Fe8ff01E2dA8b9fC64061A3DFBEe14";
 const HOLESKY_ID = 17000; // TODO: Source this from engine
 const cacheTimeout = 60 * 1000; // 1 minute cache validity
 
@@ -142,7 +143,7 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, tsId, resolveResult.sourceUrl, viewBinding);
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, viewBinding);
 	}
 
 	/**
@@ -309,7 +310,15 @@ export class TokenScriptEngine {
 		let uri: string|string[]|null;
 
 		try {
-			uri = Array.from(await provider.call(chainId, HOLESKY_DEV_7738, "scriptURI", [contractAddr], ["string[]"])) as string[];
+			uri = Array.from(await provider.call(
+				chainId, HOLESKY_DEV_7738, "scriptURI", [
+					{
+						internalType: "address",
+						name: "",
+						type: "address",
+						value: contractAddr
+					}], ["string[]"]
+			)) as string[];
 		} catch (e) {
 			uri = "";
 		}

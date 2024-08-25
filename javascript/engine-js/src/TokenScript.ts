@@ -20,6 +20,8 @@ import {TransactionValidator} from "./security/TransactionValidator";
 import {Contracts} from "./tokenScript/Contracts";
 import {Cards} from "./tokenScript/Cards";
 
+import {HOLESKY_DEV_7738} from "./Engine";
+
 export interface ITokenContext extends ITokenCollection {
 	originId: string
 	selectedTokenIndex?: number // TODO: Deprecate selectedTokenIndex
@@ -97,7 +99,7 @@ export class TokenScript {
 
 	public readonly viewStyles: ViewStyles;
 
-	public readonly transactionValidator: TransactionValidator
+	public readonly transactionValidator: TransactionValidator;
 
 	constructor(
 		private engine: TokenScriptEngine,
@@ -738,6 +740,35 @@ export class TokenScript {
 	public getAsnModuleDefinition(name){
 		const modules = this.tokenDef.getElementsByTagName("asnx:module")[0];
 		return modules.querySelector("[name=" + name + "]");
+	}
+
+	public async getAuthenticationStatus(contractAddress: string, order: number) {
+		const wallet = await this.engine.getWalletAdapter();
+		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
+
+		let isAuthorised: boolean = false;
+
+		try {
+			isAuthorised = await wallet.call(
+				chain, HOLESKY_DEV_7738, "isAuthenticated", [
+					{
+						internalType: "address",
+						name: "",
+						type: "address",
+						value: contractAddress
+					},
+				{
+					internalType: "uint256",
+						name: "",
+						type: "uint256",
+						value: order
+				}], ["bool"]
+			);
+		} catch (e) {
+			
+		}
+		
+		return isAuthorised;
 	}
 
 	/**

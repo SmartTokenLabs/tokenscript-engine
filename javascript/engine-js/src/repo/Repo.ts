@@ -14,8 +14,8 @@ export class Repo {
 	 * The first source should be the most reliable to avoid fallback lookups.
 	 */
 	static REPO_SOURCES: SourceInterfaceConstructor[] = [
-		ScriptURI,
 		RegistryScriptURI,
+		ScriptURI,
 		TokenScriptRepo
 	];
 
