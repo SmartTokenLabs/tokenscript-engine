@@ -223,6 +223,10 @@ export class SmartTokenStoreViewer {
 							<span>Smart Token Viewer</span>
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
 						</a>
+						<div class="mooar-header-right">
+							{/*<share-to-tg-button/>*/}
+							{ this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" />}
+						</div>
 					</div>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
 					{this.cardButtons?.length !== 0 ?

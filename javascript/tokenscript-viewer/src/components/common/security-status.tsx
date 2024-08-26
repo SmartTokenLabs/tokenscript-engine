@@ -14,7 +14,7 @@ export class SecurityStatus {
 
 	@Prop() tokenScript: TokenScript;
 
-	@Prop() size: "large"|"small" = "large";
+	@Prop() size: "large"|"small"|"x-small" = "large";
 
 	@State() securityInfo: Partial<ISecurityInfo>;
 
@@ -65,7 +65,7 @@ export class SecurityStatus {
 		return (
 			this.securityInfo ?
 				<Host>
-					<div class={"security-status" + (this.size === "small" ? " small" : "")} style={{background: this.statusColor}}
+					<div class={"security-status " + this.size} style={{background: this.statusColor}}
 						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
 						 onClick={() => this.dialog.openDialog()}>
 						{this.statusIcon}
