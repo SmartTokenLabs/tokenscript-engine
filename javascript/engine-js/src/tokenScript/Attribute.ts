@@ -223,7 +223,7 @@ export class Attribute {
 					const ethParams = [];
 
 					for (let i in args) {
-						ethParams.push(await args[i].getEthersArgument(tokenContext))
+						ethParams.push(await args[i].getEthersArgument(tokenContext, func, contract))
 					}
 
 					resultValue = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);

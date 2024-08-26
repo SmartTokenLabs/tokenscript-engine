@@ -765,9 +765,9 @@ export class TokenScript {
 				}], ["bool"]
 			);
 		} catch (e) {
-			
+
 		}
-		
+
 		return isAuthorised;
 	}
 
@@ -784,10 +784,10 @@ export class TokenScript {
 
 		// TODO: confirm with James exact use cases of having multiple address in a contract element
 		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-		const contract = transInfo.contract.getAddressByChain(chain, true);
+		const contractAddr = transInfo.contract.getAddressByChain(chain, true);
 
 		// If validation callback returns false we abort silently
-		if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
+		if (!await this.transactionValidator.validateContract(chain, contractAddr.address, transInfo.contract, transInfo.function))
 			return false;
 
 		const errorAbi = transInfo.contract.getAbi("error");
@@ -795,13 +795,13 @@ export class TokenScript {
 		const ethParams = [];
 
 		for (let i in transInfo.args){
-			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
+			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), transInfo.function, transInfo.contract))
 		}
 
 		const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
 		listener({status: 'started'});
 
-		return await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+		return await wallet.sendTransaction(contractAddr.chain, contractAddr.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
 	}
 }

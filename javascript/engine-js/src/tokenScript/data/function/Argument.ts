@@ -3,6 +3,7 @@ import {Attributes} from "../../Attributes";
 import {EthUtils, IEthersArgument} from "../../../ethereum/EthUtils";
 import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
 import {ITokenContextData} from "../../../tokens/ITokenContextData";
+import {Contract} from "../../Contract";
 
 export interface IArgument {
 	type: string;
@@ -30,10 +31,14 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 		this.localRef = argDef.getAttribute("local-ref");
 	}
 
+	public getName(){
+		return this.localRef ?? this.ref;
+	}
+
 	/**
 	 * Get the ethers argument data for this argument
 	 */
-	public async getEthersArgument(tokenContext: ITokenIdContext, name: string = ""){
+	public async getEthersArgument(tokenContext: ITokenIdContext, functionName: string, contract: Contract){
 
 		let overrideValue;
 
@@ -43,7 +48,7 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 		}
 
 		let arg: Partial<IEthersArgument> = {
-			name,
+			name: this.getName(),
 			value: overrideValue ?? await this.getValue(tokenContext)
 		};
 
@@ -66,7 +71,25 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 					break;
 
 				default:
-					throw new Error("Struct encoding is not defined for " + this.ref + " attribute.");
+
+					const abi = contract.getAbi("function", functionName);
+
+					console.log("ABI: ", abi);
+
+					if (abi.length){
+						const abiArg = abi[0].inputs.find((arg: any) => {
+							return arg.name == this.localRef || arg.name == this.ref;
+						});
+
+						if (abiArg){
+							arg.type = abiArg.type;
+							arg.internalType = abiArg.internalType;
+							arg.components = abiArg.components;
+							break;
+						}
+					}
+
+					throw new Error(`Struct or ABI encoding is not defined for ${this.localRef ?? this.ref} arg in contract ${contract.getName()} method ${functionName}`);
 			}
 		} else {
 			arg.type = this.type;

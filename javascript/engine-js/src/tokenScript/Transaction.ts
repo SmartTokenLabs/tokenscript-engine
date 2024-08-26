@@ -5,7 +5,7 @@ import {Argument} from "./data/function/Argument";
 import {Attributes} from "./Attributes";
 import {EthUtils} from "../ethereum/EthUtils";
 
-interface ITransactionInfo {
+export interface ITransactionInfo {
 	as: string,
 	contract: Contract,
 	contractName: string,
