@@ -115,7 +115,7 @@ export namespace Components {
         "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
-        "size": "large"|"small";
+        "size": "large"|"small"|"x-small";
         "tokenScript": TokenScript1;
     }
     interface SelectField {
@@ -850,7 +850,7 @@ declare namespace LocalJSX {
         "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
-        "size"?: "large"|"small";
+        "size"?: "large"|"small"|"x-small";
         "tokenScript"?: TokenScript1;
     }
     interface SelectField {

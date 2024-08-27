@@ -41,6 +41,12 @@ export class Attribute {
 		return this.attributeDef.getAttribute("name");
 	}
 
+	public getAsType(){
+		const origins = this.getOrigins();
+		const origin = origins[0];
+		return origin.getAttribute("as");
+	}
+
 	/**
 	 * The label for the attribute
 	 */
@@ -217,7 +223,7 @@ export class Attribute {
 					const ethParams = [];
 
 					for (let i in args) {
-						ethParams.push(await args[i].getEthersArgument(tokenContext))
+						ethParams.push(await args[i].getEthersArgument(tokenContext, func, contract))
 					}
 
 					resultValue = await wallet.call(contractAddr.chain, contractAddr.address, func, ethParams, outputTypes);

@@ -2,6 +2,7 @@ import {TokenScriptEngine} from "../Engine";
 import {ResolveResult, SourceInterfaceConstructor} from "./sources/SourceInterface";
 import {ScriptURI} from "./sources/ScriptURI";
 import {TokenScriptRepo} from "./sources/TokenScriptRepo";
+import { RegistryScriptURI } from "./sources/RegistryScriptURI";
 
 /**
  * Repo.ts is class that is used to resolve TokenScripts from various sources and cache them in localStorage
@@ -14,6 +15,7 @@ export class Repo {
 	 */
 	static REPO_SOURCES: SourceInterfaceConstructor[] = [
 		ScriptURI,
+		RegistryScriptURI,
 		TokenScriptRepo
 	];
 

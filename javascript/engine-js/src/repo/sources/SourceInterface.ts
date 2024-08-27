@@ -1,11 +1,13 @@
-import {TokenScriptEngine} from "../../Engine";
+import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
 /**
  * Define interfaces for implementing a custom repo source
  */
+
 export interface ResolveResult {
 	sourceUrl: string;
 	xml: string;
+	type: ScriptSourceType;
 }
 
 export interface SourceInterface {

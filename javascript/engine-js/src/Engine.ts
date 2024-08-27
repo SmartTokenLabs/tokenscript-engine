@@ -24,10 +24,25 @@ const DEFAULT_CONFIG: IEngineConfig = {
 };
 
 export enum ScriptSourceType {
+	SCRIPT_REGISTRY = "registry",
 	SCRIPT_URI = "scriptUri",
 	URL = "url",
 	UNKNOWN = "unknown",
 }
+
+// Development deployment of 7738 on Holesky only
+// TODO: Replace with multichain address once available
+export const HOLESKY_DEV_7738 = "0x29a27A5D74Fe8ff01E2dA8b9fC64061A3DFBEe14";
+const HOLESKY_ID = 17000; // TODO: Source this from engine
+const cacheTimeout = 60 * 1000; // 1 minute cache validity
+
+//cache entries
+export interface ScriptEntry {
+	scriptURIs: string[];
+	timeStamp: number;
+}
+
+const cachedResults = new Map<string, ScriptEntry>();
 
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
@@ -128,7 +143,7 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, ScriptSourceType.SCRIPT_URI, tsId, resolveResult.sourceUrl, viewBinding);
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, viewBinding);
 	}
 
 	/**
@@ -270,5 +285,80 @@ export class TokenScriptEngine {
 			return <string>data.scriptURI.offchain[0];
 
 		return null;
+	}
+
+	// This returns all entries but the 7738 calling function currently selects the first entry
+	// TODO: Create selector that displays icon and name for each entry, in order returned
+	// TODO: Use global deployed address for 7738
+	public async get7738Entry(chain: string, contractAddr: string): Promise<string[]> {
+
+		// use 1 minute persistence fetch cache
+		let cachedResult = this.checkCachedResult(chain, contractAddr);
+
+		if (cachedResult.length > 0) {
+			return cachedResult;
+		}
+
+		const chainId: number = parseInt(chain);
+
+		// TODO: Remove once universal chain deployment is available
+		if (chainId != HOLESKY_ID) {
+			return [];
+		}
+
+		const provider = await this.getWalletAdapter();
+		let uri: string|string[]|null;
+
+		try {
+			uri = Array.from(await provider.call(
+				chainId, HOLESKY_DEV_7738, "scriptURI", [
+					{
+						internalType: "address",
+						name: "",
+						type: "address",
+						value: contractAddr
+					}], ["string[]"]
+			)) as string[];
+		} catch (e) {
+			uri = "";
+		}
+
+		if (uri && Array.isArray(uri) && uri.length > 0) {	  
+			this.storeResult(chain, contractAddr, uri);
+			return uri;
+		} else {
+			return [];
+		}
+	}
+
+	private storeResult(chain: string, contractAddr: string, uris: string[]) {
+		// remove out of date entries
+		cachedResults.forEach((value, key) => {
+			if (value.timeStamp < (Date.now() - cacheTimeout)) {
+				cachedResults.delete(key);
+			}
+		});
+
+		cachedResults.set(chain + "-" + contractAddr, {
+			scriptURIs: uris,
+			timeStamp: Date.now()
+		});
+	}
+
+	private checkCachedResult(chain: string, contractAddress: string): string[] {
+		const key = chain + "-" + contractAddress;
+		const mapping = cachedResults.get(key);
+		if (mapping) {
+			if (mapping.timeStamp < (Date.now() - cacheTimeout)) {
+				//out of date result, remove key
+				cachedResults.delete(key);
+				return []
+			} else {
+				//consoleLog("Can use cache");
+				return mapping.scriptURIs;
+			}
+		} else {
+			return [];
+		}
 	}
 }

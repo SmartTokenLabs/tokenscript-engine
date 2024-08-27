@@ -90,6 +90,7 @@ export interface IAttestationData {
 }
 
 export declare enum ScriptSourceType {
+	SCRIPT_REGISTRY = "registry",
 	SCRIPT_URI = "scriptUri",
 	URL = "url",
 	UNKNOWN = "unknown"

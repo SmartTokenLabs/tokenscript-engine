@@ -20,6 +20,8 @@ import {TransactionValidator} from "./security/TransactionValidator";
 import {Contracts} from "./tokenScript/Contracts";
 import {Cards} from "./tokenScript/Cards";
 
+import {HOLESKY_DEV_7738} from "./Engine";
+
 export interface ITokenContext extends ITokenCollection {
 	originId: string
 	selectedTokenIndex?: number // TODO: Deprecate selectedTokenIndex
@@ -97,7 +99,7 @@ export class TokenScript {
 
 	public readonly viewStyles: ViewStyles;
 
-	public readonly transactionValidator: TransactionValidator
+	public readonly transactionValidator: TransactionValidator;
 
 	constructor(
 		private engine: TokenScriptEngine,
@@ -740,6 +742,35 @@ export class TokenScript {
 		return modules.querySelector("[name=" + name + "]");
 	}
 
+	public async getAuthenticationStatus(contractAddress: string, order: number) {
+		const wallet = await this.engine.getWalletAdapter();
+		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
+
+		let isAuthorised: boolean = false;
+
+		try {
+			isAuthorised = await wallet.call(
+				chain, HOLESKY_DEV_7738, "isAuthenticated", [
+					{
+						internalType: "address",
+						name: "",
+						type: "address",
+						value: contractAddress
+					},
+				{
+					internalType: "uint256",
+						name: "",
+						type: "uint256",
+						value: order
+				}], ["bool"]
+			);
+		} catch (e) {
+
+		}
+
+		return isAuthorised;
+	}
+
 	/**
 	 * Execute the TokenScript transaction
 	 * @param transaction TokenScript transaction object
@@ -753,10 +784,10 @@ export class TokenScript {
 
 		// TODO: confirm with James exact use cases of having multiple address in a contract element
 		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-		const contract = transInfo.contract.getAddressByChain(chain, true);
+		const contractAddr = transInfo.contract.getAddressByChain(chain, true);
 
 		// If validation callback returns false we abort silently
-		if (!await this.transactionValidator.validateContract(chain, contract.address, transInfo.contract, transInfo.function))
+		if (!await this.transactionValidator.validateContract(chain, contractAddr.address, transInfo.contract, transInfo.function))
 			return false;
 
 		const errorAbi = transInfo.contract.getAbi("error");
@@ -764,13 +795,13 @@ export class TokenScript {
 		const ethParams = [];
 
 		for (let i in transInfo.args){
-			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext()))
+			ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), transInfo.function, transInfo.contract))
 		}
 
 		const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
 		listener({status: 'started'});
 
-		return await wallet.sendTransaction(contract.chain, contract.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+		return await wallet.sendTransaction(contractAddr.chain, contractAddr.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
 	}
 }

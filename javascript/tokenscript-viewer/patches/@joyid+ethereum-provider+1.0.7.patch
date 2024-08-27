@@ -1,0 +1,42 @@
+diff --git a/node_modules/@joyid/ethereum-provider/dist/index.js b/node_modules/@joyid/ethereum-provider/dist/index.js
+index 994b6cc..e352351 100644
+--- a/node_modules/@joyid/ethereum-provider/dist/index.js
++++ b/node_modules/@joyid/ethereum-provider/dist/index.js
+@@ -51,7 +51,8 @@ var EthereumProvider = class extends _eventemitter32.default {
+           throw new Error("eth_sign is not supported, use personal_sign instead");
+         }
+         case "wallet_switchEthereumChain": {
+-          const [chainId] = args.params;
++          const chainId = args.params?.[0]?.chainId;
++          this.switchChain(parseInt(chainId));
+           this.emit("chainChanged", chainId);
+           return void 0;
+         }
+diff --git a/node_modules/@joyid/ethereum-provider/dist/index.mjs b/node_modules/@joyid/ethereum-provider/dist/index.mjs
+index e182344..7f5bb7a 100644
+--- a/node_modules/@joyid/ethereum-provider/dist/index.mjs
++++ b/node_modules/@joyid/ethereum-provider/dist/index.mjs
+@@ -51,7 +51,8 @@ var EthereumProvider = class extends EventEmitter {
+           throw new Error("eth_sign is not supported, use personal_sign instead");
+         }
+         case "wallet_switchEthereumChain": {
+-          const [chainId] = args.params;
++          const chainId = args.params?.[0]?.chainId
++          this.switchChain(parseInt(chainId));
+           this.emit("chainChanged", chainId);
+           return void 0;
+         }
+diff --git a/node_modules/@joyid/ethereum-provider/src/index.ts b/node_modules/@joyid/ethereum-provider/src/index.ts
+index 2bb2aa8..3e09bf2 100644
+--- a/node_modules/@joyid/ethereum-provider/src/index.ts
++++ b/node_modules/@joyid/ethereum-provider/src/index.ts
+@@ -149,7 +149,8 @@ export class EthereumProvider extends EventEmitter {
+         throw new Error('eth_sign is not supported, use personal_sign instead')
+       }
+       case 'wallet_switchEthereumChain': {
+-        const [chainId] = args.params as [chainId: string]
++        const chainId = args.params?.[0]?.chainId as string
++        this.switchChain(parseInt(chainId))
+         this.emit('chainChanged', chainId)
+         return undefined
+       }
