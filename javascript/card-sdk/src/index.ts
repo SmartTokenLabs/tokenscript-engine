@@ -18,7 +18,7 @@ export interface IChainConfig {
 }
 
 export interface IInstanceData {
-    currentTokenInstance: ITokenContextData,
+    currentTokenInstance?: ITokenContextData,
     engineOrigin: string,
     localStorageData: {[key: string]: string},
     chainConfig: {[key: string]: IChainConfig}
@@ -36,6 +36,15 @@ class Web3LegacySDK implements IWeb3LegacySDK {
     private _instanceData: IInstanceData;
 
     public get instanceData () {
+        if (!this._instanceData)
+            return {
+                engineOrigin: "",
+                localStorageData: {},
+                chainConfig: {},
+                env: {},
+                contractData: {}
+            }
+
         return this._instanceData;
     }
 
