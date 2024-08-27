@@ -1,4 +1,11 @@
-import {AttributeWrapper, Lexer, Parser, Token, TokenType} from "../../../src/tokenScript/selection/FilterParser";
+import {
+	AttributeWrapper,
+	Lexer,
+	MockParser,
+	Parser,
+	Token,
+	TokenType
+} from "../../../src/tokenScript/selection/FilterParser";
 
 
 describe('TokenScriptFilterParserTests', () => {
@@ -8,8 +15,8 @@ describe('TokenScriptFilterParserTests', () => {
 	class MockAttribute implements AttributeWrapper {
 
 		constructor(
-			private type: string,
-			private value: any) {
+			public type: string,
+			public value: any) {
 		}
 
 		getAsType(): string {
@@ -146,7 +153,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -158,7 +165,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -170,7 +177,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -182,7 +189,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -194,7 +201,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(false);
 	});
@@ -206,7 +213,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -218,7 +225,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -230,7 +237,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(false);
 	});
@@ -242,7 +249,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(false);
 	});
@@ -254,7 +261,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -266,7 +273,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('string', '123'),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		// TODO: Find out how this should behave. Should it be an inverted AND?
 		expect(result).toBe(true);
@@ -282,7 +289,7 @@ describe('TokenScriptFilterParserTests', () => {
 			ownerAddress: new MockAttribute("string", wallet)
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -296,7 +303,7 @@ describe('TokenScriptFilterParserTests', () => {
 			ownerAddress: new MockAttribute("string", wallet)
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -311,7 +318,7 @@ describe('TokenScriptFilterParserTests', () => {
 			ownerAddress: new MockAttribute("string", wallet)
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -326,7 +333,7 @@ describe('TokenScriptFilterParserTests', () => {
 			ownerAddress: new MockAttribute("string", wallet)
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -342,7 +349,7 @@ describe('TokenScriptFilterParserTests', () => {
 			today: new MockAttribute("generalisedTime", timestamp)
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});
@@ -354,7 +361,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('generalisedTime', new Date('20230405111234+0000').getTime()),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(false);
 	});
@@ -366,7 +373,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('generalisedTime', new Date('20230405111234+0000')),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(false);
 	});
@@ -378,7 +385,7 @@ describe('TokenScriptFilterParserTests', () => {
 			expiry: new MockAttribute('generalisedTime', new Date('20230405111234+0000')),
 		};
 
-		const parser = new Parser(tokens, values);
+		const parser = new MockParser(tokens, values);
 		const result = await parser.parse();
 		expect(result).toBe(true);
 	});*/

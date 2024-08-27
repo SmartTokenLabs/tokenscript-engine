@@ -244,7 +244,7 @@ interface AttributeValue {
 
 export class Parser {
 
-	private values: { [key: string]: AttributeValue } = {};
+	protected values: { [key: string]: AttributeValue } = {};
 
 	private async getAttributeValue(key: string){
 
@@ -270,9 +270,9 @@ export class Parser {
 	}
 
 	public constructor(
-		private tokenscript: TokenScript,
-		private tokenContext: ITokenIdContext,
-		private tokens: Token[]
+		private tokenscript: TokenScript|null,
+		private tokenContext: ITokenIdContext|null,
+		protected tokens: Token[]
 	) {
 
 	}
@@ -385,7 +385,7 @@ export class Parser {
 		do {
 			const match = Parser.regex?.exec(result);
 			if (match) {
-				const attribute = match.groups?.attribute;
+				const attribute = match[1];
 				if (attribute) {
 					const attributeValue = await this.getAttributeValue(attribute);
 					if (attributeValue !== undefined) {
@@ -465,5 +465,15 @@ export class Parser {
 		}
 	}
 
-	private static readonly regex = /\$\{(?<attribute>[a-zA-Z][a-zA-Z0-9]*)\}/;
+	private static readonly regex = /\$\{([a-zA-Z][a-zA-Z0-9]*)\}/;
+}
+
+export class MockParser extends Parser {
+	public constructor(
+		tokens: Token[],
+		values: {[key: string]: AttributeValue}
+	) {
+		super(null, null, tokens);
+		this.values = values;
+	}
 }
