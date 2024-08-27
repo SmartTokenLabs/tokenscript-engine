@@ -151,12 +151,20 @@ export abstract class AbstractViewBinding implements IViewBinding {
 		if (!event.data?.method)
 			return;
 
-		//console.log("Event from view: ", event.data);
+		console.log("Event from view: ", event.data);
 
 		await this.handleMessageFromView(event.data.method, event.data?.params);
 	}
 
 	async handleMessageFromView(method: RequestFromView, params: any) {
+
+		// Use main controller to store user-entry values
+		// TODO: Move user entry value logic out of view controller to avoid this issue
+		if (method === RequestFromView.PUT_USER_INPUT){
+			await this.tokenScript.getViewController().handleMessageFromView(method, params);
+			return;
+		}
+
 		await this.viewController.handleMessageFromView(method, params);
 	}
 
