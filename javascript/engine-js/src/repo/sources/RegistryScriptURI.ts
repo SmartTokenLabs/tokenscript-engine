@@ -25,13 +25,8 @@ export class RegistryScriptURI implements SourceInterface {
 
 		let uris: string[] = await this.context.get7738Entry(chain, contractAddr);
 
-		if (uris.length == 0) {
-			return {
-				xml: "",
-				sourceUrl: "",
-				type: ScriptSourceType.SCRIPT_REGISTRY
-			};
-		}
+		if (uris.length == 0)
+			throw new Error("No Registy Entry");
 
 		//initially pick first, but TODO: give user options
 		let uri = this.context.processIpfsUrl(uris[0]);
