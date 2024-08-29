@@ -22,6 +22,7 @@ export class SelectionFilter {
 	}
 
 	public async parse(tokenContext?: ITokenIdContext): Promise<boolean> {
-		return await (new Parser(this.tokenScript, tokenContext, this.tokens).parse());
+		// Note: The lexer tokens are modified inside the parser, so we need to make a copy
+		return await (new Parser(this.tokenScript, tokenContext, [...this.tokens]).parse());
 	}
 }
