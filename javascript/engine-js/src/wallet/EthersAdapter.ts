@@ -131,9 +131,12 @@ export class EthersAdapter implements IWalletAdapter {
 
 		console.log("Transaction submitted: " + tx.hash);
 
+		const txLink = this.chainConfig[chain].explorer ? this.chainConfig[chain].explorer + tx.hash : null;
+
 		listener({
 			status: 'submitted',
-			txNumber: tx.hash
+			txNumber: tx.hash,
+			txLink
 		});
 
 		if (waitForConfirmation)
@@ -149,7 +152,7 @@ export class EthersAdapter implements IWalletAdapter {
 				listener({
 					status: 'confirmed',
 					txNumber: tx.hash,
-					txLink: this.chainConfig[chain].explorer ? this.chainConfig[chain].explorer + tx.hash : null
+					txLink
 				});
 
 				return transactionReceipt;
