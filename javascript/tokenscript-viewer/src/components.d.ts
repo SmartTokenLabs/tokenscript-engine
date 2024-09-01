@@ -55,7 +55,7 @@ export namespace Components {
         "app": AppRoot;
     }
     interface AppRoot {
-        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string) => Promise<TokenScript>;
+        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string, scriptSelection?: string) => Promise<TokenScript>;
         "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
     }
     interface AttributeTable {
@@ -115,7 +115,7 @@ export namespace Components {
         "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
-        "size": "large"|"small"|"x-small";
+        "size": "large" | "small" | "x-small";
         "tokenScript": TokenScript1;
     }
     interface SelectField {
@@ -850,7 +850,7 @@ declare namespace LocalJSX {
         "showShareToTg"?: boolean;
     }
     interface SecurityStatus {
-        "size"?: "large"|"small"|"x-small";
+        "size"?: "large" | "small" | "x-small";
         "tokenScript"?: TokenScript1;
     }
     interface SelectField {

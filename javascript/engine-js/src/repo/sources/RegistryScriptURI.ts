@@ -1,4 +1,4 @@
-import {ResolveResult, SourceInterface} from "./SourceInterface";
+import {ResolveResult, ScriptSource, SourceInterface} from "./SourceInterface";
 import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
 /**
@@ -23,13 +23,14 @@ export class RegistryScriptURI implements SourceInterface {
 		if (!contractAddr || contractAddr.indexOf("0x") !== 0)
 			throw new Error("Not a ScriptUri ID");
 
-		let uris: string[] = await this.context.get7738Entry(chain, contractAddr);
+		// load all the scripts and script metadata
+		let registryScripts: ScriptSource[] = await this.context.get7738Metadata(chain, contractAddr);
 
-		if (uris.length == 0)
+		if (registryScripts.length == 0)
 			throw new Error("No Registy Entry");
 
-		//initially pick first, but TODO: give user options
-		let uri = this.context.processIpfsUrl(uris[0]);
+		//currently user has not selected a script; pick first script
+		let uri = this.context.processIpfsUrl(registryScripts[0].sourceUrl);
 
 		let response = await fetch(uri, {
 			cache: "no-store"
@@ -41,7 +42,8 @@ export class RegistryScriptURI implements SourceInterface {
 		return {
 			xml: await response.text(),
 			sourceUrl: uri,
-			type: ScriptSourceType.SCRIPT_REGISTRY
+			type: ScriptSourceType.SCRIPT_REGISTRY,
+			scripts: registryScripts
 		};
 	}
 

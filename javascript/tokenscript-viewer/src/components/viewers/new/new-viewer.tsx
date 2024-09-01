@@ -124,7 +124,12 @@ export class NewViewer {
 			tsMeta = await this.addFormSubmit("resolve", {tsId: query.get("tsId")})
 		} else if (query.has("chain") && query.has("contract")){
 			const tsId = query.get("chain") + "-" + query.get("contract");
-			tsMeta = await this.addFormSubmit("resolve", {tsId})
+			if (query.has("registryScriptUrl") && query.has("registryTokenId")) {
+				const locator = query.get("chain") + "-" + query.get("contract") + "-" + query.get("registryTokenId");
+				tsMeta = await this.addFormSubmit("regUrl", {tsId: query.get("registryScriptUrl"), scriptSelection: locator});
+			} else {
+				tsMeta = await this.addFormSubmit("resolve", {tsId});
+			}
 		} else if (query.has("emulator")){
 			const emulator = query.get("emulator") ? new URL(decodeURIComponent(query.get("emulator"))).origin : document.location.origin;
 			const tsId = emulator + "/tokenscript.tsml";
@@ -148,6 +153,17 @@ export class NewViewer {
 
 		// this.app.showTsLoader();
 
+		// do not proceed here if we are loading a TS selection choice
+		const queryStr = document.location.search.substring(1);
+
+		if (queryStr) {
+			const query = new URLSearchParams(queryStr);
+			if (query.has("registryScriptUrl") && query.has("registryTokenId")) {
+				console.log("Abort load of TS");
+				return;
+			}
+		}
+			
 		for (const tsMeta of await dbProvider.myTokenScripts.toArray()){
 
 			try {
@@ -224,12 +240,12 @@ export class NewViewer {
 	}
 
 	// TODO: break up function into small components
-	private async addFormSubmit(type: TokenScriptSource, data: {tsId?: string, xml?: File, image?: string}){
+	private async addFormSubmit(type: TokenScriptSource, data: {tsId?: string, xml?: File, image?: string, scriptSelection?: string}){
 
 		this.app.showTsLoader();
 
 		try {
-			const tokenScript = await this.app.loadTokenscript(type, data.tsId, data.xml);
+			const tokenScript = await this.app.loadTokenscript(type, data.tsId, data.xml, data.scriptSelection);
 
 			const tokenScriptId = tokenScript.getSourceInfo().tsId;
 
