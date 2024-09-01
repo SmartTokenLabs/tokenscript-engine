@@ -88,10 +88,11 @@ export class SecurityStatus {
 		const location = new URL(document.location.href);
 		location.search = params.toString();
 
-		history.pushState(undefined, undefined, location);
+		// Update the browser's history state
+		history.pushState(undefined, undefined, location.toString());
 
-		// Reload the page with the new URL
-		window.location.href = location.toString();
+		// Reload the page with the new URL using either method
+		window.location.assign(location.toString());
 	}
 
 	render() {
