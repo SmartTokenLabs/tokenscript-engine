@@ -9,6 +9,7 @@ import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefini
 import {TrustedKey} from "./security/TrustedKeyResolver";
 import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 import {ITxValidationInfo} from "./security/TransactionValidator";
+import {ScriptSource} from "./repo/sources/SourceInterface";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
@@ -42,7 +43,13 @@ export interface ScriptEntry {
 	timeStamp: number;
 }
 
+export interface RegistryMetaData {
+	scriptData: ScriptSource[];
+	timeStamp: number;
+}
+
 const cachedResults = new Map<string, ScriptEntry>();
+const cachedMetaDataResults = new Map<string, RegistryMetaData>();
 
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
@@ -143,7 +150,14 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, viewBinding);
+		let scriptTokenId = "0";
+
+		// select first registry script if loading with no pre-select
+		if (resolveResult.type == ScriptSourceType.SCRIPT_REGISTRY && resolveResult.scripts.length > 0) {
+			scriptTokenId = resolveResult.scripts[0].tokenId.toString();
+		}
+
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, viewBinding, resolveResult.scripts, scriptTokenId);
 	}
 
 	/**
@@ -151,7 +165,11 @@ export class TokenScriptEngine {
 	 * @param url Source URL for the TokenScript
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 */
-	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
+	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding, chain?: string, contractAddr?: string, selectionIdToken?: string){
+
+		url = this.processIpfsUrl(url);
+
+		let registryScripts = [];
 
 		// TODO: Add caching for URL loaded tokenscripts, add URL source to repo
 		const res = await fetch(url, {
@@ -162,7 +180,17 @@ export class TokenScriptEngine {
 			throw new Error("Failed to load URL: " + res.statusText);
 		}
 
-		return await this.initializeTokenScriptObject(await res.text(), ScriptSourceType.URL, url, url, viewBinding);
+		let tsType: ScriptSourceType = ScriptSourceType.URL;
+
+		//load scripts if this is a registry entry
+		if (chain != undefined && contractAddr != undefined) {
+			// We still need to load all the available scripts for selection purposes (eg 5169 scriptURI if also available)
+			const resolveResult = await this.repo.getTokenScript(`${chain}-${contractAddr}`, false);
+			registryScripts = resolveResult.scripts;
+			tsType = ScriptSourceType.SCRIPT_REGISTRY;
+		}
+
+		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, viewBinding, registryScripts, selectionIdToken);
 	}
 
 	// TODO: The engine should hold the tokenscript object in memory until explicitly cleared, or done so via some intrinsic.
@@ -189,7 +217,8 @@ export class TokenScriptEngine {
 	 * @param viewBinding
 	 * @private
 	 */
-	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding){
+	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding, 
+		scripts?: ScriptSource[], selectionTokenId?: string){
 		try {
 			let parser
 			if ((typeof process !== 'undefined') && (process.release.name === 'node')){
@@ -200,7 +229,8 @@ export class TokenScriptEngine {
 				parser = new DOMParser();
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
-			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding);
+			let selectionId = selectionTokenId != undefined ? Number(selectionTokenId) : 0;
+			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding, scripts, selectionId);
 		} catch (e){
 			this.repo.deleteTokenScript(sourceId); // TODO: Move parsing to repo so that this isn't required
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
@@ -330,6 +360,91 @@ export class TokenScriptEngine {
 			return [];
 		}
 	}
+	
+	public async get7738Metadata(chain: string, contractAddr: string): Promise<ScriptSource[]> {
+
+		const chainId: number = parseInt(chain);
+
+		// TODO: Remove once universal chain deployment is available
+		if (chainId != HOLESKY_ID) {
+			return [];
+		}
+
+		// use 1 minute persistence fetch cache
+		let cachedResult = this.checkCachedMetaData(chain, contractAddr);
+
+		if (cachedResult.length > 0) {
+			return cachedResult;
+		}
+
+		const provider = await this.getWalletAdapter();
+		let scriptSourceData: any;
+
+		try {
+			scriptSourceData = Array.from(await provider.call(
+				chainId, HOLESKY_DEV_7738, "scriptData", [
+					{
+						internalType: "address",
+						name: "contractAddress",
+						type: "address",
+						value: contractAddr
+					}], 
+					[{
+						"components": [
+						  {
+							internalType: "string",
+							name: "name",
+							type: "string"
+						  },
+						  {
+							internalType: "string",
+							name: "iconURI",
+							type: "string"
+						  },
+						  {
+							internalType: "uint",
+							name: "tokenId",
+							type: "uint"
+						  },
+						  {
+							internalType: "string",
+							name: "scriptURI",
+							type: "string"
+						  },
+						  {
+							internalType: "bool",
+							name: "isAuthenticated",
+							type: "bool"
+						  }
+						],
+						"internalType": "struct ScriptData[]",
+						"name": "",
+						"type": "tuple[]"
+					  }]
+			));
+		} catch (e) {
+			scriptSourceData = null;
+		}
+
+		let sourceElements: ScriptSource[] = [];
+
+		//build array
+		for (let i = 0; i < scriptSourceData.length; i++) {
+			const thisSourceData = scriptSourceData[i];
+
+			sourceElements.push({
+				name: thisSourceData.name,
+				icon: this.processIpfsUrl(thisSourceData.iconURI),
+				order: i+1,
+				authenticated: thisSourceData.isAuthenticated,
+				tokenId: typeof thisSourceData.tokenId === 'bigint' ? Number(thisSourceData.tokenId) : thisSourceData.tokenId,
+				sourceUrl: thisSourceData.scriptURI,
+				type: ScriptSourceType.SCRIPT_REGISTRY
+			});
+		}
+
+		return sourceElements;
+	}
 
 	private storeResult(chain: string, contractAddr: string, uris: string[]) {
 		// remove out of date entries
@@ -359,6 +474,27 @@ export class TokenScriptEngine {
 			}
 		} else {
 			return [];
+		}
+	}
+
+	private checkCachedMetaData(chain: string, contractAddress: string): ScriptSource[] {
+		const key = chain + "-" + contractAddress;
+		this.removeOutOfDateEntries();
+		const mapping = cachedMetaDataResults.get(key);
+		if (mapping) {
+			return mapping.scriptData;
+		} else {
+			return [];
+		}
+	}
+
+	//ensure memory usage is kept to a minimum
+	private removeOutOfDateEntries() {
+		const currentTime = Date.now();
+		for (const [key, value] of cachedMetaDataResults) {
+			if (currentTime - value.timeStamp > cacheTimeout) {
+				cachedMetaDataResults.delete(key);
+			}
 		}
 	}
 }

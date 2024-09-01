@@ -3,6 +3,7 @@ import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
 import {ethers} from "ethers";
+import {ScriptSource} from "../repo/sources/SourceInterface";
 
 export type OriginType = "contract"|"attestation"
 
@@ -10,7 +11,7 @@ export enum AuthenticationType {
 	NONE = "none",
 	IPFS_CID = "ipfsCid", // The script has been loaded from a URL specified by the ScriptUri smart contract function.
 	XML_DSIG = "dsig", // The XML dsig is an EC signature, signed by the origin smart contract deployer
-	IPFS_REGISTRY = "ERC-7738 Registry IPFS"
+	IPFS_REGISTRY = "ERC-7738 Registry IPFS" // The script was defined by the 7738 registry; need to perform further validation as detailed in validateByScriptRegistry
 }
 
 export interface IOriginSecurityInfo {
@@ -64,20 +65,50 @@ export class Origin {
 		return this.securityStatus;
 	}
 
+	private getSelectedScript(): ScriptSource {
+		const selectedTokenId = this.tokenScript.getSourceInfo().selectionId;
+		const scriptSource = this.tokenScript.getSourceInfo();
+
+		for (let i = 0; i < scriptSource.scriptData.length; i++) {
+			if (scriptSource.scriptData[i].tokenId == selectedTokenId) {
+				return scriptSource.scriptData[i];
+			}
+		}
+
+		return null;
+	}
+
 	private async validateByScriptRegistry(securityInfo: Partial<ISecurityInfo>) {
 
-		const scriptSource = this.tokenScript.getSourceInfo();
-		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");
-
-		let status = await this.tokenScript.getAuthenticationStatus(contractAddress, 1);
-
+		//1. Discover which tokenId this is
+		//2. Match the address in URL to the script in the sources
+		//3. If IPFS, and script is authenticated, treat as trusted
+		//4. If not IPFS, then validate from signature
+		const selectedElement = this.getSelectedScript();
 		const ipfsCid: string = securityInfo.ipfsCid;
 
 		// now ensure the IPFS fetch matches
-		const matches = scriptSource.sourceUrl.includes(ipfsCid);
+		const matches = selectedElement != undefined && selectedElement.sourceUrl.includes(ipfsCid);
 
-		if (status && matches) {
-			this.securityStatus = {
+		if (matches && selectedElement.authenticated) {
+			this.securityStatus = this.selectAuthenticationType(selectedElement);
+		}
+	}
+	
+	private selectAuthenticationType(selectedElement: ScriptSource) {
+		if (selectedElement.tokenId == 0) {
+			if (selectedElement.name == '5169') {
+				return {
+					type: AuthenticationType.IPFS_CID,
+					status: SecurityStatus.VALID,
+					statusText: "The TokenScript IPFS CID matches the scriptURI specified by the contract"
+				}
+			} else {
+				// Launchpad? If so it requires a signature
+				return null;
+			}
+		} else {
+			return {
 				type: AuthenticationType.IPFS_REGISTRY,
 				status: SecurityStatus.VALID,
 				statusText: "The TokenScript IPFS CID matches the Authenticated scriptURI specified by the Registry"

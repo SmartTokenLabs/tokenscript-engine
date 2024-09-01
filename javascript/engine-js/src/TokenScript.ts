@@ -21,6 +21,7 @@ import {Contracts} from "./tokenScript/Contracts";
 import {Cards} from "./tokenScript/Cards";
 
 import {HOLESKY_DEV_7738} from "./Engine";
+import {ScriptSource} from "./repo/sources/SourceInterface";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -108,7 +109,9 @@ export class TokenScript {
 		private source: ScriptSourceType,
 		private sourceId: string,
 		private sourceUrl: string,
-		private viewBinding?: IViewBinding
+		private viewBinding?: IViewBinding,
+		private scriptData?: ScriptSource[],
+		private selectionId?: number,
 	) {
 		if (this.tokenDef?.documentElement?.tagName !== "ts:token")
 			throw new Error("The provided file is not a valid TokenScript");
@@ -123,7 +126,9 @@ export class TokenScript {
 			// TODO: Use better UID for non-resolved tokenscripts
 			tsId: this.sourceId ?? this.getName(),
 			source: this.source,
-			sourceUrl: this.sourceUrl
+			sourceUrl: this.sourceUrl,
+			scriptData: this.scriptData,
+			selectionId: this.selectionId != undefined ? this.selectionId : 0,
 		}
 	}
 

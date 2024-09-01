@@ -8,6 +8,17 @@ export interface ResolveResult {
 	sourceUrl: string;
 	xml: string;
 	type: ScriptSourceType;
+	scripts: ScriptSource[];
+}
+
+export interface ScriptSource {
+	name: string;
+	icon: string;
+	order: number;
+	authenticated: boolean,
+	sourceUrl: string;
+	tokenId: number;
+	type: ScriptSourceType;
 }
 
 export interface SourceInterface {

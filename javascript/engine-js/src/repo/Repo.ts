@@ -2,7 +2,7 @@ import {TokenScriptEngine} from "../Engine";
 import {ResolveResult, SourceInterfaceConstructor} from "./sources/SourceInterface";
 import {ScriptURI} from "./sources/ScriptURI";
 import {TokenScriptRepo} from "./sources/TokenScriptRepo";
-import { RegistryScriptURI } from "./sources/RegistryScriptURI";
+import {RegistryScriptURI} from "./sources/RegistryScriptURI";
 
 /**
  * Repo.ts is class that is used to resolve TokenScripts from various sources and cache them in localStorage
@@ -64,15 +64,27 @@ export class Repo {
 	 */
 	private async resolveTokenScript(tsId: string){
 
+		let useResult: ResolveResult = null;
+
 		for (let resolver of Repo.REPO_SOURCES){
 			try {
-				return await (new resolver(this.context)).getTokenScriptXml(tsId);
-			} catch (e){
-				console.log("Failed to resolve tokenscript using resolver: " + resolver.name);
+				const scriptData = await (new resolver(this.context)).getTokenScriptXml(tsId);
+				if (useResult == null) {
+					useResult = scriptData;
+				} else {
+					useResult.scripts.push(...scriptData.scripts);
+				}
+				
+			} catch (e) {
+				console.log("Failed to resolve tokenscript using resolver: " + resolver.name + `(${e})`);
 			}
 		}
 
-		throw new Error("Could not resolve tokenscript with ID: " + tsId);
+		if (useResult == null) {
+			throw new Error("Could not resolve tokenscript with ID: " + tsId);
+		} else {
+			return useResult;
+		}
 	}
 
 	/**

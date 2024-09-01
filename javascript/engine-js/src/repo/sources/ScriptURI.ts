@@ -54,7 +54,16 @@ export class ScriptURI implements SourceInterface {
 		return {
 			xml: await response.text(),
 			sourceUrl: uri,
-			type: ScriptSourceType.SCRIPT_URI
+			type: ScriptSourceType.SCRIPT_URI,
+			scripts: [{
+				name: "5169",
+				icon: "",
+				order: 0,
+				authenticated: true,
+				tokenId: 0,
+				sourceUrl: uri,
+				type: ScriptSourceType.SCRIPT_URI
+			}]
 		};
 	}
 

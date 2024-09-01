@@ -23,7 +23,16 @@ export class TokenScriptRepo implements SourceInterface {
 		return {
 			xml: await response.text(),
 			sourceUrl: uri,
-			type: ScriptSourceType.URL
+			type: ScriptSourceType.URL,
+			scripts: [{
+				name: "Repo",
+				icon: "",
+				order: 0,
+				authenticated: true,
+				sourceUrl: uri,
+				tokenId: 0,
+				type: ScriptSourceType.URL
+			}]
 		};
 	}
 }
