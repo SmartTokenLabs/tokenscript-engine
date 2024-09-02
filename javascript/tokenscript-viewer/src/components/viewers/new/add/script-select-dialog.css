@@ -26,3 +26,13 @@
 	gap: 4px;
 	vertical-align: middle;
 }
+
+.select-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.select-list .ts-button {
+	width: 100%;
+}

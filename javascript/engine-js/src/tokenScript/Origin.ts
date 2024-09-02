@@ -3,7 +3,6 @@ import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
 import {ethers} from "ethers";
-import {ScriptInfo} from "../repo/sources/SourceInterface";
 
 export type OriginType = "contract"|"attestation"
 
@@ -11,7 +10,6 @@ export enum AuthenticationType {
 	NONE = "none",
 	IPFS_CID = "ipfsCid", // The script has been loaded from a URL specified by the ScriptUri smart contract function.
 	XML_DSIG = "dsig", // The XML dsig is an EC signature, signed by the origin smart contract deployer
-	IPFS_REGISTRY = "ERC-7738 Registry IPFS" // The script was defined by the 7738 registry; need to perform further validation as detailed in validateByScriptRegistry
 }
 
 export interface IOriginSecurityInfo {
@@ -49,7 +47,10 @@ export class Origin {
 			if (!this.securityStatus && securityInfo.authoritivePublicKey)
 				await this.validateBySignerKey(securityInfo.authoritivePublicKey, securityInfo.trustedKey);
 
-			if (!this.securityStatus && this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_URI && this.type === "contract")
+			if (!this.securityStatus &&
+				(this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_URI || this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) &&
+				this.type === "contract"
+			)
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
 
 			if (!this.securityStatus)

@@ -1,8 +1,10 @@
-import {ScriptSourceType, TokenScriptEngine} from "../Engine";
+import {TokenScriptEngine} from "../Engine";
 import {ResolvedScriptData, ScriptInfo, SourceInterfaceConstructor} from "./sources/SourceInterface";
 import {ScriptURI} from "./sources/ScriptURI";
 import {TokenScriptRepo} from "./sources/TokenScriptRepo";
 import {RegistryScriptURI} from "./sources/RegistryScriptURI";
+
+type ScriptLookupCache = {[chainAndContract: string]: {scripts: ScriptInfo[], timestamp: number}};
 
 /**
  * Repo.ts is class that is used to resolve TokenScripts from various sources and cache them in localStorage
@@ -22,12 +24,34 @@ export class Repo {
 	/**
 	 * Repo cache TTL in seconds
 	 */
-	static REPO_TTL = 300;
+	static REPO_TTL = 3600;
 
-	private scriptCache: {[chainAndContract: string]: ScriptInfo[]} = {};
+	static LOCAL_STORAGE_KEY = "ts-resolver-cache";
+
+	private scriptLookupCache: ScriptLookupCache = {};
 
 	constructor(protected context: TokenScriptEngine) {
+		if (this.context.config.noLocalStorage)
+			return;
 
+		try {
+			const tsStr = localStorage.getItem(Repo.LOCAL_STORAGE_KEY);
+
+			if (tsStr)
+				this.scriptLookupCache = JSON.parse(tsStr) as ScriptLookupCache;
+
+			// TODO: This is just to remove old records from before when we stored XML in local storage (bad idea)
+			for (let i=0; i<localStorage.length; i++){
+				const key = localStorage.key(i);
+				if (key.indexOf("ts-") === 0 &&
+					[Repo.LOCAL_STORAGE_KEY, "ts-wallet-connections"].indexOf(key) === -1
+				){
+					localStorage.removeItem(key);
+				}
+			}
+		} catch (e){
+			// no-op
+		}
 	}
 
 	/**
@@ -37,9 +61,8 @@ export class Repo {
 	 */
 	public async resolveAllScripts(tsPath: string, forceRefresh = false){
 
-		// TODO: Implement persistent cache for script lookups
-		if (!forceRefresh && this.scriptCache[tsPath])
-			return this.scriptCache[tsPath];
+		if (!forceRefresh && this.scriptLookupCache[tsPath] && (Date.now() < this.scriptLookupCache[tsPath].timestamp + (Repo.REPO_TTL * 1000)))
+			return this.scriptLookupCache[tsPath].scripts;
 
 		const scripts = [];
 
@@ -47,14 +70,16 @@ export class Repo {
 			try {
 				scripts.push(...await (new resolver(this.context)).resolveAllScripts(tsPath));
 			} catch (e) {
-				console.log("Failed to resolve tokenscripts using resolver: " + resolver.name, e);
+				console.log("Failed to resolve tokenscripts using resolver: " + resolver.name, e.message);
 			}
 		}
 
 		if (!scripts.length)
 			throw new Error("Failed to resolve any scripts for tsPath: " + tsPath);
 
-		this.scriptCache[tsPath] = scripts;
+		this.scriptLookupCache[tsPath] = {scripts, timestamp: Date.now()};
+
+		this.saveScriptLookupCache();
 
 		return scripts;
 	}
@@ -67,14 +92,6 @@ export class Repo {
 	 */
 	public async getTokenScript(tsId: string, forceRefresh = false): Promise<ResolvedScriptData> {
 
-		// TODO: Reimplement cache for script entries.
-		/*if (!this.context.config.noLocalStorage)
-			try {
-				const tsStr = localStorage.getItem("ts-" + tsId);
-				tokenScript = JSON.parse(tsStr) as ResolveResult & { timestamp?: number };
-			} catch (e){
-				// no-op
-			}*/
 		const scripts = await this.resolveAllScripts(tsId);
 
 		const pathParts = tsId.split("-");
@@ -92,20 +109,10 @@ export class Repo {
 		if (!chosenScript)
 			throw new Error("Could not find a script corresponding to the tsId: " + tsId);
 
-		//if (forceRefresh || !tokenScript || !tokenScript.xml ||
-			//(Date.now() > tokenScript.timestamp + (Repo.REPO_TTL * 1000))){
-
-			const tokenScript = await this.fetchTokenScript(chosenScript, forceRefresh);
-			//tokenScript.timestamp = Date.now();
-			//this.saveTokenScript(tsId, tokenScript);
-		//}
-
-		return tokenScript;
+		return await this.fetchTokenScript(chosenScript, forceRefresh);
 	}
 
 	private async fetchTokenScript(scriptInfo: ScriptInfo, forceRefresh: boolean){
-
-		console.log("Script info: ", scriptInfo);
 
 		let uri = scriptInfo.sourceUrl;
 
@@ -137,27 +144,15 @@ export class Repo {
 	}
 
 	/**
-	 * Remove the TokenScript file from the cache
-	 * @param tsId
+	 * Save lookup cache
 	 */
-	public deleteTokenScript(tsId: string){
-		//if (!this.context.config.noLocalStorage)
-			//localStorage.removeItem("ts-" + tsId);
-	}
-
-	/**
-	 * Save a TokenScript file to the cache
-	 * @param tsId
-	 * @param tokenScript
-	 */
-	public saveTokenScript(tsId: string, tokenScript: ResolvedScriptData & {timestamp?: number}){
-		/*if (!this.context.config.noLocalStorage) {
-			localStorage.removeItem("ts-" + tsId);
+	public saveScriptLookupCache(){
+		if (!this.context.config.noLocalStorage) {
 			try {
-				localStorage.setItem("ts-" + tsId, JSON.stringify(tokenScript));
+				localStorage.setItem(Repo.LOCAL_STORAGE_KEY, JSON.stringify(this.scriptLookupCache));
 			} catch (e: any){
 				console.warn("Failed to store tokenscript definition: ", e.message);
 			}
-		}*/
+		}
 	}
 }

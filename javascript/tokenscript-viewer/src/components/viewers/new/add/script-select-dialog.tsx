@@ -4,7 +4,7 @@ import {ScriptInfo} from "@tokenscript/engine-js/src/repo/sources/SourceInterfac
 @Component({
 	tag: 'script-select-dialog',
 	styleUrl: 'script-select-dialog.css',
-	shadow: true,
+	shadow: false,
 })
 export class ScriptSelectDialog {
 
@@ -19,41 +19,6 @@ export class ScriptSelectDialog {
 		this.scripts = scripts;
 		await this.dialog.openDialog();
 	}
-
-	/*private selectScript(val: number) {
-		//redirect to load the correct log
-
-		let selectionJSON = this.tokenScript.getSourceInfo().scriptData;
-		//populate with appropriate data
-		for (let i = 0; i < selectionJSON.length; i++) {
-			if (selectionJSON[i].order == val) {
-				//update URL and reload
-				this.setURLLookup(selectionJSON[i].sourceUrl, selectionJSON[i].tokenId);
-				break;
-			}
-		}
-	}
-
-	private async setURLLookup(registryURL: string, tokenId: number) {
-		const params = new URLSearchParams(document.location.search);
-
-		params.delete("tsId");
-		params.delete("tokenscriptUrl");
-
-		params.set("registryScriptUrl", registryURL);
-		params.set("registryTokenId", tokenId.toString());
-
-		const location = new URL(document.location.href);
-		location.search = params.toString();
-
-		// Update the browser's history state
-		history.pushState(undefined, undefined, location.toString());
-
-		await new Promise((resolve) => setTimeout(resolve, 500));
-
-		// Reload the page with the new URL using either method
-		window.location.assign(location.toString());
-	}*/
 
 	render() {
 
@@ -78,24 +43,18 @@ export class ScriptSelectDialog {
 		return (
 			<Host>
 				<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{ background: "#fff !important", color: "#000 !important" }}>
-					<div>
-						{buttons.map((button, index) => (
-							<div><button
-								key={button.id}
+					<p>Select from the available TApps below</p>
+					<div class="select-list">
+						{this.scripts.map((script, index) => {
+							return <tokenscript-button
+								name={script.name}
+								imageUrl={script.icon}
 								onClick={() => {
 									this.onScriptSelect(this.scripts[index]);
 									this.dialog.closeDialog();
-								}}
-								class="button-fixed-width"
-								style={{ marginTop: '10px', cursor: 'pointer' }}
-							>
-								<div class="button-content">
-									<img src={button.icon} class={"icon-small"} />
-									{button.name}
-								</div>
-								<img src={button.selected} class={"selector-small"} />
-							</button><br /></div>
-						))}
+								}}>
+							</tokenscript-button>
+						})}
 					</div>
 				</popover-dialog>
 			</Host>

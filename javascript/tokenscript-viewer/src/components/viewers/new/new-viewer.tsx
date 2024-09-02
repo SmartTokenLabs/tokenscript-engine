@@ -239,6 +239,8 @@ export class NewViewer {
 
 	private async discoverScripts(tsPath: string){
 
+		this.app.showTsLoader();
+
 		const scripts = await this.app.tsEngine.resolveAllScripts(tsPath);
 
 		if (scripts.length === 1)

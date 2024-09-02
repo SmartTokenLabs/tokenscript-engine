@@ -25,7 +25,7 @@ export interface SourceInterface {
 	 * Resolves all scripts for a given contract & chain
 	 * @param tsPath This is the partial tokenscript ID. It is either a chain-contract or name in the case of the Legacy TokenScript repo
 	 */
-	resolveAllScripts(tsPath: string): Promise<ScriptInfo[]>
+	resolveAllScripts(tsPath: string): Promise<Omit<ScriptInfo, "timestamp">[]>
 }
 
 export interface SourceInterfaceConstructor {
