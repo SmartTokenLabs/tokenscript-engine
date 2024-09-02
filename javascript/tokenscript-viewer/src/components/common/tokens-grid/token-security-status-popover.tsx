@@ -48,16 +48,18 @@ export class TokenSecurityStatus {
 
 	render() {
 		return (
-			this.securityInfo ?
-				<Host>
-					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{background: "#fff !important", color: "#000 !important"}}>
-						<h1 class="security-popover-icon" style={{color: this.statusColor}}>{this.statusIcon}</h1>
-						<strong innerHTML={this.securityInfo.statusText.replaceAll("\n", "<br/>")}/>
-						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
-						</p>
-					</popover-dialog>
-				</Host>
-				: ''
+			<Host>
+				<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{background: "#fff !important", color: "#000 !important"}}>
+					{(this.securityInfo ?
+						<div>
+							<h1 class="security-popover-icon"
+							    style={{color: this.statusColor}}>{this.statusIcon}</h1>
+							<strong innerHTML={this.securityInfo.statusText.replaceAll("\n", "<br/>")}/>
+							<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}></p>
+						</div>
+				 : '')}
+				</popover-dialog>
+			</Host>
 		)
 	}
 }
