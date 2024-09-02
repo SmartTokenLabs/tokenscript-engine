@@ -1,4 +1,4 @@
-import {ResolveResult, SourceInterface} from "./SourceInterface";
+import {ResolvedScriptData, SourceInterface} from "./SourceInterface";
 import {ScriptSourceType} from "../../Engine";
 
 /**
@@ -8,31 +8,28 @@ export class TokenScriptRepo implements SourceInterface {
 
 	static REPO_URL = "https://raw.githubusercontent.com/AlphaWallet/TokenScript-Repo/master/aw.app/2020/06/";
 
-	async getTokenScriptXml(tsId: string): Promise<ResolveResult> {
+	async resolveAllScripts(tsPath: string){
 
-		if (!tsId.match(/^[a-zA-Z0-9]*$/))
+		if (!tsPath.match(/^[a-zA-Z0-9]*$/))
 			throw new Error("Not a valid tsId for TokenScript repo");
 
-		const uri = TokenScriptRepo.REPO_URL + tsId + ".tsml";
+		const uri = TokenScriptRepo.REPO_URL + tsPath + ".tsml";
 
 		let response = await fetch(uri);
 
 		if (response.status < 200 || response.status > 299)
 			throw new Error("HTTP Error: " + response.status);
 
-		return {
-			xml: await response.text(),
+		// TODO: Download script and pull out metadata
+		return [{
+			name: "Repo",
+			icon: "",
+			order: 0,
+			authenticated: true,
+			sourceId: tsPath,
 			sourceUrl: uri,
-			type: ScriptSourceType.URL,
-			scripts: [{
-				name: "Repo",
-				icon: "",
-				order: 0,
-				authenticated: true,
-				sourceUrl: uri,
-				tokenId: 0,
-				type: ScriptSourceType.URL
-			}]
-		};
+			scriptId: "Repo",
+			type: ScriptSourceType.URL
+		}];
 	}
 }

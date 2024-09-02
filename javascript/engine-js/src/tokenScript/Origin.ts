@@ -1,9 +1,9 @@
-import { ScriptSourceType } from "../Engine";
+import {ScriptSourceType} from "../Engine";
 import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
 import {ethers} from "ethers";
-import {ScriptSource} from "../repo/sources/SourceInterface";
+import {ScriptInfo} from "../repo/sources/SourceInterface";
 
 export type OriginType = "contract"|"attestation"
 
@@ -42,9 +42,9 @@ export class Origin {
 			// If the script was sourced from the Script Registry it's only deemed signed under the following cases:
 			// 1: The TS is located on IPFS, and the setting wallet of the entry is the TS origin contract owner() or the current owner of Order token (1)
 			// 2: The TS has a signature which is from the owner() of the contract or current owner of Order token (1)
-			if (this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) {
+			/*if (this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) {
 				await this.validateByScriptRegistry(securityInfo);
-			}
+			}*/
 
 			if (!this.securityStatus && securityInfo.authoritivePublicKey)
 				await this.validateBySignerKey(securityInfo.authoritivePublicKey, securityInfo.trustedKey);
@@ -65,7 +65,7 @@ export class Origin {
 		return this.securityStatus;
 	}
 
-	private getSelectedScript(): ScriptSource {
+	/*private getSelectedScript(): ScriptInfo {
 		const selectedTokenId = this.tokenScript.getSourceInfo().selectionId;
 		const scriptSource = this.tokenScript.getSourceInfo();
 
@@ -76,26 +76,31 @@ export class Origin {
 		}
 
 		return null;
-	}
+	}*/
 
-	private async validateByScriptRegistry(securityInfo: Partial<ISecurityInfo>) {
+	/*private async validateByScriptRegistry(securityInfo: Partial<ISecurityInfo>) {
 
 		//1. Discover which tokenId this is
 		//2. Match the address in URL to the script in the sources
 		//3. If IPFS, and script is authenticated, treat as trusted
 		//4. If not IPFS, then validate from signature
-		const selectedElement = this.getSelectedScript();
-		const ipfsCid: string = securityInfo.ipfsCid;
+		//const selectedElement = this.getSelectedScript();
+		//const ipfsCid: string = securityInfo.ipfsCid;
 
 		// now ensure the IPFS fetch matches
-		const matches = selectedElement != undefined && selectedElement.sourceUrl.includes(ipfsCid);
+		const matches = this.tokenScript.getSourceInfo().sourceUrl.includes(ipfsCid);
 
-		if (matches && selectedElement.authenticated) {
+		const sourceInfo = this.tokenScript.getSourceInfo();
+
+		if (sourceInfo.scriptInfo &&
+			sourceInfo.scriptInfo.type === ScriptSourceType.SCRIPT_REGISTRY &&
+			sourceInfo
+		) {
 			this.securityStatus = this.selectAuthenticationType(selectedElement);
 		}
 	}
-	
-	private selectAuthenticationType(selectedElement: ScriptSource) {
+
+	private selectAuthenticationType(selectedElement: ScriptInfo) {
 		if (selectedElement.tokenId == 0) {
 			if (selectedElement.name == '5169') {
 				return {
@@ -114,7 +119,7 @@ export class Origin {
 				statusText: "The TokenScript IPFS CID matches the Authenticated scriptURI specified by the Registry"
 			}
 		}
-	}
+	}*/
 
 	private async validateBySignerKey(authPubKey: string, trustedKey?: TrustedKey){
 

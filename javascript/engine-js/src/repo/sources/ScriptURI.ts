@@ -1,4 +1,4 @@
-import {ResolveResult, SourceInterface} from "./SourceInterface";
+import {ResolvedScriptData, ScriptInfo, SourceInterface} from "./SourceInterface";
 import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
 /**
@@ -8,63 +8,39 @@ import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 export class ScriptURI implements SourceInterface {
 
 	constructor(private context: TokenScriptEngine) {
+
 	}
 
-	/**
-	 * In the case of EIP-5169, tsId is a dash separated id that consists of: {$chain}-{$contractAddress}
-	 * These two values are used to resolve the ScriptURI for a particular EVM contract and download the TokenScript
-	 * from the resolved URL.
-	 * @param tsId
-	 */
-	async getTokenScriptXml(tsId: string): Promise<ResolveResult> {
+	async resolveAllScripts(tsPath: string){
 
-		const [chain, contractAddr] = tsId.split("-");
+		const [chain, contractAddr] = tsPath.split("-");
 
 		if (!contractAddr || contractAddr.indexOf("0x") !== 0)
-			throw new Error("Not a ScriptUri ID");
+			throw new Error("Not a EIP-5169 or EIP-7738 path");
 
-		let uri = await this.context.getScriptUri(chain, contractAddr);
+		const scripts: ScriptInfo[] = [];
 
-		if (!uri)
+		let uris = await this.context.getScriptUris(chain, contractAddr);
+
+		if (!uris)
 			throw new Error("ScriptURI is not set on this contract or chain");
 
-		console.log("Resolved ScriptURI: " + uri);
+		for (const uri of uris){
 
-		// TODO: Remove this fix once AlphaWallet is updated to support embedded TS viewer for newer schema versions
-		if (uri === "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-prod.tsml"){
-			console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
-			uri = "/assets/tokenscripts/smart-cat-prod-2024-01.tsml";
-		} else if (uri === "https://viewer-staging.tokenscript.org/assets/tokenscripts/smart-cat-mumbai.tsml"){
-			console.log("SmartCat tokenscript detected, using updated version for newer features and better performance");
-			uri = "/assets/tokenscripts/smart-cat-mumbai-2024-01.tsml";
-		} else if (uri === "https://viewer.tokenscript.org/assets/tokenscripts/smart-cat-loot-prod.tsml"){
-			// Always use staging version on staging site
-			uri = "/assets/tokenscripts/smart-cat-loot-prod.tsml";
-		}
-
-		uri = this.context.processIpfsUrl(uri);
-
-		let response = await fetch(uri, {
-			cache: "no-store"
-		});
-
-		if (response.status < 200 || response.status > 299)
-			throw new Error("HTTP Error: " + response.status);
-
-		return {
-			xml: await response.text(),
-			sourceUrl: uri,
-			type: ScriptSourceType.SCRIPT_URI,
-			scripts: [{
+			// TODO: Download script and pull out metadata
+			scripts.push({
 				name: "5169",
 				icon: "",
 				order: 0,
 				authenticated: true,
-				tokenId: 0,
+				sourceId: tsPath,
+				scriptId: "5169",
 				sourceUrl: uri,
 				type: ScriptSourceType.SCRIPT_URI
-			}]
-		};
+			});
+		}
+
+		return scripts;
 	}
 
 }

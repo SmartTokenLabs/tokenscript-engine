@@ -4,25 +4,28 @@ import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
  * Define interfaces for implementing a custom repo source
  */
 
-export interface ResolveResult {
-	sourceUrl: string;
+export interface ResolvedScriptData extends ScriptInfo {
 	xml: string;
-	type: ScriptSourceType;
-	scripts: ScriptSource[];
+	//scripts: ScriptInfo[];
 }
 
-export interface ScriptSource {
+export interface ScriptInfo {
 	name: string;
 	icon: string;
 	order: number;
 	authenticated: boolean,
+	sourceId: string, // This is `${chain}-${contract}`
 	sourceUrl: string;
-	tokenId: number;
+	scriptId: number|string; // For scriptUri or TokenScript registry, this is the name defined in the TokenScript otherwise, it is the registry tokenId
 	type: ScriptSourceType;
 }
 
 export interface SourceInterface {
-	getTokenScriptXml(tsId: string): Promise<ResolveResult>
+	/**
+	 * Resolves all scripts for a given contract & chain
+	 * @param tsPath This is the partial tokenscript ID. It is either a chain-contract or name in the case of the Legacy TokenScript repo
+	 */
+	resolveAllScripts(tsPath: string): Promise<ScriptInfo[]>
 }
 
 export interface SourceInterfaceConstructor {

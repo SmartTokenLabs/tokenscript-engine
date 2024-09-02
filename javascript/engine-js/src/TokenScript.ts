@@ -20,8 +20,7 @@ import {TransactionValidator} from "./security/TransactionValidator";
 import {Contracts} from "./tokenScript/Contracts";
 import {Cards} from "./tokenScript/Cards";
 
-import {HOLESKY_DEV_7738} from "./Engine";
-import {ScriptSource} from "./repo/sources/SourceInterface";
+import {ScriptInfo} from "./repo/sources/SourceInterface";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -109,9 +108,8 @@ export class TokenScript {
 		private source: ScriptSourceType,
 		private sourceId: string,
 		private sourceUrl: string,
-		private viewBinding?: IViewBinding,
-		private scriptData?: ScriptSource[],
-		private selectionId?: number,
+		private scriptInfo?: ScriptInfo,
+		private viewBinding?: IViewBinding
 	) {
 		if (this.tokenDef?.documentElement?.tagName !== "ts:token")
 			throw new Error("The provided file is not a valid TokenScript");
@@ -127,8 +125,7 @@ export class TokenScript {
 			tsId: this.sourceId ?? this.getName(),
 			source: this.source,
 			sourceUrl: this.sourceUrl,
-			scriptData: this.scriptData,
-			selectionId: this.selectionId != undefined ? this.selectionId : 0,
+			scriptInfo: this.scriptInfo
 		}
 	}
 
@@ -745,35 +742,6 @@ export class TokenScript {
 	public getAsnModuleDefinition(name){
 		const modules = this.tokenDef.getElementsByTagName("asnx:module")[0];
 		return modules.querySelector("[name=" + name + "]");
-	}
-
-	public async getAuthenticationStatus(contractAddress: string, order: number) {
-		const wallet = await this.engine.getWalletAdapter();
-		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
-		let isAuthorised: boolean = false;
-
-		try {
-			isAuthorised = await wallet.call(
-				chain, HOLESKY_DEV_7738, "isAuthenticated", [
-					{
-						internalType: "address",
-						name: "",
-						type: "address",
-						value: contractAddress
-					},
-				{
-					internalType: "uint256",
-						name: "",
-						type: "uint256",
-						value: order
-				}], ["bool"]
-			);
-		} catch (e) {
-
-		}
-
-		return isAuthorised;
 	}
 
 	/**

@@ -100,19 +100,18 @@ export class ViewerPopover {
 		if (sourceInfo.source !== ScriptSourceType.UNKNOWN && !params.has("emulator")){
 			switch (sourceInfo.source) {
 				case ScriptSourceType.SCRIPT_REGISTRY:
-					// No update for params
-					break;
 				case ScriptSourceType.SCRIPT_URI:
-					const [chain, contract] = sourceInfo.tsId.split("-");
+					const [chain, contract, scriptId] = sourceInfo.tsId.split("-");
 					if (contract) {
 						params.set("chain", chain);
 						params.set("contract", contract);
+						if (scriptId)
+							params.set("scriptId", scriptId);
 					} else {
 						params.set("tsId", sourceInfo.tsId);
 					}
 					break;
 				case ScriptSourceType.URL:
-					console.log("ADD TS URL: " + sourceInfo.sourceUrl);
 					params.set("tokenscriptUrl", sourceInfo.sourceUrl);
 					break;
 			}
@@ -169,6 +168,7 @@ export class ViewerPopover {
 		const params = new URLSearchParams(document.location.search);
 		params.delete("chain");
 		params.delete("contract");
+		params.delete("scriptId");
 		params.delete("tsId");
 		params.delete("tokenscriptUrl");
 		location.search = params.toString();

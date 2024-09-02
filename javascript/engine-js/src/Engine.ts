@@ -9,7 +9,7 @@ import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefini
 import {TrustedKey} from "./security/TrustedKeyResolver";
 import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 import {ITxValidationInfo} from "./security/TransactionValidator";
-import {ScriptSource} from "./repo/sources/SourceInterface";
+import {ResolvedScriptData, ScriptInfo} from "./repo/sources/SourceInterface";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
@@ -30,26 +30,6 @@ export enum ScriptSourceType {
 	URL = "url",
 	UNKNOWN = "unknown",
 }
-
-// Development deployment of 7738 on Holesky only
-// TODO: Replace with multichain address once available
-export const HOLESKY_DEV_7738 = "0x29a27A5D74Fe8ff01E2dA8b9fC64061A3DFBEe14";
-const HOLESKY_ID = 17000; // TODO: Source this from engine
-const cacheTimeout = 60 * 1000; // 1 minute cache validity
-
-//cache entries
-export interface ScriptEntry {
-	scriptURIs: string[];
-	timeStamp: number;
-}
-
-export interface RegistryMetaData {
-	scriptData: ScriptSource[];
-	timeStamp: number;
-}
-
-const cachedResults = new Map<string, ScriptEntry>();
-const cachedMetaDataResults = new Map<string, RegistryMetaData>();
 
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
@@ -140,6 +120,10 @@ export class TokenScriptEngine {
 		throw new Error("The provided TokenScript does not contain an attestation definition for the included attestation.");
 	}
 
+	public resolveAllScripts(tsPath: string, forceReload = false){
+		return this.repo.resolveAllScripts(tsPath, forceReload);
+	}
+
 	/**
 	 * Create a new TokenScript instance from a repo source
 	 * @param tsId The unique identifier for the TokenScript file
@@ -150,14 +134,16 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		let scriptTokenId = "0";
+		console.log("Resolve result: ", resolveResult);
+
+		/*let scriptTokenId = "0";
 
 		// select first registry script if loading with no pre-select
 		if (resolveResult.type == ScriptSourceType.SCRIPT_REGISTRY && resolveResult.scripts.length > 0) {
 			scriptTokenId = resolveResult.scripts[0].tokenId.toString();
-		}
+		}*/
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, viewBinding, resolveResult.scripts, scriptTokenId);
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, resolveResult, viewBinding);
 	}
 
 	/**
@@ -165,11 +151,10 @@ export class TokenScriptEngine {
 	 * @param url Source URL for the TokenScript
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 */
-	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding, chain?: string, contractAddr?: string, selectionIdToken?: string){
+	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
 
 		url = this.processIpfsUrl(url);
 
-		let registryScripts = [];
 
 		// TODO: Add caching for URL loaded tokenscripts, add URL source to repo
 		const res = await fetch(url, {
@@ -183,14 +168,14 @@ export class TokenScriptEngine {
 		let tsType: ScriptSourceType = ScriptSourceType.URL;
 
 		//load scripts if this is a registry entry
-		if (chain != undefined && contractAddr != undefined) {
+		/*if (chain != undefined && contractAddr != undefined) {
 			// We still need to load all the available scripts for selection purposes (eg 5169 scriptURI if also available)
 			const resolveResult = await this.repo.getTokenScript(`${chain}-${contractAddr}`, false);
 			registryScripts = resolveResult.scripts;
 			tsType = ScriptSourceType.SCRIPT_REGISTRY;
-		}
+		}*/
 
-		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, viewBinding, registryScripts, selectionIdToken);
+		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, null, viewBinding);
 	}
 
 	// TODO: The engine should hold the tokenscript object in memory until explicitly cleared, or done so via some intrinsic.
@@ -205,7 +190,7 @@ export class TokenScriptEngine {
 	 */
 	public async loadTokenScript(xml: string, viewBinding?: IViewBinding, sourceType: ScriptSourceType = ScriptSourceType.UNKNOWN, sourceId?: string, sourceUrl?: string) {
 
-		return await this.initializeTokenScriptObject(xml, sourceType, sourceId, sourceUrl, viewBinding);
+		return await this.initializeTokenScriptObject(xml, sourceType, sourceId, sourceUrl, null, viewBinding);
 	}
 
 	/**
@@ -214,11 +199,11 @@ export class TokenScriptEngine {
 	 * @param source
 	 * @param sourceId
 	 * @param sourceUrl
+	 * @param scriptInfo
 	 * @param viewBinding
 	 * @private
 	 */
-	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, viewBinding?: IViewBinding, 
-		scripts?: ScriptSource[], selectionTokenId?: string){
+	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, scriptInfo?: ScriptInfo, viewBinding?: IViewBinding){
 		try {
 			let parser
 			if ((typeof process !== 'undefined') && (process.release.name === 'node')){
@@ -229,10 +214,9 @@ export class TokenScriptEngine {
 				parser = new DOMParser();
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
-			let selectionId = selectionTokenId != undefined ? Number(selectionTokenId) : 0;
-			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, viewBinding, scripts, selectionId);
+			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
 		} catch (e){
-			this.repo.deleteTokenScript(sourceId); // TODO: Move parsing to repo so that this isn't required
+			//this.repo.deleteTokenScript(sourceId); // TODO: Move parsing to repo so that this isn't required
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}
 	}
@@ -279,7 +263,7 @@ export class TokenScriptEngine {
 		return uri;
 	}
 
-	public async getScriptUri(chain: string, contractAddr: string) {
+	public async getScriptUris(chain: string|number, contractAddr: string) {
 
 		// Direct RPC gets too hammered by opensea view (that doesn't allow localStorage to cache XML)
 		/*const provider = await this.getWalletAdapter();
@@ -308,193 +292,15 @@ export class TokenScriptEngine {
 		if (!data.scriptURI)
 			return null;
 
+		let uris: string[] = [];
+
 		if (data.scriptURI.erc5169?.length)
-			return <string>data.scriptURI.erc5169[0];
+			uris.push(...data.scriptURI.erc5169);
 
 		if (data.scriptURI.offchain?.length)
-			return <string>data.scriptURI.offchain[0];
+			uris.push(...data.scriptURI.offchain);
 
-		return null;
+		return uris.length ? uris : null;
 	}
 
-	// This returns all entries but the 7738 calling function currently selects the first entry
-	// TODO: Create selector that displays icon and name for each entry, in order returned
-	// TODO: Use global deployed address for 7738
-	public async get7738Entry(chain: string, contractAddr: string): Promise<string[]> {
-
-		// use 1 minute persistence fetch cache
-		let cachedResult = this.checkCachedResult(chain, contractAddr);
-
-		if (cachedResult.length > 0) {
-			return cachedResult;
-		}
-
-		const chainId: number = parseInt(chain);
-
-		// TODO: Remove once universal chain deployment is available
-		if (chainId != HOLESKY_ID) {
-			return [];
-		}
-
-		const provider = await this.getWalletAdapter();
-		let uri: string|string[]|null;
-
-		try {
-			uri = Array.from(await provider.call(
-				chainId, HOLESKY_DEV_7738, "scriptURI", [
-					{
-						internalType: "address",
-						name: "",
-						type: "address",
-						value: contractAddr
-					}], ["string[]"]
-			)) as string[];
-		} catch (e) {
-			uri = "";
-		}
-
-		if (uri && Array.isArray(uri) && uri.length > 0) {	  
-			this.storeResult(chain, contractAddr, uri);
-			return uri;
-		} else {
-			return [];
-		}
-	}
-	
-	public async get7738Metadata(chain: string, contractAddr: string): Promise<ScriptSource[]> {
-
-		const chainId: number = parseInt(chain);
-
-		// TODO: Remove once universal chain deployment is available
-		if (chainId != HOLESKY_ID) {
-			return [];
-		}
-
-		// use 1 minute persistence fetch cache
-		let cachedResult = this.checkCachedMetaData(chain, contractAddr);
-
-		if (cachedResult.length > 0) {
-			return cachedResult;
-		}
-
-		const provider = await this.getWalletAdapter();
-		let scriptSourceData: any;
-
-		try {
-			scriptSourceData = Array.from(await provider.call(
-				chainId, HOLESKY_DEV_7738, "scriptData", [
-					{
-						internalType: "address",
-						name: "contractAddress",
-						type: "address",
-						value: contractAddr
-					}], 
-					[{
-						"components": [
-						  {
-							internalType: "string",
-							name: "name",
-							type: "string"
-						  },
-						  {
-							internalType: "string",
-							name: "iconURI",
-							type: "string"
-						  },
-						  {
-							internalType: "uint",
-							name: "tokenId",
-							type: "uint"
-						  },
-						  {
-							internalType: "string",
-							name: "scriptURI",
-							type: "string"
-						  },
-						  {
-							internalType: "bool",
-							name: "isAuthenticated",
-							type: "bool"
-						  }
-						],
-						"internalType": "struct ScriptData[]",
-						"name": "",
-						"type": "tuple[]"
-					  }]
-			));
-		} catch (e) {
-			scriptSourceData = [];
-		}
-
-		let sourceElements: ScriptSource[] = [];
-
-		//build array
-		for (let i = 0; i < scriptSourceData?.length; i++) {
-			const thisSourceData = scriptSourceData[i];
-
-			sourceElements.push({
-				name: thisSourceData.name,
-				icon: this.processIpfsUrl(thisSourceData.iconURI),
-				order: i+1,
-				authenticated: thisSourceData.isAuthenticated,
-				tokenId: typeof thisSourceData.tokenId === 'bigint' ? Number(thisSourceData.tokenId) : thisSourceData.tokenId,
-				sourceUrl: thisSourceData.scriptURI,
-				type: ScriptSourceType.SCRIPT_REGISTRY
-			});
-		}
-
-		return sourceElements;
-	}
-
-	private storeResult(chain: string, contractAddr: string, uris: string[]) {
-		// remove out of date entries
-		cachedResults.forEach((value, key) => {
-			if (value.timeStamp < (Date.now() - cacheTimeout)) {
-				cachedResults.delete(key);
-			}
-		});
-
-		cachedResults.set(chain + "-" + contractAddr, {
-			scriptURIs: uris,
-			timeStamp: Date.now()
-		});
-	}
-
-	private checkCachedResult(chain: string, contractAddress: string): string[] {
-		const key = chain + "-" + contractAddress;
-		const mapping = cachedResults.get(key);
-		if (mapping) {
-			if (mapping.timeStamp < (Date.now() - cacheTimeout)) {
-				//out of date result, remove key
-				cachedResults.delete(key);
-				return []
-			} else {
-				//consoleLog("Can use cache");
-				return mapping.scriptURIs;
-			}
-		} else {
-			return [];
-		}
-	}
-
-	private checkCachedMetaData(chain: string, contractAddress: string): ScriptSource[] {
-		const key = chain + "-" + contractAddress;
-		this.removeOutOfDateEntries();
-		const mapping = cachedMetaDataResults.get(key);
-		if (mapping) {
-			return mapping.scriptData;
-		} else {
-			return [];
-		}
-	}
-
-	//ensure memory usage is kept to a minimum
-	private removeOutOfDateEntries() {
-		const currentTime = Date.now();
-		for (const [key, value] of cachedMetaDataResults) {
-			if (currentTime - value.timeStamp > cacheTimeout) {
-				cachedMetaDataResults.delete(key);
-			}
-		}
-	}
 }

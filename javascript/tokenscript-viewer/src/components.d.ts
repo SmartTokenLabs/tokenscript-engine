@@ -14,6 +14,7 @@ import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
+import { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -28,6 +29,7 @@ export { JSX } from "@stencil/core";
 export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 export { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
+export { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 export { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -55,7 +57,7 @@ export namespace Components {
         "app": AppRoot;
     }
     interface AppRoot {
-        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string, scriptSelection?: string) => Promise<TokenScript>;
+        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string) => Promise<TokenScript>;
         "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
     }
     interface AttributeTable {
@@ -113,6 +115,10 @@ export namespace Components {
         "modalStyles": {[cssProp: string]: string};
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
         "showShareToTg"?: boolean;
+    }
+    interface ScriptSelectDialog {
+        "onScriptSelect": (scriptInfo: ScriptInfo) => void;
+        "open": (scripts: ScriptInfo[]) => Promise<void>;
     }
     interface SecurityStatus {
         "size": "large" | "small" | "x-small";
@@ -485,6 +491,12 @@ declare global {
         prototype: HTMLPopoverDialogElement;
         new (): HTMLPopoverDialogElement;
     };
+    interface HTMLScriptSelectDialogElement extends Components.ScriptSelectDialog, HTMLStencilElement {
+    }
+    var HTMLScriptSelectDialogElement: {
+        prototype: HTMLScriptSelectDialogElement;
+        new (): HTMLScriptSelectDialogElement;
+    };
     interface HTMLSecurityStatusElement extends Components.SecurityStatus, HTMLStencilElement {
     }
     var HTMLSecurityStatusElement: {
@@ -737,6 +749,7 @@ declare global {
         "new-viewer": HTMLNewViewerElement;
         "opensea-viewer": HTMLOpenseaViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
+        "script-select-dialog": HTMLScriptSelectDialogElement;
         "security-status": HTMLSecurityStatusElement;
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
@@ -848,6 +861,9 @@ declare namespace LocalJSX {
         "fullScreen"?: boolean;
         "modalStyles"?: {[cssProp: string]: string};
         "showShareToTg"?: boolean;
+    }
+    interface ScriptSelectDialog {
+        "onScriptSelect"?: (scriptInfo: ScriptInfo) => void;
     }
     interface SecurityStatus {
         "size"?: "large" | "small" | "x-small";
@@ -984,6 +1000,7 @@ declare namespace LocalJSX {
         "new-viewer": NewViewer;
         "opensea-viewer": OpenseaViewer;
         "popover-dialog": PopoverDialog;
+        "script-select-dialog": ScriptSelectDialog;
         "security-status": SecurityStatus;
         "select-field": SelectField;
         "select-step": SelectStep;
@@ -1034,6 +1051,7 @@ declare module "@stencil/core" {
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
             "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
+            "script-select-dialog": LocalJSX.ScriptSelectDialog & JSXBase.HTMLAttributes<HTMLScriptSelectDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;

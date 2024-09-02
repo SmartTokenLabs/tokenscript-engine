@@ -17,7 +17,7 @@ import {showToastNotification} from "../viewers/util/showToast";
 import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 import {StaticProviders} from "../wallet/Web3WalletProvider";
 
-export type TokenScriptSource = "resolve" | "file" | "url" | "regUrl";
+export type TokenScriptSource = "resolve" | "file" | "url";
 
 export interface ShowToastEventArgs {
 	type: 'success'|'info'|'warning'|'error',
@@ -192,7 +192,7 @@ export class AppRoot {
 	}
 
 	@Method()
-	async loadTokenscript(source: TokenScriptSource, tsId?: string, file?: File|string, scriptSelection?: string): Promise<TokenScript> {
+	async loadTokenscript(source: TokenScriptSource, tsId?: string, file?: File|string): Promise<TokenScript> {
 
 		switch(source){
 			case "resolve":
@@ -205,12 +205,6 @@ export class AppRoot {
 				}
 			case "url":
 				return this.tsEngine.getTokenScriptFromUrl(tsId);
-			case "regUrl":
-				// split out the chain/contract/url
-				if (scriptSelection != undefined) {
-					const [chain, contractAddr, tokenId] = scriptSelection.split("-");
-					return this.tsEngine.getTokenScriptFromUrl(tsId, null, chain, contractAddr, tokenId);
-				}
 		}
 	}
 
