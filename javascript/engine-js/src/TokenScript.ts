@@ -122,7 +122,7 @@ export class TokenScript {
 	public getSourceInfo(){
 		return {
 			// TODO: Use better UID for non-resolved tokenscripts
-			tsId: this.sourceId + (this.scriptInfo.scriptId ? '-' + this.scriptInfo.scriptId : '') ?? this.getName(),
+			tsId: this.sourceId + (this.scriptInfo?.scriptId ? '-' + this.scriptInfo.scriptId : '') ?? this.getName(),
 			source: this.source,
 			sourceUrl: this.sourceUrl,
 			scriptInfo: this.scriptInfo

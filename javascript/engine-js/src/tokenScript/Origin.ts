@@ -204,8 +204,6 @@ export class Origin {
 		const scriptSource = this.tokenScript.getSourceInfo();
 		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");
 
-		console.log("Script Info ", scriptSource.scriptInfo);
-
 		// The same script Cid should be specified for all addresses in the same contract scriptUri in order to be valid
 		const addresses = contract.getAddresses();
 

@@ -57,6 +57,8 @@ export class ViewerPopover {
 	private overflowCardButtons: JSX.Element[];
 	private overflowDialog: HTMLActionOverflowModalElement;
 
+	@State()
+	private otherScripts: ScriptInfo[];
 
 	@Method()
 	async open(tokenScript: TokenScript){
@@ -76,7 +78,7 @@ export class ViewerPopover {
 			try {
 				const enabled = await card.isEnabledOrReason();
 
-				console.log("Card enabled: ", enabled);
+				//console.log("Card enabled: ", enabled);
 
 				if (enabled === false)
 					continue;
@@ -128,6 +130,21 @@ export class ViewerPopover {
 		location.search = params.toString();
 
 		history.pushState(undefined, undefined, location);
+
+		await this.reloadOtherScripts();
+	}
+
+	private async reloadOtherScripts(){
+		this.otherScripts = null;
+
+		if ([ScriptSourceType.SCRIPT_URI, ScriptSourceType.SCRIPT_REGISTRY].indexOf(this.tokenScript.getSourceInfo().source) === -1)
+			return;
+
+		try {
+			this.otherScripts = await this.tokenScript.getEngine().resolveAllScripts(this.tokenScript.getSourceInfo().tsId);
+		} catch (e){
+			console.warn(e);
+		}
 	}
 
 	private async showCard(card: Card, token?: TokenGridContext, cardIndex?: number){
@@ -192,17 +209,9 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
-						<button class="btn btn-secondary" style={{marginRight: "15px", minWidth: "35px", fontSize: "16px"}} onClick={async () =>{
-							this.showLoader.emit();
-							try {
-								const scripts = await this.tokenScript.getEngine().resolveAllScripts(this.tokenScript.getSourceInfo().tsId);
-								this.showScriptSelector.emit(scripts);
-							} catch (e){
-
-							}
-							this.hideLoader.emit();
-
-						}}>Other TApps</button>
+						{this.otherScripts?.length > 1 ? <button class="btn btn-secondary" style={{marginRight: "15px", minWidth: "35px", fontSize: "16px"}} onClick={async () =>{
+							this.showScriptSelector.emit(this.otherScripts);
+						}}>Other TApps</button> : ''}
 						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>
