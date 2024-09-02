@@ -173,7 +173,7 @@ export class RegistryScriptURI implements SourceInterface {
 				order: i+1,
 				authenticated: thisSourceData.isAuthenticated,
 				sourceId: chain + "-" + contractAddr,
-				scriptId: typeof thisSourceData.tokenId === 'bigint' ? Number(thisSourceData.tokenId) : thisSourceData.tokenId,
+				scriptId: "7738_" + thisSourceData.tokenId.toString(),
 				sourceUrl: thisSourceData.scriptURI,
 				type: ScriptSourceType.SCRIPT_REGISTRY
 			});
