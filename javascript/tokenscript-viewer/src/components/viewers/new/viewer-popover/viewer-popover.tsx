@@ -6,7 +6,7 @@ import {handleTransactionError, showTransactionNotification} from "../../util/sh
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
 import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
-import { getTgUrl } from '../../util/tgUrl';
+import {ScriptInfo} from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 
 @Component({
 	tag: 'viewer-popover',
@@ -45,6 +45,13 @@ export class ViewerPopover {
 		cancelable: true,
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
+
+	@Event({
+		eventName: 'showScriptSelector',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showScriptSelector: EventEmitter<ScriptInfo[]>;
 
 	@State()
 	private overflowCardButtons: JSX.Element[];
@@ -185,6 +192,17 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
+						<button class="btn btn-secondary" style={{marginRight: "15px", minWidth: "35px", fontSize: "16px"}} onClick={async () =>{
+							this.showLoader.emit();
+							try {
+								const scripts = await this.tokenScript.getEngine().resolveAllScripts(this.tokenScript.getSourceInfo().tsId);
+								this.showScriptSelector.emit(scripts);
+							} catch (e){
+
+							}
+							this.hideLoader.emit();
+
+						}}>Other TApps</button>
 						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>

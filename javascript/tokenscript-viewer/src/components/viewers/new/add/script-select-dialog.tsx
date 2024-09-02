@@ -43,7 +43,7 @@ export class ScriptSelectDialog {
 		return (
 			<Host>
 				<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{ background: "#fff !important", color: "#000 !important" }}>
-					<p>Select from the available TApps below</p>
+					<p>Select from the available TApps for this contract below</p>
 					<div class="select-list">
 						{this.scripts.map((script, index) => {
 							return <tokenscript-button

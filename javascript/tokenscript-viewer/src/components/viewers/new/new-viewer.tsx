@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Host, Prop, State, Watch} from "@stencil/core";
+import {Component, Event, EventEmitter, h, Host, Listen, Prop, State, Watch} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs, TokenScriptSource} from "../../app/app";
 import {getKnownTokenScriptMetaById, knownTokenScripts} from "../../../constants/knownTokenScripts";
 import {dbProvider, TokenScriptsMeta} from "../../../providers/databaseProvider";
@@ -47,6 +47,11 @@ export class NewViewer {
 		cancelable: true,
 		bubbles: true,
 	}) showToast: EventEmitter<ShowToastEventArgs>;
+
+	@Listen("showScriptSelector")
+	showScriptSelector(event: CustomEvent<ScriptInfo[]>){
+		this.scriptSelectDialog.open(event.detail)
+	}
 
 	componentWillLoad(){
 		Web3WalletProvider.registerWalletChangeListener(async (walletConnection?: WalletConnection) => {
@@ -294,8 +299,6 @@ export class NewViewer {
 				}
 			}
 
-			console.log("Adding TSID: ", tokenScriptId);
-
 			await this.addTokenScript(meta, tokenScript);
 
 			await this.addDialog.closeDialog();
@@ -408,8 +411,8 @@ export class NewViewer {
 				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
 				<script-select-dialog ref={el => this.scriptSelectDialog = el as HTMLScriptSelectDialogElement}
 								onScriptSelect={(scriptInfo: ScriptInfo) => {
-									const tsMeta = this.addFormSubmit("resolve", {tsId: scriptInfo.sourceId + "-" + scriptInfo.scriptId})
-									//this.viewerPopover.open(tsMeta.tokenScript);
+									this.viewerPopover.close();
+									this.addFormSubmit("resolve", {tsId: scriptInfo.sourceId + "-" + scriptInfo.scriptId})
 								}}></script-select-dialog>
 				<popover-dialog ref={el => this.aboutDialog = el as HTMLPopoverDialogElement}>
 					<about-tokenscript></about-tokenscript>

@@ -59,7 +59,7 @@ export class Repo {
 	 * @param tsPath
 	 * @param forceRefresh
 	 */
-	public async resolveAllScripts(tsPath: string, forceRefresh = false){
+	public async resolveAllScripts(tsPath: string, forceRefresh = false): Promise<ScriptInfo[]> {
 
 		if (!forceRefresh && this.scriptLookupCache[tsPath] && (Date.now() < this.scriptLookupCache[tsPath].timestamp + (Repo.REPO_TTL * 1000)))
 			return this.scriptLookupCache[tsPath].scripts;

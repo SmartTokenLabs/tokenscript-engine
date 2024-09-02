@@ -126,15 +126,15 @@ export class TokenScriptEngine {
 
 	/**
 	 * Create a new TokenScript instance from a repo source
-	 * @param tsId The unique identifier for the TokenScript file
+	 * @param sourceId The unique identifier for the TokenScript file
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 * @param forceRefresh Bypass cache and re-resolve the TokenScript XML
 	 */
-	public async getTokenScript(tsId: string, viewBinding?: IViewBinding, forceRefresh?: true){
+	public async getTokenScript(sourceId: string, viewBinding?: IViewBinding, forceRefresh?: true){
 
-		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
+		const resolveResult = await this.repo.getTokenScript(sourceId, forceRefresh);
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, resolveResult, viewBinding);
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, resolveResult.sourceId, resolveResult.sourceUrl, resolveResult, viewBinding);
 	}
 
 	/**
@@ -197,6 +197,7 @@ export class TokenScriptEngine {
 				parser = new DOMParser();
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
+
 			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
 		} catch (e){
 			throw new Error("Failed to parse tokenscript definition: " + e.message);

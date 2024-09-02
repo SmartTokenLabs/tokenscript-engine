@@ -34,7 +34,7 @@ export class ScriptURI implements SourceInterface {
 				icon: tokenScript.getMetadata().iconUrl,
 				order: 0,
 				authenticated: true,
-				sourceId: tsPath,
+				sourceId: chain + "-" + contractAddr,
 				scriptId: "5169_" + tokenScript.getName(),
 				sourceUrl: uri,
 				type: ScriptSourceType.SCRIPT_URI
