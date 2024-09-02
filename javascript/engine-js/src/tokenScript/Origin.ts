@@ -204,8 +204,12 @@ export class Origin {
 		const scriptSource = this.tokenScript.getSourceInfo();
 		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");
 
+		console.log("Script Info ", scriptSource.scriptInfo);
+
 		// The same script Cid should be specified for all addresses in the same contract scriptUri in order to be valid
 		const addresses = contract.getAddresses();
+
+		let authenticated: boolean = null;
 
 		for (const i in addresses){
 
@@ -215,14 +219,12 @@ export class Origin {
 
 			if (
 				contractAddress &&
-				scriptSource.source === "scriptUri" &&
-				address.address === contractAddress &&
+				address.address.toLowerCase() === contractAddress.toLowerCase() &&
 				address.chain === parseInt(chain)
 			){
 				scriptUri = scriptSource.sourceUrl;
 			} else {
 				// We could fetch the scriptURI of the contract and compare the IPFS hash, but for the moment this seems like overkill and is slow
-				return;
 				/*try {
 					scriptUri = await this.tokenScript.getEngine().getScriptUri(address.chain, address.address);
 				} catch (e) {
@@ -230,6 +232,10 @@ export class Origin {
 				}*/
 				// TODO: Should download file and calculate IPFS hash rather than relying on the URL?
 				//       JB: Yes.
+			}
+
+			if (authenticated !== false){
+				authenticated = scriptSource.source === ScriptSourceType.SCRIPT_URI || scriptSource.scriptInfo?.authenticated;
 			}
 
 			console.log("IPFS Validator: checking source URL ", scriptUri);
@@ -254,8 +260,14 @@ export class Origin {
 
 		this.securityStatus = {
 			type: AuthenticationType.IPFS_CID,
-			status: SecurityStatus.VALID,
-			statusText: "The TokenScript IPFS CID matches the scriptURI specified by the contract"
+			status: authenticated ? SecurityStatus.VALID : SecurityStatus.WARNING,
+			statusText:
+				(authenticated ?
+					"This TokenScript has been set by the contract owner" :
+					"This is a third party TokenScript, please sign any transaction with care") + "\n" +
+				(scriptSource.source === ScriptSourceType.SCRIPT_URI ?
+					"The IPFS CID matches the scriptURI specified by the contract" :
+					"The IPFS CID matches the scriptURI specified by the registry")
 		}
 	}
 }

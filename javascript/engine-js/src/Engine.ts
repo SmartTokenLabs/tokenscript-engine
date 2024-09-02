@@ -134,7 +134,9 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(sourceId, forceRefresh);
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, resolveResult.sourceId, resolveResult.sourceUrl, resolveResult, viewBinding);
+		const {xml, ...sourceInfo} = resolveResult;
+
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, resolveResult.sourceId, resolveResult.sourceUrl, sourceInfo, viewBinding);
 	}
 
 	/**

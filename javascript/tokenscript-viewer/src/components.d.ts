@@ -14,7 +14,6 @@ import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
-import { TokenScript as TokenScript2 } from "@tokenscript/engine-js/dist/lib.esm/TokenScript";
 import { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
@@ -30,7 +29,6 @@ export { JSX } from "@stencil/core";
 export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 export { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
-export { TokenScript as TokenScript2 } from "@tokenscript/engine-js/dist/lib.esm/TokenScript";
 export { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
@@ -107,9 +105,6 @@ export namespace Components {
     }
     interface OpenseaViewer {
         "app": AppRoot;
-    }
-    interface OtherTappsButton {
-        "tokenScript": TokenScript2;
     }
     interface PopoverDialog {
         "closeDialog": () => Promise<void>;
@@ -490,12 +485,6 @@ declare global {
         prototype: HTMLOpenseaViewerElement;
         new (): HTMLOpenseaViewerElement;
     };
-    interface HTMLOtherTappsButtonElement extends Components.OtherTappsButton, HTMLStencilElement {
-    }
-    var HTMLOtherTappsButtonElement: {
-        prototype: HTMLOtherTappsButtonElement;
-        new (): HTMLOtherTappsButtonElement;
-    };
     interface HTMLPopoverDialogElement extends Components.PopoverDialog, HTMLStencilElement {
     }
     var HTMLPopoverDialogElement: {
@@ -760,7 +749,6 @@ declare global {
         "mooar-viewer": HTMLMooarViewerElement;
         "new-viewer": HTMLNewViewerElement;
         "opensea-viewer": HTMLOpenseaViewerElement;
-        "other-tapps-button": HTMLOtherTappsButtonElement;
         "popover-dialog": HTMLPopoverDialogElement;
         "script-select-dialog": HTMLScriptSelectDialogElement;
         "security-status": HTMLSecurityStatusElement;
@@ -866,9 +854,6 @@ declare namespace LocalJSX {
         "onHideLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
         "onShowLoader"?: (event: OpenseaViewerCustomEvent<void>) => void;
         "onShowToast"?: (event: OpenseaViewerCustomEvent<ShowToastEventArgs>) => void;
-    }
-    interface OtherTappsButton {
-        "tokenScript"?: TokenScript2;
     }
     interface PopoverDialog {
         "dialogClasses"?: string[];
@@ -1016,7 +1001,6 @@ declare namespace LocalJSX {
         "mooar-viewer": MooarViewer;
         "new-viewer": NewViewer;
         "opensea-viewer": OpenseaViewer;
-        "other-tapps-button": OtherTappsButton;
         "popover-dialog": PopoverDialog;
         "script-select-dialog": ScriptSelectDialog;
         "security-status": SecurityStatus;
@@ -1068,7 +1052,6 @@ declare module "@stencil/core" {
             "mooar-viewer": LocalJSX.MooarViewer & JSXBase.HTMLAttributes<HTMLMooarViewerElement>;
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
             "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
-            "other-tapps-button": LocalJSX.OtherTappsButton & JSXBase.HTMLAttributes<HTMLOtherTappsButtonElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
             "script-select-dialog": LocalJSX.ScriptSelectDialog & JSXBase.HTMLAttributes<HTMLScriptSelectDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;

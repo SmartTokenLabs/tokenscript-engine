@@ -85,6 +85,8 @@ export class SecurityInfo {
 			this.originStatuses[name] = originStatus;
 		}
 
+		// TODO: Show third party message when in warning state
+
 		if (originFailCount === 0){
 			this.securityInfo.status = SecurityStatus.VALID;
 			this.securityInfo.statusText = this.securityInfo.trustedKey ? "The TokenScript is signed by a trusted key" : "The TokenScript is authenticated for use with all specified token origins.";

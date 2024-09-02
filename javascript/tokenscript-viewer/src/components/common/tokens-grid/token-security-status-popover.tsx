@@ -29,6 +29,10 @@ export class TokenSecurityStatus {
 				this.statusColor = "#3bd23b";
 				this.statusIcon = "✔";
 				break;
+			case TSSecurityStatus.WARNING:
+				this.statusColor = "#ff871d";
+				this.statusIcon = "✔";
+				break;
 			case TSSecurityStatus.INVALID:
 			default:
 				this.statusColor = "#ff4f4f";
@@ -48,7 +52,7 @@ export class TokenSecurityStatus {
 				<Host>
 					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{background: "#fff !important", color: "#000 !important"}}>
 						<h1 class="security-popover-icon" style={{color: this.statusColor}}>{this.statusIcon}</h1>
-						<strong>{this.securityInfo.statusText}</strong>
+						<strong innerHTML={this.securityInfo.statusText.replaceAll("\n", "<br/>")}/>
 						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
 						</p>
 					</popover-dialog>
