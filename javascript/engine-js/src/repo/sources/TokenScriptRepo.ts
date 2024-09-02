@@ -1,5 +1,5 @@
 import {ResolvedScriptData, SourceInterface} from "./SourceInterface";
-import {ScriptSourceType} from "../../Engine";
+import {ScriptSourceType, TokenScriptEngine} from "../../Engine";
 
 /**
  * The TokenScript repo source accesses legacy TokenScript via a GH repo for contracts that do not support EIP-5169
@@ -7,6 +7,10 @@ import {ScriptSourceType} from "../../Engine";
 export class TokenScriptRepo implements SourceInterface {
 
 	static REPO_URL = "https://raw.githubusercontent.com/AlphaWallet/TokenScript-Repo/master/aw.app/2020/06/";
+
+	constructor(private context: TokenScriptEngine) {
+
+	}
 
 	async resolveAllScripts(tsPath: string){
 
@@ -20,15 +24,16 @@ export class TokenScriptRepo implements SourceInterface {
 		if (response.status < 200 || response.status > 299)
 			throw new Error("HTTP Error: " + response.status);
 
-		// TODO: Download script and pull out metadata
+		const tokenScript = await this.context.loadTokenScript(await response.text());
+
 		return [{
-			name: "Repo",
-			icon: "",
+			name: tokenScript.getLabel(),
+			icon: tokenScript.getMetadata().iconUrl,
 			order: 0,
 			authenticated: true,
 			sourceId: tsPath,
 			sourceUrl: uri,
-			scriptId: "Repo",
+			scriptId: "Repo_" + tokenScript.getName(),
 			type: ScriptSourceType.URL
 		}];
 	}

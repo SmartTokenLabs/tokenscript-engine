@@ -134,15 +134,6 @@ export class TokenScriptEngine {
 
 		const resolveResult = await this.repo.getTokenScript(tsId, forceRefresh);
 
-		console.log("Resolve result: ", resolveResult);
-
-		/*let scriptTokenId = "0";
-
-		// select first registry script if loading with no pre-select
-		if (resolveResult.type == ScriptSourceType.SCRIPT_REGISTRY && resolveResult.scripts.length > 0) {
-			scriptTokenId = resolveResult.scripts[0].tokenId.toString();
-		}*/
-
 		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, tsId, resolveResult.sourceUrl, resolveResult, viewBinding);
 	}
 
@@ -166,14 +157,6 @@ export class TokenScriptEngine {
 		}
 
 		let tsType: ScriptSourceType = ScriptSourceType.URL;
-
-		//load scripts if this is a registry entry
-		/*if (chain != undefined && contractAddr != undefined) {
-			// We still need to load all the available scripts for selection purposes (eg 5169 scriptURI if also available)
-			const resolveResult = await this.repo.getTokenScript(`${chain}-${contractAddr}`, false);
-			registryScripts = resolveResult.scripts;
-			tsType = ScriptSourceType.SCRIPT_REGISTRY;
-		}*/
 
 		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, null, viewBinding);
 	}

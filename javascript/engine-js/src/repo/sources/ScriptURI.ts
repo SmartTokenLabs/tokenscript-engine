@@ -27,14 +27,15 @@ export class ScriptURI implements SourceInterface {
 
 		for (const uri of uris){
 
-			// TODO: Download script and pull out metadata
+			const tokenScript = await this.context.getTokenScriptFromUrl(uri);
+
 			scripts.push({
-				name: "5169",
-				icon: "",
+				name: tokenScript.getLabel(),
+				icon: tokenScript.getMetadata().iconUrl,
 				order: 0,
 				authenticated: true,
 				sourceId: tsPath,
-				scriptId: "5169",
+				scriptId: "5169_" + tokenScript.getName(),
 				sourceUrl: uri,
 				type: ScriptSourceType.SCRIPT_URI
 			});
