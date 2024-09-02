@@ -25,7 +25,7 @@ export class ScriptURI implements SourceInterface {
 		if (!uris)
 			throw new Error("ScriptURI is not set on this contract or chain");
 
-		for (const uri of uris){
+		for (const [index, uri] of uris.entries()){
 
 			const tokenScript = await this.context.getTokenScriptFromUrl(uri);
 
@@ -35,7 +35,8 @@ export class ScriptURI implements SourceInterface {
 				order: 0,
 				authenticated: true,
 				sourceId: chain + "-" + contractAddr,
-				scriptId: "5169_" + tokenScript.getName(),
+				// The contracts first scriptUri acts as the default script. This is to be compatible with old data that uses tsId without a scriptId part.
+				scriptId: index > 0 ? "5169_" + tokenScript.getName() : "",
 				sourceUrl: uri,
 				type: ScriptSourceType.SCRIPT_URI
 			});
