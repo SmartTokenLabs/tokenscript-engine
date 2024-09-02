@@ -69,7 +69,7 @@ export class Origin {
 		const selectedTokenId = this.tokenScript.getSourceInfo().selectionId;
 		const scriptSource = this.tokenScript.getSourceInfo();
 
-		for (let i = 0; i < scriptSource.scriptData.length; i++) {
+		for (let i = 0; i < scriptSource?.scriptData.length; i++) {
 			if (scriptSource.scriptData[i].tokenId == selectedTokenId) {
 				return scriptSource.scriptData[i];
 			}

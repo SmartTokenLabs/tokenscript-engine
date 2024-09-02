@@ -423,13 +423,13 @@ export class TokenScriptEngine {
 					  }]
 			));
 		} catch (e) {
-			scriptSourceData = null;
+			scriptSourceData = [];
 		}
 
 		let sourceElements: ScriptSource[] = [];
 
 		//build array
-		for (let i = 0; i < scriptSourceData.length; i++) {
+		for (let i = 0; i < scriptSourceData?.length; i++) {
 			const thisSourceData = scriptSourceData[i];
 
 			sourceElements.push({

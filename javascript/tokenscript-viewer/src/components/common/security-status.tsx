@@ -106,11 +106,11 @@ export class SecurityStatus {
 		let currentSelection = this.tokenScript.getSourceInfo().selectionId;
 
 		//populate with script data
-		for (let i = 0; i < scriptData.length; i++) {
+		for (let i = 0; i < scriptData?.length; i++) {
 			let thisSelection = scriptData[i];
 			buttons.push({
 				id: thisSelection.order,
-				icon: thisSelection.icon.length > 0 ? thisSelection.icon : "assets/icon/blueTS.svg",
+				icon: thisSelection.icon?.length > 0 ? thisSelection.icon : "assets/icon/blueTS.svg",
 				name: thisSelection.name,
 				selected: scriptData[i].tokenId == currentSelection ? "assets/icon/circlecr.png" : "assets/icon/uncel2s.png"
 			});
