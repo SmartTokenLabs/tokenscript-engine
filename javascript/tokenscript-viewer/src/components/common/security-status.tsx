@@ -76,7 +76,7 @@ export class SecurityStatus {
 		}
 	}
 
-	private setURLLookup(registryURL: string, tokenId: number) {
+	private async setURLLookup(registryURL: string, tokenId: number) {
 		const params = new URLSearchParams(document.location.search);
 
 		params.delete("tsId");
@@ -90,6 +90,8 @@ export class SecurityStatus {
 
 		// Update the browser's history state
 		history.pushState(undefined, undefined, location.toString());
+
+		await new Promise((resolve) => setTimeout(resolve, 500));
 
 		// Reload the page with the new URL using either method
 		window.location.assign(location.toString());
