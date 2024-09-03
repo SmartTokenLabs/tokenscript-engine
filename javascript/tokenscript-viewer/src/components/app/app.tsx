@@ -75,16 +75,16 @@ export class AppRoot {
 
 	walletSelector: HTMLWalletSelectorElement;
 
-	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter()
+	private params = new URLSearchParams(document.location.search);
+	private viewerType: ViewerTypes = initViewerType(this.params);
+
+	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter(!this.params.has("___bypassCache"))
 	attestationStorageAdapter = new AttestationStorageAdapter();
 	tsLocalStorageAdapter = new LocalStorageAdapter();
 
 	private iframeProvider: ethers.BrowserProvider;
 
 	private confirmTxPopover: HTMLConfirmTxPopoverElement;
-
-	private params = new URLSearchParams(document.location.search);
-	private viewerType: ViewerTypes = initViewerType(this.params);
 
 	public readonly tsEngine: TokenScriptEngine;
 
@@ -99,7 +99,7 @@ export class AppRoot {
 			() => this.attestationStorageAdapter,
 			() => this.tsLocalStorageAdapter,
 			{
-				noLocalStorage: this.viewerType === "opensea",
+				noLocalStorage: this.viewerType === "opensea" || this.params.has("___bypassCache"),
 				trustedKeys: [
 					{
 						issuerName: "Smart Token Labs",

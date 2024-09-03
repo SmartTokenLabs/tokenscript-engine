@@ -128,9 +128,9 @@ export class TokenScriptEngine {
 	 * Create a new TokenScript instance from a repo source
 	 * @param sourceId The unique identifier for the TokenScript file
 	 * @param viewBinding The view binding implementation to be used for this TokenScript
-	 * @param forceRefresh Bypass cache and re-resolve the TokenScript XML
+	 * @param forceRefresh Bypass resolver cache and re-resolve this contracts TokenScripts
 	 */
-	public async getTokenScript(sourceId: string, viewBinding?: IViewBinding, forceRefresh?: true){
+	public async getTokenScript(sourceId: string, viewBinding?: IViewBinding, forceRefresh = false){
 
 		const resolveResult = await this.repo.getTokenScript(sourceId, forceRefresh);
 
