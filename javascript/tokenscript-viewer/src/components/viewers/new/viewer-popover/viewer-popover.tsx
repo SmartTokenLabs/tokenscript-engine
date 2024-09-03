@@ -211,7 +211,7 @@ export class ViewerPopover {
 					<div class="view-toolbar-buttons">
 						{this.otherScripts?.length > 1 ? <button class="btn btn-secondary" style={{marginRight: "15px", minWidth: "35px", fontSize: "16px"}} onClick={async () =>{
 							this.showScriptSelector.emit(this.otherScripts);
-						}}>Other TApps</button> : ''}
+						}}>Other tapps</button> : ''}
 						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>

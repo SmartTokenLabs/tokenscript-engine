@@ -198,6 +198,7 @@ export namespace Components {
         "imageUrl": string;
         "name": string;
         "onRemove"?: (tsId: string) => Promise<void>;
+        "selected": boolean;
         "tokenScript"?: TokenScript1;
         "tsId": string;
     }
@@ -947,6 +948,7 @@ declare namespace LocalJSX {
         "imageUrl"?: string;
         "name"?: string;
         "onRemove"?: (tsId: string) => Promise<void>;
+        "selected"?: boolean;
         "tokenScript"?: TokenScript1;
         "tsId"?: string;
     }

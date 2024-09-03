@@ -1,7 +1,7 @@
 import {ResolvedScriptData, ScriptInfo, SourceInterface} from "./SourceInterface";
 import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
-const HOLESKY_DEV_7738 = "0x29a27A5D74Fe8ff01E2dA8b9fC64061A3DFBEe14";
+const HOLESKY_DEV_7738 = "0x0077380bCDb2717C9640e892B9d5Ee02Bb5e0682";
 const HOLESKY_ID = 17000; // TODO: Source this from engine
 const cacheTimeout = 60 * 1000; // 1 minute cache validity
 
