@@ -24,7 +24,7 @@ export class ScriptSelectDialog {
 
 		let scriptData = this.scripts;
 		let buttons = [];
-		let currentSelection;
+		let currentSelection = "";
 
 		const query = new URLSearchParams(document.location.search.substring(1));
 		if (query.has("scriptId")) {
