@@ -66,62 +66,6 @@ export class Origin {
 		return this.securityStatus;
 	}
 
-	/*private getSelectedScript(): ScriptInfo {
-		const selectedTokenId = this.tokenScript.getSourceInfo().selectionId;
-		const scriptSource = this.tokenScript.getSourceInfo();
-
-		for (let i = 0; i < scriptSource?.scriptData.length; i++) {
-			if (scriptSource.scriptData[i].tokenId == selectedTokenId) {
-				return scriptSource.scriptData[i];
-			}
-		}
-
-		return null;
-	}*/
-
-	/*private async validateByScriptRegistry(securityInfo: Partial<ISecurityInfo>) {
-
-		//1. Discover which tokenId this is
-		//2. Match the address in URL to the script in the sources
-		//3. If IPFS, and script is authenticated, treat as trusted
-		//4. If not IPFS, then validate from signature
-		//const selectedElement = this.getSelectedScript();
-		//const ipfsCid: string = securityInfo.ipfsCid;
-
-		// now ensure the IPFS fetch matches
-		const matches = this.tokenScript.getSourceInfo().sourceUrl.includes(ipfsCid);
-
-		const sourceInfo = this.tokenScript.getSourceInfo();
-
-		if (sourceInfo.scriptInfo &&
-			sourceInfo.scriptInfo.type === ScriptSourceType.SCRIPT_REGISTRY &&
-			sourceInfo
-		) {
-			this.securityStatus = this.selectAuthenticationType(selectedElement);
-		}
-	}
-
-	private selectAuthenticationType(selectedElement: ScriptInfo) {
-		if (selectedElement.tokenId == 0) {
-			if (selectedElement.name == '5169') {
-				return {
-					type: AuthenticationType.IPFS_CID,
-					status: SecurityStatus.VALID,
-					statusText: "The TokenScript IPFS CID matches the scriptURI specified by the contract"
-				}
-			} else {
-				// Launchpad? If so it requires a signature
-				return null;
-			}
-		} else {
-			return {
-				type: AuthenticationType.IPFS_REGISTRY,
-				status: SecurityStatus.VALID,
-				statusText: "The TokenScript IPFS CID matches the Authenticated scriptURI specified by the Registry"
-			}
-		}
-	}*/
-
 	private async validateBySignerKey(authPubKey: string, trustedKey?: TrustedKey){
 
 		if (trustedKey){
@@ -258,7 +202,7 @@ export class Origin {
 
 		this.securityStatus = {
 			type: AuthenticationType.IPFS_CID,
-			status: authenticated ? SecurityStatus.VALID : SecurityStatus.WARNING,
+			status: authenticated ? SecurityStatus.VALID : SecurityStatus.INVALID,
 			statusText:
 				(authenticated ?
 					"This TokenScript has been set by the contract owner" :
