@@ -21,6 +21,7 @@ export class SecurityStatus {
 	@State() statusColor: string;
 	@State() statusIcon: string;
 
+	@Watch("tokenScript")
 	async componentWillLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
 	}

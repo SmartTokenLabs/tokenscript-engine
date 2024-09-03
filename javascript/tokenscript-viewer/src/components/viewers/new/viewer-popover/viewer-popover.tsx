@@ -62,6 +62,10 @@ export class ViewerPopover {
 
 	@Method()
 	async open(tokenScript: TokenScript){
+
+		if (this.tokenScript)
+			this.close();
+
 		this.tokenScript = tokenScript;
 
 		const onboardingCards = tokenScript.getCards().getOnboardingCards();
@@ -186,7 +190,7 @@ export class ViewerPopover {
 	}
 
 	@Method()
-	async close(){
+	close(){
 		this.tokenScript = null;
 		const location = new URL(document.location.href);
 		const params = new URLSearchParams(document.location.search);

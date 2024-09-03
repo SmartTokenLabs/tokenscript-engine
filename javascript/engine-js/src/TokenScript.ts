@@ -369,8 +369,9 @@ export class TokenScript {
 	 * Token metadata for the TokenScript origin contract/s
 	 * @param reloadFromAdapter Fetch data from the token discover adapter. i.e. Used to load tokens for a different wallet address
 	 * @param bypassCache This is passed to the token discovery adapter, indicating the data should be refreshed from the source rather than being loaded from any cache
+	 * @param alwaysFireEvent Always fire the TOKENS_UPDATED event, even when already loaded
 	 */
-	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false){
+	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false, alwaysFireEvent = false){
 
 		if (!this.tokenMetadata || reloadFromAdapter){
 
@@ -448,7 +449,9 @@ export class TokenScript {
 				this.tokenMetadata[tokenCollection.originId] = tokenCollection;
 			}
 
-			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata})
+			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata});
+		} else if (alwaysFireEvent) {
+			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata});
 		}
 
 		return this.tokenMetadata;

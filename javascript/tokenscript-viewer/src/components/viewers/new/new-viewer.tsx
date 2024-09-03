@@ -138,16 +138,11 @@ export class NewViewer {
 			const tsId = emulator + "/tokenscript.tsml";
 			tsMeta = await this.addFormSubmit("url", {tsId})
 			connectEmulatorSocket(emulator, async() => {
-				const tsMeta = await this.addFormSubmit("url", {tsId});
-				//await this.viewerPopover.close();
-				//await this.viewerPopover.open(tsMeta.tokenScript);
+				await this.addFormSubmit("url", {tsId});
 			});
 		}
 
 		console.log("open TS", tsMeta);
-
-		//if (tsMeta)
-			//this.viewerPopover.open(tsMeta.tokenScript);
 	}
 
 	private async init(){
@@ -262,7 +257,8 @@ export class NewViewer {
 
 		try {
 			if (type === "resolve" && data.tsId && data.tsId.split("-").length < 3){
-				return await this.discoverScripts(data.tsId);
+				await this.discoverScripts(data.tsId);
+				return;
 			}
 
 			const tokenScript = await this.app.loadTokenscript(type, data.tsId, data.xml);
@@ -410,9 +406,8 @@ export class NewViewer {
 				              onFormSubmit={this.addFormSubmit.bind(this)}></add-selector>
 				<viewer-popover ref={el => this.viewerPopover = el as HTMLViewerPopoverElement}></viewer-popover>
 				<script-select-dialog ref={el => this.scriptSelectDialog = el as HTMLScriptSelectDialogElement}
-								onScriptSelect={(scriptInfo: ScriptInfo) => {
-									this.viewerPopover.close();
-									this.addFormSubmit("resolve", {tsId: scriptInfo.sourceId + "-" + scriptInfo.scriptId})
+								onScriptSelect={async (scriptInfo: ScriptInfo) => {
+									await this.addFormSubmit("resolve", {tsId: scriptInfo.sourceId + "-" + scriptInfo.scriptId})
 								}}></script-select-dialog>
 				<popover-dialog ref={el => this.aboutDialog = el as HTMLPopoverDialogElement}>
 					<about-tokenscript></about-tokenscript>

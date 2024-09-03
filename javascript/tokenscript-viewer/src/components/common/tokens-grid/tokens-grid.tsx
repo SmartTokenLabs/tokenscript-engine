@@ -72,6 +72,8 @@ export class TokensGrid {
 	private async initTokenScript(){
 
 		this.urlActionInvoked = false;
+		this.loading = true;
+		this.currentTokensFlat = null;
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
@@ -84,17 +86,15 @@ export class TokensGrid {
 			console.log("Tokens loading");
 		}, "grid")
 
-		setTimeout(async () => {
-			await this.populateTokens(await this.tokenScript.getTokenMetadata());
-			await this.invokeUrlAction();
-		}, 500);
+		//setTimeout(async () => {
+			await this.tokenScript.getTokenMetadata(false, false, true);
+		//}, 500);
 	}
 
 	async populateTokens(tokens: {[key: string]: ITokenCollection} ){
 
 		this.loading = false;
-
-		this.currentTokens = tokens;
+		this.currentTokens = {...tokens};
 
 		this.currentTokensFlat = getTokensFlat(this.currentTokens);
 	}
@@ -178,7 +178,7 @@ export class TokensGrid {
 							this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
 								return (
 									<tokens-grid-item
-										key={token.contextId}
+										key={this.tokenScript.getSourceInfo().tsId + token.contextId}
 										tokenScript={this.tokenScript}
 										token={token}
 										showCard={this.showCard.bind(this)}
