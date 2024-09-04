@@ -1,7 +1,7 @@
 import {ResolvedScriptData, ScriptInfo, SourceInterface} from "./SourceInterface";
 import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
 
-const HOLESKY_DEV_7738 = "0x0077380bCDb2717C9640e892B9d5Ee02Bb5e0682";
+const REGISTRY_7738 = "0x0077380bCDb2717C9640e892B9d5Ee02Bb5e0682";
 const HOLESKY_ID = 17000; // TODO: Source this from engine
 const cacheTimeout = 60 * 1000; // 1 minute cache validity
 
@@ -65,17 +65,12 @@ export class RegistryScriptURI implements SourceInterface {
 
 		const chainId: number = parseInt(chain);
 
-		// TODO: Remove once universal chain deployment is available
-		if (chainId != HOLESKY_ID) {
-			return [];
-		}
-
 		const provider = await this.context.getWalletAdapter();
 		let uri: string|string[]|null;
 
 		try {
 			uri = Array.from(await provider.call(
-				chainId, HOLESKY_DEV_7738, "scriptURI", [
+				chainId, REGISTRY_7738, "scriptURI", [
 					{
 						internalType: "address",
 						name: "",
@@ -99,11 +94,6 @@ export class RegistryScriptURI implements SourceInterface {
 
 		const chainId: number = parseInt(chain);
 
-		// TODO: Remove once universal chain deployment is available
-		if (chainId != HOLESKY_ID) {
-			return [];
-		}
-
 		// use 1 minute persistence fetch cache
 		let cachedResult = this.checkCachedMetaData(chain, contractAddr);
 
@@ -116,7 +106,7 @@ export class RegistryScriptURI implements SourceInterface {
 
 		try {
 			scriptSourceData = Array.from(await provider.call(
-				chainId, HOLESKY_DEV_7738, "scriptData", [
+				chainId, REGISTRY_7738, "scriptData", [
 					{
 						internalType: "address",
 						name: "contractAddress",
@@ -166,6 +156,10 @@ export class RegistryScriptURI implements SourceInterface {
 		//build array
 		for (let i = 0; i < scriptSourceData.length; i++) {
 			const thisSourceData = scriptSourceData[i];
+
+			if (thisSourceData.tokenId == 0) {
+				continue;
+			}
 
 			sourceElements.push({
 				name: thisSourceData.name,
