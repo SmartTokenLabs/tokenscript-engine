@@ -1,4 +1,4 @@
-import {FullTokenScript} from "../TokenScript";
+import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
 import CARD_SDK_V1 from "./sdk/v1.txt";
 import {LocalStorageProxy} from "./data/LocalStorageProxy";
@@ -13,7 +13,7 @@ export class TokenViewData {
 	private viewContainerId;
 	private localStorageProxy: LocalStorageProxy;
 
-	constructor(private tokenScript: FullTokenScript, private card: Card) {
+	constructor(private tokenScript: TokenScript, private card: Card) {
 		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
 	}
 
