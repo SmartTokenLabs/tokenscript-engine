@@ -69,12 +69,14 @@ export interface SourceInfo {
 }
 
 export interface TokenScript {
+  readonly viewStyles: ViewStyles;
   readonly transactionValidator: TransactionValidator;
   readonly tokenDef: XMLDocument;
   readonly xmlStr: string;
 
   getEngine(): TokenScriptEngine;
   getName(): string;
+  getXmlString(): string;
   getSourceInfo(): SourceInfo;
   getLabel(pluralQty?: number): string;
   getMetadata(): Meta;
@@ -87,12 +89,38 @@ export interface TokenScript {
   getCurrentTokenContext(): ITokenContext | undefined;
   getTokenContextData(tokenIdContext?: ITokenIdContext): Promise<ITokenContextData>;
   getSecurityInfo(): SecurityInfo;
+  getViewContent(name: string): HTMLCollection | null;
   emitEvent<K extends keyof TokenScriptEvents>(eventName: K, data: TokenScriptEvents[K]): void;
+  on<
+    T extends keyof TokenScriptEvents, // <- T points to a key
+    R extends (data: TokenScriptEvents[T]) => Promise<void> | void, // <- R points to the type of that key
+  >(
+    eventType: T,
+    callback: R,
+    id?: string,
+  ): void;
+  off<
+    T extends keyof TokenScriptEvents, // <- T points to a key
+  >(
+    eventType: T,
+    id?: string,
+  ): void;
   getAsnModuleDefinition(name: string): Element | null;
   executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation?: boolean): Promise<any | false>;
 
   // Only for FullTokenScript
   getViewController(viewBinding?: IViewBinding): ViewController;
+  hasViewBinding(): boolean;
+  getViewBinding(): IViewBinding;
+  setViewBinding(viewBinding: IViewBinding): void;
+  showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener): Promise<void>;
+  getTokenMetadata(reloadFromAdapter?: boolean, bypassCache?: boolean, alwaysFireEvent?: boolean): Promise<TokenMetadataMap>;
+  setTokenMetadata(tokenMetadata: ITokenCollection[]): void;
+  resolveTokenMetadata(reload: boolean): Promise<ITokenCollection[]>;
+  setCurrentTokenContext(contractName: string, tokenIndex?: number | null, tokenId?: string | null): void;
+  unsetTokenContext(): void;
+  getTokenOriginData(): ITokenCollection[];
+  setTokenDiscoveryAdapter(adapter: ITokenDiscoveryAdapter): void;
 }
 
 /**

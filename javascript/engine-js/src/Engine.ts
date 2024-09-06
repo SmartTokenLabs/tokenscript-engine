@@ -1,5 +1,5 @@
 import {Repo} from "./repo/Repo";
-import {TokenScript} from "./TokenScript";
+import {FullTokenScript, TokenScript} from "./TokenScript";
 import {IWalletAdapter} from "./wallet/IWalletAdapter";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {IViewBinding} from "./view/IViewBinding";
@@ -9,7 +9,7 @@ import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefini
 import {TrustedKey} from "./security/TrustedKeyResolver";
 import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 import {ITxValidationInfo} from "./security/TransactionValidator";
-import {ResolvedScriptData, ScriptInfo} from "./repo/sources/SourceInterface";
+import {ScriptInfo} from "./repo/sources/SourceInterface";
 
 export interface IEngineConfig {
 	ipfsGateway?: string
@@ -32,15 +32,22 @@ export enum ScriptSourceType {
 }
 
 export interface TokenScriptEngine {
-	getWalletAdapter: () => Promise<IWalletAdapter>;
-	readonly config?: IEngineConfig
-	
-	processIpfsUrl(uri: string): string;
-	getScriptUris(chain: string|number, contractAddr: string): Promise<string[] | null>;
-	getTokenScriptFromUrl(url: string): Promise<TokenScript>;
-	loadTokenScript(xml: string): Promise<TokenScript>;
+  getWalletAdapter: () => Promise<IWalletAdapter>;
+  readonly config?: IEngineConfig;
 
-	resolveAllScripts(tsPath: string, forceReload?: boolean): Promise<ScriptInfo[]>;
+  processIpfsUrl(uri: string): string;
+  getScriptUris(chain: string | number, contractAddr: string): Promise<string[] | null>;
+  getTokenScriptFromUrl(url: string): Promise<TokenScript>;
+  loadTokenScript(xml: string): Promise<TokenScript>;
+
+  resolveAllScripts(tsPath: string, forceReload?: boolean): Promise<ScriptInfo[]>;
+
+  // Only for FullTokenScriptEngine
+  getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>;
+  getAttestationStorageAdapter?: () => IAttestationStorageAdapter;
+  getLocalStorageAdapter?: () => ILocalStorageAdapter;
+  getAttestationManager(): AttestationManager;
+  signPersonalMessage(data: string): Promise<string>;
 }
 
 /**
@@ -212,7 +219,7 @@ export class FullTokenScriptEngine implements TokenScriptEngine {
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
 
-			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
+			return new FullTokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
 		} catch (e){
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}

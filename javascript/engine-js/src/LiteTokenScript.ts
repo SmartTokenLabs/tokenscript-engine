@@ -18,6 +18,10 @@ import { Cards } from './tokenScript/Cards';
 import { ScriptInfo } from './repo/sources/SourceInterface';
 import { EventHandler, ITokenContext, ITokenIdContext, ITransactionListener, TokenMetadataMap, TokenScript, TokenScriptEvents } from './TokenScript';
 import { ViewController } from './view/ViewController';
+import { IViewBinding } from './view/IViewBinding';
+import { Card } from './tokenScript/Card';
+import { ITokenDiscoveryAdapter } from './tokens/ITokenDiscoveryAdapter';
+import { ViewStyles } from './view/ViewStyles';
 
 /**
  * The TokenScript object represents a single instance of a TokenScript.
@@ -48,6 +52,8 @@ export class LiteTokenScript implements TokenScript {
 
   private eventHandlers: { [eventName: string]: { [handlerId: string]: EventHandler } } = {};
 
+  public readonly viewStyles: ViewStyles;
+
   public readonly transactionValidator: TransactionValidator;
 
   constructor(
@@ -62,6 +68,7 @@ export class LiteTokenScript implements TokenScript {
     if (this.tokenDef?.documentElement?.tagName !== 'ts:token') throw new Error('The provided file is not a valid TokenScript');
 
     this.securityInfo = new SecurityInfo(this);
+    this.viewStyles = new ViewStyles(this.tokenDef);
     this.transactionValidator = new TransactionValidator(this);
   }
 
@@ -338,6 +345,10 @@ export class LiteTokenScript implements TokenScript {
     };
   }
 
+  public setCurrentTokenContextFrom(tokenContext: ITokenContext) {
+    this.tokenContext = tokenContext;
+  }
+
   /**
    * The current token context
    * selectedNftId & selectedNftIndex are only populated if the token is non-fungible (ERC-721)
@@ -427,6 +438,30 @@ export class LiteTokenScript implements TokenScript {
 
   // Not implemented for LiteTokenScript
   public getViewController(): ViewController {
-    throw new Error('LiteTokenScript does not support getViewController');
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public hasViewBinding(): boolean {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public getViewBinding(): IViewBinding {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public setViewBinding(viewBinding: IViewBinding): void {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener): Promise<void> {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public getTokenMetadata(reloadFromAdapter?: boolean, bypassCache?: boolean, alwaysFireEvent?: boolean): Promise<TokenMetadataMap> {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public setTokenMetadata(tokenMetadata: ITokenCollection[]): void {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public resolveTokenMetadata(reload: boolean): Promise<ITokenCollection[]> {
+    throw new Error('LiteTokenScript does not support the operation');
+  }
+  public setTokenDiscoveryAdapter(adapter: ITokenDiscoveryAdapter): void {
+    throw new Error('LiteTokenScript does not support the operation');
   }
 }
