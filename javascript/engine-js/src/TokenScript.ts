@@ -61,13 +61,47 @@ export interface ITransactionListener {
 	(data: ITransactionStatus): void|Promise<void>
 }
 
+export interface SourceInfo {
+  tsId: string;
+  source: ScriptSourceType;
+  sourceUrl: string;
+  scriptInfo: ScriptInfo;
+}
+
+export interface TokenScript {
+  readonly transactionValidator: TransactionValidator;
+  readonly tokenDef: XMLDocument;
+  readonly xmlStr: string;
+
+  getEngine(): TokenScriptEngine;
+  getName(): string;
+  getSourceInfo(): SourceInfo;
+  getLabel(pluralQty?: number): string;
+  getMetadata(): Meta;
+  getOrigins(): { [originName: string]: Origin };
+  getContracts(): Contracts;
+  getCards(): Cards;
+  getAttributes(): Attributes;
+  getAttestationDefinitions(): AttestationDefinitions;
+  getSelections(): Selections;
+  getCurrentTokenContext(): ITokenContext | undefined;
+  getTokenContextData(tokenIdContext?: ITokenIdContext): Promise<ITokenContextData>;
+  getSecurityInfo(): SecurityInfo;
+  emitEvent<K extends keyof TokenScriptEvents>(eventName: K, data: TokenScriptEvents[K]): void;
+  getAsnModuleDefinition(name: string): Element | null;
+  executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation?: boolean): Promise<any | false>;
+
+  // Only for FullTokenScript
+  getViewController(viewBinding?: IViewBinding): ViewController;
+}
+
 /**
  * The TokenScript object represents a single instance of a TokenScript.
  * The TS XML is parsed into various sub-objects on-demand that roughly reflect the structure of the XML.
  * This class contains various top-level methods for getting TokenScript data, showing TokenScript cards &
  * executing transactions
  */
-export class TokenScript {
+export class FullTokenScript implements TokenScript {
 
 	private label?: Label;
 
