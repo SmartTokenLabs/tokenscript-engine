@@ -1,4 +1,4 @@
-import {ScriptSourceType, TokenScriptEngine} from "./Engine";
+import {FullTokenScriptEngine, ScriptSourceType, TokenScriptEngine} from "./Engine";
 import {Card} from "./tokenScript/Card";
 import {Transaction} from "./tokenScript/Transaction";
 import {ITokenCollection} from "./tokens/ITokenCollection";
@@ -102,7 +102,7 @@ export class TokenScript {
 	public readonly transactionValidator: TransactionValidator;
 
 	constructor(
-		private engine: TokenScriptEngine,
+		private engine: FullTokenScriptEngine,
 		public readonly tokenDef: XMLDocument,
 		public readonly xmlStr: string,
 		private source: ScriptSourceType,
