@@ -1,8 +1,8 @@
 import {Repo} from "./repo/Repo";
 import {IWalletAdapter} from "./wallet/IWalletAdapter";
-import {IViewBinding} from "./view/IViewBinding";
 import {ScriptInfo} from "./repo/sources/SourceInterface";
 import {IEngineConfig, ScriptSourceType, TokenScriptEngine} from "./Engine";
+import {LiteTokenScript} from "./LiteTokenScript";
 
 const DEFAULT_CONFIG: IEngineConfig = {
 	ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
@@ -40,24 +40,22 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
 	/**
 	 * Create a new TokenScript instance from a repo source
 	 * @param sourceId The unique identifier for the TokenScript file
-	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 * @param forceRefresh Bypass resolver cache and re-resolve this contracts TokenScripts
 	 */
-	public async getTokenScript(sourceId: string, viewBinding?: IViewBinding, forceRefresh = false){
+	public async getTokenScript(sourceId: string, forceRefresh = false){
 
 		const resolveResult = await this.repo.getTokenScript(sourceId, forceRefresh);
 
 		const {xml, ...sourceInfo} = resolveResult;
 
-		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, resolveResult.sourceId, resolveResult.sourceUrl, sourceInfo, viewBinding);
+		return await this.initializeTokenScriptObject(resolveResult.xml, resolveResult.type, resolveResult.sourceId, resolveResult.sourceUrl, sourceInfo);
 	}
 
 	/**
 	 * Create a new TokenScript instance from a URL source
 	 * @param url Source URL for the TokenScript
-	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 */
-	public async getTokenScriptFromUrl(url: string, viewBinding?: IViewBinding){
+	public async getTokenScriptFromUrl(url: string){
 
 		url = this.processIpfsUrl(url);
 
@@ -73,7 +71,7 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
 
 		let tsType: ScriptSourceType = ScriptSourceType.URL;
 
-		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, null, viewBinding);
+		return await this.initializeTokenScriptObject(await res.text(), tsType, url, url, null);
 	}
 
 	// TODO: The engine should hold the tokenscript object in memory until explicitly cleared, or done so via some intrinsic.
@@ -81,14 +79,13 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
 	/**
 	 * Create a new TokenScript instance from raw XML
 	 * @param xml XML string
-	 * @param viewBinding The view binding implementation to be used for this TokenScript
 	 * @param sourceType
 	 * @param sourceId
 	 * @param sourceUrl
 	 */
 	public async loadTokenScript(xml: string) {
 
-		return await this.initializeTokenScriptObject(xml, ScriptSourceType.UNKNOWN, undefined, undefined, undefined, undefined);
+		return await this.initializeTokenScriptObject(xml, ScriptSourceType.UNKNOWN, undefined, undefined, undefined);
 	}
 
 	/**
@@ -98,10 +95,9 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
 	 * @param sourceId
 	 * @param sourceUrl
 	 * @param scriptInfo
-	 * @param viewBinding
 	 * @private
 	 */
-	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, scriptInfo?: ScriptInfo, viewBinding?: IViewBinding){
+	private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, scriptInfo?: ScriptInfo){
 		try {
 			let parser
 			if (typeof window === 'undefined'){
@@ -113,7 +109,7 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
 
-			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
+			return new LiteTokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo);
 		} catch (e){
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}

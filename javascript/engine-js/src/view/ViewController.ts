@@ -1,6 +1,6 @@
 import {Card} from "../tokenScript/Card";
 import {IViewBinding} from "./IViewBinding";
-import {ITransactionListener, ITransactionStatus, TokenScript, TokenScriptEvents} from "../TokenScript";
+import {FullTokenScript, ITransactionListener, ITransactionStatus} from "../TokenScript";
 import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
 import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
 import {TokenViewData} from "./TokenViewData";
@@ -41,7 +41,7 @@ export class ViewController {
 	private userEntryValues: {[scopeId: string]: {[key: string]: any}} = {};
 	private localStorageProxy: LocalStorageProxy;
 
-	constructor(public readonly tokenScript: TokenScript, private viewAdapter: IViewBinding) {
+	constructor(public readonly tokenScript: FullTokenScript, private viewAdapter: IViewBinding) {
 		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
 	}
 
