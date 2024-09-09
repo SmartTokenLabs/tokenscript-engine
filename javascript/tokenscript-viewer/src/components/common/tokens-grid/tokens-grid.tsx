@@ -155,7 +155,7 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason(context) === true
 			) {
 				this.urlActionInvoked = true;
-				this.showCard(cardRes.card, token, cardRes.index);
+				setTimeout(() => this.showCard(cardRes.card, token, cardRes.index), 100);
 				return;
 			}
 		}

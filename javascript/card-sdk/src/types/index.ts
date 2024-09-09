@@ -45,7 +45,7 @@ export interface ITokenScriptSDK {
 		showLoader: () => void,
 		hideLoader: () => void,
 		setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => void,
-		executeTransaction: (txName?: string|TXOptions, listener?: ITransactionListener) => Promise<any|false>,
+		executeTransaction: (optionsOrTxName?: string|TXOptions, listener?: ITransactionListener) => Promise<ITransactionStatus|false>,
 		showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => void,
 		showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => void,
 		closeCard: () => void,
