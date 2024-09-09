@@ -1,8 +1,8 @@
-import {ScriptSourceType} from "../Engine";
-import {TokenScript} from "../TokenScript";
+import {ethers} from "ethers";
+import {ScriptSourceType} from "../IEngine";
+import {ITokenScript} from "../ITokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
-import {ethers} from "ethers";
 
 export type OriginType = "contract"|"attestation"
 
@@ -26,7 +26,7 @@ export class Origin {
 	private signingKey?: string;
 
 	constructor(
-		private tokenScript: TokenScript,
+		private tokenScript: ITokenScript,
 		public name: string,
 		public type: OriginType
 	) {

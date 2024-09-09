@@ -4,7 +4,8 @@ import {RequestFromView, ViewEvent} from "@tokenscript/engine-js/src/view/ViewCo
 import {JSX, h, EventEmitter} from "@stencil/core";
 import {AbstractViewBinding} from "../../../integration/abstractViewBinding";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
-import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ShowToastEventArgs} from "../../app/app";
 import {CHAIN_CONFIG} from "../../../integration/constants";
 import {showToastNotification} from "../util/showToast";

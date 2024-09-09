@@ -1,9 +1,9 @@
-import {TokenScript} from "../TokenScript";
-import {Contract} from "./Contract";
-import {Arguments} from "./data/function/Arguments";
-import {Argument} from "./data/function/Argument";
-import {Attributes} from "./Attributes";
 import {EthUtils} from "../ethereum/EthUtils";
+import {ITokenScript} from "../ITokenScript";
+import {Attributes} from "./Attributes";
+import {Contract} from "./Contract";
+import {Argument} from "./data/function/Argument";
+import {Arguments} from "./data/function/Arguments";
 
 export interface ITransactionInfo {
 	as: string,
@@ -26,7 +26,7 @@ export class Transaction {
 	private transaction?: ITransactionInfo;
 
 	constructor(
-		private tokenScript: TokenScript,
+		private tokenScript: ITokenScript,
 		private transactionDef: Element,
 		private localAttrContext?: Attributes
 	) {

@@ -1,6 +1,6 @@
-import {Argument} from "./Argument";
-import {TokenScript} from "../../../TokenScript";
+import {ITokenScript} from "../../../ITokenScript";
 import {Attributes} from "../../Attributes";
+import {Argument} from "./Argument";
 
 /**
  * A collection of arguments for the ethereum function or transaction.
@@ -9,7 +9,7 @@ export class Arguments implements Iterable<Argument | undefined> {
 
 	private arguments: Argument[];
 
-	constructor(private tokenScript: TokenScript, private parentElem: Element, private localAttrContext?: Attributes) {
+	constructor(private tokenScript: ITokenScript, private parentElem: Element, private localAttrContext?: Attributes) {
 
 	}
 

@@ -1,12 +1,8 @@
-import { Repo } from './repo/Repo';
-import { IWalletAdapter } from './wallet/IWalletAdapter';
-import { ScriptInfo } from './repo/sources/SourceInterface';
-import { IEngineConfig, ScriptSourceType, TokenScriptEngine } from './Engine';
+import { IEngineConfig, ITokenScriptEngine, ScriptSourceType } from './IEngine';
 import { LiteTokenScript } from './LiteTokenScript';
-import { ITokenDiscoveryAdapter } from './tokens/ITokenDiscoveryAdapter';
-import { ILocalStorageAdapter } from './view/data/ILocalStorageAdapter';
-import { IAttestationStorageAdapter } from './attestation/IAttestationStorageAdapter';
-import { AttestationManager } from './attestation/AttestationManager';
+import { Repo } from './repo/Repo';
+import { ScriptInfo } from './repo/sources/SourceInterface';
+import { IWalletAdapter } from './wallet/IWalletAdapter';
 
 const DEFAULT_CONFIG: IEngineConfig = {
   ipfsGateway: 'https://smart-token-labs-demo-server.mypinata.cloud/ipfs/',
@@ -18,7 +14,7 @@ const DEFAULT_CONFIG: IEngineConfig = {
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
  * via the repo, URL or directly from XML source
  */
-export class LiteTokenScriptEngine implements TokenScriptEngine {
+export class LiteTokenScriptEngine implements ITokenScriptEngine {
   private repo: Repo = new Repo(this);
 
   // TODO: Should we pass in a function or a constructor, dunno
@@ -95,14 +91,8 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
    */
   private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, scriptInfo?: ScriptInfo) {
     try {
-      let parser;
-      if (typeof window === 'undefined') {
-        const { JSDOM } = await import('jsdom');
-        const jsdom = new JSDOM();
-        parser = new jsdom.window.DOMParser();
-      } else {
-        parser = new DOMParser();
-      }
+      // Only support browser env for token-kit usage for now
+      const parser = new DOMParser();
       let tokenXml = parser.parseFromString(xml, 'text/xml');
 
       return new LiteTokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo);
@@ -183,16 +173,16 @@ export class LiteTokenScriptEngine implements TokenScriptEngine {
   }
 
   // Not implemented for LiteTokenScriptEngine
-  public getTokenDiscoveryAdapter: () => Promise<ITokenDiscoveryAdapter> = () => {
+  public getTokenDiscoveryAdapter: () => Promise<any> = () => {
     throw new Error('LiteTokenScriptEngine does not support the operation');
   };
-  public getAttestationStorageAdapter: () => IAttestationStorageAdapter = () => {
+  public getAttestationStorageAdapter: () => any = () => {
     throw new Error('LiteTokenScriptEngine does not support the operation');
   };
-  public getLocalStorageAdapter: () => ILocalStorageAdapter = () => {
+  public getLocalStorageAdapter: () => any = () => {
     throw new Error('LiteTokenScriptEngine does not support the operation');
   };
-  public getAttestationManager(): AttestationManager {
+  public getAttestationManager(): any {
     throw new Error('LiteTokenScriptEngine does not support the operation');
   }
 }

@@ -1,4 +1,4 @@
-import {TokenScript} from "../TokenScript";
+import {ITokenScript} from "../ITokenScript";
 import {Contract} from "../tokenScript/Contract";
 import {IOriginSecurityInfo} from "../tokenScript/Origin";
 import {SecurityStatus} from "./SecurityInfo";
@@ -10,7 +10,7 @@ export interface ITxValidationInfo extends IOriginSecurityInfo {
 
 export class TransactionValidator {
 
-	constructor(private tokenScript: TokenScript) {
+	constructor(private tokenScript: ITokenScript) {
 
 	}
 

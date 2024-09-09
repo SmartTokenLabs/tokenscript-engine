@@ -1,4 +1,4 @@
-import {TokenScript} from "../../TokenScript";
+import {ITokenScript} from "../../ITokenScript";
 
 export interface LocalStorageRequest {
 	method: "set"|"remove"|"clear";
@@ -10,7 +10,7 @@ export class LocalStorageProxy {
 
 	private tsId;
 
-	constructor(private tokenscript: TokenScript) {
+	constructor(private tokenscript: ITokenScript) {
 		this.tsId = tokenscript.getSourceInfo().tsId;
 	}
 

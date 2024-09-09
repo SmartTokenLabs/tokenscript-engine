@@ -1,7 +1,7 @@
-import {ITokenIdContext, ITransactionListener, TokenScript} from "../TokenScript";
-import {Transaction} from "./Transaction";
+import {ITokenIdContext, ITokenScript, ITransactionListener} from "../ITokenScript";
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
+import {Transaction} from "./Transaction";
 
 export type CardType = "onboarding"|"public"|"token"|"action"|"activity";
 
@@ -12,7 +12,7 @@ export class Card {
 	private attributes?: Attributes;
 
 	constructor(
-		private tokenScript: TokenScript,
+		private tokenScript: ITokenScript,
 		private cardDef: Element
 	) {
 	}

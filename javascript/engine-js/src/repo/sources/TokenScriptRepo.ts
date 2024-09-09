@@ -1,5 +1,5 @@
-import {ResolvedScriptData, SourceInterface} from "./SourceInterface";
-import {ScriptSourceType, TokenScriptEngine} from "../../Engine";
+import {ITokenScriptEngine, ScriptSourceType} from "../../IEngine";
+import {SourceInterface} from "./SourceInterface";
 
 /**
  * The TokenScript repo source accesses legacy TokenScript via a GH repo for contracts that do not support EIP-5169
@@ -8,7 +8,7 @@ export class TokenScriptRepo implements SourceInterface {
 
 	static REPO_URL = "https://raw.githubusercontent.com/AlphaWallet/TokenScript-Repo/master/aw.app/2020/06/";
 
-	constructor(private context: TokenScriptEngine) {
+	constructor(private context: ITokenScriptEngine) {
 
 	}
 

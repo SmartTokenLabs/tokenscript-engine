@@ -1,12 +1,12 @@
-import {IAttestationData, IAttestationStorageAdapter} from "./IAttestationStorageAdapter";
-import {TokenScriptEngine} from "../Engine";
+import {ITokenScriptEngine} from "../IEngine";
 import {AttestationDefinition, AttestationDefinitionMeta} from "../tokenScript/attestation/AttestationDefinition";
 import {Attestation} from "./Attestation";
+import {IAttestationData, IAttestationStorageAdapter} from "./IAttestationStorageAdapter";
 
 export class AttestationManager {
 
 	constructor(
-		private engine: TokenScriptEngine,
+		private engine: ITokenScriptEngine,
 		private storageAdapter: IAttestationStorageAdapter
 	) {
 

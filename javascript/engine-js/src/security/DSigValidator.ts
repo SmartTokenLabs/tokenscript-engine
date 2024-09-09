@@ -1,9 +1,9 @@
-import {TokenScript} from "../TokenScript";
+import * as x509 from "@peculiar/x509";
 import * as xmldsigjs from "@tokenscript/xmldsigjs";
 import {KeyInfoX509Data, KeyValue, X509Certificate} from "@tokenscript/xmldsigjs";
-import * as x509 from "@peculiar/x509";
-import {uint8tohex} from "../utils";
 import {Crypto, CryptoKey} from "webcrypto-liner/build";
+import {ITokenScript} from "../ITokenScript";
+import {uint8tohex} from "../utils";
 
 const crypto = new Crypto();
 xmldsigjs.Application.setEngine("WebCryptoLiner", crypto);
@@ -20,7 +20,7 @@ export class DSigValidator {
 	 * Extract the XML DSig signer key or root key in the certificate chain
 	 * @param tokenScript
 	 */
-	public async getSignerKey(tokenScript: TokenScript): Promise<false|DSigKeyResult>{
+	public async getSignerKey(tokenScript: ITokenScript): Promise<false|DSigKeyResult>{
 
 		const xmlStr = tokenScript.getXmlString();
 

@@ -1,11 +1,12 @@
 import {Component, Element, Event, EventEmitter, h, Host, JSX, Method, State} from "@stencil/core";
-import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {getCardButtonClass} from "../../util/getCardButtonClass";
 import {handleTransactionError, showTransactionNotification} from "../../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
-import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
+import {ScriptSourceType} from "../../../../../../engine-js/src/IEngine";
 import {ScriptInfo} from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 
 @Component({

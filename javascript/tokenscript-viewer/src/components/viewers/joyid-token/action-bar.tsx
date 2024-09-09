@@ -1,5 +1,6 @@
 import {Component, Event, EventEmitter, h, JSX, Prop, State, Watch} from "@stencil/core";
-import {ITransactionStatus, TokenScript} from "../../../../../engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../app/app";

@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Host, JSX, Prop, State} from "@stencil/core";
 import {AppRoot, ShowToastEventArgs} from "../../app/app";
-import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {getSingleTokenMetadata} from "../util/getSingleTokenMetadata";

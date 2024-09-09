@@ -1,11 +1,11 @@
-import {TokenScript} from "../TokenScript";
+import {ITokenScript} from "../ITokenScript";
 import {Card} from "./Card";
 
 export class Cards implements Iterable<Card | undefined> {
 
 	private cards?: {[cardName: string]: Card};
 
-	constructor(private tokenScript: TokenScript) {
+	constructor(private tokenScript: ITokenScript) {
 
 	}
 

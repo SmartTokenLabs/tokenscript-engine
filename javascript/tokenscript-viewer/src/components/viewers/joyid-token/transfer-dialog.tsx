@@ -1,7 +1,7 @@
 import {Component, Event, EventEmitter, h, Method, Prop, State} from "@stencil/core";
 import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
-import {ITransactionStatus} from "../../../../../engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
 import {handleTransactionError, showTransactionNotification} from "../util/showTransactionNotification";
 import {ShowToastEventArgs} from "../../app/app";
 

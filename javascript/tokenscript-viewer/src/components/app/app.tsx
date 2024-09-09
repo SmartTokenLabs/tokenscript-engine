@@ -1,7 +1,7 @@
 import "../../integration/rum"
 
 import {Component, Element, h, Host, JSX, Listen, Method, State} from '@stencil/core';
-import {FullTokenScriptEngine} from "../../../../engine-js/src/Engine";
+import {TokenScriptEngine} from "../../../../engine-js/src/Engine";
 
 import {EthersAdapter} from "../../../../engine-js/src/wallet/EthersAdapter";
 import {TokenScript} from "../../../../engine-js/src/TokenScript";
@@ -86,14 +86,14 @@ export class AppRoot {
 
 	private confirmTxPopover: HTMLConfirmTxPopoverElement;
 
-	public readonly tsEngine: FullTokenScriptEngine;
+	public readonly tsEngine: TokenScriptEngine;
 
 	constructor() {
 
 		if (this.viewerType !== "opensea")
 			dbProvider.checkCompatibility();
 
-		this.tsEngine = new FullTokenScriptEngine(
+		this.tsEngine = new TokenScriptEngine(
 			async () => this.getWalletAdapter(),
 			async () => this.discoveryAdapter,
 			() => this.attestationStorageAdapter,

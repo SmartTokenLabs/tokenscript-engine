@@ -1,13 +1,13 @@
-import {AbstractDependencyBranch} from "./AbstractDependencyBranch";
-import {ITokenIdContext, TokenScript} from "../../TokenScript";
+import {ITokenIdContext, ITokenScript} from "../../ITokenScript";
 import {Attributes} from "../Attributes";
+import {AbstractDependencyBranch} from "./AbstractDependencyBranch";
 
 
 export class AttributeReference extends AbstractDependencyBranch {
 
 	private fullPath: string;
 
-	constructor(tokenScript: TokenScript, argDef: Element, localAttrContext?: Attributes) {
+	constructor(tokenScript: ITokenScript, argDef: Element, localAttrContext?: Attributes) {
 		super(tokenScript, localAttrContext);
 
 		this.fullPath = argDef.getAttribute("ref");

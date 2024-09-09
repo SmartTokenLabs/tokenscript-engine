@@ -1,6 +1,6 @@
-import {ITokenIdContext, TokenScript} from "../../TokenScript";
-import {Attributes} from "../Attributes";
+import {ITokenIdContext, ITokenScript} from "../../ITokenScript";
 import {Attribute} from "../Attribute";
+import {Attributes} from "../Attributes";
 
 export interface IArgument {
 	type: string;
@@ -21,7 +21,7 @@ export abstract class AbstractDependencyBranch implements IArgument {
 	ref?: string;
 	localRef?: string;
 
-	protected constructor(protected tokenScript: TokenScript, protected localAttrContext?: Attributes) {
+	protected constructor(protected tokenScript: ITokenScript, protected localAttrContext?: Attributes) {
 
 	}
 

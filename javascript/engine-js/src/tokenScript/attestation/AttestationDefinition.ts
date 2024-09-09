@@ -1,5 +1,5 @@
-import {TokenScript} from "../../TokenScript";
-import {keccak256, computeAddress} from "ethers";
+import {computeAddress, keccak256} from "ethers";
+import {ITokenScript} from "../../ITokenScript";
 
 export interface AttestationDefinitionMeta {
 	name: string,
@@ -11,7 +11,7 @@ export interface AttestationDefinitionMeta {
 export class AttestationDefinition {
 
 	constructor(
-		private tokenScript: TokenScript,
+		private tokenScript: ITokenScript,
 		private elem: Element
 	) {
 

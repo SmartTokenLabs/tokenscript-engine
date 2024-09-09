@@ -1,4 +1,4 @@
-import {TokenScript} from "../../TokenScript";
+import {ITokenScript} from "../../ITokenScript";
 import {Selection} from "./Selection";
 
 /**
@@ -8,7 +8,7 @@ export class Selections implements Iterable<Selection | undefined> {
 
 	private selections: {[attributeName: string]: Selection };
 
-	constructor(private tokenScript: TokenScript, private parentElem: Element) {
+	constructor(private tokenScript: ITokenScript, private parentElem: Element) {
 
 	}
 

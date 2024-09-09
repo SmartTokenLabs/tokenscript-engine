@@ -1,5 +1,5 @@
-import {ResolvedScriptData, ScriptInfo, SourceInterface} from "./SourceInterface";
-import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
+import {ITokenScriptEngine, ScriptSourceType} from "../../IEngine";
+import {ScriptInfo, SourceInterface} from "./SourceInterface";
 
 const REGISTRY_7738 = "0x0077380bCDb2717C9640e892B9d5Ee02Bb5e0682";
 const HOLESKY_ID = 17000; // TODO: Source this from engine
@@ -30,7 +30,7 @@ export class RegistryScriptURI implements SourceInterface {
 
 
 
-	constructor(private context: TokenScriptEngine) {
+	constructor(private context: ITokenScriptEngine) {
 	}
 
 	async resolveAllScripts(tsPath: string){

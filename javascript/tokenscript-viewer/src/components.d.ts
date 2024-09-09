@@ -7,11 +7,11 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { TokenScriptEngine } from "../../engine-js/src/Engine";
 import { ITokenDetail } from "../../engine-js/src/tokens/ITokenDetail";
-import { TokenScript } from "../../engine-js/src/TokenScript";
+import { TokenScript } from "@tokenscript/engine-js/src/TokenScript";
 import { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
+import { TokenScript as TokenScript1 } from "../../engine-js/src/TokenScript";
 import { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 import { JSX } from "@stencil/core";
-import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
 import { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
@@ -22,11 +22,11 @@ import { IOriginSecurityInfo } from "@tokenscript/engine-js/src/tokenScript/Orig
 import { SupportedWalletProviders } from "./components/wallet/Web3WalletProvider";
 export { TokenScriptEngine } from "../../engine-js/src/Engine";
 export { ITokenDetail } from "../../engine-js/src/tokens/ITokenDetail";
-export { TokenScript } from "../../engine-js/src/TokenScript";
+export { TokenScript } from "@tokenscript/engine-js/src/TokenScript";
 export { AppRoot, ShowToastEventArgs, TokenScriptSource } from "./components/app/app";
+export { TokenScript as TokenScript1 } from "../../engine-js/src/TokenScript";
 export { TokenScriptSource as TokenScriptSource1 } from "./components/app/app";
 export { JSX } from "@stencil/core";
-export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 export { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
 export { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
@@ -57,21 +57,21 @@ export namespace Components {
         "app": AppRoot;
     }
     interface AppRoot {
-        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string) => Promise<TokenScript>;
+        "loadTokenscript": (source: TokenScriptSource1, tsId?: string, file?: File | string) => Promise<TokenScript1>;
         "showToast": (type: 'success' | 'info' | 'warning' | 'error', title: string, description: string | JSX.Element) => Promise<void>;
     }
     interface AttributeTable {
     }
     interface CardModal {
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface CardPopover {
-        "tokenScript": TokenScript;
+        "tokenScript": TokenScript1;
     }
     interface CardView {
     }
     interface ConfirmStep {
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
         "viewer": IntegrationViewer;
     }
     interface ConfirmTxPopover {
@@ -122,7 +122,7 @@ export namespace Components {
     }
     interface SecurityStatus {
         "size": "large" | "small" | "x-small";
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
     }
     interface SelectField {
         "label": string;
@@ -132,7 +132,7 @@ export namespace Components {
     }
     interface SelectStep {
         "card": Card;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
         "viewer": IntegrationViewer;
     }
     interface ShareToTgButton {
@@ -170,11 +170,11 @@ export namespace Components {
     interface TokenInfoPopover {
         "closeDialog": () => Promise<void>;
         "openDialog": (token: TokenGridContext) => Promise<void>;
-        "tokenScript": TokenScript;
+        "tokenScript": TokenScript1;
     }
     interface TokenSecurityStatus {
         "originId": string;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
     }
     interface TokenSecurityStatusPopover {
         "openDialog": (tokenSecInfo: Partial<IOriginSecurityInfo>) => Promise<void>;
@@ -185,13 +185,13 @@ export namespace Components {
     interface TokensGrid {
         "openActionOverflowModal": (buttons: JSX.Element[]) => void;
         "showCard": (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
     }
     interface TokensGridItem {
         "openActionOverflowModal": (buttons: JSX.Element[]) => void;
         "showCard": (card: Card, token: TokenGridContext, index: number) => void;
         "token": TokenGridContext;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
     }
     interface TokensSelector {
         "switchToken": (TokenOption) => void;
@@ -203,7 +203,7 @@ export namespace Components {
         "name": string;
         "onRemove"?: (tsId: string) => Promise<void>;
         "selected": boolean;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
         "tsId": string;
     }
     interface TokenscriptGrid {
@@ -216,17 +216,17 @@ export namespace Components {
     }
     interface ViewStep {
         "card": Card;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
         "viewer": IntegrationViewer;
     }
     interface ViewerPopover {
         "close": () => Promise<void>;
-        "open": (tokenScript: TokenScript1) => Promise<void>;
+        "open": (tokenScript: TokenScript) => Promise<void>;
     }
     interface ViewerTab {
         "app": AppRoot;
         "tabId": string;
-        "tokenScript": TokenScript;
+        "tokenScript": TokenScript1;
     }
     interface WalletButton {
     }
@@ -818,16 +818,16 @@ declare namespace LocalJSX {
     }
     interface CardModal {
         "onShowToast"?: (event: CardModalCustomEvent<ShowToastEventArgs>) => void;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface CardPopover {
         "onShowToast"?: (event: CardPopoverCustomEvent<ShowToastEventArgs>) => void;
-        "tokenScript"?: TokenScript;
+        "tokenScript"?: TokenScript1;
     }
     interface CardView {
     }
     interface ConfirmStep {
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
         "viewer"?: IntegrationViewer;
     }
     interface ConfirmTxPopover {
@@ -880,7 +880,7 @@ declare namespace LocalJSX {
     }
     interface SecurityStatus {
         "size"?: "large" | "small" | "x-small";
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface SelectField {
         "label"?: string;
@@ -890,7 +890,7 @@ declare namespace LocalJSX {
     }
     interface SelectStep {
         "card"?: Card;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
         "viewer"?: IntegrationViewer;
     }
     interface ShareToTgButton {
@@ -926,11 +926,11 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface TokenInfoPopover {
-        "tokenScript"?: TokenScript;
+        "tokenScript"?: TokenScript1;
     }
     interface TokenSecurityStatus {
         "originId"?: string;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface TokenSecurityStatusPopover {
     }
@@ -946,13 +946,13 @@ declare namespace LocalJSX {
         "onShowToast"?: (event: TokensGridCustomEvent<ShowToastEventArgs>) => void;
         "openActionOverflowModal"?: (buttons: JSX.Element[]) => void;
         "showCard"?: (card: Card, token?: TokenGridContext, cardIndex?: number) => void;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface TokensGridItem {
         "openActionOverflowModal"?: (buttons: JSX.Element[]) => void;
         "showCard"?: (card: Card, token: TokenGridContext, index: number) => void;
         "token"?: TokenGridContext;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface TokensSelector {
         "switchToken"?: (TokenOption) => void;
@@ -964,7 +964,7 @@ declare namespace LocalJSX {
         "name"?: string;
         "onRemove"?: (tsId: string) => Promise<void>;
         "selected"?: boolean;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
         "tsId"?: string;
     }
     interface TokenscriptGrid {
@@ -979,7 +979,7 @@ declare namespace LocalJSX {
     interface ViewStep {
         "card"?: Card;
         "onShowToast"?: (event: ViewStepCustomEvent<ShowToastEventArgs>) => void;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
         "viewer"?: IntegrationViewer;
     }
     interface ViewerPopover {
@@ -992,7 +992,7 @@ declare namespace LocalJSX {
         "app"?: AppRoot;
         "onShowToast"?: (event: ViewerTabCustomEvent<ShowToastEventArgs>) => void;
         "tabId"?: string;
-        "tokenScript"?: TokenScript;
+        "tokenScript"?: TokenScript1;
     }
     interface WalletButton {
     }

@@ -1,4 +1,4 @@
-import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
+import {ITokenScriptEngine, ScriptSourceType} from "../../IEngine";
 
 /**
  * Define interfaces for implementing a custom repo source
@@ -29,5 +29,5 @@ export interface SourceInterface {
 }
 
 export interface SourceInterfaceConstructor {
-	new(context: TokenScriptEngine): SourceInterface;
+	new(context: ITokenScriptEngine): SourceInterface;
 }

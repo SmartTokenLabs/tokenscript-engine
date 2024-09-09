@@ -1,26 +1,22 @@
-import { ScriptSourceType, TokenScriptEngine } from './Engine';
-import { Transaction } from './tokenScript/Transaction';
-import { ITokenCollection } from './tokens/ITokenCollection';
-import { Attributes } from './tokenScript/Attributes';
-import { SecurityInfo } from './security/SecurityInfo';
-import { Selections } from './tokenScript/selection/Selections';
-import { Label } from './tokenScript/Label';
-import { AttestationDefinitions } from './tokenScript/attestation/AttestationDefinitions';
-import { Attestation } from './attestation/Attestation';
-import { Origin } from './tokenScript/Origin';
-import { ITokenContextData } from './tokens/ITokenContextData';
-import { Meta } from './tokenScript/Meta';
 import { ethers } from 'ethers';
+import { ITokenScriptEngine, ScriptSourceType } from './IEngine';
+import { SecurityInfo } from './security/SecurityInfo';
 import { TransactionValidator } from './security/TransactionValidator';
-import { Contracts } from './tokenScript/Contracts';
+import { Attributes } from './tokenScript/Attributes';
 import { Cards } from './tokenScript/Cards';
+import { Contracts } from './tokenScript/Contracts';
+import { Label } from './tokenScript/Label';
+import { Meta } from './tokenScript/Meta';
+import { Origin } from './tokenScript/Origin';
+import { Transaction } from './tokenScript/Transaction';
+import { AttestationDefinitions } from './tokenScript/attestation/AttestationDefinitions';
+import { Selections } from './tokenScript/selection/Selections';
+import { ITokenCollection } from './tokens/ITokenCollection';
+import { ITokenContextData } from './tokens/ITokenContextData';
 
+import { EventHandler, ITokenContext, ITokenIdContext, ITokenScript, ITransactionListener, TokenMetadataMap, TokenScriptEvents } from './ITokenScript';
 import { ScriptInfo } from './repo/sources/SourceInterface';
-import { EventHandler, ITokenContext, ITokenIdContext, ITransactionListener, TokenMetadataMap, TokenScript, TokenScriptEvents } from './TokenScript';
-import { ViewController } from './view/ViewController';
-import { IViewBinding } from './view/IViewBinding';
 import { Card } from './tokenScript/Card';
-import { ITokenDiscoveryAdapter } from './tokens/ITokenDiscoveryAdapter';
 import { ViewStyles } from './view/ViewStyles';
 
 /**
@@ -29,7 +25,7 @@ import { ViewStyles } from './view/ViewStyles';
  * This class contains various top-level methods for getting TokenScript data, showing TokenScript cards &
  * executing transactions
  */
-export class LiteTokenScript implements TokenScript {
+export class LiteTokenScript implements ITokenScript {
   private label?: Label;
 
   private meta?: Meta;
@@ -57,7 +53,7 @@ export class LiteTokenScript implements TokenScript {
   public readonly transactionValidator: TransactionValidator;
 
   constructor(
-    private engine: TokenScriptEngine,
+    private engine: ITokenScriptEngine,
     public readonly tokenDef: XMLDocument,
     public readonly xmlStr: string,
     private source: ScriptSourceType,
@@ -437,16 +433,16 @@ export class LiteTokenScript implements TokenScript {
   }
 
   // Not implemented for LiteTokenScript
-  public getViewController(): ViewController {
+  public getViewController(): any {
     throw new Error('LiteTokenScript does not support the operation');
   }
   public hasViewBinding(): boolean {
     throw new Error('LiteTokenScript does not support the operation');
   }
-  public getViewBinding(): IViewBinding {
+  public getViewBinding(): any {
     throw new Error('LiteTokenScript does not support the operation');
   }
-  public setViewBinding(viewBinding: IViewBinding): void {
+  public setViewBinding(viewBinding: any): void {
     throw new Error('LiteTokenScript does not support the operation');
   }
   public showOrExecuteTokenCard(card: Card, transactionListener?: ITransactionListener): Promise<void> {
@@ -461,7 +457,7 @@ export class LiteTokenScript implements TokenScript {
   public resolveTokenMetadata(reload: boolean): Promise<ITokenCollection[]> {
     throw new Error('LiteTokenScript does not support the operation');
   }
-  public setTokenDiscoveryAdapter(adapter: ITokenDiscoveryAdapter): void {
+  public setTokenDiscoveryAdapter(adapter: any): void {
     throw new Error('LiteTokenScript does not support the operation');
   }
 }

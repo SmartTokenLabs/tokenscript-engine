@@ -1,6 +1,7 @@
 import {Component, Element, Event, EventEmitter, h, Prop, State, Watch} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
-import {ITransactionStatus, TokenScript} from "../../../../../engine-js/src/TokenScript";
+import {ITransactionStatus} from "../../../../../engine-js/src/ITokenScript";
+import {TokenScript} from "../../../../../engine-js/src/TokenScript";
 import {IViewBinding} from "../../../../../engine-js/src/view/IViewBinding";
 import {RequestFromView, ViewEvent} from "../../../../../engine-js/src/view/ViewController";
 import {Card} from "../../../../../engine-js/src/tokenScript/Card";
