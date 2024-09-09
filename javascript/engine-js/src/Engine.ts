@@ -1,7 +1,7 @@
+import {AbstractTokenScriptEngine} from "./AbstractEngine";
 import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
-import {IEngineConfig, ITokenScriptEngine, ScriptSourceType} from "./IEngine";
-import {Repo} from "./repo/Repo";
+import {IEngineConfig, ScriptSourceType} from "./IEngine";
 import {ScriptInfo} from "./repo/sources/SourceInterface";
 import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
 import {TokenScript} from "./TokenScript";
@@ -10,37 +10,22 @@ import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 import {IViewBinding} from "./view/IViewBinding";
 import {IWalletAdapter} from "./wallet/IWalletAdapter";
 
-const DEFAULT_CONFIG: IEngineConfig = {
-	ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
-	noLocalStorage: false,
-	trustedKeys: []
-};
-
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
  * via the repo, URL or directly from XML source
  */
-export class TokenScriptEngine implements ITokenScriptEngine {
-
-	private repo: Repo = new Repo(this);
+export class TokenScriptEngine extends AbstractTokenScriptEngine {
 	private attestationManager?: AttestationManager;
 
 	// TODO: Should we pass in a function or a constructor, dunno
 	constructor(
-		public getWalletAdapter: () => Promise<IWalletAdapter>,
+		getWalletAdapter: () => Promise<IWalletAdapter>,
 		public getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>,
 		public getAttestationStorageAdapter?: () => IAttestationStorageAdapter,
 		public getLocalStorageAdapter?: () => ILocalStorageAdapter,
-		public readonly config?: IEngineConfig
+		config?: IEngineConfig
 	) {
-		if (this.config){
-			this.config = {
-				...DEFAULT_CONFIG,
-				...this.config
-			}
-		} else {
-			this.config = DEFAULT_CONFIG;
-		}
+		super(getWalletAdapter, config);
 
 		if (this.getAttestationStorageAdapter)
 			this.attestationManager = new AttestationManager(this, this.getAttestationStorageAdapter());
@@ -103,10 +88,6 @@ export class TokenScriptEngine implements ITokenScriptEngine {
 		}
 
 		throw new Error("The provided TokenScript does not contain an attestation definition for the included attestation.");
-	}
-
-	public resolveAllScripts(tsPath: string, forceReload = false){
-		return this.repo.resolveAllScripts(tsPath, forceReload);
 	}
 
 	/**
@@ -190,87 +171,4 @@ export class TokenScriptEngine implements ITokenScriptEngine {
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}
 	}
-
-	/**
-	 * Sign a personal message using the Ethereum WalletAdapter implementation provided by the user-agent
-	 * @param data
-	 */
-	public async signPersonalMessage(data) {
-
-		try {
-			return await (await this.getWalletAdapter()).signPersonalMessage(data);
-		} catch (e){
-			throw new Error("Signing failed: " + e.message);
-		}
-	}
-
-	// TODO: This should probably be moved somewhere else
-	/**
-	 * Public IPFS gateways are sometimes very slow, so when a custom IPFS gateway is supplied in the config,
-	 * we update the following URLs to our own gateways.
-	 * @private
-	 */
-	private IPFS_REPLACE_GATEWAYS = [
-		"ipfs://",
-		"https://ipfs.io/ipfs/",
-		"https://gateway.pinata.cloud/ipfs/"
-	];
-
-	public processIpfsUrl(uri: string){
-
-		for (let gateway of this.IPFS_REPLACE_GATEWAYS){
-
-			if (this.config.ipfsGateway.indexOf(gateway) === 0){
-				continue;
-			}
-
-			if (uri.indexOf(gateway) === 0){
-				uri = uri.replace(gateway, this.config.ipfsGateway);
-				break;
-			}
-		}
-
-		return uri;
-	}
-
-	public async getScriptUris(chain: string|number, contractAddr: string) {
-
-		// Direct RPC gets too hammered by opensea view (that doesn't allow localStorage to cache XML)
-		/*const provider = await this.getWalletAdapter();
-		let uri: string|string[]|null;
-
-		try {
-			uri = Array.from(await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string[]"])) as string[];
-		} catch (e) {
-			uri = await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string"]);
-		}
-
-		if (uri && Array.isArray(uri))
-			uri = uri.length ? uri[0] : null
-
-		return <string>uri;*/
-
-		// TODO: Add support for selecting a specific index or URL?
-		// const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
-		// const scriptUris = await res.json();
-		//return <string>scriptUris[0];
-
-		// i.e. https://store-backend.smartlayer.network/tokenscript/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/chain/137/script-uri
-		const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr.toLowerCase()}/chain/${chain}/script-uri`);
-		const data = await res.json();
-
-		if (!data.scriptURI)
-			return null;
-
-		let uris: string[] = [];
-
-		if (data.scriptURI.erc5169?.length)
-			uris.push(...data.scriptURI.erc5169);
-
-		if (data.scriptURI.offchain?.length)
-			uris.push(...data.scriptURI.offchain);
-
-		return uris.length ? uris : null;
-	}
-
 }
