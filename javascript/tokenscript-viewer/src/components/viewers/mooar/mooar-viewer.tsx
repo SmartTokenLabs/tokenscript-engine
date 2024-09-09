@@ -85,10 +85,10 @@ export class SmartTokenStoreViewer {
 		this.app.showTsLoader();
 
 		// TODO: Get from URL to speed up load time
-		const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
+		/*const res = await getSingleTokenMetadata(chain, contract, tokenId, this.app.tsEngine);
 		this.collectionDetails = res.collection;
 		this.tokenDetails = res.detail;
-		console.log("Token meta loaded!", this.collectionDetails, this.tokenDetails);
+		console.log("Token meta loaded!", this.collectionDetails, this.tokenDetails);*/
 
 		this.app.hideTsLoader();
 
@@ -105,7 +105,7 @@ export class SmartTokenStoreViewer {
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, null, null, tokenId, tokenScriptUrl);
 
 		// Reload cards after the token is updated
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {
@@ -119,7 +119,7 @@ export class SmartTokenStoreViewer {
 	}
 
 	// TODO: Deduplicate logic in common/tokens-grid-item.tsx & viewers/joyid-token/action-bar.tsx
-	private async loadCards(){
+	private async loadCards(reloadInfoView = false){
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
@@ -132,7 +132,7 @@ export class SmartTokenStoreViewer {
 
 			if (card.type === "token"){
 				// The card is already loaded, we only need to update other card buttons
-				if (this.infoCard)
+				if (!reloadInfoView && this.infoCard)
 					continue;
 
 				// Show first info card
@@ -225,6 +225,12 @@ export class SmartTokenStoreViewer {
 						</a>
 						<div class="mooar-header-right">
 							{/*<share-to-tg-button/>*/}
+							{ this.tokenScript && <tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
+								this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
+								await this.infoViewController.unloadTokenCard();
+								await this.loadCards();
+								await this.infoViewController.showOrExecuteCard(this.infoCard, undefined);
+							}} />}
 							{ this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" />}
 						</div>
 					</div>

@@ -9,7 +9,7 @@ export async function getTokenScriptWithSingleTokenContext(
 	app: AppRoot,
 	chain: number,
 	contract: string,
-	collectionDetails: ITokenCollection,
+	collectionDetails?: ITokenCollection,
 	tokenDetails?: ITokenDetail,
 	tokenId?: string,
 	tokenScriptUrl?: string
@@ -40,27 +40,47 @@ export async function getTokenScriptWithSingleTokenContext(
 	const origins = tokenScript.getTokenOriginData();
 	let selectedOrigin: ITokenCollection;
 
-	for (const origin of origins){
+	for (const origin of origins) {
 		if (
 			origin.chainId === chain &&
 			origin.contractAddress.toLowerCase() === contract.toLowerCase() &&
 			// This is required to handle ST404, where both the erc20 & 721 contract origins are included in the same tokenscript
 			((tokenId === null && origin.tokenType === "erc20") || (tokenId !== null && origin.tokenType !== "erc20"))
-		){
+		) {
 			selectedOrigin = {
-				...collectionDetails,
 				...origin
 			}
-			if (tokenDetails)
-				selectedOrigin.tokenDetails = [tokenDetails];
+
 			break;
 		}
 	}
 
-	if (selectedOrigin){
+	if (!selectedOrigin)
+		throw new Error("Could not find token origin in the tokenscript");
 
-		tokenScript.setTokenMetadata([selectedOrigin]);
+	if (collectionDetails) {
+		selectedOrigin = {...collectionDetails, ...selectedOrigin}
+		if (tokenDetails)
+			selectedOrigin.tokenDetails = [tokenDetails];
+	} else {
 
+		const tokens = await tokenScript.getTokenMetadata(true);
+
+		console.log(tokens);
+
+		console.log(selectedOrigin);
+
+		if (!tokens[selectedOrigin.originId])
+			throw new Error("Could not load token metadata");
+
+		selectedOrigin = {...tokens[selectedOrigin.originId], ...selectedOrigin};
+	}
+
+	tokenScript.setTokenMetadata([selectedOrigin]);
+
+	let tokenIndex = 0;
+
+	if (collectionDetails) {
 		class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
 			getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
 				return Promise.resolve([selectedOrigin]);
@@ -69,11 +89,15 @@ export async function getTokenScriptWithSingleTokenContext(
 
 		//app.discoveryAdapter = new StaticDiscoveryAdapter();
 		tokenScript.setTokenDiscoveryAdapter(new StaticDiscoveryAdapter());
-		tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? 0 : null);
-
-		return tokenScript;
-
 	} else {
-		throw new Error("Could not find token origin in the tokenscript");
+
+		tokenIndex = selectedOrigin.tokenDetails.findIndex((token) => token.tokenId === tokenId);
+
+		if (tokenIndex === -1)
+			tokenIndex = 0; // For now just select the first token if the token ID is not found
 	}
+
+	tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? tokenIndex : null);
+
+	return tokenScript;
 }
