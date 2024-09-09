@@ -1,8 +1,9 @@
+import {ITransactionListener, ITransactionStatus} from "../ITokenScript";
+import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
-import {IViewBinding} from "./IViewBinding";
-import {ITransactionListener, ITransactionStatus, TokenScript, TokenScriptEvents} from "../TokenScript";
 import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
 import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
+import {IViewBinding} from "./IViewBinding";
 import {TokenViewData} from "./TokenViewData";
 
 export enum ViewEvent {

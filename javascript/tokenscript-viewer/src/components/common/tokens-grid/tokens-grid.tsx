@@ -1,5 +1,6 @@
 import {Component, EventEmitter, h, Prop, State, Watch, Event, Host, JSX} from "@stencil/core";
-import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITokenIdContext} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";

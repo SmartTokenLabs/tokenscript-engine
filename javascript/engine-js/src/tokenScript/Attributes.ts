@@ -1,4 +1,4 @@
-import {TokenScript} from "../TokenScript";
+import {ITokenScript} from "../ITokenScript";
 import {Attribute} from "./Attribute";
 
 /**
@@ -9,7 +9,7 @@ export class Attributes implements Iterable<Attribute | undefined> {
 
 	private attributes: {[attributeName: string]: Attribute };
 
-	constructor(private tokenScript: TokenScript, private parentElem: Element, private isCardContext = false) {
+	constructor(private tokenScript: ITokenScript, private parentElem: Element, private isCardContext = false) {
 
 	}
 

@@ -1,8 +1,8 @@
-import {TokenScriptEngine} from "../Engine";
-import {ResolvedScriptData, ScriptInfo, SourceInterfaceConstructor} from "./sources/SourceInterface";
-import {ScriptURI} from "./sources/ScriptURI";
-import {TokenScriptRepo} from "./sources/TokenScriptRepo";
+import {ITokenScriptEngine} from "../IEngine";
 import {RegistryScriptURI} from "./sources/RegistryScriptURI";
+import {ScriptURI} from "./sources/ScriptURI";
+import {ResolvedScriptData, ScriptInfo, SourceInterfaceConstructor} from "./sources/SourceInterface";
+import {TokenScriptRepo} from "./sources/TokenScriptRepo";
 
 type ScriptLookupCache = {[chainAndContract: string]: {scripts: ScriptInfo[], timestamp: number}};
 
@@ -30,7 +30,7 @@ export class Repo {
 
 	private scriptLookupCache: ScriptLookupCache = {};
 
-	constructor(protected context: TokenScriptEngine) {
+	constructor(protected context: ITokenScriptEngine) {
 		if (this.context.config.noLocalStorage)
 			return;
 

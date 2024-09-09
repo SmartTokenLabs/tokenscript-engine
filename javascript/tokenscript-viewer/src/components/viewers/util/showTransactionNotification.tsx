@@ -1,4 +1,4 @@
-import {ITransactionStatus} from "@tokenscript/engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
 import {EventEmitter, h} from "@stencil/core";
 import {ShowToastEventArgs} from "../../app/app";
 

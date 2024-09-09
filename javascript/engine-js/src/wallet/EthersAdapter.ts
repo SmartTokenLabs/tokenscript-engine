@@ -8,7 +8,7 @@ import {
 	getBigInt,
 	Network, Overrides
 } from "ethers";
-import {ITransactionListener} from "../TokenScript";
+import {ITransactionListener} from "../ITokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 import {WaterfallFallbackProvider} from "./WaterfallFallbackProvider";
 

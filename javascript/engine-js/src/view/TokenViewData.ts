@@ -1,8 +1,8 @@
-import {TokenScript} from "../TokenScript";
-import {Card} from "../tokenScript/Card";
-import CARD_SDK_V1 from "./sdk/v1.txt";
-import {LocalStorageProxy} from "./data/LocalStorageProxy";
 import {EthUtils} from "../ethereum/EthUtils";
+import {ITokenScript} from "../ITokenScript";
+import {Card} from "../tokenScript/Card";
+import {LocalStorageProxy} from "./data/LocalStorageProxy";
+import CARD_SDK_V1 from "./sdk/v1.txt";
 
 /**
  * TokenView data contains helper functions for
@@ -13,7 +13,7 @@ export class TokenViewData {
 	private viewContainerId;
 	private localStorageProxy: LocalStorageProxy;
 
-	constructor(private tokenScript: TokenScript, private card: Card) {
+	constructor(private tokenScript: ITokenScript, private card: Card) {
 		this.localStorageProxy = new LocalStorageProxy(this.tokenScript);
 	}
 

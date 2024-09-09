@@ -1,7 +1,7 @@
-import {TokenScript} from "../TokenScript";
-import {DSigValidator} from "./DSigValidator";
 import * as IPFSOnlyHash from 'ipfs-only-hash';
+import {ITokenScript} from "../ITokenScript";
 import {IOriginSecurityInfo, Origin} from "../tokenScript/Origin";
+import {DSigValidator} from "./DSigValidator";
 import {TrustedKey, TrustedKeyResolver} from "./TrustedKeyResolver";
 
 export enum SecurityStatus {
@@ -35,7 +35,7 @@ export class SecurityInfo {
 	//private signerRootKey?: string
 
 	constructor(
-		private tokenScript: TokenScript
+		private tokenScript: ITokenScript
 	) {
 
 	}

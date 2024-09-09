@@ -1,4 +1,4 @@
-import {ITokenIdContext, TokenScript} from "../../TokenScript";
+import {ITokenIdContext, ITokenScript} from "../../ITokenScript";
 import {Label} from "../Label";
 import {SelectionFilter} from "./SelectionFilter";
 
@@ -10,7 +10,7 @@ export class Selection {
 	private label?: Label;
 	private filter?: SelectionFilter
 
-	constructor(private tokenScript: TokenScript, private selectionDef: Element) {
+	constructor(private tokenScript: ITokenScript, private selectionDef: Element) {
 
 	}
 

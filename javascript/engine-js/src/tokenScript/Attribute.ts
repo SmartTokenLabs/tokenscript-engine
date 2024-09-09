@@ -1,12 +1,12 @@
-import {ITokenIdContext, TokenScript} from "../TokenScript";
-import {Arguments} from "./data/function/Arguments";
-import {Attributes} from "./Attributes";
-import {EthUtils} from "../ethereum/EthUtils";
-import {FilterQuery} from "./data/event/FilterQuery";
-import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
-import {Label} from "./Label";
 import LodashGet from "lodash/get";
+import {EthUtils} from "../ethereum/EthUtils";
+import {ITokenIdContext, ITokenScript} from "../ITokenScript";
+import {Attributes} from "./Attributes";
+import {AbstractDependencyBranch} from "./data/AbstractDependencyBranch";
 import {AttributeReference} from "./data/AttributeReference";
+import {FilterQuery} from "./data/event/FilterQuery";
+import {Arguments} from "./data/function/Arguments";
+import {Label} from "./Label";
 
 interface TokenAttributeValue {
 	[tokenId: string]: any
@@ -30,7 +30,7 @@ export class Attribute {
 
 	private resolveLocks: {[scopeId: string]: Promise<unknown>} = {};
 
-	constructor(private tokenScript: TokenScript, private attributeDef: Element, private localAttrContext: Attributes) {
+	constructor(private tokenScript: ITokenScript, private attributeDef: Element, private localAttrContext: Attributes) {
 		// TODO: ensure that attribute arguments don't have circular dependencies
 	}
 

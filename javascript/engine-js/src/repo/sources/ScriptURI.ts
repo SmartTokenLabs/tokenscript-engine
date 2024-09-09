@@ -1,5 +1,5 @@
-import {ResolvedScriptData, ScriptInfo, SourceInterface} from "./SourceInterface";
-import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
+import {ITokenScriptEngine, ScriptSourceType} from "../../IEngine";
+import {ScriptInfo, SourceInterface} from "./SourceInterface";
 
 /**
  * The ScriptURI source implement ethereum EIP-5169
@@ -7,7 +7,7 @@ import {TokenScriptEngine, ScriptSourceType} from "../../Engine";
  */
 export class ScriptURI implements SourceInterface {
 
-	constructor(private context: TokenScriptEngine) {
+	constructor(private context: ITokenScriptEngine) {
 
 	}
 

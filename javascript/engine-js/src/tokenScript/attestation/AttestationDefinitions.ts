@@ -1,13 +1,12 @@
+import {ITokenScript} from "../../ITokenScript";
 import {AttestationDefinition} from "./AttestationDefinition";
-import {TokenScript} from "../../TokenScript";
-import {Attribute} from "../Attribute";
 
 export class AttestationDefinitions {
 
 	private definitions?: {[attestationName: string]: AttestationDefinition };
 
 	constructor(
-		private tokenScript: TokenScript,
+		private tokenScript: ITokenScript,
 		private elem: Element
 	) {
 

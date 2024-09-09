@@ -1,5 +1,6 @@
 import {Component, h, Host, JSX, Prop, State, Watch} from "@stencil/core";
-import {ITokenIdContext, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITokenIdContext} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {EthUtils} from "@tokenscript/engine-js/src/ethereum/EthUtils";

@@ -1,9 +1,9 @@
-import {ITokenIdContext, TokenScript} from "../../../TokenScript";
-import {Attributes} from "../../Attributes";
 import {EthUtils, IEthersArgument} from "../../../ethereum/EthUtils";
-import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
 import {ITokenContextData} from "../../../tokens/ITokenContextData";
+import {ITokenIdContext, ITokenScript} from "../../../ITokenScript";
+import {Attributes} from "../../Attributes";
 import {Contract} from "../../Contract";
+import {AbstractDependencyBranch} from "../AbstractDependencyBranch";
 
 export interface IArgument {
 	type: string;
@@ -23,7 +23,7 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 	ref?: string;
 	localRef?: string;
 
-	constructor(tokenScript: TokenScript, argDef: Element, type?: string, localAttrContext?: Attributes) {
+	constructor(tokenScript: ITokenScript, argDef: Element, type?: string, localAttrContext?: Attributes) {
 		super(tokenScript, localAttrContext);
 		this.type = type ? type : argDef.tagName.split(":")[1];
 		this.content = argDef.textContent;

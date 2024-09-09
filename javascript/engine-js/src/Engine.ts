@@ -1,22 +1,14 @@
-import {Repo} from "./repo/Repo";
-import {FullTokenScript, TokenScript} from "./TokenScript";
-import {IWalletAdapter} from "./wallet/IWalletAdapter";
-import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
-import {IViewBinding} from "./view/IViewBinding";
 import {AttestationManager} from "./attestation/AttestationManager";
 import {IAttestationStorageAdapter} from "./attestation/IAttestationStorageAdapter";
-import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
-import {TrustedKey} from "./security/TrustedKeyResolver";
-import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
-import {ITxValidationInfo} from "./security/TransactionValidator";
+import {IEngineConfig, ITokenScriptEngine, ScriptSourceType} from "./IEngine";
+import {Repo} from "./repo/Repo";
 import {ScriptInfo} from "./repo/sources/SourceInterface";
-
-export interface IEngineConfig {
-	ipfsGateway?: string
-	noLocalStorage?: boolean
-	trustedKeys?: TrustedKey[], // Define signing keys which are always valid
-	txValidationCallback?: (txInfo: ITxValidationInfo) => boolean|Promise<boolean>;
-}
+import {ITokenDiscoveryAdapter} from "./tokens/ITokenDiscoveryAdapter";
+import {TokenScript} from "./TokenScript";
+import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefinition";
+import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
+import {IViewBinding} from "./view/IViewBinding";
+import {IWalletAdapter} from "./wallet/IWalletAdapter";
 
 const DEFAULT_CONFIG: IEngineConfig = {
 	ipfsGateway: "https://smart-token-labs-demo-server.mypinata.cloud/ipfs/",
@@ -24,37 +16,11 @@ const DEFAULT_CONFIG: IEngineConfig = {
 	trustedKeys: []
 };
 
-export enum ScriptSourceType {
-	SCRIPT_REGISTRY = "registry",
-	SCRIPT_URI = "scriptUri",
-	URL = "url",
-	UNKNOWN = "unknown",
-}
-
-export interface TokenScriptEngine {
-  getWalletAdapter: () => Promise<IWalletAdapter>;
-  readonly config?: IEngineConfig;
-
-  processIpfsUrl(uri: string): string;
-  getScriptUris(chain: string | number, contractAddr: string): Promise<string[] | null>;
-  getTokenScriptFromUrl(url: string): Promise<TokenScript>;
-  loadTokenScript(xml: string): Promise<TokenScript>;
-
-  resolveAllScripts(tsPath: string, forceReload?: boolean): Promise<ScriptInfo[]>;
-
-  // Only for FullTokenScriptEngine
-  getTokenDiscoveryAdapter?: () => Promise<ITokenDiscoveryAdapter>;
-  getAttestationStorageAdapter?: () => IAttestationStorageAdapter;
-  getLocalStorageAdapter?: () => ILocalStorageAdapter;
-  getAttestationManager(): AttestationManager;
-  signPersonalMessage(data: string): Promise<string>;
-}
-
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance
  * via the repo, URL or directly from XML source
  */
-export class FullTokenScriptEngine implements TokenScriptEngine {
+export class TokenScriptEngine implements ITokenScriptEngine {
 
 	private repo: Repo = new Repo(this);
 	private attestationManager?: AttestationManager;
@@ -219,7 +185,7 @@ export class FullTokenScriptEngine implements TokenScriptEngine {
 			}
 			let tokenXml = parser.parseFromString(xml,"text/xml");
 
-			return new FullTokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
+			return new TokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo, viewBinding);
 		} catch (e){
 			throw new Error("Failed to parse tokenscript definition: " + e.message);
 		}

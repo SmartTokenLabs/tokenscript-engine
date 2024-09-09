@@ -1,4 +1,4 @@
-import {ITokenIdContext, TokenScript} from "../../TokenScript";
+import {ITokenIdContext, ITokenScript} from "../../ITokenScript";
 import {Lexer, Parser, Token} from "./FilterParser";
 
 /**
@@ -9,7 +9,7 @@ export class SelectionFilter {
 
 	private tokens: Token[];
 
-	constructor(private tokenScript: TokenScript, private filter: string) {
+	constructor(private tokenScript: ITokenScript, private filter: string) {
 		this.tokens = new Lexer().tokenize(this.filter);
 	}
 

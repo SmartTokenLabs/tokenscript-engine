@@ -1,6 +1,6 @@
-import {FilterValue} from "./FilterValue";
-import {ITokenIdContext, TokenScript} from "../../../TokenScript";
+import {ITokenIdContext, ITokenScript} from "../../../ITokenScript";
 import {Attributes} from "../../Attributes";
+import {FilterValue} from "./FilterValue";
 
 /**
  * FilterQuery represent an ethereum event filter, which is used within the ethereum:event attribute source.
@@ -11,7 +11,7 @@ export class FilterQuery {
 	private params: URLSearchParams;
 	private dynamicValues: {[key: string]: FilterValue} = {};
 
-	constructor(private tokenScript: TokenScript, filter: string, private localAttrContext?: Attributes) {
+	constructor(private tokenScript: ITokenScript, filter: string, private localAttrContext?: Attributes) {
 
 		this.params = new URLSearchParams(filter);
 

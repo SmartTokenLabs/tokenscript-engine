@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import {TokenScript} from "../TokenScript";
+import {ethers} from "ethers";
+import {ITokenScript} from "../ITokenScript";
 import {Contract} from "../tokenScript/Contract";
 
 export interface TrustedKey {
@@ -15,7 +15,7 @@ const ACCESS_CONTROL_SCRIPTS_ADMIN = "TS_SCRIPT_ADMIN";
  */
 export class TrustedKeyResolver {
 
-	constructor(private tokenScript: TokenScript) {
+	constructor(private tokenScript: ITokenScript) {
 
 	}
 

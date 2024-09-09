@@ -1,4 +1,4 @@
-import {ITokenIdContext, TokenScript} from "../../TokenScript";
+import {ITokenIdContext, ITokenScript} from "../../ITokenScript";
 import {FilterValue} from "../data/event/FilterValue";
 
 export enum TokenType {
@@ -270,7 +270,7 @@ export class Parser {
 	}
 
 	public constructor(
-		private tokenscript: TokenScript|null,
+		private tokenscript: ITokenScript|null,
 		private tokenContext: ITokenIdContext|null,
 		protected tokens: Token[]
 	) {

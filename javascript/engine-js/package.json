@@ -11,6 +11,16 @@
   "main": "./dist/lib.commonjs/index.js",
   "module": "./dist/lib.esm/index.js",
   "types": "./dist/lib.esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lib.esm/index.js",
+      "require": "./dist/lib.commonjs/index.js"
+    },
+    "./lite": {
+      "import": "./dist/lib.esm/index.lite.js",
+      "require": "./dist/lib.commonjs/index.lite.js"
+    }
+  },
   "scripts": {
     "build": "tsc && tsc -p tsconfig-commonjs.json && npm run copy-sdk",
     "copy-sdk": "copyfiles -u 1 ./src/view/sdk/* ./dist/lib.esm && copyfiles copyfiles -u 1 ./src/view/sdk/* ./dist/lib.commonjs",

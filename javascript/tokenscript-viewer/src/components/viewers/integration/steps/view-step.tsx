@@ -1,6 +1,7 @@
 import {Component, Prop, h, Element, Event, EventEmitter} from "@stencil/core";
 import {IntegrationViewer} from "../integration-viewer";
-import {ITransactionStatus, TokenScript} from "@tokenscript/engine-js/src/TokenScript";
+import {ITransactionStatus} from "@tokenscript/engine-js/src/ITokenScript";
+import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {AbstractViewBinding} from "../../../../integration/abstractViewBinding";
 import {Card} from "@tokenscript/engine-js/src/tokenScript/Card";
 import {ShowToastEventArgs} from "../../../app/app";

@@ -1,5 +1,5 @@
 import {EventLog, Log} from "ethers";
-import {ITransactionListener} from "../TokenScript";
+import {ITransactionListener} from "../ITokenScript";
 import {IChainConfig} from "./EthersAdapter";
 
 export interface RpcRequest {

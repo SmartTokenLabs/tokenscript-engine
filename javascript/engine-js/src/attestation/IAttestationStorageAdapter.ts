@@ -1,5 +1,5 @@
 import {SignedOffchainAttestation} from "@ethereum-attestation-service/eas-sdk";
-import {ScriptSourceType} from "../Engine";
+import {ScriptSourceType} from "../IEngine";
 
 export interface IAttestationData {
 	collectionId: string;
