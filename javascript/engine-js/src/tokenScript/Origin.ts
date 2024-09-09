@@ -1,4 +1,4 @@
-import { ScriptSourceType } from "../Engine";
+import {ScriptSourceType} from "../Engine";
 import {TokenScript} from "../TokenScript";
 import {ISecurityInfo, SecurityStatus} from "../security/SecurityInfo";
 import {TrustedKey, TrustedKeyResolver} from "../security/TrustedKeyResolver";
@@ -10,7 +10,6 @@ export enum AuthenticationType {
 	NONE = "none",
 	IPFS_CID = "ipfsCid", // The script has been loaded from a URL specified by the ScriptUri smart contract function.
 	XML_DSIG = "dsig", // The XML dsig is an EC signature, signed by the origin smart contract deployer
-	IPFS_REGISTRY = "ERC-7738 Registry IPFS"
 }
 
 export interface IOriginSecurityInfo {
@@ -41,14 +40,17 @@ export class Origin {
 			// If the script was sourced from the Script Registry it's only deemed signed under the following cases:
 			// 1: The TS is located on IPFS, and the setting wallet of the entry is the TS origin contract owner() or the current owner of Order token (1)
 			// 2: The TS has a signature which is from the owner() of the contract or current owner of Order token (1)
-			if (this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) {
+			/*if (this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) {
 				await this.validateByScriptRegistry(securityInfo);
-			}
+			}*/
 
 			if (!this.securityStatus && securityInfo.authoritivePublicKey)
 				await this.validateBySignerKey(securityInfo.authoritivePublicKey, securityInfo.trustedKey);
 
-			if (!this.securityStatus && this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_URI && this.type === "contract")
+			if (!this.securityStatus &&
+				(this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_URI || this.tokenScript.getSourceInfo().source == ScriptSourceType.SCRIPT_REGISTRY) &&
+				this.type === "contract"
+			)
 				await this.validateByContractScriptUri(securityInfo.ipfsCid);
 
 			if (!this.securityStatus)
@@ -62,27 +64,6 @@ export class Origin {
 		}
 
 		return this.securityStatus;
-	}
-
-	private async validateByScriptRegistry(securityInfo: Partial<ISecurityInfo>) {
-
-		const scriptSource = this.tokenScript.getSourceInfo();
-		const [chain, contractAddress] = (scriptSource.tsId ?? "").split("-");
-
-		let status = await this.tokenScript.getAuthenticationStatus(contractAddress, 1);
-
-		const ipfsCid: string = securityInfo.ipfsCid;
-
-		// now ensure the IPFS fetch matches
-		const matches = scriptSource.sourceUrl.includes(ipfsCid);
-
-		if (status && matches) {
-			this.securityStatus = {
-				type: AuthenticationType.IPFS_REGISTRY,
-				status: SecurityStatus.VALID,
-				statusText: "The TokenScript IPFS CID matches the Authenticated scriptURI specified by the Registry"
-			}
-		}
 	}
 
 	private async validateBySignerKey(authPubKey: string, trustedKey?: TrustedKey){
@@ -170,6 +151,8 @@ export class Origin {
 		// The same script Cid should be specified for all addresses in the same contract scriptUri in order to be valid
 		const addresses = contract.getAddresses();
 
+		let authenticated: boolean = null;
+
 		for (const i in addresses){
 
 			const address = addresses[i];
@@ -178,14 +161,12 @@ export class Origin {
 
 			if (
 				contractAddress &&
-				scriptSource.source === "scriptUri" &&
-				address.address === contractAddress &&
+				address.address.toLowerCase() === contractAddress.toLowerCase() &&
 				address.chain === parseInt(chain)
 			){
 				scriptUri = scriptSource.sourceUrl;
 			} else {
 				// We could fetch the scriptURI of the contract and compare the IPFS hash, but for the moment this seems like overkill and is slow
-				return;
 				/*try {
 					scriptUri = await this.tokenScript.getEngine().getScriptUri(address.chain, address.address);
 				} catch (e) {
@@ -193,6 +174,10 @@ export class Origin {
 				}*/
 				// TODO: Should download file and calculate IPFS hash rather than relying on the URL?
 				//       JB: Yes.
+			}
+
+			if (authenticated !== false){
+				authenticated = scriptSource.source === ScriptSourceType.SCRIPT_URI || scriptSource.scriptInfo?.authenticated;
 			}
 
 			console.log("IPFS Validator: checking source URL ", scriptUri);
@@ -217,8 +202,14 @@ export class Origin {
 
 		this.securityStatus = {
 			type: AuthenticationType.IPFS_CID,
-			status: SecurityStatus.VALID,
-			statusText: "The TokenScript IPFS CID matches the scriptURI specified by the contract"
+			status: authenticated ? SecurityStatus.VALID : SecurityStatus.INVALID,
+			statusText:
+				(authenticated ?
+					"This TokenScript has been set by the contract owner" :
+					"This is a third party TokenScript, please sign any transaction with care") + "\n" +
+				(scriptSource.source === ScriptSourceType.SCRIPT_URI ?
+					"The IPFS CID matches the scriptURI specified by the contract" :
+					"The IPFS CID matches the scriptURI specified by the registry")
 		}
 	}
 }

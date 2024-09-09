@@ -14,6 +14,7 @@ import { JSX } from "@stencil/core";
 import { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 import { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 import { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
+import { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 import { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 import { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 import { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -28,6 +29,7 @@ export { JSX } from "@stencil/core";
 export { TokenScript as TokenScript1 } from "@tokenscript/engine-js/src/TokenScript";
 export { IntegrationViewer } from "./components/viewers/integration/integration-viewer";
 export { ITxValidationInfo } from "../../engine-js/src/security/TransactionValidator";
+export { ScriptInfo } from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 export { Card } from "@tokenscript/engine-js/src/tokenScript/Card";
 export { TabbedViewer } from "./components/viewers/tabbed/tabbed-viewer";
 export { TokenGridContext } from "./components/viewers/util/getTokensFlat";
@@ -114,8 +116,12 @@ export namespace Components {
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
         "showShareToTg"?: boolean;
     }
+    interface ScriptSelectDialog {
+        "onScriptSelect": (scriptInfo: ScriptInfo) => void;
+        "open": (scripts: ScriptInfo[]) => Promise<void>;
+    }
     interface SecurityStatus {
-        "size": "large"|"small"|"x-small";
+        "size": "large" | "small" | "x-small";
         "tokenScript": TokenScript1;
     }
     interface SelectField {
@@ -192,6 +198,7 @@ export namespace Components {
         "imageUrl": string;
         "name": string;
         "onRemove"?: (tsId: string) => Promise<void>;
+        "selected": boolean;
         "tokenScript"?: TokenScript1;
         "tsId": string;
     }
@@ -485,6 +492,12 @@ declare global {
         prototype: HTMLPopoverDialogElement;
         new (): HTMLPopoverDialogElement;
     };
+    interface HTMLScriptSelectDialogElement extends Components.ScriptSelectDialog, HTMLStencilElement {
+    }
+    var HTMLScriptSelectDialogElement: {
+        prototype: HTMLScriptSelectDialogElement;
+        new (): HTMLScriptSelectDialogElement;
+    };
     interface HTMLSecurityStatusElement extends Components.SecurityStatus, HTMLStencilElement {
     }
     var HTMLSecurityStatusElement: {
@@ -672,6 +685,7 @@ declare global {
         "showToast": ShowToastEventArgs;
         "showLoader": void;
         "hideLoader": void;
+        "showScriptSelector": ScriptInfo[];
     }
     interface HTMLViewerPopoverElement extends Components.ViewerPopover, HTMLStencilElement {
         addEventListener<K extends keyof HTMLViewerPopoverElementEventMap>(type: K, listener: (this: HTMLViewerPopoverElement, ev: ViewerPopoverCustomEvent<HTMLViewerPopoverElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -737,6 +751,7 @@ declare global {
         "new-viewer": HTMLNewViewerElement;
         "opensea-viewer": HTMLOpenseaViewerElement;
         "popover-dialog": HTMLPopoverDialogElement;
+        "script-select-dialog": HTMLScriptSelectDialogElement;
         "security-status": HTMLSecurityStatusElement;
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
@@ -849,8 +864,11 @@ declare namespace LocalJSX {
         "modalStyles"?: {[cssProp: string]: string};
         "showShareToTg"?: boolean;
     }
+    interface ScriptSelectDialog {
+        "onScriptSelect"?: (scriptInfo: ScriptInfo) => void;
+    }
     interface SecurityStatus {
-        "size"?: "large"|"small"|"x-small";
+        "size"?: "large" | "small" | "x-small";
         "tokenScript"?: TokenScript1;
     }
     interface SelectField {
@@ -930,6 +948,7 @@ declare namespace LocalJSX {
         "imageUrl"?: string;
         "name"?: string;
         "onRemove"?: (tsId: string) => Promise<void>;
+        "selected"?: boolean;
         "tokenScript"?: TokenScript1;
         "tsId"?: string;
     }
@@ -951,6 +970,7 @@ declare namespace LocalJSX {
     interface ViewerPopover {
         "onHideLoader"?: (event: ViewerPopoverCustomEvent<void>) => void;
         "onShowLoader"?: (event: ViewerPopoverCustomEvent<void>) => void;
+        "onShowScriptSelector"?: (event: ViewerPopoverCustomEvent<ScriptInfo[]>) => void;
         "onShowToast"?: (event: ViewerPopoverCustomEvent<ShowToastEventArgs>) => void;
     }
     interface ViewerTab {
@@ -984,6 +1004,7 @@ declare namespace LocalJSX {
         "new-viewer": NewViewer;
         "opensea-viewer": OpenseaViewer;
         "popover-dialog": PopoverDialog;
+        "script-select-dialog": ScriptSelectDialog;
         "security-status": SecurityStatus;
         "select-field": SelectField;
         "select-step": SelectStep;
@@ -1034,6 +1055,7 @@ declare module "@stencil/core" {
             "new-viewer": LocalJSX.NewViewer & JSXBase.HTMLAttributes<HTMLNewViewerElement>;
             "opensea-viewer": LocalJSX.OpenseaViewer & JSXBase.HTMLAttributes<HTMLOpenseaViewerElement>;
             "popover-dialog": LocalJSX.PopoverDialog & JSXBase.HTMLAttributes<HTMLPopoverDialogElement>;
+            "script-select-dialog": LocalJSX.ScriptSelectDialog & JSXBase.HTMLAttributes<HTMLScriptSelectDialogElement>;
             "security-status": LocalJSX.SecurityStatus & JSXBase.HTMLAttributes<HTMLSecurityStatusElement>;
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;

@@ -28,6 +28,10 @@
 	opacity: 0.6;
 }
 
+.ts-button.selected {
+	border: 2px solid blue; /* Add fine blue line */
+}
+
 .ts-details {
 	padding: 10px;
 	flex-grow: 1;

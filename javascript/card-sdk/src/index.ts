@@ -13,6 +13,7 @@ import {
 import {IEngineAdapter, RequestFromView} from "./messaging/IEngineAdapter";
 import {PostMessageAdapter} from "./messaging/PostMessageAdapter";
 import {LocalStorageAdapter} from "./storage/localStorageAdapter";
+import {WaterfallFallbackProvider} from "./ethereum/WaterfallFallbackProvider";
 
 export interface IChainConfig {
     rpc: string|string[],
@@ -146,9 +147,7 @@ class TokenScriptSDK  implements ITokenScriptSDK {
                 for (const url of rpcUrls){
                     providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
                 }
-                return new ethers.FallbackProvider(providers, chain, {
-                    quorum: 2
-                });
+                return new WaterfallFallbackProvider(providers);
             } else {
                 return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
             }

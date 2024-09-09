@@ -6,7 +6,7 @@ import {handleTransactionError, showTransactionNotification} from "../../util/sh
 import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
 import {ScriptSourceType} from "../../../../../../engine-js/src/Engine";
-import { getTgUrl } from '../../util/tgUrl';
+import {ScriptInfo} from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
 
 @Component({
 	tag: 'viewer-popover',
@@ -46,13 +46,26 @@ export class ViewerPopover {
 		bubbles: true,
 	}) hideLoader: EventEmitter<void>;
 
+	@Event({
+		eventName: 'showScriptSelector',
+		composed: true,
+		cancelable: true,
+		bubbles: true,
+	}) showScriptSelector: EventEmitter<ScriptInfo[]>;
+
 	@State()
 	private overflowCardButtons: JSX.Element[];
 	private overflowDialog: HTMLActionOverflowModalElement;
 
+	@State()
+	private otherScripts: ScriptInfo[];
 
 	@Method()
 	async open(tokenScript: TokenScript){
+
+		if (this.tokenScript)
+			this.close();
+
 		this.tokenScript = tokenScript;
 
 		const onboardingCards = tokenScript.getCards().getOnboardingCards();
@@ -69,7 +82,7 @@ export class ViewerPopover {
 			try {
 				const enabled = await card.isEnabledOrReason();
 
-				console.log("Card enabled: ", enabled);
+				//console.log("Card enabled: ", enabled);
 
 				if (enabled === false)
 					continue;
@@ -98,16 +111,22 @@ export class ViewerPopover {
 		const sourceInfo = this.tokenScript.getSourceInfo();
 
 		if (sourceInfo.source !== ScriptSourceType.UNKNOWN && !params.has("emulator")){
-			if (sourceInfo.source === ScriptSourceType.SCRIPT_URI){
-				const [chain, contract] = sourceInfo.tsId.split("-");
-				if (contract){
-					params.set("chain", chain);
-					params.set("contract", contract);
-				} else {
-					params.set("tsId", sourceInfo.tsId);
-				}
-			} else {
-				params.set("tokenscriptUrl", sourceInfo.sourceUrl);
+			switch (sourceInfo.source) {
+				case ScriptSourceType.SCRIPT_REGISTRY:
+				case ScriptSourceType.SCRIPT_URI:
+					const [chain, contract, scriptId] = sourceInfo.tsId.split("-");
+					if (contract) {
+						params.set("chain", chain);
+						params.set("contract", contract);
+						if (scriptId)
+							params.set("scriptId", scriptId);
+					} else {
+						params.set("tsId", sourceInfo.tsId);
+					}
+					break;
+				case ScriptSourceType.URL:
+					params.set("tokenscriptUrl", sourceInfo.sourceUrl);
+					break;
 			}
 		}
 
@@ -115,6 +134,21 @@ export class ViewerPopover {
 		location.search = params.toString();
 
 		history.pushState(undefined, undefined, location);
+
+		await this.reloadOtherScripts();
+	}
+
+	private async reloadOtherScripts(){
+		this.otherScripts = null;
+
+		if ([ScriptSourceType.SCRIPT_URI, ScriptSourceType.SCRIPT_REGISTRY].indexOf(this.tokenScript.getSourceInfo().source) === -1)
+			return;
+
+		try {
+			this.otherScripts = await this.tokenScript.getEngine().resolveAllScripts(this.tokenScript.getSourceInfo().tsId);
+		} catch (e){
+			console.warn(e);
+		}
 	}
 
 	private async showCard(card: Card, token?: TokenGridContext, cardIndex?: number){
@@ -156,12 +190,13 @@ export class ViewerPopover {
 	}
 
 	@Method()
-	async close(){
+	close(){
 		this.tokenScript = null;
 		const location = new URL(document.location.href);
 		const params = new URLSearchParams(document.location.search);
 		params.delete("chain");
 		params.delete("contract");
+		params.delete("scriptId");
 		params.delete("tsId");
 		params.delete("tokenscriptUrl");
 		location.search = params.toString();
@@ -178,6 +213,9 @@ export class ViewerPopover {
 						<h3>{this.tokenScript.getLabel(2) ?? this.tokenScript.getName()}</h3>
 					</div>
 					<div class="view-toolbar-buttons">
+						{this.otherScripts?.length > 1 ? <button class="btn btn-secondary" style={{marginRight: "15px", minWidth: "35px", fontSize: "16px"}} onClick={async () =>{
+							this.showScriptSelector.emit(this.otherScripts);
+						}}>Other tapps</button> : ''}
 						<share-to-tg-button></share-to-tg-button>
 						<security-status tokenScript={this.tokenScript}/>
 						<div>

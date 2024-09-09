@@ -20,7 +20,7 @@ import {TransactionValidator} from "./security/TransactionValidator";
 import {Contracts} from "./tokenScript/Contracts";
 import {Cards} from "./tokenScript/Cards";
 
-import {HOLESKY_DEV_7738} from "./Engine";
+import {ScriptInfo} from "./repo/sources/SourceInterface";
 
 export interface ITokenContext extends ITokenCollection {
 	originId: string
@@ -108,6 +108,7 @@ export class TokenScript {
 		private source: ScriptSourceType,
 		private sourceId: string,
 		private sourceUrl: string,
+		private scriptInfo?: ScriptInfo,
 		private viewBinding?: IViewBinding
 	) {
 		if (this.tokenDef?.documentElement?.tagName !== "ts:token")
@@ -121,9 +122,10 @@ export class TokenScript {
 	public getSourceInfo(){
 		return {
 			// TODO: Use better UID for non-resolved tokenscripts
-			tsId: this.sourceId ?? this.getName(),
+			tsId: this.sourceId + (this.scriptInfo?.scriptId ? '-' + this.scriptInfo.scriptId : '') ?? this.getName(),
 			source: this.source,
-			sourceUrl: this.sourceUrl
+			sourceUrl: this.sourceUrl,
+			scriptInfo: this.scriptInfo
 		}
 	}
 
@@ -367,8 +369,9 @@ export class TokenScript {
 	 * Token metadata for the TokenScript origin contract/s
 	 * @param reloadFromAdapter Fetch data from the token discover adapter. i.e. Used to load tokens for a different wallet address
 	 * @param bypassCache This is passed to the token discovery adapter, indicating the data should be refreshed from the source rather than being loaded from any cache
+	 * @param alwaysFireEvent Always fire the TOKENS_UPDATED event, even when already loaded
 	 */
-	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false){
+	public async getTokenMetadata(reloadFromAdapter = false, bypassCache = false, alwaysFireEvent = false){
 
 		if (!this.tokenMetadata || reloadFromAdapter){
 
@@ -446,7 +449,9 @@ export class TokenScript {
 				this.tokenMetadata[tokenCollection.originId] = tokenCollection;
 			}
 
-			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata})
+			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata});
+		} else if (alwaysFireEvent) {
+			this.emitEvent("TOKENS_UPDATED", {tokens: this.tokenMetadata});
 		}
 
 		return this.tokenMetadata;
@@ -740,35 +745,6 @@ export class TokenScript {
 	public getAsnModuleDefinition(name){
 		const modules = this.tokenDef.getElementsByTagName("asnx:module")[0];
 		return modules.querySelector("[name=" + name + "]");
-	}
-
-	public async getAuthenticationStatus(contractAddress: string, order: number) {
-		const wallet = await this.engine.getWalletAdapter();
-		const chain = this.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
-		let isAuthorised: boolean = false;
-
-		try {
-			isAuthorised = await wallet.call(
-				chain, HOLESKY_DEV_7738, "isAuthenticated", [
-					{
-						internalType: "address",
-						name: "",
-						type: "address",
-						value: contractAddress
-					},
-				{
-					internalType: "uint256",
-						name: "",
-						type: "uint256",
-						value: order
-				}], ["bool"]
-			);
-		} catch (e) {
-
-		}
-
-		return isAuthorised;
 	}
 
 	/**

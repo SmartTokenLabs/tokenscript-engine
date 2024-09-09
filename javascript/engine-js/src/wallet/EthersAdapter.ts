@@ -10,6 +10,7 @@ import {
 } from "ethers";
 import {ITransactionListener} from "../TokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
+import {WaterfallFallbackProvider} from "./WaterfallFallbackProvider";
 
 export interface IChainConfig {
 	rpc: string|string[],
@@ -23,7 +24,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 	private ethersProvider: ethers.BrowserProvider;
 
-	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|ethers.FallbackProvider} = {};
+	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|WaterfallFallbackProvider} = {};
 
 	constructor(
 		public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>,
@@ -131,9 +132,12 @@ export class EthersAdapter implements IWalletAdapter {
 
 		console.log("Transaction submitted: " + tx.hash);
 
+		const txLink = this.chainConfig[chain].explorer ? this.chainConfig[chain].explorer + tx.hash : null;
+
 		listener({
 			status: 'submitted',
-			txNumber: tx.hash
+			txNumber: tx.hash,
+			txLink
 		});
 
 		if (waitForConfirmation)
@@ -149,7 +153,7 @@ export class EthersAdapter implements IWalletAdapter {
 				listener({
 					status: 'confirmed',
 					txNumber: tx.hash,
-					txLink: this.chainConfig[chain].explorer ? this.chainConfig[chain].explorer + tx.hash : null
+					txLink
 				});
 
 				return transactionReceipt;
@@ -327,18 +331,10 @@ export class EthersAdapter implements IWalletAdapter {
 		const rpcUrls = this.getRpcUrls(chain);
 
 		if (rpcUrls.length > 1){
-			this.rpcProviders[chain] = new ethers.FallbackProvider(
-				rpcUrls.map((url, index) => {
-					return {
-						provider: new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }),
-						stallTimeout: 3000,
-						priority: index + 1,
-					}
-				}),
-				chain,
-				{
-					quorum: 1
-				}
+			this.rpcProviders[chain] = new WaterfallFallbackProvider(
+				rpcUrls.map((url) => {
+					return new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) })
+				})
 			);
 		} else {
 			this.rpcProviders[chain] = new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });

@@ -30,6 +30,10 @@ export class TokenSecurityStatus {
 				this.statusColor = "#3bd23b";
 				this.statusIcon = "✔";
 				break;
+			case TSSecurityStatus.WARNING:
+				this.statusColor = "#ff871d";
+				this.statusIcon = "✔";
+				break;
 			case TSSecurityStatus.INVALID:
 			default:
 				this.statusColor = "#ff4f4f";

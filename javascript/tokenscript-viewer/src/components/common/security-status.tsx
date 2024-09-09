@@ -1,7 +1,7 @@
-import {Component, h, Host, Prop, State, Watch} from "@stencil/core";
-import {ISecurityInfo, SecurityStatus as TSSecurityStatus} from "@tokenscript/engine-js/src/security/SecurityInfo";
-import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
-import {computeAddress} from "ethers";
+import { Component, h, Host, Prop, State, Watch } from "@stencil/core";
+import { ISecurityInfo, SecurityStatus as TSSecurityStatus } from "@tokenscript/engine-js/src/security/SecurityInfo";
+import { TokenScript } from "@tokenscript/engine-js/src/TokenScript";
+import { computeAddress } from "ethers";
 
 @Component({
 	tag: 'security-status',
@@ -14,20 +14,21 @@ export class SecurityStatus {
 
 	@Prop() tokenScript: TokenScript;
 
-	@Prop() size: "large"|"small"|"x-small" = "large";
+	@Prop() size: "large" | "small" | "x-small" = "large";
 
 	@State() securityInfo: Partial<ISecurityInfo>;
 
 	@State() statusColor: string;
 	@State() statusIcon: string;
 
+	@Watch("tokenScript")
 	async componentWillLoad() {
 		this.securityInfo = await this.tokenScript.getSecurityInfo().getInfo()
 	}
 
 	@Watch("securityInfo")
-	private updateStatusState(){
-		switch (this.securityInfo.status){
+	private updateStatusState() {
+		switch (this.securityInfo.status) {
 			case TSSecurityStatus.VALID:
 				this.statusColor = "#3bd23b";
 				this.statusIcon = "✔";
@@ -43,7 +44,7 @@ export class SecurityStatus {
 		}
 	}
 
-	private getDetailedSecurityInfo(){
+	private getDetailedSecurityInfo() {
 
 		const authMethods = this.securityInfo.originStatuses.reduce((previous, originStatus) => {
 
@@ -55,29 +56,30 @@ export class SecurityStatus {
 		}, []);
 
 		return "TokenScript security information\n" +
-			(this.securityInfo.trustedKey ? "\nIssued by: " + this.securityInfo.trustedKey.issuerName + "\n" : "") +
+			(this.securityInfo.trustedKey ? "\nIssued by: " + this.securityInfo.trustedKey.issuerName + "\n2" : "") +
 			(this.securityInfo.authoritivePublicKey ? "\nAuthoritative Key: " + computeAddress(this.securityInfo.authoritivePublicKey) + "\n(" + this.securityInfo.authoritivePublicKey + ")" : "") +
 			(this.securityInfo.signerPublicKey ? "\nSigner Key: " + computeAddress(this.securityInfo.signerPublicKey) : "") +
 			"\nAuthentication: " + (authMethods.join(", "));
 	}
 
 	render() {
+
 		return (
 			this.securityInfo ?
 				<Host>
-					<div class={"security-status " + this.size} style={{background: this.statusColor}}
-						 title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
-						 onClick={() => this.dialog.openDialog()}>
+					<div class={"security-status " + this.size} style={{ background: this.statusColor }}
+						title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
+						onClick={() => this.dialog.openDialog()}>
 						{this.statusIcon}
 					</div>
-					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{background: "#fff !important", color: "#000 !important"}}>
-						<h1 class="security-popover-icon" style={{color: this.statusColor}}>{this.statusIcon}</h1>
+					<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} dialogStyles={{ background: "#fff !important", color: "#000 !important" }}>
+						<h1 class="security-popover-icon" style={{ color: this.statusColor }}>{this.statusIcon}</h1>
 						<strong>{this.securityInfo.statusText}</strong>
-						<p style={{wordWrap: "break-word"}} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
+						<p style={{ wordWrap: "break-word" }} innerHTML={this.getDetailedSecurityInfo().replaceAll("\n", "<br/>")}>
 						</p>
 					</popover-dialog>
 				</Host>
-			: ''
+				: ''
 		)
 	}
 }

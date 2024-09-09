@@ -1,0 +1,38 @@
+
+
+.selector-small {
+	width: 10px;
+	height: 10px;
+	margin-right: 4px;
+}
+
+.button-content {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.icon-small {
+	width: 40px;
+	height: 40px;
+	margin-right: 8px;
+}
+
+.button-fixed-width {
+	width: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	vertical-align: middle;
+}
+
+.select-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.select-list .ts-button {
+	width: 100%;
+}

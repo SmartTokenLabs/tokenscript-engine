@@ -23,6 +23,9 @@ export class TokenscriptButton {
 	@State()
 	subText: string;
 
+	@Prop({mutable: true})
+	selected: boolean = false;
+
 	@Prop()
 	imageUrl: string;
 
@@ -61,7 +64,7 @@ export class TokenscriptButton {
 
 	render(){
 		return (
-			<Host class={"ts-button" + (this.enabled && (!this.onRemove || this.tokenScript) ? '' : ' disabled')}
+			<Host class={"ts-button" + (this.selected ? ' selected' : '') + (this.enabled && (!this.onRemove || this.tokenScript) ? '' : ' disabled')}
 				 title={this.name}
 				 style={{cursor: this.enabled && (!this.onRemove || this.tokenScript) ? 'pointer' : 'not-allowed'}}>
 				<token-icon src={this.imageUrl} imageTitle={this.name}/>
