@@ -13,7 +13,7 @@ body, action-overflow-modal .popover-container {
 }
 
 .mooar-header {
-	height: 30px;
+	height: 45px;
 	margin: 5px 15px 0;
 	display: flex;
 	align-items: center;
@@ -25,15 +25,15 @@ body, action-overflow-modal .popover-container {
 	text-decoration: none;
 }
 
-.mooar-header span {
-	font-size: 13px;
-	font-weight: bold;
+.mooar-header .text {
+	font-size: 15px;
+	font-weight: 500;
 	color: #fff;
 }
 
 .mooar-header .header-icon {
-	height: 20px !important;
-	padding-left: 5px;
+	height: 25px !important;
+	padding-left: 8px;
 	padding-top: 2px;
 }
 
@@ -42,6 +42,7 @@ body, action-overflow-modal .popover-container {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
+	gap: 10px;
 }
 
 .mooar-viewer {

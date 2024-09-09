@@ -26,6 +26,9 @@ export class TokensSelector {
 	options: TokenOption[] = [];
 
 	@State()
+	isOpen: boolean = false;
+
+	@State()
 	currentContext = "";
 
 	async componentWillLoad(){
@@ -33,6 +36,10 @@ export class TokensSelector {
 			this.updateOptions();
 		}, 'tokens-selector');
 		await this.updateOptions()
+	}
+
+	toggleDropdown() {
+		this.isOpen = !this.isOpen;
 	}
 
 	private async updateOptions(){
@@ -67,17 +74,49 @@ export class TokensSelector {
 	}
 
 	render() {
+
+		const selectedOption = this.options.find((token) => {
+			return this.currentContext === token.originId + (token.tokenId ? "-" + token.tokenId : "")
+		})
+
 		return (
-			<select onChange={(e) => {
-				const index = (e.target as HTMLSelectElement).selectedIndex;
-				this.switchToken(this.options[index])
-			}}>
-				{ this.options.map((token) => {
-					return (
-						<option selected={this.currentContext === token.originId + (token.tokenId ? "-" + token.tokenId : "")}>{token.name}</option>
-					)
-				}) }
-			</select>
-		)
+			<div class="tokens-selector">
+				<div class="selected" style={this.isOpen ? {borderBottomColor: "transparent", borderRadius: "5px 5px 0 0"} : {}} onClick={() => this.toggleDropdown()}>
+					{selectedOption ? (
+						[
+							<span class="icon-container">
+								<token-icon src={selectedOption.image} imageTitle={selectedOption.name}/>
+							</span>,
+							<span class="icon-label">
+
+								{selectedOption.name}
+	                        </span>
+						]
+					) : (
+						<span>Select an option</span>
+					)}
+				</div>
+						{
+							this.isOpen && (
+								<div class="options">
+						{this.options.map(option => (
+							<div
+								class="option"
+								onClick={() => {
+									this.currentContext = option.originId + (option.tokenId ? "-" + option.tokenId : "");
+									this.isOpen = false;
+									this.switchToken(option);
+								}}
+							>
+								<span class="icon-container">
+									<token-icon src={option.image} imageTitle={option.name}/>
+								</span>
+								<span>{option.name}</span>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
+	)
 	}
 }

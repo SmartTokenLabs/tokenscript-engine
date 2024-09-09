@@ -220,18 +220,18 @@ export class SmartTokenStoreViewer {
 				<div class="mooar-viewer">
 					<div class="mooar-header">
 						<a href="https://www.smartlayer.network/" target="_blank">
-							<span>Smart Token Viewer</span>
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
+							<span class="text">Smart Token Viewer</span>
 						</a>
 						<div class="mooar-header-right">
 							{/*<share-to-tg-button/>*/}
+							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small" />}
 							{ this.tokenScript && <tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
 								this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
 								await this.infoViewController.unloadTokenCard();
 								await this.loadCards();
 								await this.infoViewController.showOrExecuteCard(this.infoCard, undefined);
 							}} />}
-							{ this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" />}
 						</div>
 					</div>
 					<card-view ref={(el: HTMLElement) => this.infoCardView = el}></card-view>
