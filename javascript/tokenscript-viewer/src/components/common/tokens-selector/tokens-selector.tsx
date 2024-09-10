@@ -92,7 +92,7 @@ export class TokensSelector {
 
 		return (
 			<div class="tokens-selector">
-				<div class="selected" style={this.isOpen ? {borderBottomColor: "transparent", borderRadius: "5px 5px 0 0"} : {}} onClick={(e) => {
+				<div class="selected" title={selectedOption?.name} style={this.isOpen ? {borderBottomColor: "transparent", borderRadius: "5px 5px 0 0"} : {}} onClick={(e) => {
 					e.stopPropagation();
 					this.toggleDropdown();
 				}}>
@@ -115,6 +115,7 @@ export class TokensSelector {
 								<div class="options">
 						{this.options.map(option => (
 							<div
+								title={option.name}
 								class="option"
 								onClick={(e) => {
 									e.stopPropagation();

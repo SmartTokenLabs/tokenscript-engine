@@ -24,7 +24,7 @@ export class EthersAdapter implements IWalletAdapter {
 
 	private ethersProvider: ethers.BrowserProvider;
 
-	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|WaterfallFallbackProvider} = {};
+	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|ethers.FallbackProvider|WaterfallFallbackProvider} = {};
 
 	constructor(
 		public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>,
@@ -336,6 +336,19 @@ export class EthersAdapter implements IWalletAdapter {
 					return new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) })
 				})
 			);
+			/*this.rpcProviders[chain] = new ethers.FallbackProvider(
+				rpcUrls.map((url, index) => {
+					return {
+						provider: new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }),
+						stallTimeout: 1500,
+						priority: index + 1,
+					}
+				}),
+				chain,
+				{
+					quorum: 1
+				}
+			);*/
 		} else {
 			this.rpcProviders[chain] = new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
 		}

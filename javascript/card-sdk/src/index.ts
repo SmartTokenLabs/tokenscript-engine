@@ -143,11 +143,24 @@ class TokenScriptSDK  implements ITokenScriptSDK {
             const rpcUrls = this.eth.getRpcUrls(chain);
 
             if (rpcUrls.length > 1){
-                const providers = [];
-                for (const url of rpcUrls){
-                    providers.push(new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }));
-                }
-                return new WaterfallFallbackProvider(providers);
+                return new WaterfallFallbackProvider(
+                    rpcUrls.map((url) => {
+                        return new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) })
+                    })
+                );
+                /*this.rpcProviders[chain] = new ethers.FallbackProvider(
+                    rpcUrls.map((url, index) => {
+                        return {
+                            provider: new ethers.JsonRpcProvider(url, chain, { staticNetwork: new Network(chain.toString(), chain) }),
+                            stallTimeout: 1500,
+                            priority: index + 1,
+                        }
+                    }),
+                    chain,
+                    {
+                        quorum: 1
+                    }
+                );*/
             } else {
                 return new ethers.JsonRpcProvider(rpcUrls[0], chain, { staticNetwork: new Network(chain.toString(), chain) });
             }

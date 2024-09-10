@@ -1,4 +1,9 @@
 
+/*tokens-selector {
+	height: 40px;
+	display: flex;
+}*/
+
 .tokens-selector {
 	position: relative;
 	display: inline-block;
@@ -48,9 +53,11 @@
 }
 
 .tokens-selector  .icon-label {
-	display: flex;
-	align-items: center;
 	font-size: 14px;
+	overflow: hidden;
+	flex-shrink: 1;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .tokens-selector .icon-container {
@@ -58,4 +65,5 @@
 	height: 32px;
 	margin-right: 10px;
 	border-radius: 4px;
+	flex-shrink: 0;
 }
