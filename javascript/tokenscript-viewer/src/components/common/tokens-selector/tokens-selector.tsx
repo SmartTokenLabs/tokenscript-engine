@@ -38,6 +38,17 @@ export class TokensSelector {
 		await this.updateOptions()
 	}
 
+	async componentDidLoad(){
+		window.addEventListener("click", (e) => {
+			if (this.isOpen)
+				this.isOpen = false;
+		});
+		window.addEventListener('blur', (e) => {
+			if (this.isOpen && document.activeElement === document.querySelector('iframe'))
+				this.isOpen = false;
+		});
+	}
+
 	toggleDropdown() {
 		this.isOpen = !this.isOpen;
 	}
@@ -81,7 +92,10 @@ export class TokensSelector {
 
 		return (
 			<div class="tokens-selector">
-				<div class="selected" style={this.isOpen ? {borderBottomColor: "transparent", borderRadius: "5px 5px 0 0"} : {}} onClick={() => this.toggleDropdown()}>
+				<div class="selected" style={this.isOpen ? {borderBottomColor: "transparent", borderRadius: "5px 5px 0 0"} : {}} onClick={(e) => {
+					e.stopPropagation();
+					this.toggleDropdown();
+				}}>
 					{selectedOption ? (
 						[
 							<span class="icon-container">
@@ -102,7 +116,8 @@ export class TokensSelector {
 						{this.options.map(option => (
 							<div
 								class="option"
-								onClick={() => {
+								onClick={(e) => {
+									e.stopPropagation();
 									this.currentContext = option.originId + (option.tokenId ? "-" + option.tokenId : "");
 									this.isOpen = false;
 									this.switchToken(option);
@@ -111,7 +126,7 @@ export class TokensSelector {
 								<span class="icon-container">
 									<token-icon src={option.image} imageTitle={option.name}/>
 								</span>
-								<span>{option.name}</span>
+								<span class="icon-label">{option.name}</span>
 							</div>
 						))}
 					</div>

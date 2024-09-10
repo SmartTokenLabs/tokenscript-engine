@@ -26,15 +26,14 @@ body, action-overflow-modal .popover-container {
 }
 
 .mooar-header .text {
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #fff;
 }
 
 .mooar-header .header-icon {
-	height: 25px !important;
+	height: 24px !important;
 	padding-left: 8px;
-	padding-top: 2px;
 }
 
 .mooar-header-right {
