@@ -78,7 +78,7 @@ export class AppRoot {
 	private params = new URLSearchParams(document.location.search);
 	private viewerType: ViewerTypes = initViewerType(this.params);
 
-	discoveryAdapter: ITokenDiscoveryAdapter = new DiscoveryAdapter(!this.params.has("___bypassCache"))
+	discoveryAdapter: DiscoveryAdapter = new DiscoveryAdapter(!this.params.has("___bypassCache"))
 	attestationStorageAdapter = new AttestationStorageAdapter();
 	tsLocalStorageAdapter = new LocalStorageAdapter();
 
@@ -126,6 +126,10 @@ export class AppRoot {
 				}
 			}
 		);
+
+		if (this.viewerType === "mooar"){
+			this.discoveryAdapter.setEngine(this.tsEngine);
+		}
 	}
 
 	async getWalletAdapter(): Promise<IWalletAdapter> {

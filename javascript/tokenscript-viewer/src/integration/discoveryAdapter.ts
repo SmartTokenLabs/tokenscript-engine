@@ -7,6 +7,7 @@ import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
 import {Contract, ethers, Network} from "ethers";
 import {showToastNotification} from "../components/viewers/util/showToast";
+import {TokenScriptEngine} from "@tokenscript/engine-js/src/Engine";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
@@ -15,15 +16,21 @@ export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
+	private engine: TokenScriptEngine;
+
 	constructor(private enableStorage = true) {
 
+	}
+
+	public setEngine(engine: TokenScriptEngine){
+		this.engine = engine;
 	}
 
 	async getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
 
 		const resultTokens: ITokenCollection[] = [];
 
-		if (!Web3WalletProvider.isWalletConnected()){
+		if (!this.engine && !Web3WalletProvider.isWalletConnected()){
 			//Web3WalletProvider.getWallet(true);
 			return [];
 		}
@@ -51,7 +58,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	async getCurrentWalletAddress(){
-		return (await Web3WalletProvider.getWallet(true)).address;
+		return this.engine ? await (await this.engine.getWalletAdapter()).getCurrentWalletAddress() : (await Web3WalletProvider.getWallet(true)).address;
 	}
 
 	async getCachedTokens(initialTokenDetails: ITokenCollection, ownerAddress: string): Promise<ITokenCollection|false> {

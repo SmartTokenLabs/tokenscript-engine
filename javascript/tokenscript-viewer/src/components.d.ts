@@ -193,6 +193,10 @@ export namespace Components {
         "token": TokenGridContext;
         "tokenScript": TokenScript1;
     }
+    interface TokensSelector {
+        "switchToken": (TokenOption) => void;
+        "tokenScript": TokenScript1;
+    }
     interface TokenscriptButton {
         "enabled": boolean;
         "imageUrl": string;
@@ -633,6 +637,12 @@ declare global {
         prototype: HTMLTokensGridItemElement;
         new (): HTMLTokensGridItemElement;
     };
+    interface HTMLTokensSelectorElement extends Components.TokensSelector, HTMLStencilElement {
+    }
+    var HTMLTokensSelectorElement: {
+        prototype: HTMLTokensSelectorElement;
+        new (): HTMLTokensSelectorElement;
+    };
     interface HTMLTokenscriptButtonElement extends Components.TokenscriptButton, HTMLStencilElement {
     }
     var HTMLTokenscriptButtonElement: {
@@ -768,6 +778,7 @@ declare global {
         "token-viewer": HTMLTokenViewerElement;
         "tokens-grid": HTMLTokensGridElement;
         "tokens-grid-item": HTMLTokensGridItemElement;
+        "tokens-selector": HTMLTokensSelectorElement;
         "tokenscript-button": HTMLTokenscriptButtonElement;
         "tokenscript-grid": HTMLTokenscriptGridElement;
         "transfer-dialog": HTMLTransferDialogElement;
@@ -943,6 +954,10 @@ declare namespace LocalJSX {
         "token"?: TokenGridContext;
         "tokenScript"?: TokenScript1;
     }
+    interface TokensSelector {
+        "switchToken"?: (TokenOption) => void;
+        "tokenScript"?: TokenScript1;
+    }
     interface TokenscriptButton {
         "enabled"?: boolean;
         "imageUrl"?: string;
@@ -1021,6 +1036,7 @@ declare namespace LocalJSX {
         "token-viewer": TokenViewer;
         "tokens-grid": TokensGrid;
         "tokens-grid-item": TokensGridItem;
+        "tokens-selector": TokensSelector;
         "tokenscript-button": TokenscriptButton;
         "tokenscript-grid": TokenscriptGrid;
         "transfer-dialog": TransferDialog;
@@ -1072,6 +1088,7 @@ declare module "@stencil/core" {
             "token-viewer": LocalJSX.TokenViewer & JSXBase.HTMLAttributes<HTMLTokenViewerElement>;
             "tokens-grid": LocalJSX.TokensGrid & JSXBase.HTMLAttributes<HTMLTokensGridElement>;
             "tokens-grid-item": LocalJSX.TokensGridItem & JSXBase.HTMLAttributes<HTMLTokensGridItemElement>;
+            "tokens-selector": LocalJSX.TokensSelector & JSXBase.HTMLAttributes<HTMLTokensSelectorElement>;
             "tokenscript-button": LocalJSX.TokenscriptButton & JSXBase.HTMLAttributes<HTMLTokenscriptButtonElement>;
             "tokenscript-grid": LocalJSX.TokenscriptGrid & JSXBase.HTMLAttributes<HTMLTokenscriptGridElement>;
             "transfer-dialog": LocalJSX.TransferDialog & JSXBase.HTMLAttributes<HTMLTransferDialogElement>;

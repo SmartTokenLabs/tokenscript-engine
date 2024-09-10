@@ -1,0 +1,61 @@
+
+.tokens-selector {
+	position: relative;
+	display: inline-block;
+	width: 200px;
+	cursor: pointer;
+	height: 40px;
+}
+
+.tokens-selector span {
+	color: #fff !important;
+}
+
+.tokens-selector .selected {
+	padding: 6px;
+	background-color: #292929;
+	border: 1px solid #858585;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.tokens-selector .options {
+	position: absolute;
+	padding-top: 3px;
+	top: 39px;
+	left: 0;
+	right: 0;
+	background-color: #292929;
+	border: 1px solid #858585;
+	border-top: none;
+	z-index: 100;
+	max-height: 250px;
+	overflow-y: auto;
+	border-radius: 0 0 5px 5px;
+}
+
+.tokens-selector .option {
+	padding: 6px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.tokens-selector .option:hover {
+	background-color: #353535;
+}
+
+.tokens-selector  .icon-label {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+}
+
+.tokens-selector .icon-container {
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+	border-radius: 4px;
+}
