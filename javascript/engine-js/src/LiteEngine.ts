@@ -72,8 +72,14 @@ export class LiteTokenScriptEngine extends AbstractTokenScriptEngine {
    */
   private async initializeTokenScriptObject(xml: string, source: ScriptSourceType, sourceId: string, sourceUrl?: string, scriptInfo?: ScriptInfo) {
     try {
-      // Only support browser env for token-kit usage for now
-      const parser = new DOMParser();
+      let parser;
+      if (typeof process !== 'undefined' && process.release.name === 'node') {
+        const { JSDOM } = await import('jsdom');
+        const jsdom = new JSDOM();
+        parser = new jsdom.window.DOMParser();
+      } else {
+        parser = new DOMParser();
+      }
       let tokenXml = parser.parseFromString(xml, 'text/xml');
 
       return new LiteTokenScript(this, tokenXml, xml, source, sourceId, sourceUrl, scriptInfo);
