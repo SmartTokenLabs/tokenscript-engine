@@ -110,29 +110,26 @@ export class TokensSelector {
 						<span>Select an option</span>
 					)}
 				</div>
-						{
-							this.isOpen && (
-								<div class="options">
-						{this.options.map(option => (
-							<div
-								title={option.name}
-								class="option"
-								onClick={(e) => {
-									e.stopPropagation();
-									this.currentContext = option.originId + (option.tokenId ? "-" + option.tokenId : "");
-									this.isOpen = false;
-									this.switchToken(option);
-								}}
-							>
-								<span class="icon-container">
-									<token-icon src={option.image} imageTitle={option.name}/>
-								</span>
-								<span class="icon-label">{option.name}</span>
-							</div>
-						))}
-					</div>
-				)}
+				<div class="options" style={{display: (this.isOpen ? "block" : "none")}}>
+					{this.options.map(option => (
+						<div
+							title={option.name}
+							class="option"
+							onClick={(e) => {
+								e.stopPropagation();
+								this.currentContext = option.originId + (option.tokenId ? "-" + option.tokenId : "");
+								this.isOpen = false;
+								this.switchToken(option);
+							}}
+						>
+							<span class="icon-container">
+								<token-icon src={option.image} imageTitle={option.name}/>
+							</span>
+							<span class="icon-label">{option.name}</span>
+						</div>
+					))}
+				</div>
 			</div>
-	)
+		)
 	}
 }
