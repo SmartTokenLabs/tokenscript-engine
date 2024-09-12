@@ -28,7 +28,9 @@ export enum ChainID {
 	BLAST = 81457,
 	BLAST_SEPOLIA = 168587773,
 	MINT = 185,
-	MINT_SEPOLIA = 1687
+	MINT_SEPOLIA = 1687,
+	CELO = 42220,
+	CELO_ALFAJORES = 44787,
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -54,6 +56,8 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.BLAST_SEPOLIA]: 'blast-sepolia',
 	[ChainID.MINT]: 'mint',
 	[ChainID.MINT_SEPOLIA]: 'mint-sepolia',
+	[ChainID.CELO]: 'celo',
+	[ChainID.CELO_ALFAJORES]: 'celo-alfajores',
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -78,6 +82,8 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.BLAST_SEPOLIA]: 'Blast (Sepolia Testnet)',
 	[ChainID.MINT]: 'Mint',
 	[ChainID.MINT_SEPOLIA]: 'Mint (Sepolia Testnet)',
+	[ChainID.CELO]: 'Celo',
+	[ChainID.CELO_ALFAJORES]: 'Celo (Alfajores Testnet)',
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -196,6 +202,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.MINT_SEPOLIA]: {
 		rpc: `https://sepolia-testnet-rpc.mintchain.io`,
 		explorer: 'https://sepolia-testnet-explorer.mintchain.io/tx/',
+	},
+	[ChainID.CELO]: {
+		rpc: `https://celo-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+		explorer: 'https://explorer.celo.org/mainnet/tx/',
+	},
+	[ChainID.CELO_ALFAJORES]: {
+		rpc: `https://celo-alfajores.infura.io/v3/${INFURA_API_KEY}`,
+		explorer: 'https://explorer.celo.org/alfajores/tx/',
 	},
 }
 

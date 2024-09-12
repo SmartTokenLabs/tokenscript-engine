@@ -195,7 +195,7 @@ export namespace Components {
     }
     interface TokensSelector {
         "switchToken": (TokenOption) => void;
-        "tokenScript": TokenScript1;
+        "tokenScript": TokenScript;
     }
     interface TokenscriptButton {
         "enabled": boolean;
@@ -956,7 +956,7 @@ declare namespace LocalJSX {
     }
     interface TokensSelector {
         "switchToken"?: (TokenOption) => void;
-        "tokenScript"?: TokenScript1;
+        "tokenScript"?: TokenScript;
     }
     interface TokenscriptButton {
         "enabled"?: boolean;
