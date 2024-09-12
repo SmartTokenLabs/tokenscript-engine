@@ -32,8 +32,12 @@ jobs:
           npm -v
       - name: build
         run: |
-          cd "${PROJ_PATH}"
+          cd "javascript/engine-js/"
           npm ci
+          npm run build
+          cd -
+          cd "${PROJ_PATH}"
+          npm ci -d --foreground-scripts
           npm run build
         env:
           INFURA_API_KEY: ${{ vars.INFURA_API_KEY }}
