@@ -14,7 +14,7 @@ export class WaterfallFallbackProvider extends AbstractProvider {
 
 		for (const provider of this.providers){
 			try {
-				return provider._perform(req);
+				return await provider._perform(req);
 			} catch (e) {
 				console.error("Provider error, falling back to next provider ", e);
 			}
