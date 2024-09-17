@@ -147,47 +147,36 @@ export class NewViewer {
 
 	private async init(){
 
-		const tokenScriptsMap = {};
+		const myTokenScripts = await dbProvider.myTokenScripts.toArray();
 
-		// this.app.showTsLoader();
+		await Promise.all(myTokenScripts.map((tsMeta) => this.loadMyTokenScript(tsMeta)))
 
-		// do not proceed here if we are loading a TS selection choice
-		/*const queryStr = document.location.search.substring(1);
-
-		if (queryStr) {
-			const query = new URLSearchParams(queryStr);
-			if (query.has("registryScriptUrl") && query.has("registryTokenId")) {
-				console.log("Abort load of TS");
-				return;
-			}
-		}*/
-
-		for (const tsMeta of await dbProvider.myTokenScripts.toArray()){
-
-			try {
-				const tokenScript = await this.app.loadTokenscript(tsMeta.loadType, tsMeta.tokenScriptId, tsMeta.xml);
-
-				tokenScriptsMap[tsMeta.tokenScriptId] = {...tsMeta, tokenScript};
-			} catch (e){
-				console.error("Failed to load TokenScript definition: ", tsMeta.name);
-
-				if (tsMeta.loadType == "url" && new URL(tsMeta.tokenScriptId).hostname === "localhost")
-					continue;
-
-				this.showToast.emit({
-					type: "error",
-					title: "Failed to load TokenScript",
-					description: e.message
-				});
-
-				tokenScriptsMap[tsMeta.tokenScriptId] = tsMeta;
-			}
-		}
-
-		this.myTokenScripts = tokenScriptsMap;
 		this.scriptsLoading = false;
+	}
 
-		// this.app.hideTsLoader();
+	private async loadMyTokenScript(tsMeta: TokenScriptsMeta){
+
+		if (this.myTokenScripts[tsMeta.tokenScriptId])
+			return; // This script has already been loaded via processUrlLoad
+
+		try {
+			const tokenScript = await this.app.loadTokenscript(tsMeta.loadType, tsMeta.tokenScriptId, tsMeta.xml);
+
+			this.myTokenScripts = {...this.myTokenScripts, [tsMeta.tokenScriptId]: {...tsMeta, tokenScript}};
+		} catch (e){
+			console.error("Failed to load TokenScript definition: ", tsMeta.name);
+
+			if (tsMeta.loadType == "url" && new URL(tsMeta.tokenScriptId).hostname === "localhost")
+				return;
+
+			this.showToast.emit({
+				type: "error",
+				title: "Failed to load TokenScript",
+				description: e.message
+			});
+
+			this.myTokenScripts = {...this.myTokenScripts, [tsMeta.tokenScriptId]: tsMeta};
+		}
 	}
 
 	@Watch("myTokenScripts")
@@ -342,44 +331,42 @@ export class NewViewer {
 						</button>
 					</div>
 					{
-						this.scriptsLoading ?
-							<loading-spinner color="#1A42FF" size="small"></loading-spinner> :
-							(Object.values(this.myTokenScripts).length > 0 ?
-									<tokenscript-grid>
-										{
-											Object.values(this.myTokenScripts).map((ts) => {
-												return (
-													<tokenscript-button
-														key={ts.tokenScriptId}
-														tsId={ts.tokenScriptId}
-														name={ts.name}
-														imageUrl={ts.iconUrl}
-														tokenScript={ts.tokenScript}
-														onClick={() => {
-															if (!ts.tokenScript) {
-																this.showToast.emit({
-																	type: "error",
-																	title: "TokenScript not available",
-																	description: "This tokenscript could not be resolved"
-																});
-																return;
-															}
-															this.viewerPopover.open(ts.tokenScript);
-														}}
-														onRemove={async (tsId: string) => {
-															this.removeTokenScript(tsId);
-														}}>
-													</tokenscript-button>
-												);
-											})
-										}
-									</tokenscript-grid> :
-									<div>
-										<strong style={{fontSize: "13px"}}>You don't have any TokenScripts in your
-											library yet</strong><br/>
-										<span style={{fontSize: "12px"}}>Add TokenScripts by selecting popular ones below or adding them manually via the Add Tokens button.</span>
-									</div>
-							)
+						Object.values(this.myTokenScripts).length > 0 ?
+							<tokenscript-grid showLoader={this.scriptsLoading}>
+								{
+									Object.values(this.myTokenScripts).map((ts) => {
+										return (
+											<tokenscript-button
+												key={ts.tokenScriptId}
+												tsId={ts.tokenScriptId}
+												name={ts.name}
+												imageUrl={ts.iconUrl}
+												tokenScript={ts.tokenScript}
+												onClick={() => {
+													if (!ts.tokenScript) {
+														this.showToast.emit({
+															type: "error",
+															title: "TokenScript not available",
+															description: "This tokenscript could not be resolved"
+														});
+														return;
+													}
+													this.viewerPopover.open(ts.tokenScript);
+												}}
+												onRemove={async (tsId: string) => {
+													this.removeTokenScript(tsId);
+												}}>
+											</tokenscript-button>
+										);
+									})
+								}
+							</tokenscript-grid> :
+							(!this.scriptsLoading ? <div>
+								<strong style={{fontSize: "13px"}}>You don't have any TokenScripts in your
+									library yet</strong><br/>
+								<span style={{fontSize: "12px"}}>Add TokenScripts by selecting popular ones below or adding them manually via the Add Tokens button.</span>
+							</div> : '')
+
 					}
 				</div>
 				{this.popularTokenscripts.length > 0 ?

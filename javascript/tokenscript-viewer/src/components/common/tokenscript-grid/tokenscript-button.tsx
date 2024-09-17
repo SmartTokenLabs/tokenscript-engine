@@ -60,6 +60,9 @@ export class TokenscriptButton {
 
 		const keys = Object.keys(tokens);
 
+		if (!keys.length)
+			return;
+
 		if (keys.length > 1){
 
 			const numUniqueTokens = Object.values(tokens).reduce((total, token) => {

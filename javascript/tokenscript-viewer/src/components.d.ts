@@ -207,6 +207,7 @@ export namespace Components {
         "tsId": string;
     }
     interface TokenscriptGrid {
+        "showLoader": boolean;
     }
     interface TransferDialog {
         "closeDialog": () => Promise<void>;
@@ -968,6 +969,7 @@ declare namespace LocalJSX {
         "tsId"?: string;
     }
     interface TokenscriptGrid {
+        "showLoader"?: boolean;
     }
     interface TransferDialog {
         "engine"?: TokenScriptEngine;

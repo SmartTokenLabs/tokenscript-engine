@@ -5,6 +5,13 @@
 	flex-wrap: wrap;
 }
 
+.loader-container {
+	height: 60px;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+}
+
 @media (max-width: 768px) {
 	.ts-grid {
 		justify-content: space-evenly;

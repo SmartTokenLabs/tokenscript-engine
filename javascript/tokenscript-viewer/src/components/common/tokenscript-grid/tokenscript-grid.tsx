@@ -1,4 +1,4 @@
-import {Component, h, Host} from "@stencil/core";
+import {Component, h, Host, Prop} from "@stencil/core";
 
 @Component({
 	tag: 'tokenscript-grid',
@@ -8,10 +8,14 @@ import {Component, h, Host} from "@stencil/core";
 })
 export class TokenscriptGrid {
 
+	@Prop()
+	showLoader = false;
+
 	render(){
 		return (
 			<Host class="ts-grid">
 				<slot/>
+				{ this.showLoader ? <div class="loader-container"><loading-spinner color="#1A42FF" size="small"></loading-spinner></div> : '' }
 			</Host>
 		);
 	}
