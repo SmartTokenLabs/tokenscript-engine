@@ -2,6 +2,8 @@ import {Component, h, Host, Prop, State} from "@stencil/core";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 import {ITokenCollection} from "@tokenscript/engine-js/src/tokens/ITokenCollection";
 import {getTokensFlat} from "../../viewers/util/getTokensFlat";
+import {formatUnits} from "viem";
+import {EthUtils} from "@tokenscript/engine-js/dist/lib.esm/ethereum/EthUtils";
 
 @Component({
 	tag: 'tokenscript-button',
@@ -56,10 +58,22 @@ export class TokenscriptButton {
 
 	private updateTokenStatus(tokens: {[id: string]: ITokenCollection}){
 
-		const flat = getTokensFlat(tokens);
+		const keys = Object.keys(tokens);
 
-		this.subText = `${flat.length} Tokens`;
-		this.enabled = flat.length > 0;
+		if (keys.length > 1){
+
+			const numUniqueTokens = Object.values(tokens).reduce((total, token) => {
+				return total + (token.tokenType === "erc20" ? (BigInt(token.balance) > 0n ? 1 : 0) : Number(token.balance));
+			}, 0);
+
+			this.subText = `${numUniqueTokens} Tokens`;
+			this.enabled = numUniqueTokens > 0;
+
+		} else {
+			const token = tokens[keys[0]];
+			this.subText = `${token.tokenType === "erc20" ? Number(Number(EthUtils.calculateDecimalValue(token.balance)).toFixed(4)) : token.balance} ${token.symbol ?? 'Tokens'}`;
+			this.enabled = BigInt(token.balance) > 0n;
+		}
 	}
 
 	render(){

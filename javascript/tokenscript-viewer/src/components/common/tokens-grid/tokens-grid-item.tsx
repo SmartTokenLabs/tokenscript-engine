@@ -127,7 +127,7 @@ export class TokensGridItem {
 						}
 						{
 							this.token.tokenType !== "erc721" ?
-								<span title={details}>Balance: {EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals)}</span>
+								<span title={details}>Balance: {Number(Number(EthUtils.calculateDecimalValue(this.token.balance, this.token.decimals)).toFixed(4))}</span>
 								: ''
 						}
 					</div>
