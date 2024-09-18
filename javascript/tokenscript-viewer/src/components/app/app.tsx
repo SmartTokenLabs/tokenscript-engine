@@ -63,7 +63,19 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			viewerType = "new";
 	}
 
+	if (window.gtag) {
+		window.gtag('set', {
+			'viewer-type': viewerType
+		});
+	}
+
 	return viewerType
+}
+
+declare global {
+	interface Window {
+		gtag: any
+	}
 }
 
 @Component({

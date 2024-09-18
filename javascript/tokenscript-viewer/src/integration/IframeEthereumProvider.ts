@@ -297,6 +297,19 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 			if (completer) {
 				// Handle pending promise
 				if ('error' in message || 'result' in message) {
+
+					if (
+						window.gtag &&
+						'result' in message &&
+						'method' in message &&
+						message.method === "eth_accounts"
+					) {
+						window.gtag('set', {
+							'wallet_address': message.result?.[0],
+							'wallet_name': "iframe-provider"
+						});
+					}
+
 					completer.resolve(message);
 				} else {
 					completer.reject(

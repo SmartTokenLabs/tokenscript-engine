@@ -164,6 +164,8 @@ class Web3WalletProviderObj {
 		for (const listener of this.walletChangeListeners){
 			listener(connection);
 		}
+
+		this.setGAWalletDetails();
 	}
 
 	isWalletConnected(){
@@ -192,6 +194,26 @@ class Web3WalletProviderObj {
 		}
 
 		return this.getConnectedWalletData('evm')[0];
+	}
+
+	private setGAWalletDetails(){
+		if (window.gtag) {
+			const data = this.getConnectedWalletData('evm')?.[0];
+
+			window.gtag('set', {
+				'wallet_address': data?.address,
+				'wallet_name': data?.providerType
+			});
+
+			if (data){
+				window.gtag('event', 'wallet_connected', {
+					'wallet_address': data.address,
+					'wallet_name': data.providerType
+				})
+			} else {
+				window.gtag('event', 'wallet_disconnected');
+			}
+		}
 	}
 
 	async disconnectWallet(){
