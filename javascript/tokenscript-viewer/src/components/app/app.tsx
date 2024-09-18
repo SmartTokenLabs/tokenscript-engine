@@ -63,12 +63,6 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			viewerType = "new";
 	}
 
-	if (window.gtag) {
-		window.gtag('set', {
-			'viewer_type': viewerType
-		});
-	}
-
 	return viewerType
 }
 
