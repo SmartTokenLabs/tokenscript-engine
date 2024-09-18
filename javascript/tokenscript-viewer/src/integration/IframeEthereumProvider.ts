@@ -308,6 +308,12 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 							'wallet_address': message.result?.[0],
 							'wallet_name': "iframe-provider"
 						});
+						if (message.result?.[0]){
+							window.gtag('event', 'wallet_connected', {
+								'wallet_address': message.result?.[0],
+								'wallet_name': "iframe-provider"
+							});
+						}
 					}
 
 					completer.resolve(message);
