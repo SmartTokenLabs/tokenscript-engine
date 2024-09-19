@@ -169,6 +169,8 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 		[id: string]: PromiseCompleter<any, any>;
 	} = {};
 
+	private gaCurrentWallet = null;
+
 	public constructor({
 						   targetOrigin = DEFAULT_TARGET_ORIGIN,
 						   timeoutMilliseconds = DEFAULT_TIMEOUT_MILLISECONDS,
@@ -308,9 +310,10 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 							'wallet_address': message.result?.[0],
 							'wallet_name': "iframe-provider"
 						});
-						if (message.result?.[0]){
+						if (message.result?.[0] && message.result?.[0] != this.gaCurrentWallet){
+							this.gaCurrentWallet = message.result?.[0];
 							window.gtag('event', 'wallet_connected', {
-								'wallet_address': message.result?.[0],
+								'wallet_address': this.gaCurrentWallet,
 								'wallet_name': "iframe-provider"
 							});
 						}
