@@ -1,3 +1,4 @@
+import {Overrides} from "ethers";
 import {EthUtils} from "../ethereum/EthUtils";
 import {ITokenScript} from "../ITokenScript";
 import {Attributes} from "./Attributes";
@@ -11,6 +12,7 @@ export interface ITransactionInfo {
 	contractName: string,
 	function: string
 	args: Argument[],
+	overrides: Overrides,
 	value?: Argument
 }
 
@@ -47,6 +49,7 @@ export class Transaction {
 			contractName: contractName,
 			function: transInfo[0].getAttribute("function"),
 			args: new Arguments(this.tokenScript, transInfo[0], this.localAttrContext).getArguments(),
+			overrides: this.getOverridesArgs(transInfo[0]),
 			value: this.getValueArg(transInfo[0])
 		};
 	}
@@ -67,6 +70,29 @@ export class Transaction {
 
 		return new Argument(this.tokenScript, valueElem[0], "uint256", this.localAttrContext);
 	}
+
+  /**
+   * Fetches the override for the transaction
+   * e.g. gasLimit for execute a transaction, more details please refer to ethers.js Overrides
+   * @param transInfo
+   * @private
+   */
+  private getOverridesArgs(transInfo: Element): Overrides {
+    const overridesElem = transInfo.getElementsByTagName('ethereum:overrides');
+
+    if (overridesElem.length === 0) return null;
+
+    const overrides: Overrides = {};
+    const elems = overridesElem[0].children;
+    for (let i in elems) {
+      const override = elems[i];
+      const type = override.tagName.split(':')[1];
+
+      overrides[override.getAttribute('name')] = EthUtils.encodeTransactionParameter(type, override.textContent);
+    }
+
+    return overrides;
+  }
 
 	public getTransactionInfo() {
 		return this.transaction;

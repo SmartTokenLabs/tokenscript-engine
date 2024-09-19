@@ -107,6 +107,7 @@ export class TransferDialog {
 				args,
 				[],
 				null,
+				null,
 				true,
 				async (data: ITransactionStatus) => {
 
