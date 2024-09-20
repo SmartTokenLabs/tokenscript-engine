@@ -179,7 +179,7 @@ export class OpenseaViewer {
 				</div>
 				<div class="opensea-header">
 					<a href="https://www.smartlayer.network/" target="_blank">
-						<span>XNFT by</span>
+						<span>tapp by</span>
 						<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
 					</a>
 				</div>
