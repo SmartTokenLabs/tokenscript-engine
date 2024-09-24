@@ -52,29 +52,32 @@ export class Argument extends AbstractDependencyBranch implements IArgument {
 			value: overrideValue ?? await this.getValue(tokenContext)
 		};
 
-		if (this.type === "struct"){
+		if (this.type === "struct" || this.type === "abi"){
 
 			switch (this.ref){
 				case "attestation":
-					const data = await this.tokenScript.getTokenContextData(tokenContext);
+					if (this.type === "struct") {
+						const data = await this.tokenScript.getTokenContextData(tokenContext);
 
-					arg.type = "tuple";
-					arg.internalType = "struct EasTicketVerify.AttestationCoreData";
-					arg.components = data.tokenInfo.data.decodedToken.types.Attest.map((field) => {
-						return {
-							name: field.name,
-							type: field.type,
-							internalType: field.type
-						}
-					})
+						arg.type = "tuple";
+						arg.internalType = "struct EasTicketVerify.AttestationCoreData";
+						arg.components = data.tokenInfo.data.decodedToken.types.Attest.map((field) => {
+							return {
+								name: field.name,
+								type: field.type,
+								internalType: field.type
+							}
+						})
 
-					break;
+						break;
+					}
 
+				// fall-through intended
 				default:
 
 					const abi = contract.getAbi("function", functionName);
 
-					console.log("ABI: ", abi);
+					//console.log("ABI: ", abi);
 
 					if (abi.length){
 						const abiArg = abi[0].inputs.find((arg: any) => {
