@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/engine-js",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A Typescript implementation of the TokenScript runtime",
   "repository": {
     "type": "git",
@@ -26,7 +26,6 @@
     "copy-sdk": "copyfiles -u 1 ./src/view/sdk/* ./dist/lib.esm && copyfiles copyfiles -u 1 ./src/view/sdk/* ./dist/lib.commonjs",
     "watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npx -y patch-package",
     "prepublishOnly": "npm run build",
     "bundle-sdk": "node scripts/bundleSDK.js"
   },
