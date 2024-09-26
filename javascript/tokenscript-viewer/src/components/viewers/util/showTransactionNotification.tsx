@@ -7,25 +7,30 @@ export const showTransactionNotification = async (data: ITransactionStatus, show
 
 	switch (data.status){
 		case "submitted":
-			await showToast.emit({
+			showToast.emit({
 				type: 'info',
 				title: "Transaction submitted",
 				description: (<span>
 					{"Processing TX, please wait.. "}<br/>
-					{"TX Number: " + data.txNumber}
-					{data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
+					<small>{"TX Number: " + data.txNumber}</small><br/>
+					{data.txLink ? <a href={data.txLink} target="_blank">View On Block Scanner</a> : ''}
 				</span>)
 			});
 			break;
 		case "confirmed":
-			await showToast.emit({
+			showToast.emit({
 				type: 'success',
 				title: "Transaction confirmed",
 				description: (<span>
-					{"TX " + data.txNumber + " confirmed!"}<br/>
-					{data.txLink ? <a href={data.txLink} target="_blank">{"View On Block Scanner"}</a> : ''}
+					<small>{"TX " + data.txNumber + " confirmed!"}</small><br/>
+					{data.txLink ? <a href={data.txLink} target="_blank">View On Block Scanner</a> : ''}
 				</span>)
 			});
+			if (window.gtag) {
+				window.gtag('event', 'tx_confirmed', {
+					'tx_hash': data.txNumber
+				});
+			}
 			break;
 	}
 

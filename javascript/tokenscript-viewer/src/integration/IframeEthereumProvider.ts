@@ -309,7 +309,7 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 						if (message.result?.[0] && message.result?.[0] != this.gaCurrentWallet){
 							this.gaCurrentWallet = message.result?.[0];
 							window.gtag('set', {
-								'wallet_address2': this.gaCurrentWallet,
+								'wallet_address2': "evm:" + this.gaCurrentWallet,
 								'wallet_name': "iframe-provider"
 							});
 							window.gtag('event', 'wallet_connected', {
