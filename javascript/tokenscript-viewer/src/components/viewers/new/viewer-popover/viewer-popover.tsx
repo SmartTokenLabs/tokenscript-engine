@@ -136,6 +136,19 @@ export class ViewerPopover {
 
 		history.pushState(undefined, undefined, location);
 
+		if (window.gtag) {
+			let data: any = {
+				tsIdOrUrl: sourceInfo.tsId ?? sourceInfo.sourceUrl
+			};
+			if (params.has("chain")){
+				data.chain = params.get("chain");
+				data.contract = "evm:" + params.get("contract");
+				data.scriptId = params.get("scriptId");
+			}
+			window.gtag('set', data);
+			window.gtag('event', 'tokenscript_opened', data);
+		}
+
 		await this.reloadOtherScripts();
 	}
 

@@ -34,7 +34,7 @@
 	gtag('config', 'G-0YTFX5PTEZ', {
 		'viewer_type': query.has("viewType") ? query.get("viewType") : "default",
 		'chain': query.get("chain"),
-		'contract': query.get("contract"),
+		'contract': "evm:" + query.get("contract"),
 		'scriptId': query.get("scriptId")
 	});
 </script>
