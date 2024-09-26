@@ -200,17 +200,18 @@ class Web3WalletProviderObj {
 		if (window.gtag) {
 			const data = this.getConnectedWalletData('evm')?.[0];
 			const providerInfo = data ? this.getProviderInfo(data.providerType) : null;
+			const address = "evm:" + data?.address ?? null
 
 			window.gtag('set', {
-				'wallet_address': data?.address,
+				'wallet_address2': address,
 				'wallet_name': providerInfo?.label
 			});
 
 			if (data){
 				window.gtag('event', 'wallet_connected', {
-					'wallet_address': data.address,
+					'wallet_address2': address,
 					'wallet_name': providerInfo?.label
-				})
+				});
 			} else {
 				window.gtag('event', 'wallet_disconnected');
 			}

@@ -306,14 +306,14 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 						'method' in message &&
 						message.method === "eth_accounts"
 					) {
-						window.gtag('set', {
-							'wallet_address': message.result?.[0],
-							'wallet_name': "iframe-provider"
-						});
 						if (message.result?.[0] && message.result?.[0] != this.gaCurrentWallet){
 							this.gaCurrentWallet = message.result?.[0];
+							window.gtag('set', {
+								'wallet_address2': this.gaCurrentWallet,
+								'wallet_name': "iframe-provider"
+							});
 							window.gtag('event', 'wallet_connected', {
-								'wallet_address': this.gaCurrentWallet,
+								'wallet_address2': "evm:" + this.gaCurrentWallet,
 								'wallet_name': "iframe-provider"
 							});
 						}
