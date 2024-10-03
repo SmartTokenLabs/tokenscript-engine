@@ -18,8 +18,8 @@ export enum ChainID {
 	AMOY = 80002,
 	AVALANCH = 43114,
 	FANTOM = 250,
-	KLAYTN = 8217,
-	BAOBAB = 1001,
+	KAIA = 8217,
+	KAIA_KAIROS = 1001,
 	HARDHAT_LOCALHOST = 31337,
 	MANTLE = 5000,
 	MANTLE_SEPOLIA = 5003,
@@ -45,8 +45,8 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.AMOY]: "amoy",
 	[ChainID.AVALANCH]: "avalanche",
 	[ChainID.FANTOM]: "fantom",
-	[ChainID.KLAYTN]: "cypress",
-	[ChainID.BAOBAB]: "baobab",
+	[ChainID.KAIA]: "cypress",
+	[ChainID.KAIA_KAIROS]: "baobab",
 	[ChainID.HARDHAT_LOCALHOST]: "hardhat-localhost",
 	[ChainID.MANTLE]: "mantle",
 	[ChainID.MANTLE_SEPOLIA]: "mantle-sepolia",
@@ -71,8 +71,8 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.BSC]: "Binance Smart Chain",
 	[ChainID.AVALANCH]: "Avalanche",
 	[ChainID.FANTOM]: "Fantom",
-	[ChainID.KLAYTN]: "Cypress (Klaytn Mainnet)",
-	[ChainID.BAOBAB]: "Baobab (Klaytn Testnet)",
+	[ChainID.KAIA]: "Kaia",
+	[ChainID.KAIA_KAIROS]: "Kairos (Kaia Testnet)",
 	[ChainID.HARDHAT_LOCALHOST]: "Hardhat Localhost (EVM Test Network)",
 	[ChainID.MANTLE]: "Mantle",
 	[ChainID.MANTLE_SEPOLIA]: "Mantle (Sepolia Testnet)",
@@ -146,20 +146,20 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		rpc: 'https://mainnet.optimism.io',
 		explorer: 'https://optimistic.etherscan.io/tx/'
 	},
-	[ChainID.KLAYTN]: {
+	[ChainID.KAIA]: {
 		rpc: [
-			'https://public-en-cypress.klaytn.net',
+			'https://public-en.node.kaia.io',
 			'https://rpc.ankr.com/klaytn',
 			'https://klaytn-pokt.nodies.app',
 			'https://1rpc.io/klay',
 		],
 		explorer: 'https://scope.klaytn.com/tx/',
 	},
-	[ChainID.BAOBAB]: {
+	[ChainID.KAIA_KAIROS]: {
 		rpc: [
-			'https://public-en-baobab.klaytn.net',
+			'https://public-en.kairos.node.kaia.io',
 			'https://rpc.ankr.com/klaytn_testnet',
-			'https://klaytn-baobab.blockpi.network/v1/rpc/public',
+			'https://kaia-kairos.blockpi.network/v1/rpc/public',
 		],
 		explorer: 'https://baobab.scope.klaytn.com/tx/',
 	},
@@ -1505,5 +1505,18 @@ export const ERC20_ABI_JSON = [
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	}
+	},
+	{
+		"inputs": [],
+		"name": "contractURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
 ];

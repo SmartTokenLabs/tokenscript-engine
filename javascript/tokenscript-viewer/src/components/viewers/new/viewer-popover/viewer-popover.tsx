@@ -138,7 +138,8 @@ export class ViewerPopover {
 
 		if (window.gtag) {
 			let data: any = {
-				tsIdOrUrl: sourceInfo.tsId ?? sourceInfo.sourceUrl
+				tsIdOrUrl: sourceInfo.tsId ?? sourceInfo.sourceUrl,
+				tsName: tokenScript.getName()
 			};
 			if (params.has("chain")){
 				data.chain = params.get("chain");

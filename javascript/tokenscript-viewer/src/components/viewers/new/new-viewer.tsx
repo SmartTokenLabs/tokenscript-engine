@@ -67,8 +67,7 @@ export class NewViewer {
 				}
 			}
 		})
-		this.init();
-		this.processUrlLoad();
+		this.processUrlLoad().then(() => this.init());
 	}
 
 
