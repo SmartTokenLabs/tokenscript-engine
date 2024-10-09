@@ -31,8 +31,13 @@
 
 	const query = new URLSearchParams(document.location.search.substring(1));
 
+	let viewerType = query.has("viewType") ? query.get("viewType") : "default";
+
+	if (viewerType.includes("?"))
+		viewerType = viewerType.split("?")[0];
+
 	gtag('config', 'G-0YTFX5PTEZ', {
-		'viewer_type': query.has("viewType") ? query.get("viewType") : "default",
+		'viewer_type': viewerType,
 		'chain': query.get("chain"),
 		'contract': "evm:" + query.get("contract"),
 		'scriptId': query.get("scriptId")
