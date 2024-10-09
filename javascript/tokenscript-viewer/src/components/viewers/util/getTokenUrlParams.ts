@@ -31,6 +31,7 @@ export function getTokenUrlParams(query?: URLSearchParams){
 		tokenId,
 		tokenscriptUrl: query.get("tokenscriptUrl"),
 		emulator: query.get("emulator"),
-		wallet: query.get('wallet') // Used to override the wallet address used for display of erc20
+		wallet: query.get('wallet'), // Used to override the wallet address used for display of erc20
+		card: query.get("card")
 	}
 }

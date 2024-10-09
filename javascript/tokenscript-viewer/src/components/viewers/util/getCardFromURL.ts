@@ -1,9 +1,10 @@
 import {findCardByUrlParam} from "./findCardByUrlParam";
 import {TokenScript} from "@tokenscript/engine-js/src/TokenScript";
 
-export const getCardFromURL = (tokenScript: TokenScript) => {
+export const getCardFromURL = (tokenScript: TokenScript, params?: URLSearchParams) => {
 
-	const params = new URLSearchParams(document.location.hash.substring(1));
+	if (!params)
+		params = new URLSearchParams(document.location.hash.substring(1));
 
 	if (!params.has("card"))
 		return null;

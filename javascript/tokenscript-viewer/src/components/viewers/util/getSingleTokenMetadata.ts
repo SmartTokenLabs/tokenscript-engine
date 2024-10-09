@@ -3,9 +3,9 @@ import {DiscoveryAdapter} from "../../../integration/discoveryAdapter";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
 import {ITokenCollection} from "../../../../../engine-js/src/tokens/ITokenCollection";
 import {Web3WalletProvider} from "../../wallet/Web3WalletProvider";
-import {TokenScriptEngine} from "../../../../../engine-js/src/Engine";
+import {ITokenScriptEngine} from "../../../../../engine-js/src/IEngine";
 
-export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: TokenScriptEngine, wallet?: string): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
+export const getSingleTokenMetadata = async (chain: number, contract: string, tokenId?: string, engine?: ITokenScriptEngine, wallet?: string): Promise<{collection: ITokenCollection, detail?: ITokenDetail}> => {
 
 	const discoveryAdapter = new DiscoveryAdapter(!engine.config.noLocalStorage);
 

@@ -1,5 +1,5 @@
 import {ITokenScript} from "../ITokenScript";
-import {Card} from "./Card";
+import {Card, CardType} from "./Card";
 
 export class Cards implements Iterable<Card | undefined> {
 
@@ -46,7 +46,7 @@ export class Cards implements Iterable<Card | undefined> {
 	 * @param tokenOrigin Use the specified origin name if provided, otherwise fallback to current context origin
 	 * @param includedTypes An array of types to include. By default, all types are included except for onboarding and public cards
 	 */
-	public filterCards(tokenOrigin?: string, includedTypes?: string[]): Card[] {
+	public filterCards(tokenOrigin?: string, includedTypes?: CardType[]): Card[] {
 
 		if (!tokenOrigin)
 			tokenOrigin = this.tokenScript.getCurrentTokenContext()?.originId;
