@@ -69,6 +69,10 @@ export class CardPopover implements IViewBinding {
 
 	hideLoader(){
 		this.loading = false;
+		// Return focus to iframe
+		const iframe = document.getElementsByClassName("tokenscript-frame");
+		if (iframe.length)
+			(iframe[0] as HTMLIFrameElement).contentWindow.focus();
 	}
 
 	showLoader(show= true) {
