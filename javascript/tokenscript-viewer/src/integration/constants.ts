@@ -153,7 +153,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 			'https://klaytn-pokt.nodies.app',
 			'https://1rpc.io/klay',
 		],
-		explorer: 'https://scope.klaytn.com/tx/',
+		explorer: 'https://kaiascope.com/tx/',
 	},
 	[ChainID.KAIA_KAIROS]: {
 		rpc: [
@@ -161,7 +161,7 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 			'https://rpc.ankr.com/klaytn_testnet',
 			'https://kaia-kairos.blockpi.network/v1/rpc/public',
 		],
-		explorer: 'https://baobab.scope.klaytn.com/tx/',
+		explorer: 'https://kairos.kaiascope.com/tx/',
 	},
 	[ChainID.HARDHAT_LOCALHOST]: {
 		rpc: 'http://127.0.0.1:8545/',
