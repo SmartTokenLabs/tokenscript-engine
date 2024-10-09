@@ -113,7 +113,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	private setupConfirmButton(card: Card) {
 
-		if (card.type == "action") {
+		if (card.type == "action" && card.uiButton !== false) {
 			this.actionBar.style.display = "block";
 			this.actionBtn.innerText = card.label;
 		} else {

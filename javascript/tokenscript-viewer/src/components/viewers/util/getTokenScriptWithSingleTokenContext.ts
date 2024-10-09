@@ -3,6 +3,7 @@ import {ITokenCollection} from "../../../../../engine-js/src/tokens/ITokenCollec
 import {ITokenDiscoveryAdapter} from "../../../../../engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {AppRoot} from "../../app/app";
 import {ITokenDetail} from "../../../../../engine-js/src/tokens/ITokenDetail";
+import {getSingleTokenMetadata} from "./getSingleTokenMetadata";
 
 
 export async function getTokenScriptWithSingleTokenContext(
@@ -43,9 +44,10 @@ export async function getTokenScriptWithSingleTokenContext(
 	for (const origin of origins) {
 		if (
 			origin.chainId === chain &&
-			origin.contractAddress.toLowerCase() === contract.toLowerCase() &&
+			origin.contractAddress.toLowerCase() === contract.toLowerCase() //&&
 			// This is required to handle ST404, where both the erc20 & 721 contract origins are included in the same tokenscript
-			((tokenId === null && origin.tokenType === "erc20") || (tokenId !== null && origin.tokenType !== "erc20"))
+			// TODO: This causes issues for onboarding cards
+			//((tokenId === null && origin.tokenType === "erc20") || (tokenId !== null && origin.tokenType !== "erc20"))
 		) {
 			selectedOrigin = {
 				...origin
@@ -64,14 +66,14 @@ export async function getTokenScriptWithSingleTokenContext(
 			selectedOrigin.tokenDetails = [tokenDetails];
 	} else {
 
-		const tokens = await tokenScript.getTokenMetadata(true);
+		let tokens = await tokenScript.getTokenMetadata(true);
 
-		console.log(tokens);
-
-		console.log(selectedOrigin);
-
-		if (!tokens[selectedOrigin.originId])
-			throw new Error("Could not load token metadata");
+		if (!tokens[selectedOrigin.originId]) {
+			// Try to load single token
+			const singleTokenData = await getSingleTokenMetadata(chain, contract, tokenId, tokenScript.getEngine());
+			tokens[selectedOrigin.originId] = singleTokenData.collection;
+			tokens[selectedOrigin.originId].tokenDetails = [singleTokenData.detail];
+		}
 
 		selectedOrigin = {...tokens[selectedOrigin.originId], ...selectedOrigin};
 	}
@@ -89,7 +91,7 @@ export async function getTokenScriptWithSingleTokenContext(
 
 		//app.discoveryAdapter = new StaticDiscoveryAdapter();
 		tokenScript.setTokenDiscoveryAdapter(new StaticDiscoveryAdapter());
-	} else {
+	} else if (tokenId != null) {
 
 		tokenIndex = selectedOrigin.tokenDetails.findIndex((token) => token.tokenId === tokenId);
 
@@ -97,7 +99,7 @@ export async function getTokenScriptWithSingleTokenContext(
 			tokenIndex = 0; // For now just select the first token if the token ID is not found
 	}
 
-	tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" ? tokenIndex : null);
+	tokenScript.setCurrentTokenContext(selectedOrigin.originId, selectedOrigin.tokenType !== "erc20" && tokenId != null ? tokenIndex : null);
 
 	return tokenScript;
 }

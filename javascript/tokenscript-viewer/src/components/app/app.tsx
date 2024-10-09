@@ -11,7 +11,6 @@ import {DiscoveryAdapter} from "../../integration/discoveryAdapter";
 import {AttestationStorageAdapter} from "../../integration/attestationStorageAdapter";
 import {IFrameEthereumProvider} from "../../integration/IframeEthereumProvider";
 import {ethers} from "ethers";
-import {ITokenDiscoveryAdapter} from "@tokenscript/engine-js/src/tokens/ITokenDiscoveryAdapter";
 import {dbProvider} from "../../providers/databaseProvider";
 import {showToastNotification} from "../viewers/util/showToast";
 import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
@@ -25,9 +24,9 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
-export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar";
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar"|"tlink";
 
-const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar"];
+const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar", "tlink"];
 
 const initViewerType = (params: URLSearchParams): ViewerTypes => {
 
@@ -56,6 +55,9 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			break;
 		case "mooar":
 			viewerType = "mooar";
+			break;
+		case "tlink":
+			viewerType = "tlink";
 			break;
 		// Fall-through to default
 		case "new":
@@ -291,6 +293,7 @@ export class AppRoot {
 						{this.viewerType === "opensea" ? <opensea-viewer app={this}></opensea-viewer> : ''}
 						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
 						{this.viewerType === "mooar" ? <mooar-viewer app={this}></mooar-viewer> : ''}
+						{this.viewerType === "tlink" ? <tlink-viewer app={this}></tlink-viewer> : ''}
 					</main>
 
 					<confirm-tx-popover ref={(elem) => this.confirmTxPopover = elem}/>

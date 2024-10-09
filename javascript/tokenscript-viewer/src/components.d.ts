@@ -138,6 +138,9 @@ export namespace Components {
     interface ShareToTgButton {
         "style"?: { [key: string]: string };
     }
+    interface SingleCard {
+        "app": AppRoot;
+    }
     interface StartTab {
         "tabId": string;
         "tabView": TabbedViewer;
@@ -156,6 +159,9 @@ export namespace Components {
         "closeTab": (id: string) => Promise<void>;
         "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, file?: File, emulator?: string) => Promise<void>;
         "showTab": (id: string) => Promise<void>;
+    }
+    interface TlinkViewer {
+        "app": AppRoot;
     }
     interface TokenButton {
         "buttonTitle": string;
@@ -263,9 +269,17 @@ export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOpenseaViewerElement;
 }
+export interface SingleCardCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLSingleCardElement;
+}
 export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLStsViewerElement;
+}
+export interface TlinkViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTlinkViewerElement;
 }
 export interface TokenViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -527,6 +541,25 @@ declare global {
         prototype: HTMLShareToTgButtonElement;
         new (): HTMLShareToTgButtonElement;
     };
+    interface HTMLSingleCardElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
+    interface HTMLSingleCardElement extends Components.SingleCard, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLSingleCardElementEventMap>(type: K, listener: (this: HTMLSingleCardElement, ev: SingleCardCustomEvent<HTMLSingleCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLSingleCardElementEventMap>(type: K, listener: (this: HTMLSingleCardElement, ev: SingleCardCustomEvent<HTMLSingleCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLSingleCardElement: {
+        prototype: HTMLSingleCardElement;
+        new (): HTMLSingleCardElement;
+    };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
     var HTMLStartTabElement: {
@@ -563,6 +596,25 @@ declare global {
     var HTMLTabbedViewerElement: {
         prototype: HTMLTabbedViewerElement;
         new (): HTMLTabbedViewerElement;
+    };
+    interface HTMLTlinkViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
+    interface HTMLTlinkViewerElement extends Components.TlinkViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTlinkViewerElementEventMap>(type: K, listener: (this: HTMLTlinkViewerElement, ev: TlinkViewerCustomEvent<HTMLTlinkViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTlinkViewerElementEventMap>(type: K, listener: (this: HTMLTlinkViewerElement, ev: TlinkViewerCustomEvent<HTMLTlinkViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLTlinkViewerElement: {
+        prototype: HTMLTlinkViewerElement;
+        new (): HTMLTlinkViewerElement;
     };
     interface HTMLTokenButtonElement extends Components.TokenButton, HTMLStencilElement {
     }
@@ -767,10 +819,12 @@ declare global {
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
         "share-to-tg-button": HTMLShareToTgButtonElement;
+        "single-card": HTMLSingleCardElement;
         "start-tab": HTMLStartTabElement;
         "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
         "tabbed-viewer": HTMLTabbedViewerElement;
+        "tlink-viewer": HTMLTlinkViewerElement;
         "token-button": HTMLTokenButtonElement;
         "token-icon": HTMLTokenIconElement;
         "token-info-popover": HTMLTokenInfoPopoverElement;
@@ -897,6 +951,12 @@ declare namespace LocalJSX {
     interface ShareToTgButton {
         "style"?: { [key: string]: string };
     }
+    interface SingleCard {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: SingleCardCustomEvent<void>) => void;
+        "onShowLoader"?: (event: SingleCardCustomEvent<void>) => void;
+        "onShowToast"?: (event: SingleCardCustomEvent<ShowToastEventArgs>) => void;
+    }
     interface StartTab {
         "tabId"?: string;
         "tabView"?: TabbedViewer;
@@ -915,6 +975,12 @@ declare namespace LocalJSX {
     }
     interface TabbedViewer {
         "app"?: AppRoot;
+    }
+    interface TlinkViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: TlinkViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: TlinkViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: TlinkViewerCustomEvent<ShowToastEventArgs>) => void;
     }
     interface TokenButton {
         "buttonTitle"?: string;
@@ -1026,10 +1092,12 @@ declare namespace LocalJSX {
         "select-field": SelectField;
         "select-step": SelectStep;
         "share-to-tg-button": ShareToTgButton;
+        "single-card": SingleCard;
         "start-tab": StartTab;
         "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
         "tabbed-viewer": TabbedViewer;
+        "tlink-viewer": TlinkViewer;
         "token-button": TokenButton;
         "token-icon": TokenIcon;
         "token-info-popover": TokenInfoPopover;
@@ -1078,10 +1146,12 @@ declare module "@stencil/core" {
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "share-to-tg-button": LocalJSX.ShareToTgButton & JSXBase.HTMLAttributes<HTMLShareToTgButtonElement>;
+            "single-card": LocalJSX.SingleCard & JSXBase.HTMLAttributes<HTMLSingleCardElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;
             "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
+            "tlink-viewer": LocalJSX.TlinkViewer & JSXBase.HTMLAttributes<HTMLTlinkViewerElement>;
             "token-button": LocalJSX.TokenButton & JSXBase.HTMLAttributes<HTMLTokenButtonElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
             "token-info-popover": LocalJSX.TokenInfoPopover & JSXBase.HTMLAttributes<HTMLTokenInfoPopoverElement>;
