@@ -72,7 +72,8 @@ export async function getTokenScriptWithSingleTokenContext(
 			// Try to load single token
 			const singleTokenData = await getSingleTokenMetadata(chain, contract, tokenId, tokenScript.getEngine());
 			tokens[selectedOrigin.originId] = singleTokenData.collection;
-			tokens[selectedOrigin.originId].tokenDetails = [singleTokenData.detail];
+			if (singleTokenData.detail)
+				tokens[selectedOrigin.originId].tokenDetails = [singleTokenData.detail];
 		}
 
 		selectedOrigin = {...tokens[selectedOrigin.originId], ...selectedOrigin};
