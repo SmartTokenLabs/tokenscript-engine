@@ -24,9 +24,9 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
-export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar"|"tlink";
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar"|"tlink"|"tlink-card";
 
-const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar", "tlink"];
+const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar", "tlink", "tlink-card"];
 
 const initViewerType = (params: URLSearchParams): ViewerTypes => {
 
@@ -58,6 +58,9 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			break;
 		case "tlink":
 			viewerType = "tlink";
+			break;
+		case "tlink-card":
+			viewerType = "tlink-card";
 			break;
 		// Fall-through to default
 		case "new":
@@ -135,7 +138,8 @@ export class AppRoot {
 			}
 		);
 
-		if (this.viewerType === "mooar" || this.viewerType === "tlink"){
+		// These views use the injected provider so need this to avoid the wallet connector popup
+		if (this.viewerType === "mooar" || this.viewerType === "tlink" || this.viewerType === "tlink-card"){
 			this.discoveryAdapter.setEngine(this.tsEngine);
 		}
 	}
@@ -154,7 +158,7 @@ export class AppRoot {
 			providerFactory = async () => {
 				throw new Error("PROVIDER DISABLED")
 			}
-		} else if (this.viewerType === "alphawallet" || this.viewerType === "tlink") {
+		} else if (this.viewerType === "alphawallet" || this.viewerType === "tlink" || this.viewerType === "tlink-card") {
 			// Automatically connect to injected web3 provider
 			providerFactory = async () => {
 				const WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
@@ -294,6 +298,7 @@ export class AppRoot {
 						{this.viewerType === "alphawallet" ? <alphawallet-viewer app={this}></alphawallet-viewer> : ''}
 						{this.viewerType === "mooar" ? <mooar-viewer app={this}></mooar-viewer> : ''}
 						{this.viewerType === "tlink" ? <tlink-viewer app={this}></tlink-viewer> : ''}
+						{this.viewerType === "tlink-card" ? <tlink-card-viewer app={this}></tlink-card-viewer> : ''}
 					</main>
 
 					<confirm-tx-popover ref={(elem) => this.confirmTxPopover = elem}/>
