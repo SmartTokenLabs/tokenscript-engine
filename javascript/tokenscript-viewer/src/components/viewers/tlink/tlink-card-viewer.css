@@ -51,6 +51,7 @@ body, action-overflow-modal .popover-container {
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
+	padding-bottom: 10px;
 }
 
 .details-container {
