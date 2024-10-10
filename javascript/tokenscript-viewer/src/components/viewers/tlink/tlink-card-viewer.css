@@ -89,7 +89,7 @@ card-view .card-container {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	padding: 10px 15px;
+	padding: 10px 20px;
 }
 
 .mooar-viewer .btn {
@@ -146,6 +146,11 @@ card-view .card-container {
 	background: rgba(194, 140, 109, 0.06);
 }
 
-.tokenscript-frame {
-	margin-bottom: 6px;
+card-view .action-bar {
+	height: auto !important;
+	padding: 10px 0 0 !important;
+}
+
+card-view .card-container {
+	margin-bottom: 0 !important;
 }
