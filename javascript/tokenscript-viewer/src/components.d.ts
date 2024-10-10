@@ -157,6 +157,9 @@ export namespace Components {
         "openTokenScriptTab": (source: TokenScriptSource, tsId?: string, file?: File, emulator?: string) => Promise<void>;
         "showTab": (id: string) => Promise<void>;
     }
+    interface TlinkCardViewer {
+        "app": AppRoot;
+    }
     interface TlinkViewer {
         "app": AppRoot;
     }
@@ -269,6 +272,10 @@ export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
 export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLStsViewerElement;
+}
+export interface TlinkCardViewerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLTlinkCardViewerElement;
 }
 export interface TlinkViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -571,6 +578,25 @@ declare global {
         prototype: HTMLTabbedViewerElement;
         new (): HTMLTabbedViewerElement;
     };
+    interface HTMLTlinkCardViewerElementEventMap {
+        "showToast": ShowToastEventArgs;
+        "showLoader": void;
+        "hideLoader": void;
+    }
+    interface HTMLTlinkCardViewerElement extends Components.TlinkCardViewer, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLTlinkCardViewerElementEventMap>(type: K, listener: (this: HTMLTlinkCardViewerElement, ev: TlinkCardViewerCustomEvent<HTMLTlinkCardViewerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLTlinkCardViewerElementEventMap>(type: K, listener: (this: HTMLTlinkCardViewerElement, ev: TlinkCardViewerCustomEvent<HTMLTlinkCardViewerElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLTlinkCardViewerElement: {
+        prototype: HTMLTlinkCardViewerElement;
+        new (): HTMLTlinkCardViewerElement;
+    };
     interface HTMLTlinkViewerElementEventMap {
         "showToast": ShowToastEventArgs;
         "showLoader": void;
@@ -797,6 +823,7 @@ declare global {
         "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
         "tabbed-viewer": HTMLTabbedViewerElement;
+        "tlink-card-viewer": HTMLTlinkCardViewerElement;
         "tlink-viewer": HTMLTlinkViewerElement;
         "token-button": HTMLTokenButtonElement;
         "token-icon": HTMLTokenIconElement;
@@ -943,6 +970,12 @@ declare namespace LocalJSX {
     interface TabbedViewer {
         "app"?: AppRoot;
     }
+    interface TlinkCardViewer {
+        "app"?: AppRoot;
+        "onHideLoader"?: (event: TlinkCardViewerCustomEvent<void>) => void;
+        "onShowLoader"?: (event: TlinkCardViewerCustomEvent<void>) => void;
+        "onShowToast"?: (event: TlinkCardViewerCustomEvent<ShowToastEventArgs>) => void;
+    }
     interface TlinkViewer {
         "app"?: AppRoot;
         "onHideLoader"?: (event: TlinkViewerCustomEvent<void>) => void;
@@ -1063,6 +1096,7 @@ declare namespace LocalJSX {
         "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
         "tabbed-viewer": TabbedViewer;
+        "tlink-card-viewer": TlinkCardViewer;
         "tlink-viewer": TlinkViewer;
         "token-button": TokenButton;
         "token-icon": TokenIcon;
@@ -1116,6 +1150,7 @@ declare module "@stencil/core" {
             "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;
             "tabbed-viewer": LocalJSX.TabbedViewer & JSXBase.HTMLAttributes<HTMLTabbedViewerElement>;
+            "tlink-card-viewer": LocalJSX.TlinkCardViewer & JSXBase.HTMLAttributes<HTMLTlinkCardViewerElement>;
             "tlink-viewer": LocalJSX.TlinkViewer & JSXBase.HTMLAttributes<HTMLTlinkViewerElement>;
             "token-button": LocalJSX.TokenButton & JSXBase.HTMLAttributes<HTMLTokenButtonElement>;
             "token-icon": LocalJSX.TokenIcon & JSXBase.HTMLAttributes<HTMLTokenIconElement>;
