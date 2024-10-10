@@ -1,4 +1,4 @@
-import {EventLog, Log} from "ethers";
+import {EventLog, Log, Overrides} from "ethers";
 import {ITransactionListener} from "../ITokenScript";
 import {IChainConfig} from "./EthersAdapter";
 
@@ -43,6 +43,7 @@ export interface IWalletAdapter {
 		method: string,
 		args: any[],
 		outputTypes: string[],
+		txOverrides?: Overrides,
 		value?: bigint,
 		waitForConfirmation?: boolean,
 		listener?: ITransactionListener,
