@@ -45,6 +45,8 @@ export class TlinkViewer {
 
 	private mainViewController: ViewController;
 
+	private onboardingSelected = false;
+
 	@Event({
 		eventName: 'showToast',
 		composed: true,
@@ -120,7 +122,6 @@ export class TlinkViewer {
 
 		const cardButtons: JSX.Element[] = [];
 		const overflowCardButtons: JSX.Element[] = [];
-		let isDeeplinkedCard = false;
 
 		// Get the specific card that has been deep-linked, falling back to the first onboarding or token card
 		if (this.card){
@@ -130,7 +131,7 @@ export class TlinkViewer {
 			if (cardRes?.card) {
 				if (await cardRes.card.isEnabledOrReason() === true) {
 					this.mainCard = cardRes.card;
-					isDeeplinkedCard = true;
+					this.onboardingSelected = true;
 				}
 			} else {
 				this.showToast.emit({
@@ -141,28 +142,36 @@ export class TlinkViewer {
 			}
 		}
 
-		const includedTypes: CardType[] = ["token", "action", "activity", "public"];
+		if (!this.mainCard){
+			// Get first token card or onboarding card
+			let cards = this.tokenScript.getCards().filterCards(this.tokenScript.getCurrentTokenContext().originId, this.onboardingSelected ? ["onboarding"] : ["token"]);
 
-		if (this.tokenId)
-			includedTypes.push("onboarding");
+			if (!cards.length){
+				this.showToast.emit({
+					type: 'error',
+					title: "Card not found",
+					description: "Cannot find a default token or onboarding card"
+				});
+				return;
+			}
 
-		const cards = this.tokenScript.getCards().filterCards(null, includedTypes);
+			this.mainCard = cards[0];
+		}
 
-		const preferredType = ["onboarding", "token"];
+		let includedTypes: CardType[];
+
+		if (this.onboardingSelected){
+			includedTypes = ["onboarding"];
+		} else {
+			includedTypes = ["token", "action", "activity", "public"];
+		}
+
+		// Load other cards
+		const cards = this.tokenScript.getCards().filterCards(this.tokenScript.getCurrentTokenContext().originId, includedTypes);
 
 		for (let [index, card] of cards.entries()){
 
 			let label = card.label;
-
-			if (
-				(!this.mainCard || !preferredType.includes(this.mainCard.type)) &&
-				preferredType.includes(card.type) &&
-				!isDeeplinkedCard
-			){
-				// Show first info card
-				this.mainCard = card;
-				continue;
-			}
 
 			// Ignore the main card loaded from a deeplink
 			if (this.mainCard.name === card.name)
@@ -257,7 +266,15 @@ export class TlinkViewer {
 							{/*<share-to-tg-button/>*/}
 							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small" />}
 							{ this.tokenScript && <tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
-								this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
+								// TODO: Allow removing token context so this flag isn't needed?
+								if (token) {
+									this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
+									this.onboardingSelected = false;
+								} else {
+									this.onboardingSelected = true;
+								}
+								this.card = null;
+								this.mainCard = null;
 								await this.mainViewController.unloadTokenCard();
 								await this.loadCards();
 								await this.mainViewController.showOrExecuteCard(this.mainCard, undefined);

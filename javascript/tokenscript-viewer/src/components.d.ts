@@ -138,9 +138,6 @@ export namespace Components {
     interface ShareToTgButton {
         "style"?: { [key: string]: string };
     }
-    interface SingleCard {
-        "app": AppRoot;
-    }
     interface StartTab {
         "tabId": string;
         "tabView": TabbedViewer;
@@ -268,10 +265,6 @@ export interface NewViewerCustomEvent<T> extends CustomEvent<T> {
 export interface OpenseaViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLOpenseaViewerElement;
-}
-export interface SingleCardCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLSingleCardElement;
 }
 export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -541,25 +534,6 @@ declare global {
         prototype: HTMLShareToTgButtonElement;
         new (): HTMLShareToTgButtonElement;
     };
-    interface HTMLSingleCardElementEventMap {
-        "showToast": ShowToastEventArgs;
-        "showLoader": void;
-        "hideLoader": void;
-    }
-    interface HTMLSingleCardElement extends Components.SingleCard, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLSingleCardElementEventMap>(type: K, listener: (this: HTMLSingleCardElement, ev: SingleCardCustomEvent<HTMLSingleCardElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLSingleCardElementEventMap>(type: K, listener: (this: HTMLSingleCardElement, ev: SingleCardCustomEvent<HTMLSingleCardElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLSingleCardElement: {
-        prototype: HTMLSingleCardElement;
-        new (): HTMLSingleCardElement;
-    };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
     var HTMLStartTabElement: {
@@ -819,7 +793,6 @@ declare global {
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
         "share-to-tg-button": HTMLShareToTgButtonElement;
-        "single-card": HTMLSingleCardElement;
         "start-tab": HTMLStartTabElement;
         "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
@@ -950,12 +923,6 @@ declare namespace LocalJSX {
     }
     interface ShareToTgButton {
         "style"?: { [key: string]: string };
-    }
-    interface SingleCard {
-        "app"?: AppRoot;
-        "onHideLoader"?: (event: SingleCardCustomEvent<void>) => void;
-        "onShowLoader"?: (event: SingleCardCustomEvent<void>) => void;
-        "onShowToast"?: (event: SingleCardCustomEvent<ShowToastEventArgs>) => void;
     }
     interface StartTab {
         "tabId"?: string;
@@ -1092,7 +1059,6 @@ declare namespace LocalJSX {
         "select-field": SelectField;
         "select-step": SelectStep;
         "share-to-tg-button": ShareToTgButton;
-        "single-card": SingleCard;
         "start-tab": StartTab;
         "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
@@ -1146,7 +1112,6 @@ declare module "@stencil/core" {
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "share-to-tg-button": LocalJSX.ShareToTgButton & JSXBase.HTMLAttributes<HTMLShareToTgButtonElement>;
-            "single-card": LocalJSX.SingleCard & JSXBase.HTMLAttributes<HTMLSingleCardElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;

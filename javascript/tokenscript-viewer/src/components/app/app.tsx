@@ -135,7 +135,7 @@ export class AppRoot {
 			}
 		);
 
-		if (this.viewerType === "mooar"){
+		if (this.viewerType === "mooar" || this.viewerType === "tlink"){
 			this.discoveryAdapter.setEngine(this.tsEngine);
 		}
 	}
@@ -154,7 +154,7 @@ export class AppRoot {
 			providerFactory = async () => {
 				throw new Error("PROVIDER DISABLED")
 			}
-		} else if (this.viewerType === "alphawallet") {
+		} else if (this.viewerType === "alphawallet" || this.viewerType === "tlink") {
 			// Automatically connect to injected web3 provider
 			providerFactory = async () => {
 				const WalletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;

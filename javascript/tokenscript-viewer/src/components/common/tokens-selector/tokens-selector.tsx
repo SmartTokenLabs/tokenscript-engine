@@ -107,10 +107,35 @@ export class TokensSelector {
 	                        </span>
 						]
 					) : (
-						<span>Select an option</span>
+						[
+							<span class="icon-container">
+								<token-icon src="https://www.smartlayer.network/icon.png" imageTitle="Onboarding Cards"/>
+							</span>,
+							<span class="icon-label">Onboarding Cards</span>
+						]
 					)}
 				</div>
 				<div class="options" style={{display: (this.isOpen ? "block" : "none")}}>
+					{
+						this.tokenScript.getCards().getOnboardingCards().length &&
+						(
+							<div
+								title="Onboarding Cards"
+								class="option"
+								onClick={(e) => {
+									e.stopPropagation();
+									this.currentContext = null;
+									this.isOpen = false;
+									this.switchToken(null);
+								}}
+							>
+								<span class="icon-container">
+									<token-icon src="https://www.smartlayer.network/icon.png" imageTitle="Onboarding Cards" />
+								</span>
+								<span class="icon-label">Onboarding Cards</span>
+							</div>
+						)
+					}
 					{this.options.map(option => (
 						<div
 							title={option.name}

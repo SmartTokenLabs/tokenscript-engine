@@ -145,3 +145,7 @@ card-view .card-container {
 .mooar-viewer .more-actions-btn:hover {
 	background: rgba(194, 140, 109, 0.06);
 }
+
+.tokenscript-frame {
+	margin-bottom: 6px;
+}
