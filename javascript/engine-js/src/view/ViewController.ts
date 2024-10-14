@@ -157,7 +157,7 @@ export class ViewController {
 	 * @param scopeId
 	 */
 	getUserEntryValue(key: string, scopeId: string){
-		if (!this.userEntryValues[scopeId]?.[key])
+		if (this.userEntryValues[scopeId]?.[key] === undefined)
 			return undefined;
 
 		return this.userEntryValues[scopeId][key];
