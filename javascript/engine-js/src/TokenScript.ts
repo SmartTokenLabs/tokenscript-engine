@@ -11,6 +11,7 @@ import {ViewController} from "./view/ViewController";
 import {ScriptInfo} from "./repo/sources/SourceInterface";
 import {ITokenContext, ITokenIdContext, ITransactionListener, TokenMetadataMap} from "./ITokenScript";
 import {AbstractTokenScript} from "./AbstractTokenScript";
+import {ZeroAddress} from "ethers";
 
 /**
  * The TokenScript object represents a single instance of a TokenScript.
@@ -165,6 +166,7 @@ export class TokenScript extends AbstractTokenScript {
 						collectionDetails: tokenCollection,
 						collectionId: attestation.collectionId,
 						tokenId: attestation.tokenId,
+						ownerAddress: attestation.decodedToken.message.recipient,
 						name,
 						description,
 						image,
@@ -264,7 +266,7 @@ export class TokenScript extends AbstractTokenScript {
 				contractAddress: tokenContext.contractAddress,
 				chainId: tokenContext.chainId,
 				tokenId: tokenContext.selectedTokenId,
-				ownerAddress: await this.getCurrentOwnerAddress(),
+				ownerAddress: tokenContext.tokenType === "erc20" ? await this.getCurrentWalletAddress() : ZeroAddress,
 				image_preview_url: image,
 			};
 
@@ -280,6 +282,9 @@ export class TokenScript extends AbstractTokenScript {
 					attributes: tokenDetails.attributes ?? [],
 					data: tokenDetails.data
 				}
+
+				if (tokenDetails.ownerAddress)
+					data.ownerAddress = tokenDetails.ownerAddress;
 
 				// Extract top level attestation fields for use in transaction inputs.
 				if (tokenDetails?.data?.abiEncoded) {
@@ -298,7 +303,7 @@ export class TokenScript extends AbstractTokenScript {
 				label: this.getLabel(),
 				contractAddress: primaryAddr?.address,
 				chainId: primaryAddr?.chain,
-				ownerAddress: await this.getCurrentOwnerAddress(),
+				ownerAddress: await this.getCurrentWalletAddress(),
 				balance: "0"
 			};
 		}

@@ -6,7 +6,7 @@ import {
 	ethers,
 	EventLog,
 	getBigInt,
-	Network, Overrides
+	Network, Overrides, ZeroAddress
 } from "ethers";
 import {ITransactionListener} from "../ITokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
@@ -294,15 +294,21 @@ export class EthersAdapter implements IWalletAdapter {
 
 	async getCurrentWalletAddress() {
 
-		const ethersProvider = await this.getEthersProvider();
+		try {
+			const ethersProvider = await this.getEthersProvider();
 
-		const accounts = await ethersProvider.listAccounts();
+			const accounts = await ethersProvider.listAccounts();
 
-		if (!accounts?.length){
-			throw new Error("Wallet could not connect or there is no accounts created");
+			if (!accounts?.length) {
+				throw new Error("Wallet could not connect or there is no accounts created");
+			}
+
+			return accounts[0].address;
+		} catch (e) {
+			console.warn(e);
 		}
 
-		return accounts[0].address;
+		return ZeroAddress;
 	}
 
 	async getEvents(chain: number, contractAddr: string, event: string, inputs: any[]): Promise<Array<EventLog>> {

@@ -43,6 +43,11 @@ export abstract class AbstractDependencyBranch implements IArgument {
 				}
 
 			case "ownerAddress":
+				if (tokenContext?.selectedTokenId !== null){
+					return (await this.tokenScript.getTokenContextData(tokenContext)).ownerAddress;
+				}
+				// Falls through to default to wallet address
+			case "walletAddress":
 				const walletProvider = await this.tokenScript.getEngine().getWalletAdapter();
 				return await walletProvider.getCurrentWalletAddress();
 

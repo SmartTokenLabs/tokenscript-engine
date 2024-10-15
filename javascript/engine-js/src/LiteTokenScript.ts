@@ -22,7 +22,7 @@ export class LiteTokenScript extends AbstractTokenScript {
       label: this.getLabel(),
       contractAddress: primaryAddr?.address,
       chainId: primaryAddr?.chain,
-      ownerAddress: await this.getCurrentOwnerAddress(),
+      ownerAddress: await this.getCurrentWalletAddress(),
       balance: '0',
     };
 

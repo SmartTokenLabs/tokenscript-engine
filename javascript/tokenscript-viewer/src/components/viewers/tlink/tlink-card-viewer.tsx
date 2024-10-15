@@ -144,7 +144,7 @@ export class TlinkCardViewer {
 					<div class="mooar-header">
 						<a href="https://www.smartlayer.network/" target="_blank">
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
-							<span class="text">Smart Token Viewer</span>
+							<span class="text">Tapp Viewer</span>
 						</a>
 						<div class="mooar-header-right">
 							{/*<share-to-tg-button/>*/}

@@ -8,6 +8,7 @@ export interface ITokenDetail {
 	collectionDetails: ITokenCollection;
 	collectionId: string;
 	tokenId: string;
+	ownerAddress: string;
 	name: string;
 	description: string;
 	image?: string;

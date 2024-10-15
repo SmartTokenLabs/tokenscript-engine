@@ -11,8 +11,8 @@ import {TokenScriptEngine} from "@tokenscript/engine-js/src/Engine";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
-export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript.org';
-										//'http://localhost:3000';
+export const BASE_TOKEN_DISCOVERY_URL = //'https://api.token-discovery.tokenscript.org';
+										'http://localhost:3000';
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
@@ -136,6 +136,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					collectionDetails: token,
 					tokenId: tokenMeta.tokenId,
 					collectionId: token.contractAddress,
+					ownerAddress: ownerAddress,
 					name: tokenMeta.title,
 					description: tokenMeta.description,
 					attributes: tokenMeta.attributes ?? [],
@@ -206,6 +207,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				collectionDetails: token,
 				attributes: tokenMeta.attributes,
 				collectionId: tokenMeta.collection,
+				ownerAddress: tokenMeta.ownerAddress,
 				description: tokenMeta.description,
 				image: tokenMeta.image || null,
 				name: tokenMeta.name ?? tokenMeta.title,
@@ -355,10 +357,13 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		try {
 			const meta = await this.fetchTokenMetaFromId(contract, tokenId);
 
+			const ownerAddress = await contract.ownerOf(tokenId);
+
 			token.tokenDetails = [
 				{
 					collectionId: token.originId,
 					tokenId: tokenId.toString(),
+					ownerAddress,
 					name: meta.name ?? "Test token #" + tokenId,
 					description: meta.description ?? "",
 					image: meta.image,
@@ -406,9 +411,12 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 						console.warn("Failed to load token metadata:", e);
 					}
 
+					const ownerAddress = await contract.ownerOf(tokenId);
+
 					tokenDetails.push({
 						collectionId: token.originId,
 						tokenId: tokenId.toString(),
+						ownerAddress,
 						name: meta.name ?? "Test token #" + tokenId,
 						description: meta.description ?? "",
 						image: meta.image ?? "",

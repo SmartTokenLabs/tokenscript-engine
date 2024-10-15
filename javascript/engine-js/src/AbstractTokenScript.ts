@@ -252,16 +252,11 @@ export abstract class AbstractTokenScript implements ITokenScript {
 
   public abstract getTokenContextData(tokenIdContext?: ITokenIdContext): Promise<ITokenContextData>;
 
-  public async getCurrentOwnerAddress() {
-    // TODO: ownerAddress should probably come from token details rather than the current wallet
-    try {
-      const walletProvider = await this.engine.getWalletAdapter();
+  public async getCurrentWalletAddress() {
+	  // TODO: We need a way to override owner address in the case of ERC-20
+	  //  (as the owner/sharer of the token card may be different to the connected wallet address)
+	  const walletProvider = await this.engine.getWalletAdapter();
       return await walletProvider.getCurrentWalletAddress();
-    } catch (e) {
-      console.warn(e);
-    }
-
-    return ethers.ZeroAddress;
   }
 
   /**

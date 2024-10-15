@@ -179,8 +179,7 @@ export class TokenViewData {
 		const chainConfig = JSON.parse(String.raw \`${JSON.stringify(walletAdapter.chainConfig).replace(/`/g, "")}\`);
 		const env = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getMetadata().env).replace(/`/g, "")}\`);
 		const contractData = JSON.parse(String.raw \`${JSON.stringify(this.tokenScript.getContracts().getContractViewData()).replace(/`/g, "")}\`);
-		const walletAddress = '${tokenData.ownerAddress}'
-		const addressHex = "${tokenData.ownerAddress}";
+		const walletAddress = '${await walletAdapter.getCurrentWalletAddress()}';
 		const rpcURL = "${rpcURLs?.[0] ?? ''}";
 		const chainID = "${tokenData.chainId}";
 		const engineOrigin = "${document.location.origin}";

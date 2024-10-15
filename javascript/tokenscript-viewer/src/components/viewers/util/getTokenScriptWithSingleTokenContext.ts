@@ -66,24 +66,26 @@ export async function getTokenScriptWithSingleTokenContext(
 			selectedOrigin.tokenDetails = [tokenDetails];
 	} else {
 
-		let tokens = await tokenScript.getTokenMetadata(true);
-
-		if (!tokens[selectedOrigin.originId]) {
+		// If token ID is specified we only show that token
+		if (tokenId != null){
 			// Try to load single token
 			const singleTokenData = await getSingleTokenMetadata(chain, contract, tokenId, tokenScript.getEngine());
-			tokens[selectedOrigin.originId] = singleTokenData.collection;
-			if (singleTokenData.detail)
-				tokens[selectedOrigin.originId].tokenDetails = [singleTokenData.detail];
-		}
 
-		selectedOrigin = {...tokens[selectedOrigin.originId], ...selectedOrigin};
+			selectedOrigin = {...singleTokenData.collection, ...selectedOrigin}
+			if (singleTokenData.detail)
+				selectedOrigin.tokenDetails = [singleTokenData.detail];
+
+		} else {
+			const tokens = await tokenScript.getTokenMetadata(true);
+			selectedOrigin = {...tokens[selectedOrigin.originId], ...selectedOrigin};
+		}
 	}
 
 	tokenScript.setTokenMetadata([selectedOrigin]);
 
 	let tokenIndex = 0;
 
-	if (collectionDetails) {
+	if (collectionDetails || tokenId != null) {
 		class StaticDiscoveryAdapter implements ITokenDiscoveryAdapter {
 			getTokens(initialTokenDetails: ITokenCollection[], refresh: boolean): Promise<ITokenCollection[]> {
 				return Promise.resolve([selectedOrigin]);
@@ -92,7 +94,9 @@ export async function getTokenScriptWithSingleTokenContext(
 
 		//app.discoveryAdapter = new StaticDiscoveryAdapter();
 		tokenScript.setTokenDiscoveryAdapter(new StaticDiscoveryAdapter());
-	} else if (tokenId != null) {
+	}
+
+	if (tokenId != null) {
 
 		tokenIndex = selectedOrigin.tokenDetails.findIndex((token) => token.tokenId === tokenId);
 
