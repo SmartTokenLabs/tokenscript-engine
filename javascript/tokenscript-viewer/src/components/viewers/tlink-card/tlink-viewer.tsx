@@ -84,7 +84,7 @@ export class TlinkViewer {
 
 	async processUrlLoad(){
 
-		let {chain, contract, tokenId, tokenscriptUrl, emulator, card} = getTokenUrlParams();
+		let {chain, contract, tokenId, scriptId, tokenscriptUrl, emulator, card} = getTokenUrlParams();
 
 		this.tokenId = tokenId;
 		this.card = card;
@@ -99,14 +99,14 @@ export class TlinkViewer {
 			});
 		}
 
-		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		await this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
 
 		this.app.hideTsLoader();
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string){
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, null, null, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, null, null, tokenId, tokenScriptUrl);
 
 		// Reload cards after the token is updated
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {

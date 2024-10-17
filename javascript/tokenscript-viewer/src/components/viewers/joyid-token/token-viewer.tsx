@@ -97,7 +97,7 @@ export class TokenViewer {
 
 	async processUrlLoad() {
 
-		let {query, chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
+		let {query, chain, contract, tokenId, scriptId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -138,13 +138,13 @@ export class TokenViewer {
 				});
 			}
 
-			this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
 		}
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string) {
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string) {
 		try {
-			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 			this.description = await getHardcodedDescription(this.tokenScript, this.tokenDetails);
 		} catch (e) {
 			console.warn(e.message);

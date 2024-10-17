@@ -81,7 +81,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad(){
 
-		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
+		let {chain, contract, tokenId, scriptId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		this.app.showTsLoader();
 
@@ -101,12 +101,12 @@ export class SmartTokenStoreViewer {
 			});
 		}
 
-		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		await this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId?: string, tokenScriptUrl?: string){
+	private async loadTokenScript(chain: number, contract: string, tokenId?: string, scriptId?: string, tokenScriptUrl?: string){
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
 		// Reload cards after the token is updated
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {

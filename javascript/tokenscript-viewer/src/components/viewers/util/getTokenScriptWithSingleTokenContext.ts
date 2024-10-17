@@ -10,6 +10,7 @@ export async function getTokenScriptWithSingleTokenContext(
 	app: AppRoot,
 	chain: number,
 	contract: string,
+	scriptId?: string,
 	collectionDetails?: ITokenCollection,
 	tokenDetails?: ITokenDetail,
 	tokenId?: string,
@@ -34,7 +35,7 @@ export async function getTokenScriptWithSingleTokenContext(
 
 		tokenScript = await app.loadTokenscript("url", tokenScriptUrl);
 	} else {
-		const tsId = chain + "-" + contract;
+		const tsId = chain + "-" + contract + (scriptId ? "-" + scriptId : "");
 		tokenScript = await app.loadTokenscript("resolve", tsId);
 	}
 

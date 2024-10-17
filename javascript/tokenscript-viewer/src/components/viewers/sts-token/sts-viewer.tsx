@@ -118,7 +118,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad() {
 
-		let {chain, contract, tokenId, tokenscriptUrl, wallet, emulator} = getTokenUrlParams();
+		let {chain, contract, tokenId, scriptId, tokenscriptUrl, wallet, emulator} = getTokenUrlParams();
 
 		let slnAdapter;
 
@@ -159,13 +159,13 @@ export class SmartTokenStoreViewer {
 				});
 			}
 
-			await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+			await this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
 		}
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string) {
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string) {
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
 		if (this.tokenScript.getMetadata().backgroundImageUrl){
 			const body = document.getElementsByTagName("body")[0];

@@ -92,7 +92,7 @@ export class OpenseaViewer {
 
 	async processUrlLoad(){
 
-		let {chain, contract, tokenId, tokenscriptUrl, emulator} = getTokenUrlParams();
+		let {chain, contract, tokenId, scriptId, tokenscriptUrl, emulator} = getTokenUrlParams();
 
 		if (!tokenId)
 			throw new Error('Token ID was not provided in the URL');
@@ -110,13 +110,13 @@ export class OpenseaViewer {
 			});
 		}
 
-		await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+		await this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId: string, tokenScriptUrl?: string){
+	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string){
 
 		try {
-			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+			this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, this.tokenDetails.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 		} catch (e){
 			console.error("Failed to load TokenScript", e);
 		}
