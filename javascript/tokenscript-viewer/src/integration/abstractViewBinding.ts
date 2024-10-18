@@ -35,7 +35,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	setViewController(viewController: ViewController){
 		this._viewController = viewController;
-		this.tokenScript = viewController.tokenScript;
+		this.setTokenScript(viewController.tokenScript);
 	}
 
 	get viewController() {
