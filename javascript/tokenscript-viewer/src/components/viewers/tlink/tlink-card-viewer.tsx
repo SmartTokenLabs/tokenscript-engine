@@ -130,7 +130,8 @@ export class TlinkCardViewer {
 		// The card is already loaded, we only need to update other card buttons
 		if (reloadInfoView || !this.mainViewController) {
 			const mainViewBinding = new ViewBinding(this.mainCardView, this.showToast);
-			this.mainViewController = this.tokenScript.getViewController(mainViewBinding);
+			this.tokenScript.setViewBinding(mainViewBinding);
+			this.mainViewController = this.tokenScript.getViewController();
 			mainViewBinding.setViewController(this.mainViewController);
 			this.mainViewController.showOrExecuteCard(this.mainCard, undefined);
 		}

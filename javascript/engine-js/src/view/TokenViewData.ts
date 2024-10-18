@@ -182,7 +182,7 @@ export class TokenViewData {
 		const walletAddress = '${await walletAdapter.getCurrentWalletAddress()}';
 		const rpcURL = "${rpcURLs?.[0] ?? ''}";
 		const chainID = "${tokenData.chainId}";
-		const engineOrigin = "${document.location.origin}";
+		const engineOrigin = "${this.tokenScript.getEngine().config.viewerOrigin}";
 
 		// Injected card SDK
 		${CARD_SDK_V1}

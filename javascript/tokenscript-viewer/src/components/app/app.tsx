@@ -134,7 +134,8 @@ export class AppRoot {
 					// TODO: This is temporarily disabled to add support for contracts not defined in the tokenscript
 					return true;
 					//return this.confirmTxPopover.confirmTransaction(txInfo);
-				}
+				},
+				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin
 			}
 		);
 

@@ -7,6 +7,7 @@ const DEFAULT_CONFIG: IEngineConfig = {
   ipfsGateway: 'https://smart-token-labs-demo-server.mypinata.cloud/ipfs/',
   noLocalStorage: false,
   trustedKeys: [],
+  viewerOrigin: document ? document.location.origin : "*"
 };
 
 /**
@@ -18,7 +19,7 @@ export abstract class AbstractTokenScriptEngine implements ITokenScriptEngine {
   // TODO: Should we pass in a function or a constructor, dunno
   constructor(public getWalletAdapter: () => Promise<IWalletAdapter>, public readonly config?: IEngineConfig) {
     this.repo = new Repo(this)
-    
+
     if (this.config) {
       this.config = {
         ...DEFAULT_CONFIG,

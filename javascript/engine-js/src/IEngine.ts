@@ -13,6 +13,7 @@ export interface IEngineConfig {
   noLocalStorage?: boolean;
   trustedKeys?: TrustedKey[]; // Define signing keys which are always valid
   txValidationCallback?: (txInfo: ITxValidationInfo) => boolean | Promise<boolean>;
+  viewerOrigin?: string;
 }
 
 export enum ScriptSourceType {
