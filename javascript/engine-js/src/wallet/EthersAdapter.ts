@@ -59,7 +59,7 @@ export class EthersAdapter implements IWalletAdapter {
 		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
 	}
 
-	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: bigint, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
+	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], txOverrides?: Overrides, value?: bigint, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
 
 		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
 
@@ -74,10 +74,10 @@ export class EthersAdapter implements IWalletAdapter {
 
 		const contract = await this.getEthersContractInstance(chain, contractAddr, method, args, outputTypes, value ? "payable" : "nonpayable", errorAbi);
 
-		const overrides: Overrides = {
+		const overrides = {
+			...txOverrides,
 			chainId: chain
-		};
-
+		}
 		if (value)
 			overrides.value = value;
 

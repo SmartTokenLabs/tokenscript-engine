@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, Overrides } from 'ethers';
 import { ITokenScriptEngine, ScriptSourceType } from './IEngine';
 import { SecurityInfo } from './security/SecurityInfo';
 import { TransactionValidator } from './security/TransactionValidator';
@@ -386,7 +386,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
 
     listener({ status: 'started' });
 
-    return await wallet.sendTransaction(contractAddr.chain, contractAddr.address, transInfo.function, ethParams, [], ethValue, waitForConfirmation, listener, errorAbi);
+    return await wallet.sendTransaction(contractAddr.chain, contractAddr.address, transInfo.function, ethParams, [], transInfo.overrides, ethValue, waitForConfirmation, listener, errorAbi);
   }
 
   public abstract getViewController(): any;
