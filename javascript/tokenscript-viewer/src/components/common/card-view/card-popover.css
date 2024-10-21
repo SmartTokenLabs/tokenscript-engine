@@ -62,3 +62,31 @@ card-popover .popover-container {
 #iframe-template {
 	display: none;
 }
+
+.share-buttons {
+	position: absolute;
+	top: -42px;
+	right: 36px;
+	font-size: 24px;
+	background: none;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	font-weight: bold;
+	line-height: 24px;
+	border-radius: 999px;
+	scale: 0.8;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px
+}
+
+.share-buttons a {
+	opacity: 0.5;
+}
+
+.share-buttons a:hover {
+	opacity: 1;
+}
+

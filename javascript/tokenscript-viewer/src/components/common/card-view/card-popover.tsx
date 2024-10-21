@@ -225,9 +225,14 @@ export class CardPopover implements IViewBinding {
 
 	render(){
 		return (
-			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading} fullScreen={this.currentCard?.fullScreen} showShareToTg={true}>
+			<popover-dialog ref={(el) => this.dialog = el as HTMLPopoverDialogElement} disableClose={this.loading}
+			                fullScreen={this.currentCard?.fullScreen} showShareButtons={true}>
 				<div slot="outer-content" class="view-loader" style={{display: this.loading ? "flex" : "none"}}>
 					<loading-spinner/>
+				</div>
+				<div slot="outer-content" class='share-buttons'>
+					<share-to-x-button></share-to-x-button>
+					<share-to-tg-button></share-to-tg-button>
 				</div>
 				<div class={"card-container view-container" + (this.currentCard?.fullScreen ? ' fullscreen ' : '')}>
 					<div class="iframe-wrapper">
@@ -237,14 +242,14 @@ export class CardPopover implements IViewBinding {
 						<iframe class="tokenscript-frame"
 						        allow="clipboard-write"
 						        frameborder="0"
-								sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
+						        sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox">
 						</iframe>
 					</div>
 					{this.buttonOptions ?
 						(<div class="action-bar" style={{display: this.buttonOptions.show ? "block" : "none"}}>
 							<button class="ts-action-button action-btn btn btn-primary"
-									disabled={this.buttonOptions.disable}
-									onClick={() => this.confirmAction()}>{this.buttonOptions.text}</button>
+							        disabled={this.buttonOptions.disable}
+							        onClick={() => this.confirmAction()}>{this.buttonOptions.text}</button>
 						</div>) : ''
 					}
 				</div>

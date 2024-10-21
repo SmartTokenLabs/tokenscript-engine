@@ -114,7 +114,7 @@ export namespace Components {
         "fullScreen": boolean;
         "modalStyles": {[cssProp: string]: string};
         "openDialog": (dismissCallback?: () => void | Promise<void>) => Promise<void>;
-        "showShareToTg"?: boolean;
+        "showShareButtons"?: boolean;
     }
     interface ScriptSelectDialog {
         "onScriptSelect": (scriptInfo: ScriptInfo) => void;
@@ -136,6 +136,9 @@ export namespace Components {
         "viewer": IntegrationViewer;
     }
     interface ShareToTgButton {
+        "style"?: { [key: string]: string };
+    }
+    interface ShareToXButton {
         "style"?: { [key: string]: string };
     }
     interface StartTab {
@@ -541,6 +544,12 @@ declare global {
         prototype: HTMLShareToTgButtonElement;
         new (): HTMLShareToTgButtonElement;
     };
+    interface HTMLShareToXButtonElement extends Components.ShareToXButton, HTMLStencilElement {
+    }
+    var HTMLShareToXButtonElement: {
+        prototype: HTMLShareToXButtonElement;
+        new (): HTMLShareToXButtonElement;
+    };
     interface HTMLStartTabElement extends Components.StartTab, HTMLStencilElement {
     }
     var HTMLStartTabElement: {
@@ -819,6 +828,7 @@ declare global {
         "select-field": HTMLSelectFieldElement;
         "select-step": HTMLSelectStepElement;
         "share-to-tg-button": HTMLShareToTgButtonElement;
+        "share-to-x-button": HTMLShareToXButtonElement;
         "start-tab": HTMLStartTabElement;
         "sts-viewer": HTMLStsViewerElement;
         "tab-header-item": HTMLTabHeaderItemElement;
@@ -928,7 +938,7 @@ declare namespace LocalJSX {
         "disableClose"?: boolean;
         "fullScreen"?: boolean;
         "modalStyles"?: {[cssProp: string]: string};
-        "showShareToTg"?: boolean;
+        "showShareButtons"?: boolean;
     }
     interface ScriptSelectDialog {
         "onScriptSelect"?: (scriptInfo: ScriptInfo) => void;
@@ -949,6 +959,9 @@ declare namespace LocalJSX {
         "viewer"?: IntegrationViewer;
     }
     interface ShareToTgButton {
+        "style"?: { [key: string]: string };
+    }
+    interface ShareToXButton {
         "style"?: { [key: string]: string };
     }
     interface StartTab {
@@ -1092,6 +1105,7 @@ declare namespace LocalJSX {
         "select-field": SelectField;
         "select-step": SelectStep;
         "share-to-tg-button": ShareToTgButton;
+        "share-to-x-button": ShareToXButton;
         "start-tab": StartTab;
         "sts-viewer": StsViewer;
         "tab-header-item": TabHeaderItem;
@@ -1146,6 +1160,7 @@ declare module "@stencil/core" {
             "select-field": LocalJSX.SelectField & JSXBase.HTMLAttributes<HTMLSelectFieldElement>;
             "select-step": LocalJSX.SelectStep & JSXBase.HTMLAttributes<HTMLSelectStepElement>;
             "share-to-tg-button": LocalJSX.ShareToTgButton & JSXBase.HTMLAttributes<HTMLShareToTgButtonElement>;
+            "share-to-x-button": LocalJSX.ShareToXButton & JSXBase.HTMLAttributes<HTMLShareToXButtonElement>;
             "start-tab": LocalJSX.StartTab & JSXBase.HTMLAttributes<HTMLStartTabElement>;
             "sts-viewer": LocalJSX.StsViewer & JSXBase.HTMLAttributes<HTMLStsViewerElement>;
             "tab-header-item": LocalJSX.TabHeaderItem & JSXBase.HTMLAttributes<HTMLTabHeaderItemElement>;

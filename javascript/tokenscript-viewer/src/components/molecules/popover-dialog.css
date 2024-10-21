@@ -95,26 +95,6 @@
 	color: #cacaca;
 }
 
-.share-to-tg {
-	position: absolute;
-	top: -40px;
-	right: 46px;
-	font-size: 24px;
-	background: none;
-	border: none;
-	color: #fff;
-	cursor: pointer;
-	font-weight: bold;
-	line-height: 24px;
-	border-radius: 999px;
-	scale: 0.8;
-	opacity: 0.5;
-}
-
-.share-to-tg:hover {
-  opacity: 1;
-}
-
 .popover-inner {
 	position: relative;
 	overflow: auto;

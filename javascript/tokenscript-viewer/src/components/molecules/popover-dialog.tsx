@@ -12,7 +12,7 @@ export class PopoverDialog {
 	open: boolean = false;
 
 	@Prop()
-	showShareToTg?: boolean = false;
+	showShareButtons?: boolean = false;
 
 	@Prop()
 	dialogStyles: {[cssProp: string]: string} = {};
@@ -53,10 +53,6 @@ export class PopoverDialog {
 							this.dismissCallback = null;
 						}
 					}}>x</button>
-					{this.showShareToTg && <div class='share-to-tg'>
-						<share-to-tg-button></share-to-tg-button>
-					</div>}
-
 					<slot name="outer-content"/>
 					<div class="popover-inner">
 						<slot/>
