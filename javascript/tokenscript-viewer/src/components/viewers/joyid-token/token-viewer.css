@@ -223,3 +223,7 @@ action-bar {
 	max-width: 100%;
 	text-overflow: ellipsis ellipsis;
 }
+
+card-popover .share-buttons {
+	top: 2px !important;
+}
