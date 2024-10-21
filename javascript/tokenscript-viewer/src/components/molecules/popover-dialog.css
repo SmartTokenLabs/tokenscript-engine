@@ -74,13 +74,9 @@
 	margin-top: 50px;
 }
 
-.popover-container.fullscreen .close-btn {
-	top: -40px;
-}
-
 .close-btn {
 	position: absolute;
-	top: -36px;
+	top: -40px;
 	right: 10px;
 	font-size: 24px;
 	background: none;
