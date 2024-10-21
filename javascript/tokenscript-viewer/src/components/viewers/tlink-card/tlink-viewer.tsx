@@ -256,29 +256,31 @@ export class TlinkViewer {
 
 		return (
 			<Host>
-				<div class="mooar-viewer">
-					<div class="mooar-header">
+				<div class="tlink-viewer">
+					<style innerHTML={this.tokenScript ? this.tokenScript.viewStyles.getViewCss() : ""}/>
+					<div class="tlink-header">
 						<a href="https://www.smartlayer.network/" target="_blank">
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
 							<span class="text">Tapp Viewer</span>
 						</a>
-						<div class="mooar-header-right">
+						<div class="tlink-header-right">
 							{/*<share-to-tg-button/>*/}
-							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small" />}
-							{ this.tokenScript && <tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
-								// TODO: Allow removing token context so this flag isn't needed?
-								if (token) {
-									this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
-									this.onboardingSelected = false;
-								} else {
-									this.onboardingSelected = true;
-								}
-								this.card = null;
-								this.mainCard = null;
-								await this.mainViewController.unloadTokenCard();
-								await this.loadCards();
-								await this.mainViewController.showOrExecuteCard(this.mainCard, undefined);
-							}} />}
+							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small"/>}
+							{this.tokenScript &&
+								<tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
+									// TODO: Allow removing token context so this flag isn't needed?
+									if (token) {
+										this.tokenScript.setCurrentTokenContext(token.originId, null, token.tokenId);
+										this.onboardingSelected = false;
+									} else {
+										this.onboardingSelected = true;
+									}
+									this.card = null;
+									this.mainCard = null;
+									await this.mainViewController.unloadTokenCard();
+									await this.loadCards();
+									await this.mainViewController.showOrExecuteCard(this.mainCard, undefined);
+								}}/>}
 						</div>
 					</div>
 					<card-view ref={(el: HTMLElement) => this.mainCardView = el}></card-view>
@@ -303,7 +305,7 @@ export class TlinkViewer {
 								] : ''
 							}
 						</div>
-					: ''}
+						: ''}
 					<card-popover tokenScript={this.tokenScript}></card-popover>
 				</div>
 			</Host>

@@ -12,31 +12,31 @@ body, action-overflow-modal .popover-container {
 	color: #333;
 }
 
-.mooar-header {
+.tlink-header {
 	height: 34px;
 	margin: 0 15px 0;
 	display: flex;
 	align-items: center;
 }
 
-.mooar-header a {
+.tlink-header a {
 	display: flex;
 	align-items: center;
 	text-decoration: none;
 }
 
-.mooar-header .text {
+.tlink-header .text {
 	font-size: 14px;
 	font-weight: 500;
 	color: #fff;
 }
 
-.mooar-header .header-icon {
+.tlink-header .header-icon {
 	height: 20px !important;
 	padding-left: 8px;
 }
 
-.mooar-header-right {
+.tlink-header-right {
 	flex-grow: 1;
 	display: flex;
 	align-items: center;
@@ -44,7 +44,7 @@ body, action-overflow-modal .popover-container {
 	gap: 10px;
 }
 
-.mooar-viewer {
+.tlink-viewer {
 	max-width: 800px;
 	width: 100%;
 	height: 100vh;
@@ -93,7 +93,7 @@ card-view .card-container {
 	padding: 10px 20px;
 }
 
-.mooar-viewer .btn {
+.tlink-viewer .btn {
 	font-size: 16px !important;
 	line-height: 22px;
 	font-weight: 700;
@@ -102,50 +102,9 @@ card-view .card-container {
 	border-radius: 14px;
 }
 
-.mooar-viewer .btn:disabled {
+.tlink-viewer .btn:disabled {
 	opacity: 0.6 !important;
 }
-
-/*.mooar-viewer .btn-primary, .mooar-viewer .btn-featured {
-	background: linear-gradient(106.84deg, rgb(255, 140, 74) 6.22%, rgb(255, 96, 95) 90.19%);
-	border: none;
-}
-
-.mooar-viewer .btn-primary:hover, .mooar-viewer .btn-featured:hover, .mooar-viewer .btn-primary:disabled, .mooar-viewer .btn-featured:disabled {
-	background: linear-gradient(106.84deg, #ff8c4a 6.22%, #ff065f 90.19%) !important;
-	border: none;
-}
-
-.mooar-viewer .btn-secondary, .mooar-viewer .btn-secondary:disabled {
-	border: 1px solid rgb(255, 88, 36);
-	border-color: rgb(255, 88, 36) !important;
-	background: transparent;
-}
-
-.btn-secondary:disabled {
-	background: transparent !important;
-}
-
-.mooar-viewer .btn-secondary span {
-	background-image: linear-gradient(106.84deg, rgb(255, 140, 74) 6.22%, rgb(255, 96, 95) 90.19%);
-	background-clip: text;
-	color: transparent;
-}
-
-.mooar-viewer .btn-secondary:hover {
-	border: 1px solid rgb(255, 88, 36);
-	background: rgba(194, 140, 109, 0.06);
-}
-
-.mooar-viewer .more-actions-btn {
-	border: 1px solid rgb(70, 65, 63);
-	background: none;
-	color: #fff;
-}
-
-.mooar-viewer .more-actions-btn:hover {
-	background: rgba(194, 140, 109, 0.06);
-}*/
 
 card-view .action-bar {
 	height: auto !important;

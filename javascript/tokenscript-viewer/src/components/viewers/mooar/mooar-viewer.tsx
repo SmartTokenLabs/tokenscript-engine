@@ -14,6 +14,7 @@ import {getTokenUrlParams} from "../util/getTokenUrlParams";
 import {invokeDeeplink} from "../util/invokeDeeplink";
 import {connectEmulatorSocket} from "../util/connectEmulatorSocket";
 import {ViewController} from "@tokenscript/engine-js/src/view/ViewController";
+import {getTokenScriptWithProvidedTokenContext} from "../util/getTokenScriptWithProvidedTokenContext";
 
 @Component({
 	tag: 'mooar-viewer',
@@ -106,7 +107,7 @@ export class SmartTokenStoreViewer {
 
 	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string){
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, null, null, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithProvidedTokenContext(this.app, chain, contract, scriptId, tokenId, tokenScriptUrl);
 
 		// Reload cards after the token is updated
 		this.tokenScript.on("TOKENS_UPDATED", (data) => {

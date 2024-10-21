@@ -15,7 +15,8 @@
 			<button class="frame-btn" data-params="chain=11155111&contract=0x0404ab3994ed48c300ce219546f757ad34484dc7&tokenscriptUrl=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FSmartTokenLabs%2Fresources%2Ftokenscript-sln-sepolia.tsml">Sepolia SLN</button>
 			<button class="frame-btn" data-params="chain=1&contract=0x3c7e352481f4b2fdec1e642a3f0018661c77513d&tokenId=398233297468566556333642">Eth Devcon</button>
 			<button class="frame-btn" data-params="chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1">Seplia ERC1155</button>
-			<button class="frame-btn" data-params="chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=3803829543">Polygon SmartCat</button>
+			<button class="frame-btn" data-params="chain=137&contract=0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe&tokenId=3803829543&card=Info">Polygon SmartCat</button>
+			<button class="frame-btn" data-params="chain=137&contract=0xB48f53010Acbc0E24D3D12D892E2215879e6fD13&tokenId=715&card=play">Morchi</button>
 			<select id="view-type">
 				<option value="joyid-token">Joy.ID</option>
 				<option value="sts-token">Launchpad</option>
@@ -42,14 +43,14 @@
 				params = new URLSearchParams();
 				params.set("chain", currentParams.get("chain"));
 				params.set("contract", currentParams.get("contract"));
-				params.set("tokenId", currentParams.get("tokenId"));
-				if (currentParams.has("emulator"))
-					params.set("emulator", currentParams.get("emulator"))
+				if (currentParams.has("tokenId"))
+					params.set("tokenId", currentParams.get("tokenId"));
 			} else {
 				//params = new URLSearchParams("chain=11155111&contract=0xbb14e71e54e03808a6271722192d03ebdc2eab7f&tokenId=3446746621659278273178542360570905268274680596831489800398881977304212307968&tokenscriptUrl=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FSmartTokenLabs%2Fresources%2Ftokenscript%2Frb-sepolia-0xbb14e71e54e03808a6271722192d03ebdc2eab7f-v5.tsml")
 				//params = new URLSearchParams("chain=11155111&contract=0xa532D3c016aA0B44b7228aCcd701A5F03112CD22&tokenId=1"); // smart cat sepolia
 				//params = new URLSearchParams("chain=11155111&contract=0x2d46915606580080C6c9032ed041e6FF21a5C8a6&tokenId=0&card=Play"); // Morchi sepolia mockNFT
-				params = new URLSearchParams("chain=11155111&contract=0xF1eb943F12824659d3756004245D14aD001ff82b&tokenId=0&card=Donate");
+				params = new URLSearchParams("chain=137&contract=0xB48f53010Acbc0E24D3D12D892E2215879e6fD13&tokenId=715&card=Play");
+				//params = new URLSearchParams("chain=11155111&contract=0xF1eb943F12824659d3756004245D14aD001ff82b&tokenId=0&card=Donate"); // BuyMeABeer
 				//params = new URLSearchParams("chain=31337&contract=0x5FbDB2315678afecb367f032d93F642f64180aa3&tokenId=1&emulator=http%3A%2F%2Flocalhost%3A8090%2F");
 				//params = new URLSearchParams("chain=1001&contract=0x73148b2c977586305f5aaa63b473a7af96619296&tokenId=15&emulator=http%3A%2F%2Flocalhost%3A8090%2F");
 				//params = new URLSearchParams("chain=11155111&contract=0xa532D3c016aA0B44b7228aCcd701A5F03112CD22&tokenId=1&tokenscriptUrl=http%3A%2F%2Flocalhost%3A8090%2Ftokenscript.tsml"); // smart cat sepolia emulator
@@ -57,11 +58,17 @@
 				//params = new URLSearchParams("chain=11155111&contract=0xdE915aFf3649568E15A94fe9b623Db3e7A0944F9&tokenId=1"); // ERC1155
 			}
 
+			if (currentParams.has("card"))
+				params.set("card", currentParams.get("card"));
+
+			if (currentParams.has("emulator"))
+				params.set("emulator", currentParams.get("emulator"))
+
 			function loadIframeUrl(){
 				params.set("viewType", document.getElementById("view-type").value);
 				//params.set("actionsEnabled", "false");
 				params.set("fullScreen", "true");
-				document.getElementById("frame").src = BASE_URL + "?" + params.toString() + (card ? `#card=${card}` : '');
+				document.getElementById("frame").src = BASE_URL + "?" + params.toString();
 			}
 
 			for (const button of document.getElementsByClassName("frame-btn")){

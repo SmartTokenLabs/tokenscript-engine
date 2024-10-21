@@ -141,13 +141,13 @@ export class TlinkCardViewer {
 
 		return (
 			<Host>
-				<div class="mooar-viewer">
-					<div class="mooar-header">
+				<div class="tlink-viewer">
+					<div class="tlink-header">
 						<a href="https://www.smartlayer.network/" target="_blank">
 							<img class="header-icon" alt="SmartLayer Network" src="assets/icon/smart-layer-icon.png"/>
 							<span class="text">Tapp Viewer</span>
 						</a>
-						<div class="mooar-header-right">
+						<div class="tlink-header-right">
 							{/*<share-to-tg-button/>*/}
 							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" />}
 						</div>

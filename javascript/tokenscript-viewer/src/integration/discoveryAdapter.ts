@@ -16,7 +16,7 @@ export const BASE_TOKEN_DISCOVERY_URL = 'https://api.token-discovery.tokenscript
 
 export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
-	private engine: TokenScriptEngine;
+	protected engine: TokenScriptEngine;
 
 	constructor(private enableStorage = true) {
 
