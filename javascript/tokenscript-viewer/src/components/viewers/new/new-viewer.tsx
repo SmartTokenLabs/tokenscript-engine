@@ -128,10 +128,10 @@ export class NewViewer {
 		} else if (query.has("tokenscriptUrl")){
 			tsMeta = await this.addFormSubmit("url", {tsId: query.get("tokenscriptUrl")})
 		} else if (query.has("tsId")){
-			tsMeta = await this.addFormSubmit("resolve", {tsId: query.get("tsId")})
+			tsMeta = await this.addFormSubmit("resolve", {tsId: query.get("tsId")}, true);
 		} else if (query.has("chain") && query.has("contract")){
 			const tsId = query.get("chain") + "-" + query.get("contract") + (query.has("scriptId") ? "-" + query.get("scriptId") : "");
-			tsMeta = await this.addFormSubmit("resolve", {tsId});
+			tsMeta = await this.addFormSubmit("resolve", {tsId}, true);
 		} else if (query.has("emulator")){
 			const emulator = query.get("emulator") ? new URL(decodeURIComponent(query.get("emulator"))).origin : document.location.origin;
 			const tsId = emulator + "/tokenscript.tsml";
@@ -239,12 +239,12 @@ export class NewViewer {
 		this.app.hideTsLoader();
 	}
 
-	private async addFormSubmit(type: TokenScriptSource, data: {tsId?: string, xml?: File, image?: string}){
+	private async addFormSubmit(type: TokenScriptSource, data: {tsId?: string, xml?: File, image?: string}, loadDefault = false){
 
 		this.app.showTsLoader();
 
 		try {
-			if (type === "resolve" && data.tsId && data.tsId.split("-").length < 3){
+			if (!loadDefault && type === "resolve" && data.tsId && data.tsId.split("-").length < 3){
 				await this.discoverScripts(data.tsId);
 				return;
 			}
