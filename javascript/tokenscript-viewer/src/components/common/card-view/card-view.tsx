@@ -22,7 +22,7 @@ export class CardView {
 					</iframe>
 				</div>
 				<div class="action-bar" style={{display: "none"}}>
-					<button class="action-btn btn btn-primary"></button>
+					<button class="ts-action-button action-btn btn btn-primary"></button>
 				</div>
 			</div>
 		)
