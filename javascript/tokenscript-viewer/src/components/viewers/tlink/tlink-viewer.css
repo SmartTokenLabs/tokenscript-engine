@@ -3,13 +3,13 @@ header {
 	display: none;
 }
 
-body, action-overflow-modal .popover-container {
-	background-color: #292929 !important;
-}
-
 * {
 	font-family: 'Space Grotesk', sans-serif;
 	color: #333;
+}
+
+body {
+	background-color: transparent !important;
 }
 
 .tlink-header {
@@ -33,7 +33,7 @@ body, action-overflow-modal .popover-container {
 
 .tlink-header .header-icon {
 	height: 24px !important;
-	padding-left: 8px;
+	padding-left: 0;
 }
 
 .tlink-header-right {
@@ -45,13 +45,15 @@ body, action-overflow-modal .popover-container {
 }
 
 .tlink-viewer {
-	max-width: 800px;
+	border-radius: 16px;
+	border: 1px solid rgb(29, 155, 240);
+	background-color: #262a2d;
 	width: 100%;
 	height: 100vh;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	padding-bottom: 10px;
+	padding-bottom: 15px;
 }
 
 .details-container {
@@ -71,7 +73,7 @@ card-view, .card-container {
 card-view .card-container {
 	max-width: unset !important;
 	max-height: unset !important;
-	margin: 10px 15px !important;
+	margin: 5px 15px !important;
 	border-radius: 15px !important;
 }
 
@@ -104,6 +106,36 @@ card-view .card-container {
 
 .tlink-viewer .btn:disabled {
 	opacity: 0.6 !important;
+}
+
+.tlink-viewer .btn-primary, .tlink-viewer .btn-featured {
+	background: #1d9bf0;
+	border: none;
+}
+
+.tlink-viewer .btn-primary:hover, .tlink-viewer .btn-featured:hover {
+	background: #3087da !important;
+	border: none;
+}
+
+.tlink-viewer .btn-primary:disabled .tlink-viewer .btn-featured:disabled {
+	background: #2f3336 !important;
+}
+
+.tlink-viewer .btn-secondary {
+	border: 1px solid #1d9bf0;
+	border-color: #1d9bf0 !important;
+	background: transparent;
+	color: #1d9bf0
+}
+
+.tlink-viewer .btn-secondary:hover {
+	border: #3087da !important;
+	background: rgba(194, 140, 109, 0.06);
+}
+
+.tlink-viewer .btn-primary:disabled .tlink-viewer .btn-featured:disabled, .tlink-viewer .btn-secondary:disabled {
+	background: #2f3336 !important;
 }
 
 card-view .action-bar {

@@ -16,6 +16,8 @@ export class SecurityStatus {
 
 	@Prop() size: "large" | "small" | "x-small" = "large";
 
+	@Prop() margin: string = "0 5px";
+
 	@State() securityInfo: Partial<ISecurityInfo>;
 
 	@State() statusColor: string;
@@ -67,7 +69,7 @@ export class SecurityStatus {
 		return (
 			this.securityInfo ?
 				<Host>
-					<div class={"security-status " + this.size} style={{ background: this.statusColor }}
+					<div class={"security-status " + this.size} style={{ background: this.statusColor, margin: this.margin }}
 						title={this.securityInfo.statusText + "\n\n" + this.getDetailedSecurityInfo()}
 						onClick={() => this.dialog.openDialog()}>
 						{this.statusIcon}

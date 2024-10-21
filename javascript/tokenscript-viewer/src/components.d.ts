@@ -121,6 +121,7 @@ export namespace Components {
         "open": (scripts: ScriptInfo[]) => Promise<void>;
     }
     interface SecurityStatus {
+        "margin": string;
         "size": "large" | "small" | "x-small";
         "tokenScript": TokenScript;
     }
@@ -944,6 +945,7 @@ declare namespace LocalJSX {
         "onScriptSelect"?: (scriptInfo: ScriptInfo) => void;
     }
     interface SecurityStatus {
+        "margin"?: string;
         "size"?: "large" | "small" | "x-small";
         "tokenScript"?: TokenScript;
     }

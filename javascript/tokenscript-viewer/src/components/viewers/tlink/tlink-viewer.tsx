@@ -265,7 +265,7 @@ export class TlinkViewer {
 						</a>
 						<div class="tlink-header-right">
 							{/*<share-to-tg-button/>*/}
-							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small"/>}
+							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="small" margin="0" />}
 							{this.tokenScript &&
 								<tokens-selector tokenScript={this.tokenScript} switchToken={async (token) => {
 									// TODO: Allow removing token context so this flag isn't needed?

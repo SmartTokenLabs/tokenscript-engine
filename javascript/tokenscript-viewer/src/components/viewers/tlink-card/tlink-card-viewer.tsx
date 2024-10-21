@@ -149,7 +149,7 @@ export class TlinkCardViewer {
 						</a>
 						<div class="tlink-header-right">
 							{/*<share-to-tg-button/>*/}
-							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" />}
+							{this.tokenScript && <security-status tokenScript={this.tokenScript} size="x-small" margin="0" />}
 						</div>
 					</div>
 					<card-view ref={(el: HTMLElement) => this.mainCardView = el}></card-view>
