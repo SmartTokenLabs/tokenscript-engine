@@ -18,7 +18,7 @@ export async function getTokenScriptWithProvidedTokenContext(
 
 	let tokenScript = await getTokenScriptFromUrlParams(app, chain, contract, scriptId, tokenScriptUrl);
 
-	let selectedOrigin = await getSelectedOriginTokenFromUrlParams(tokenScript, chain, contract);
+	let selectedOrigin = await getSelectedOriginTokenFromUrlParams(tokenScript, chain, contract, tokenId, !tokenId);
 
 	console.log("Selected origin: ", selectedOrigin);
 
