@@ -25,8 +25,18 @@ export enum RequestFromView {
 	SET_LOADER = "setLoader",
 	SET_BUTTON = "setButton",
 	EXEC_TRANSACTION = "execTransaction",
+	REFRESH_TOKENS = "refreshTokens",
 	SHOW_TX_TOAST = "showTransactionToast",
 	SHOW_TOAST = "showToast"
+}
+
+export type TXTrigger = "refreshTokens"|"invalidateAttributes";
+
+export interface TXOptions {
+	txName?: string,
+	chainId?: number,
+	contractAddress?: string,
+	triggers?: TXTrigger[]
 }
 
 /**
@@ -74,7 +84,7 @@ export class ViewController {
 		return this._tokenViewData;
 	}
 
-	async executeTransaction(transactionListener?: ITransactionListener, options?: {id?: string, txName?: string}){
+	async executeTransaction(transactionListener?: ITransactionListener, options?: {id?: string}&TXOptions){
 
 		const transaction = this.currentCard.getTransaction(options?.txName);
 
@@ -93,7 +103,7 @@ export class ViewController {
 					this.viewAdapter.dispatchViewEvent(ViewEvent.TRANSACTION_EVENT, data, options?.id);
 					if (transactionListener)
 						transactionListener(data);
-				}, options?.txName);
+				}, options);
 			} catch (e){
 				this.viewAdapter.showLoader(false);
 				this.tokenScript.emitEvent("TX_STATUS", {status: "error", message: e.message, error: e});
@@ -106,31 +116,45 @@ export class ViewController {
 		}
 	}
 
-	private async executeTransactionAndProcessTriggers(listener?: ITransactionListener, txName?: string, updateViewData = true){
+	private async executeTransactionAndProcessTriggers(listener?: ITransactionListener, txOptions?: TXOptions){
 
 		this.dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
 
-		const txStatus = await this.currentCard.executeTransaction(listener, txName);
+		if (!txOptions)
+			txOptions = {};
+
+		if (!txOptions.triggers)
+			txOptions.triggers = ["invalidateAttributes", "refreshTokens"];
+
+		const txStatus = await this.currentCard.executeTransaction(listener, txOptions);
 
 		if (txStatus === false)
 			return;
 
-		// Pause to let token discovery service update
-		await new Promise(resolve => setTimeout(resolve, 3000));
+		if (txOptions.triggers?.length) {
 
-		const context = this.tokenScript.getCurrentTokenContext();
-		const reloadCard = await this.currentCard.isEnabledOrReason(context) === true;
+			let tokens;
+			if (txOptions.triggers.indexOf("refreshTokens") > -1) {
+				// Pause to let token discovery service update
+				await new Promise(resolve => setTimeout(resolve, 3000));
 
-		if (!reloadCard && this.tokenScript.hasViewBinding()){
-			await this.unloadTokenCard();
+				tokens = await this.tokenScript.getTokenMetadata(true, true);
+			}
+
+			const context = this.tokenScript.getCurrentTokenContext();
+			const reloadCard = await this.currentCard.isEnabledOrReason(context) === true;
+
+			if (this.tokenScript.hasViewBinding()){
+				// The card is reloaded based on the following criteria
+				// - The card is still available based on isEnabledOrReason
+				// - Tokens have not been reloaded OR the card is an onboarding card OR the token still exists (not burnt or transferred)
+				if (reloadCard && (!context || !tokens || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex])){
+					await this.updateCardData();
+				} else {
+					await this.unloadTokenCard();
+				}
+			}
 		}
-
-		// TODO: transactions should declare specific triggers such as the need to reload tokens
-		const tokens = await this.tokenScript.getTokenMetadata(true, true);
-
-		// Only reload card if it's an onboarding card or if the token still exists (not burnt or transferred)
-		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]))
-			await this.updateCardData();
 
 		if (listener) {
 			listener({
@@ -281,6 +305,15 @@ export class ViewController {
 				await this.executeTransaction(null, params);
 				break;
 
+			case RequestFromView.REFRESH_TOKENS:
+				if (params.invalidateAttributes !== false) {
+					this.currentCard.getAttributes().invalidate();
+					this.tokenScript.getAttributes().invalidate();
+				}
+				await this.tokenScript.getTokenMetadata(true, true);
+				await this.updateCardData(params.id);
+				break;
+
 			default:
 				throw new Error("TokenScript view API method: " + method + " is not implemented.");
 		}
@@ -354,11 +387,11 @@ export class ViewController {
 	/**
 	 * Reload card attributes & dispatch the TOKENS_UPDATED event to the card Javascript
 	 */
-	async updateCardData(){
+	async updateCardData(id?: string){
 		//this.viewAdapter.viewLoading();
 		if (!this.tokenViewData)
 			return;
 
-		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), this.tokenViewData.getViewDataId());
+		this.viewAdapter.dispatchViewEvent(ViewEvent.TOKENS_UPDATED, await this.tokenViewData.getCurrentTokenData(true), id ?? this.tokenViewData.getViewDataId());
 	}
 }

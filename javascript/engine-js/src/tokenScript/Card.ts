@@ -2,6 +2,7 @@ import {ITokenIdContext, ITokenScript, ITransactionListener} from "../ITokenScri
 import {Attributes} from "./Attributes";
 import {Label} from "./Label";
 import {Transaction} from "./Transaction";
+import {TXOptions} from "../view/ViewController";
 
 export type CardType = "onboarding"|"public"|"token"|"action"|"activity";
 
@@ -189,12 +190,12 @@ export class Card {
 	/**
 	 * Execute the transaction for the card
 	 * @param listener
-	 * @param txName
+	 * @param txOptions
 	 * @param waitForConfirmation
 	 */
-	async executeTransaction(listener?: ITransactionListener, txName?: string, waitForConfirmation = true){
+	async executeTransaction(listener?: ITransactionListener, txOptions?: TXOptions, waitForConfirmation = true){
 
-		const transaction = this.getTransaction(txName);
+		const transaction = this.getTransaction(txOptions?.txName);
 
 		const tx = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
 
@@ -205,9 +206,10 @@ export class Card {
 			return false;
 		}
 
-		// TODO: transactions should specify which attributes should be invalidated
-		this.getAttributes().invalidate();
-		this.tokenScript.getAttributes().invalidate();
+		if ((txOptions?.triggers ?? []).indexOf("invalidateAttributes") > -1) {
+			this.getAttributes().invalidate();
+			this.tokenScript.getAttributes().invalidate();
+		}
 
 		return tx;
 	}

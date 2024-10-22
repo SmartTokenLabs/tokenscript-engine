@@ -18,6 +18,7 @@ export enum RequestFromView {
 	SET_LOADER = "setLoader",
 	SET_BUTTON = "setButton",
 	EXEC_TRANSACTION = "execTransaction",
+	REFRESH_TOKENS = "refreshTokens",
 	SHOW_TX_TOAST = "showTransactionToast",
 	SHOW_TOAST = "showToast"
 }

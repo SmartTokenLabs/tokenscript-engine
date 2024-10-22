@@ -17,8 +17,13 @@ export interface ITransactionListener {
 	(data: ITransactionStatus): void|Promise<void>
 }
 
+export type TXTrigger = "refreshTokens"|"invalidateAttributes";
+
 export interface TXOptions {
-	txName?: string
+	txName?: string,
+	chainId?: number,
+	contractAddress?: string,
+	triggers?: TXTrigger[]
 }
 
 export interface ITokenData {
@@ -46,6 +51,7 @@ export interface ITokenScriptSDK {
 		hideLoader: () => void,
 		setActionButton: (options: { show?: boolean, disable?: boolean, text?: string }) => void,
 		executeTransaction: (optionsOrTxName?: string|TXOptions, listener?: ITransactionListener) => Promise<ITransactionStatus|false>,
+		refreshTokens: (options?: {invalidateAttributes: boolean}) => Promise<ITokenData>;
 		showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => void,
 		showMessageToast: (type: 'success'|'info'|'warning'|'error', title: string, description: string) => void,
 		closeCard: () => void,

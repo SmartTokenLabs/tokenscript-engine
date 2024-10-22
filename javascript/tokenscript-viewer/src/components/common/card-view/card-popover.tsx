@@ -143,7 +143,7 @@ export class CardPopover implements IViewBinding {
 
 				console.log("ViewEvent.TOKENS_UPDATED");
 
-				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id});
+				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id, id});
 				return;
 
 			default:

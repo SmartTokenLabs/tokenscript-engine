@@ -114,6 +114,9 @@ export class PostMessageAdapter implements IEngineAdapter {
 	 */
 	async request(method: RequestFromView, params: any, listener?: true|IResponseListener<any>){
 
+		if (!params)
+			params = {};
+
 		if (listener){
 
 			return new Promise<any>((resolve, reject) => {

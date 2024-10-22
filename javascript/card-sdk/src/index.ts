@@ -119,6 +119,9 @@ class TokenScriptSDK  implements ITokenScriptSDK {
 
             return result;
         },
+        refreshTokens: async (options?: {invalidateAttributes: boolean}) => {
+            return (await this.engineAdapter.request<{updatedTokens: ITokenData}>(RequestFromView.REFRESH_TOKENS, options, true)).updatedTokens;
+        },
         showTransactionToast: (status: "submitted"|"confirmed", chain: number, txHash: string) => {
             this.engineAdapter.request(RequestFromView.SHOW_TX_TOAST, { status, chain, txHash });
         },
