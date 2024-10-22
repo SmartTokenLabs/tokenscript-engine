@@ -101,7 +101,7 @@ export class AppRoot {
 
 	constructor() {
 
-		if (this.viewerType !== "opensea")
+		if (this.viewerType !== "opensea" && this.viewerType.indexOf("tlink") === -1)
 			dbProvider.checkCompatibility();
 
 		this.tsEngine = new TokenScriptEngine(
@@ -110,7 +110,7 @@ export class AppRoot {
 			() => this.attestationStorageAdapter,
 			() => this.tsLocalStorageAdapter,
 			{
-				noLocalStorage: this.viewerType === "opensea" || this.params.has("___bypassCache"),
+				noLocalStorage: this.viewerType === "opensea" || this.viewerType.indexOf("tlink") === 0 || this.params.has("___bypassCache"),
 				trustedKeys: [
 					{
 						issuerName: "Smart Token Labs",

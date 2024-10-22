@@ -27,7 +27,7 @@ export async function getTokenScriptWithProvidedTokenContext(
 		providedTokenIdDetails: ITokenDetail;
 
 		constructor(engine: TokenScriptEngine) {
-			super();
+			super(!engine.config.noLocalStorage);
 			this.engine = engine;
 		}
 
