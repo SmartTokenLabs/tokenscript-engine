@@ -18,6 +18,7 @@ import {ViewController} from './view/ViewController';
 import {ViewStyles} from './view/ViewStyles';
 
 import {ScriptInfo} from './repo/sources/SourceInterface';
+import {TransactionResponse} from "ethers";
 
 export interface ITokenContext extends ITokenCollection {
   originId: string;
@@ -103,7 +104,7 @@ export interface ITokenScript {
     id?: string,
   ): void;
   getAsnModuleDefinition(name: string): Element | null;
-  executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation?: boolean): Promise<any | false>;
+  executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation?: boolean): Promise<ITransactionStatus | false>;
 
   // Only for full TokenScript
   getViewController(viewBinding?: IViewBinding): ViewController;

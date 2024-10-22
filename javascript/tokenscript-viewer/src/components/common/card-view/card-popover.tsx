@@ -48,7 +48,7 @@ export class CardPopover implements IViewBinding {
 	}) showToast: EventEmitter<ShowToastEventArgs>;
 
 	@Watch('tokenScript')
-	async loadTs(){
+	loadTs(){
 		this.tokenScript.setViewBinding(this);
 		this.tokenScript.on("TX_STATUS", (data: ITransactionStatus) => {
 			if (data.status !== "error"){

@@ -6,9 +6,9 @@ import {
 	ethers,
 	EventLog,
 	getBigInt,
-	Network, Overrides, ZeroAddress
+	Network, Overrides, TransactionResponse, ZeroAddress
 } from "ethers";
-import {ITransactionListener} from "../ITokenScript";
+import {ITransactionListener, ITransactionStatus} from "../ITokenScript";
 import {ErrorDecoder, ErrorType} from "ethers-decode-error";
 import {WaterfallFallbackProvider} from "./WaterfallFallbackProvider";
 
@@ -59,7 +59,7 @@ export class EthersAdapter implements IWalletAdapter {
 		return (await contract.getFunction(method).staticCall(...(args.map((arg: any) => arg.value))));
 	}
 
-	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: bigint, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []){
+	async sendTransaction(chain: number, contractAddr: string, method: string, args: any[], outputTypes: string[], value?: bigint, waitForConfirmation: boolean = true, listener?: ITransactionListener, errorAbi: any[] = []): Promise<ITransactionStatus|false> {
 
 		console.log("Send ethereum transaction. chain " + chain + "; contract " + contractAddr + "; method " + method + "; value " + value + "; args", args);
 
@@ -81,7 +81,7 @@ export class EthersAdapter implements IWalletAdapter {
 		if (value)
 			overrides.value = value;
 
-		let tx;
+		let tx: TransactionResponse;
 
 		// Getting a function only by name could be ambiguous, so we try the full signature first
 		// TODO: Add support for struct/tuple method signatures
@@ -96,7 +96,7 @@ export class EthersAdapter implements IWalletAdapter {
 		}
 
 		try {
-			tx = await contractMethod(...(args.map((arg: any) => arg.value)), overrides) as ContractTransaction;
+			tx = await contractMethod(...(args.map((arg: any) => arg.value)), overrides);
 		} catch (e: any){
 
 			if (EthersAdapter.isTransactionRejection(e))
@@ -141,7 +141,7 @@ export class EthersAdapter implements IWalletAdapter {
 		});
 
 		if (waitForConfirmation)
-			await tx.wait().then((transactionReceipt) => {
+			await tx.wait(1).then((transactionReceipt) => {
 
 				if (transactionReceipt.status !== 1) {
 					console.error(transactionReceipt);
@@ -159,7 +159,11 @@ export class EthersAdapter implements IWalletAdapter {
 				return transactionReceipt;
 			});
 
-		return tx;
+		return {
+			status: 'confirmed',
+			txNumber: tx.hash,
+			txLink
+		}
 	}
 
 	private static isTransactionRejection(e: any){

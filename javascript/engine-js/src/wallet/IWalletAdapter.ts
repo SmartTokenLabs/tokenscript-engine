@@ -1,5 +1,5 @@
 import {EventLog, Log} from "ethers";
-import {ITransactionListener} from "../ITokenScript";
+import {ITransactionListener, ITransactionStatus} from "../ITokenScript";
 import {IChainConfig} from "./EthersAdapter";
 
 export interface RpcRequest {
@@ -47,7 +47,7 @@ export interface IWalletAdapter {
 		waitForConfirmation?: boolean,
 		listener?: ITransactionListener,
 		errorAbi?: any[]
-	): Promise<any|false>;
+	): Promise<ITransactionStatus|false>;
 	getChain(): Promise<number>;
 	getRpcUrls(chainId: number): string[];
 	rpcProxy(request: RpcRequest): Promise<any>;

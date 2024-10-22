@@ -110,9 +110,9 @@ export class ViewController {
 
 		this.dispatchViewEvent(ViewEvent.GET_USER_INPUT, null, null);
 
-		const processed = await this.currentCard.executeTransaction(listener, txName);
+		const txStatus = await this.currentCard.executeTransaction(listener, txName);
 
-		if (processed === false)
+		if (txStatus === false)
 			return;
 
 		// Pause to let token discovery service update
@@ -132,8 +132,12 @@ export class ViewController {
 		if (reloadCard && updateViewData && (!context || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]))
 			await this.updateCardData();
 
-		if (listener)
-			listener({status: "completed"})
+		if (listener) {
+			listener({
+				...txStatus,
+				status: 'completed',
+			});
+		}
 	}
 
 	/**

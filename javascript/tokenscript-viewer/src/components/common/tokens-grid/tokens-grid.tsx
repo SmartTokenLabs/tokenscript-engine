@@ -132,7 +132,7 @@ export class TokensGrid {
 				await cardRes.card.isEnabledOrReason() === true
 			) {
 				this.urlActionInvoked = true;
-				this.showCard(cardRes.card);
+				setTimeout(() => this.showCard(cardRes.card), 100);
 				return;
 			}
 		}
