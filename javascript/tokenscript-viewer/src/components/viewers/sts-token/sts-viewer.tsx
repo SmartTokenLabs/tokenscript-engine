@@ -118,7 +118,7 @@ export class SmartTokenStoreViewer {
 
 	async processUrlLoad() {
 
-		let {chain, contract, tokenId, scriptId, tokenscriptUrl, wallet, emulator} = getTokenUrlParams();
+		let {chain, contract, originId, tokenId, scriptId, tokenscriptUrl, wallet, emulator} = getTokenUrlParams();
 
 		let slnAdapter;
 
@@ -155,17 +155,17 @@ export class SmartTokenStoreViewer {
 				const emulatorUrl = new URL(decodeURIComponent(emulator)).origin;
 				tokenscriptUrl = emulatorUrl + "/tokenscript.tsml";
 				connectEmulatorSocket(emulatorUrl, async() => {
-					await this.loadTokenScript(chain, contract, tokenId, tokenscriptUrl);
+					await this.loadTokenScript(chain, contract, originId, tokenId, scriptId, tokenscriptUrl);
 				});
 			}
 
-			await this.loadTokenScript(chain, contract, tokenId, scriptId, tokenscriptUrl);
+			await this.loadTokenScript(chain, contract, originId, tokenId, scriptId, tokenscriptUrl);
 		}
 	}
 
-	private async loadTokenScript(chain: number, contract: string, tokenId: string, scriptId?: string, tokenScriptUrl?: string) {
+	private async loadTokenScript(chain: number, contract: string, originId?: string, tokenId?: string, scriptId?: string, tokenScriptUrl?: string) {
 
-		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
+		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, originId, this.collectionDetails, this.tokenDetails, tokenId, tokenScriptUrl);
 
 		if (this.tokenScript.getMetadata().backgroundImageUrl){
 			const body = document.getElementsByTagName("body")[0];

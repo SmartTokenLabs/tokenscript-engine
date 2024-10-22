@@ -1,12 +1,15 @@
 import {TokenScript} from "@tokenscript/engine-js/src";
 
-export async function getSelectedOriginTokenFromUrlParams(tokenScript: TokenScript, chain: number, contract: string, tokenId: string|null, returnDefault = false){
+export async function getSelectedOriginTokenFromUrlParams(tokenScript: TokenScript, chain: number, contract: string, originId?: string, tokenId?: string, returnDefault = false){
 
 	const origins = tokenScript.getTokenOriginData();
 
-	// TODO: Return the origin specified in the URL
-
 	for (const origin of origins) {
+
+		if (originId && originId === origin.originId){
+			return origin;
+		}
+
 		if (
 			origin.chainId === chain &&
 			origin.contractAddress.toLowerCase() === contract.toLowerCase() &&

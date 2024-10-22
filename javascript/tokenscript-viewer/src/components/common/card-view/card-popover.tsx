@@ -189,8 +189,10 @@ export class CardPopover implements IViewBinding {
 			currentParams.set("card", card.name);
 
 			const token = this.tokenScript.getCurrentTokenContext();
-			if (token && "selectedTokenId" in token){
-				currentParams.set("tokenId", token.selectedTokenId);
+			if (token && card.type !== "onboarding"){
+				currentParams.set("originId", token.originId);
+				if ("selectedTokenId" in token)
+					currentParams.set("tokenId", token.selectedTokenId);
 			}
 
 			history.replaceState(undefined, undefined, "#" + currentParams.toString());
@@ -207,6 +209,7 @@ export class CardPopover implements IViewBinding {
 		//this.iframe.contentWindow.location.replace("data:text/html;base64,PCFET0NUWVBFIGh0bWw+");
 		const currentParams = new URLSearchParams(location.hash.substring(1));
 		currentParams.delete("card");
+		currentParams.delete("originId");
 		currentParams.delete("tokenId");
 		history.replaceState(undefined, undefined, "#" + currentParams.toString());
 	}

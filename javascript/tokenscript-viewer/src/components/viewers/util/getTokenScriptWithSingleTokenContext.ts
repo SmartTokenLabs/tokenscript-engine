@@ -11,6 +11,7 @@ export async function getTokenScriptWithSingleTokenContext(
 	chain: number,
 	contract: string,
 	scriptId?: string,
+	originId?: string,
 	collectionDetails?: ITokenCollection,
 	tokenDetails?: ITokenDetail,
 	tokenId?: string,
@@ -19,7 +20,7 @@ export async function getTokenScriptWithSingleTokenContext(
 
 	let tokenScript = await getTokenScriptFromUrlParams(app, chain, contract, scriptId, tokenScriptUrl);
 
-	let selectedOrigin = await getSelectedOriginTokenFromUrlParams(tokenScript, chain, contract, tokenId, !collectionDetails && !tokenId);
+	let selectedOrigin = await getSelectedOriginTokenFromUrlParams(tokenScript, chain, contract, originId, tokenId, !collectionDetails && !tokenId && !originId);
 
 	if (collectionDetails) {
 		selectedOrigin = {...collectionDetails, ...selectedOrigin}
