@@ -66,6 +66,7 @@ export namespace Components {
         "tokenScript"?: TokenScript;
     }
     interface CardPopover {
+        "registerTxListener": boolean;
         "tokenScript": TokenScript1;
     }
     interface CardView {
@@ -888,6 +889,7 @@ declare namespace LocalJSX {
     }
     interface CardPopover {
         "onShowToast"?: (event: CardPopoverCustomEvent<ShowToastEventArgs>) => void;
+        "registerTxListener"?: boolean;
         "tokenScript"?: TokenScript1;
     }
     interface CardView {

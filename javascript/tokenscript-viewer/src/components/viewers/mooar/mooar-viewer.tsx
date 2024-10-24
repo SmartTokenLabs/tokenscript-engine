@@ -259,7 +259,7 @@ export class SmartTokenStoreViewer {
 							}
 						</div>
 					: ''}
-					<card-popover tokenScript={this.tokenScript}></card-popover>
+					<card-popover tokenScript={this.tokenScript} registerTxListener={false}></card-popover>
 				</div>
 			</Host>
 		)

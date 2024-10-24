@@ -31,6 +31,9 @@ export class CardPopover implements IViewBinding {
 	@Prop()
 	tokenScript: TokenScript;
 
+	@Prop()
+	registerTxListener = true;
+
 	@State()
 	loading: boolean = false;
 
@@ -50,13 +53,14 @@ export class CardPopover implements IViewBinding {
 	@Watch('tokenScript')
 	loadTs(){
 		this.tokenScript.setViewBinding(this);
-		this.tokenScript.on("TX_STATUS", (data: ITransactionStatus) => {
-			if (data.status !== "error"){
-				showTransactionNotification(data, this.showToast);
-			} else {
-				handleTransactionError(data.error, this.showToast);
-			}
-		}, "card-popover");
+		if (this.registerTxListener)
+			this.tokenScript.on("TX_STATUS", (data: ITransactionStatus) => {
+				if (data.status !== "error"){
+					showTransactionNotification(data, this.showToast);
+				} else {
+					handleTransactionError(data.error, this.showToast);
+				}
+			}, "card-popover");
 	}
 
 	async componentDidLoad() {
