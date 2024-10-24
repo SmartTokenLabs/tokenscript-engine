@@ -1,6 +1,6 @@
 {
   "name": "@tokenscript/engine-js",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A Typescript implementation of the TokenScript runtime",
   "repository": {
     "type": "git",

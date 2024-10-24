@@ -12,28 +12,6 @@ import { AbstractTokenScript } from './AbstractTokenScript';
  */
 export class LiteTokenScript extends AbstractTokenScript {
 
-  public async getTokenContextData(tokenIdContext?: ITokenIdContext) {
-    let data: ITokenContextData;
-
-    const contracts = this.getContracts().getContractsMap(true);
-    const primaryAddr = contracts[Object.keys(contracts)[0]].getFirstAddress();
-
-    data = {
-      name: this.getName(),
-      label: this.getLabel(),
-      contractAddress: primaryAddr?.address,
-      chainId: primaryAddr?.chain,
-      ownerAddress: await this.getCurrentWalletAddress(),
-      balance: '0',
-    };
-
-    return data;
-  }
-
-  public setCurrentTokenContextFrom(tokenContext: ITokenContext) {
-    this.tokenContext = tokenContext;
-  }
-
   // Not implemented for LiteTokenScript
   public getViewController(): any {
     throw new Error('LiteTokenScript does not support the operation');
