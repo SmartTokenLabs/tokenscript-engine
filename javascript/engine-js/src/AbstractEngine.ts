@@ -7,7 +7,7 @@ const DEFAULT_CONFIG: IEngineConfig = {
   ipfsGateway: 'https://smart-token-labs-demo-server.mypinata.cloud/ipfs/',
   noLocalStorage: false,
   trustedKeys: [],
-  viewerOrigin: document ? document.location.origin : "*"
+  viewerOrigin: "*"
 };
 
 /**

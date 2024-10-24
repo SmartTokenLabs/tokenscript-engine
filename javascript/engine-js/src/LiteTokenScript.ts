@@ -11,6 +11,7 @@ import { AbstractTokenScript } from './AbstractTokenScript';
  * So this is typically used for tokenscript parsing, and supporting custom rendering of the tokenscript view
  */
 export class LiteTokenScript extends AbstractTokenScript {
+
   public async getTokenContextData(tokenIdContext?: ITokenIdContext) {
     let data: ITokenContextData;
 
@@ -27,33 +28,6 @@ export class LiteTokenScript extends AbstractTokenScript {
     };
 
     return data;
-  }
-
-  /**
-   * Set the current token context that's used when showing cards and resolving attributes.
-   * Any attribute using 'tokenId' reference will use this context to resolve attributes by default
-   * @param contractName
-   * @param tokenIndex
-   * @param tokenId
-   */
-  public setCurrentTokenContext(contractName: string, tokenIndex: number | null = null, tokenId: string | null = null) {
-    const tokenOriginsData = this.getTokenOriginData();
-    const tokenCollection = tokenOriginsData.find(token => token.originId === contractName);
-
-    if (!tokenCollection) {
-      throw new Error(`Cannot set token context: token origin with contract name ${contractName} was not found`);
-    }
-
-    this.tokenContext = {
-      originId: contractName,
-      selectedTokenIndex: tokenIndex,
-      selectedTokenId: tokenId,
-      blockChain: tokenCollection.blockChain,
-      chainId: tokenCollection.chainId,
-      tokenType: tokenCollection.tokenType,
-      contractAddress: tokenCollection.contractAddress,
-      balance: tokenCollection.balance,
-    };
   }
 
   public setCurrentTokenContextFrom(tokenContext: ITokenContext) {
@@ -77,9 +51,6 @@ export class LiteTokenScript extends AbstractTokenScript {
     throw new Error('LiteTokenScript does not support the operation');
   }
   public getTokenMetadata(reloadFromAdapter?: boolean, bypassCache?: boolean, alwaysFireEvent?: boolean): Promise<TokenMetadataMap> {
-    throw new Error('LiteTokenScript does not support the operation');
-  }
-  public setTokenMetadata(tokenMetadata: ITokenCollection[]): void {
     throw new Error('LiteTokenScript does not support the operation');
   }
   public resolveTokenMetadata(reload: boolean): Promise<ITokenCollection[]> {

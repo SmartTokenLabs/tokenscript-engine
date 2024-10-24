@@ -142,7 +142,7 @@ export abstract class AbstractDependencyBranch implements IArgument {
 	}
 
 	private isSpecialRef(){
-		return ["tokenId", "ownerAddress", "contractAddress"].indexOf(this.ref) > -1;
+		return ["tokenId", "ownerAddress", "contractAddress", "walletAddress"].indexOf(this.ref) > -1;
 	}
 
 	protected abstract resolveValue(tokenContext?: ITokenIdContext): Promise<any>;

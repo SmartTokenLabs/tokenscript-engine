@@ -69,42 +69,12 @@ export class ViewerPopover {
 
 		this.tokenScript = tokenScript;
 
-		const onboardingCards = tokenScript.getCards().getOnboardingCards();
+		await this.loadOnboardingCards();
 
-		const enabledCards = [];
-
-		for (let [index, card] of onboardingCards.entries()){
-
-			let label = card.label;
-
-			if (label === "Unnamed Card")
-				label = card.type === "token" ? "Token Info" : card.type + " Card";
-
-			try {
-				const enabled = await card.isEnabledOrReason();
-
-				//console.log("Card enabled: ", enabled);
-
-				if (enabled === false)
-					continue;
-
-				const cardElem = (
-					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
-							onClick={() => this.showCard(card)}
-							disabled={enabled !== true}
-							title={enabled !== true ? enabled : label}>
-						<span>{label}</span>
-					</button>
-				)
-
-				enabledCards.push(cardElem);
-
-			} catch (e){
-				console.error("Failed to check if card is available", e);
-			}
-		}
-
-		this.onboardingCards = enabledCards;
+		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
+			this.tokenScript.getAttributes().getAttribute("tokenBalance")
+			await this.loadOnboardingCards();
+		}, "onboarding");
 
 		// Update URL
 		const params = new URLSearchParams(document.location.search);
@@ -151,6 +121,46 @@ export class ViewerPopover {
 		}
 
 		await this.reloadOtherScripts();
+	}
+
+	private async loadOnboardingCards()
+	{
+		const onboardingCards = this.tokenScript.getCards().getOnboardingCards();
+
+		const enabledCards = [];
+
+		for (let [index, card] of onboardingCards.entries()){
+
+			let label = card.label;
+
+			if (label === "Unnamed Card")
+				label = card.type === "token" ? "Token Info" : card.type + " Card";
+
+			try {
+				const enabled = await card.isEnabledOrReason();
+
+				//console.log("Card enabled: ", enabled);
+
+				if (enabled === false)
+					continue;
+
+				const cardElem = (
+					<button class={"ts-card-button btn " + getCardButtonClass(card, index)}
+					        onClick={() => this.showCard(card)}
+					        disabled={enabled !== true}
+					        title={enabled !== true ? enabled : label}>
+						<span>{label}</span>
+					</button>
+				)
+
+				enabledCards.push(cardElem);
+
+			} catch (e){
+				console.error("Failed to check if card is available", e);
+			}
+		}
+
+		this.onboardingCards = enabledCards;
 	}
 
 	private async reloadOtherScripts(){

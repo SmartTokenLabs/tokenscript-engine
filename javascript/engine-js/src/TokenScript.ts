@@ -20,7 +20,6 @@ import {ZeroAddress} from "ethers";
  * executing transactions
  */
 export class TokenScript extends AbstractTokenScript {
-	private tokenMetadata?: TokenMetadataMap;
 
 	private viewController?: ViewController;
 
@@ -217,100 +216,6 @@ export class TokenScript extends AbstractTokenScript {
 		return await tokenDiscovery.getTokens(initialTokenData, reload);
 	}
 
-	public async getTokenContextData(tokenIdContext?: ITokenIdContext){
-
-		let tokenContext: ITokenContext;
-
-		if (tokenIdContext){
-
-			// Get token context object from ITokenIdContext
-			tokenContext = this.tokenMetadata[tokenIdContext.originId];
-			let tokenIndex = undefined;
-
-			if (tokenContext.tokenDetails)
-				for (const [index, token] of Object.entries(tokenContext.tokenDetails)){
-					if (token.tokenId === tokenIdContext.selectedTokenId){
-						tokenIndex = index;
-						break;
-					}
-				}
-
-			tokenContext = {
-				...this.tokenMetadata[tokenIdContext.originId],
-				selectedTokenId: tokenIdContext.selectedTokenId,
-				selectedTokenIndex: tokenIndex
-			};
-
-		} else {
-			tokenContext = this.tokenContext;
-		}
-
-		let data: ITokenContextData;
-
-		if (tokenContext){
-
-			const tokenDetails = tokenContext.selectedTokenIndex !== undefined ? tokenContext.tokenDetails[tokenContext.selectedTokenIndex] : null;
-
-			const balance = tokenContext.balance ? tokenContext.balance.toString() : "0"; // bigint can't be json serialized, so it must always be string
-
-			const image = this.getMetadata().imageUrl ?? tokenDetails?.image ?? this.getMetadata().iconUrl;
-
-			data = {
-				name: tokenDetails?.name ?? tokenContext.name,
-				description: tokenDetails?.description ?? tokenContext.description,
-				label: tokenContext.name,
-				symbol: tokenContext.symbol,
-				_count: balance,
-				balance,
-				decimals: tokenContext.decimals,
-				contractAddress: tokenContext.contractAddress,
-				chainId: tokenContext.chainId,
-				tokenId: tokenContext.selectedTokenId,
-				ownerAddress: tokenContext.tokenType === "erc20" ? await this.getCurrentWalletAddress() : ZeroAddress,
-				image_preview_url: image,
-			};
-
-			if (tokenDetails) {
-
-				data.tokenInfo = {
-					collectionId: tokenDetails.collectionId,
-					tokenId: tokenDetails.tokenId,
-					type: tokenContext.tokenType,
-					name: tokenDetails.name ?? tokenDetails.data?.title,
-					description: tokenDetails.description,
-					image,
-					attributes: tokenDetails.attributes ?? [],
-					data: tokenDetails.data
-				}
-
-				if (tokenDetails.ownerAddress)
-					data.ownerAddress = tokenDetails.ownerAddress;
-
-				// Extract top level attestation fields for use in transaction inputs.
-				if (tokenDetails?.data?.abiEncoded) {
-					data.attestation = tokenDetails.data.abiEncoded.attestation;
-					data.attestationSig = tokenDetails.data.abiEncoded.signature;
-				}
-			}
-
-		} else {
-			const contracts = this.getContracts().getContractsMap(true);
-
-			const primaryAddr = contracts[Object.keys(contracts)[0]].getFirstAddress();
-
-			data = {
-				name: this.getName(),
-				label: this.getLabel(),
-				contractAddress: primaryAddr?.address,
-				chainId: primaryAddr?.chain,
-				ownerAddress: await this.getCurrentWalletAddress(),
-				balance: "0"
-			};
-		}
-
-		return data;
-	}
-
 	/**
 	 * Sets a new TokenDiscoveryAdapter instance
 	 * @param adapter
@@ -328,32 +233,7 @@ export class TokenScript extends AbstractTokenScript {
 	 */
 	public setCurrentTokenContext(contractName: string, tokenIndex: number|null = null, tokenId: string|null = null){
 
-		if (!this.tokenMetadata[contractName]){
-			throw new Error("Cannot set token context: contractName was not found")
-		}
-
-		if (tokenIndex == null && tokenId == null){
-			this.tokenContext = this.tokenMetadata[contractName];
-			return;
-		}
-
-		if (tokenIndex != null && !this.tokenMetadata[contractName].tokenDetails?.[tokenIndex]){
-			throw new Error("Cannot set token context: token index was not found")
-		}
-
-		if (tokenId != null){
-			const tokenDetails = this.tokenMetadata[contractName].tokenDetails;
-			if (!tokenDetails)
-				throw new Error("Cannot set token context: token ID was provided but the origin contract is a fungible token");
-			tokenIndex = tokenDetails.findIndex((tokenDetails) => tokenDetails.tokenId === tokenId);
-			if (tokenIndex === -1)
-				throw new Error(`Cannot set token context: a token with provided ID ${tokenId} was not found`);
-		}
-
-		this.tokenContext = this.tokenMetadata[contractName];
-		this.tokenContext.originId = contractName;
-		this.tokenContext.selectedTokenIndex = tokenIndex;
-		this.tokenContext.selectedTokenId = this.tokenMetadata[contractName].tokenDetails[tokenIndex].tokenId;
+		super.setCurrentTokenContext(contractName, tokenIndex, tokenId);
 
 		if (this.hasViewBinding()) {
 			const currentCard = this.getViewController().getCurrentCard();

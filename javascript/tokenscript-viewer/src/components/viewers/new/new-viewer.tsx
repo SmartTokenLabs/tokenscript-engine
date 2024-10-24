@@ -60,6 +60,8 @@ export class NewViewer {
 				if (!this.myTokenScripts[id].tokenScript)
 					continue;
 
+				this.myTokenScripts[id].tokenScript.getAttributes().invalidate(["walletAddress"]);
+
 				if (walletConnection){
 					this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
 				} else {
