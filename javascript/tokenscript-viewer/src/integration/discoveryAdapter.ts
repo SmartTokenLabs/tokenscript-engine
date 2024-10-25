@@ -5,9 +5,10 @@ import {Web3WalletProvider} from "../components/wallet/Web3WalletProvider";
 import {CHAIN_CONFIG, CHAIN_MAP, ChainID, ERC20_ABI_JSON, ERC721_ABI_JSON} from "./constants";
 import {ITokenDetail} from "@tokenscript/engine-js/src/tokens/ITokenDetail";
 import {dbProvider} from "../providers/databaseProvider";
-import {Contract, ethers, Network} from "ethers";
+import {Contract, ethers, Network, ZeroAddress} from "ethers";
 import {showToastNotification} from "../components/viewers/util/showToast";
 import {TokenScriptEngine} from "@tokenscript/engine-js/src/Engine";
+import {getTokenUrlParams} from "../components/viewers/util/getTokenUrlParams";
 
 const COLLECTION_CACHE_TTL = 86400;
 const TOKEN_CACHE_TTL = 3600;
@@ -36,6 +37,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		}
 
 		const walletAddress = await this.getCurrentWalletAddress();
+		const params = getTokenUrlParams(null, false);
 
 		for (const initToken of initialTokenDetails){
 
@@ -45,6 +47,23 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				if (!cachedToken) {
 					cachedToken = await this.fetchTokens(initToken, walletAddress);
 					await this.storeCachedTokens(cachedToken, walletAddress)
+				}
+
+				if (
+					cachedToken.tokenType !== "erc20" &&
+					(
+						params.originId === cachedToken.originId ||
+						(
+							params.contract &&
+							params.tokenId && params.contract.toLowerCase() === cachedToken.contractAddress &&
+							params.chain === cachedToken.chainId
+						)
+					)
+				){
+					// Add the URL specified token ID if it is not owned by the user
+					if (!cachedToken.tokenDetails.find((token) => token.tokenId === params.tokenId)){
+						cachedToken.tokenDetails.push((await this.getTokenById({...cachedToken}, params.tokenId)).tokenDetails[0]);
+					}
 				}
 
 				resultTokens.push(cachedToken);
@@ -58,7 +77,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	async getCurrentWalletAddress(){
-		return this.engine ? await (await this.engine.getWalletAdapter()).getCurrentWalletAddress() : (await Web3WalletProvider.getWallet(true)).address;
+		return this.engine ? await (await this.engine.getWalletAdapter()).getCurrentWalletAddress() : (Web3WalletProvider.isWalletConnected() ? (await Web3WalletProvider.getWallet(true)).address : ZeroAddress);
 	}
 
 	async getCachedTokens(initialTokenDetails: ITokenCollection, ownerAddress: string): Promise<ITokenCollection|false> {

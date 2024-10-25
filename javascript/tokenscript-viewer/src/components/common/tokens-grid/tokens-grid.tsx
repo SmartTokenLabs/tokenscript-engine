@@ -7,6 +7,7 @@ import {findCardByUrlParam} from "../../viewers/util/findCardByUrlParam";
 import {getTokensFlat, TokenGridContext} from "../../viewers/util/getTokensFlat";
 import {WalletConnection, Web3WalletProvider} from "../../wallet/Web3WalletProvider";
 import {ShowToastEventArgs} from "../../app/app";
+import {ZeroAddress} from "ethers";
 
 @Component({
 	tag: 'tokens-grid',
@@ -25,6 +26,12 @@ export class TokensGrid {
 
 	@State()
 	currentTokensFlat?: TokenGridContext[];
+
+	@State()
+	notOwnedTokens?: TokenGridContext[];
+
+	@State()
+	currentWalletAddress: string = ZeroAddress;
 
 	@State()
 	loading: boolean = true;
@@ -61,11 +68,17 @@ export class TokensGrid {
 				return;
 
 			if (walletConnection){
+				this.currentWalletAddress = walletConnection.address.toLowerCase();
 				this.tokenScript.getTokenMetadata(true);
 			} else {
+				this.currentWalletAddress = ZeroAddress;
 				this.tokenScript.setTokenMetadata([]);
 			}
 		});
+
+		if (Web3WalletProvider.isWalletConnected())
+			this.currentWalletAddress = (await Web3WalletProvider.getWallet()).address;
+
 		await this.initTokenScript();
 	}
 
@@ -75,6 +88,7 @@ export class TokensGrid {
 		this.urlActionInvoked = false;
 		this.loading = true;
 		this.currentTokensFlat = null;
+		this.notOwnedTokens = null;
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
 			await this.populateTokens(data.tokens)
@@ -84,6 +98,7 @@ export class TokensGrid {
 		this.tokenScript.on("TOKENS_LOADING", () => {
 			this.loading = true;
 			this.currentTokensFlat = null;
+			this.notOwnedTokens = null;
 			console.log("Tokens loading");
 		}, "grid")
 
@@ -97,7 +112,10 @@ export class TokensGrid {
 		this.loading = false;
 		this.currentTokens = {...tokens};
 
-		this.currentTokensFlat = getTokensFlat(this.currentTokens);
+		const flatTokens = getTokensFlat(this.currentTokens);
+
+		this.currentTokensFlat = flatTokens.filter((token) => !("ownerAddress" in token) || token.ownerAddress.toLowerCase() === this.currentWalletAddress.toLowerCase());
+		this.notOwnedTokens = flatTokens.filter((token) => "ownerAddress" in token &&  token.ownerAddress.toLowerCase() !== this.currentWalletAddress.toLowerCase());
 	}
 
 	private async invokeUrlAction(){
@@ -173,23 +191,49 @@ export class TokensGrid {
 		return (
 			<Host class="ts-token-background" style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
 				<div class="bg-blur">
-					<div class="ts-tokens-grid">
-						<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
-						{
-							this.currentTokensFlat?.length ? this.currentTokensFlat.map((token) => {
-								return (
-									<tokens-grid-item
-										key={this.tokenScript.getSourceInfo().tsId + token.contextId}
-										tokenScript={this.tokenScript}
-										token={token}
-										showCard={this.showCard.bind(this)}
-										openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
-								);
-							}) :  (
-								!this.loading ? (<h3 class="no-tokens-message">{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
-							)
-						}
-					</div>
+					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+					{this.currentTokensFlat?.length ?
+						([
+							<h4 class="tokens-heading">My tokens</h4>,
+							<div class="ts-tokens-grid">
+
+								{
+									this.currentTokensFlat.length ? this.currentTokensFlat.map((token) => {
+										return (
+											<tokens-grid-item
+												key={this.tokenScript.getSourceInfo().tsId + token.contextId}
+												tokenScript={this.tokenScript}
+												token={token}
+												showCard={this.showCard.bind(this)}
+												openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
+										);
+									}) : (
+										!this.loading ? (
+											<h3 class="no-tokens-message">{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
+									)
+								}
+							</div>
+						]) : ''
+					}
+					{this.notOwnedTokens?.length ?
+						([
+							<h4 class="tokens-heading">Other tokens</h4>,
+							<div class="ts-tokens-grid">
+								{
+									this.notOwnedTokens?.length ? this.notOwnedTokens.map((token) => {
+										return (
+											<tokens-grid-item
+												key={this.tokenScript.getSourceInfo().tsId + token.contextId}
+												tokenScript={this.tokenScript}
+												token={token}
+												showCard={this.showCard.bind(this)}
+												openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
+										);
+									}) : ''
+								}
+							</div>
+						]) : ''
+					}
 				</div>
 			</Host>
 		)

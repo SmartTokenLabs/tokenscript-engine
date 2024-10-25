@@ -1,5 +1,5 @@
 
-export function getTokenUrlParams(query?: URLSearchParams){
+export function getTokenUrlParams(query?: URLSearchParams, mustHaveChainAndContract = true){
 
 	if (!query) {
 		const queryStr = document.location.search.substring(1);
@@ -8,14 +8,21 @@ export function getTokenUrlParams(query?: URLSearchParams){
 			throw new Error("Cannot load: No URL parameters supplied");
 
 		query = new URLSearchParams(queryStr);
+
+		const hashParams = new URLSearchParams(document.location.hash.substring(1));
+
+		for (const key of ["originId", "tokenId", "card"]){
+			if (!query.has(key) && hashParams.has(key))
+				query.set(key, hashParams.get(key));
+		}
 	}
 
-	if (!query.has("chain") || !query.has("contract"))
+	if (mustHaveChainAndContract && (!query.has("chain") || !query.has("contract")))
 		throw new Error("Cannot load: chain or contract URL parameters not supplied");
 
-	const chain: number = parseInt(query.get("chain"));
+	const chain: number = parseInt(query.get("chain")) ?? 0;
 
-	if (!chain)
+	if (mustHaveChainAndContract && !chain)
 		throw new Error("Cannot load: invalid chain in URL parameter");
 
 	const contract: string = query.get("contract");

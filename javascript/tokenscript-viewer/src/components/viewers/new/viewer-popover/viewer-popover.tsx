@@ -8,6 +8,7 @@ import {ShowToastEventArgs} from "../../../app/app";
 import {TokenGridContext} from "../../util/getTokensFlat";
 import {ScriptSourceType} from "../../../../../../engine-js/src/IEngine";
 import {ScriptInfo} from "@tokenscript/engine-js/src/repo/sources/SourceInterface";
+import {Web3WalletProvider} from "../../../wallet/Web3WalletProvider";
 
 @Component({
 	tag: 'viewer-popover',
@@ -69,10 +70,10 @@ export class ViewerPopover {
 
 		this.tokenScript = tokenScript;
 
-		await this.loadOnboardingCards();
-
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
-			this.tokenScript.getAttributes().getAttribute("tokenBalance")
+			if (!Web3WalletProvider.isWalletConnected())
+				return;
+			this.tokenScript.getAttributes().invalidate(["walletAddress"])
 			await this.loadOnboardingCards();
 		}, "onboarding");
 

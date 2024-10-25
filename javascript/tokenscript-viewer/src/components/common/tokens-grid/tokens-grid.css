@@ -26,6 +26,10 @@
 	height: 100%;
 }
 
+.tokens-heading {
+	margin: 10px 25px 0;
+}
+
 @media (max-width: 768px) and (min-width: 571px) {
 	.ts-tokens-grid {
 		justify-content: space-evenly;
