@@ -146,19 +146,26 @@ export class TokensGrid {
 		}
 
 		if (cardRes.card.type === "onboarding"){
+			const reason = await cardRes.card.isEnabledOrReason();
 			if (
-				await cardRes.card.isEnabledOrReason() === true
+				reason === true
 			) {
 				this.urlActionInvoked = true;
 				setTimeout(() => this.showCard(cardRes.card), 100);
 				return;
 			}
+			this.showToast.emit({
+				type: 'error',
+				title: "The card is not available",
+				description: "The provided card is not available" + (reason !== false ? ": "+reason : '')
+			});
+			return;
 		}
 
 		if (!this.currentTokensFlat.length)
 			return;
 
-		for (let token of this.currentTokensFlat){
+		for (let token of [...this.currentTokensFlat, ...this.notOwnedTokens]){
 
 			const tokenId = ("tokenId" in token) ? token.tokenId : undefined;
 
