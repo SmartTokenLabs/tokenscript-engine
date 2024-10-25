@@ -162,7 +162,7 @@ export class TokensGrid {
 			return;
 		}
 
-		if (!this.currentTokensFlat.length)
+		if (!this.currentTokensFlat.length && !this.notOwnedTokens.length)
 			return;
 
 		for (let token of [...this.currentTokensFlat, ...this.notOwnedTokens]){
