@@ -30,7 +30,7 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 	private async handleMessageResponse(event: MessageEvent) {
 
-		if (event.origin !== this.sdk.instanceData.engineOrigin)
+		if (this.sdk.instanceData.engineOrigin !== "*" && event.origin !== this.sdk.instanceData.engineOrigin)
 			return;
 
 		const params = event.data?.params;
