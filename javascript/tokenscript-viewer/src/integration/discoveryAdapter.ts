@@ -39,6 +39,8 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		const walletAddress = await this.getCurrentWalletAddress();
 		const params = getTokenUrlParams(null, false);
 
+		console.log("PARAMS: ", params);
+
 		for (const initToken of initialTokenDetails){
 
 			try {
@@ -50,12 +52,13 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 				}
 
 				if (
+					params.tokenId &&
 					cachedToken.tokenType !== "erc20" &&
 					(
 						params.originId === cachedToken.originId ||
 						(
 							params.contract &&
-							params.tokenId && params.contract.toLowerCase() === cachedToken.contractAddress &&
+							params.contract.toLowerCase() === cachedToken.contractAddress.toLowerCase() &&
 							params.chain === cachedToken.chainId
 						)
 					)
