@@ -182,7 +182,7 @@ export class TokensGrid {
 		this.showToast.emit({
 			type: 'error',
 			title: "No supported tokens",
-			description: "None of your tokens support the " + action + " action."
+			description: (tokenIdParam ? "The provided token does not" : "None of your tokens") + " support the " + action + " action."
 		});
 		this.urlActionInvoked = true;
 	}
@@ -191,14 +191,21 @@ export class TokensGrid {
 		return (
 			<Host class="ts-token-background" style={{backgroundImage: this.tokenScript.getMetadata().backgroundImageUrl ? `url(${this.tokenScript.getMetadata().backgroundImageUrl})` : null}}>
 				<div class="bg-blur">
-					<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+					<div class="ts-tokens-grid">
+						<loading-spinner color="#1A42FF" size="small" style={{display: this.loading ? "block" : "none"}}></loading-spinner>
+						{
+							!this.loading && !this.currentTokensFlat?.length && !this.notOwnedTokens?.length ? (
+								<h3 class="no-tokens-message">{Web3WalletProvider.isWalletConnected() ?
+									"You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}
+								</h3>) : ''
+						}
+					</div>
 					{this.currentTokensFlat?.length ?
 						([
-							<h4 class="tokens-heading">My tokens</h4>,
+							(this.notOwnedTokens?.length ? <h4 class="tokens-heading">My tokens</h4> : ''),
 							<div class="ts-tokens-grid">
-
 								{
-									this.currentTokensFlat.length ? this.currentTokensFlat.map((token) => {
+									this.currentTokensFlat.map((token) => {
 										return (
 											<tokens-grid-item
 												key={this.tokenScript.getSourceInfo().tsId + token.contextId}
@@ -207,10 +214,7 @@ export class TokensGrid {
 												showCard={this.showCard.bind(this)}
 												openActionOverflowModal={this.openActionOverflowModal}></tokens-grid-item>
 										);
-									}) : (
-										!this.loading ? (
-											<h3 class="no-tokens-message">{Web3WalletProvider.isWalletConnected() ? "You don't have any tokens associated with this TokenScript" : "Connect wallet to load tokens"}</h3>) : ''
-									)
+									})
 								}
 							</div>
 						]) : ''
