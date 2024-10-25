@@ -100,11 +100,6 @@ export class TlinkCardViewer {
 
 		this.tokenScript = await getTokenScriptWithSingleTokenContext(this.app, chain, contract, scriptId, originId, null, null, tokenId, tokenScriptUrl);
 
-		// Reload cards after the token is updated
-		this.tokenScript.on("TOKENS_UPDATED", (data) => {
-			this.loadCard(true);
-		}, "grid");
-
 		await this.loadCard();
 	}
 
