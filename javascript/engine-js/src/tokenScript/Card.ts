@@ -197,7 +197,7 @@ export class Card {
 
 		const transaction = this.getTransaction(txOptions?.txName);
 
-		const tx = await this.tokenScript.executeTransaction(transaction, listener, waitForConfirmation);
+		const tx = await this.tokenScript.executeTransaction(transaction, listener, txOptions, waitForConfirmation);
 
 		// User rejection
 		if (tx === false) {

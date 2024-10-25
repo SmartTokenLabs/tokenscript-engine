@@ -18,6 +18,7 @@ import { EventHandler, ITokenContext, ITokenIdContext, ITokenScript, ITransactio
 import { ScriptInfo } from './repo/sources/SourceInterface';
 import { Card } from './tokenScript/Card';
 import { ViewStyles } from './view/ViewStyles';
+import {TXOptions} from "./view/ViewController";
 
 /**
  * The TokenScript object represents a single instance of a TokenScript.
@@ -499,15 +500,15 @@ export abstract class AbstractTokenScript implements ITokenScript {
    * Execute the TokenScript transaction
    * @param transaction TokenScript transaction object
    * @param listener A listener function to receive transaction update events
+   * @param txOptions Options provided
    * @param waitForConfirmation Wait for transaction confirmation
    */
-  public async executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation: boolean = true) {
+  public async executeTransaction(transaction: Transaction, listener?: ITransactionListener, txOptions?: TXOptions, waitForConfirmation: boolean = true) {
     const wallet = await this.engine.getWalletAdapter();
     const transInfo = transaction.getTransactionInfo();
 
-    // TODO: confirm with James exact use cases of having multiple address in a contract element
-    const chain = this.getCurrentTokenContext()?.chainId ?? (await wallet.getChain());
-    const contractAddr = transInfo.contract.getAddressByChain(chain, true);
+    const chain = txOptions?.chainId ?? this.getCurrentTokenContext()?.chainId ?? (await wallet.getChain());
+    const contractAddr = txOptions?.contractAddress ? {chain, address: txOptions.contractAddress} : transInfo.contract.getAddressByChain(chain, true);
 
     // If validation callback returns false we abort silently
     if (!(await this.transactionValidator.validateContract(chain, contractAddr.address, transInfo.contract, transInfo.function))) return false;
@@ -520,6 +521,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
       ethParams.push(await transInfo.args[i].getEthersArgument(this.getCurrentTokenContext(), transInfo.function, transInfo.contract));
     }
 
+	// TODO: Allow getting chain & address override values from an attribute too?
     const ethValue = transInfo.value ? await transInfo?.value?.getValue(this.getCurrentTokenContext()) : null;
 
     listener({ status: 'started' });

@@ -14,7 +14,7 @@ import {Origin} from './tokenScript/Origin';
 import {Selections} from './tokenScript/selection/Selections';
 import {Transaction} from './tokenScript/Transaction';
 import {IViewBinding} from './view/IViewBinding';
-import {ViewController} from './view/ViewController';
+import {TXOptions, ViewController} from './view/ViewController';
 import {ViewStyles} from './view/ViewStyles';
 
 import {ScriptInfo} from './repo/sources/SourceInterface';
@@ -104,7 +104,7 @@ export interface ITokenScript {
     id?: string,
   ): void;
   getAsnModuleDefinition(name: string): Element | null;
-  executeTransaction(transaction: Transaction, listener?: ITransactionListener, waitForConfirmation?: boolean): Promise<ITransactionStatus | false>;
+  executeTransaction(transaction: Transaction, listener?: ITransactionListener, txOptions?: TXOptions, waitForConfirmation?: boolean): Promise<ITransactionStatus | false>;
 
   // Only for full TokenScript
   getViewController(viewBinding?: IViewBinding): ViewController;
