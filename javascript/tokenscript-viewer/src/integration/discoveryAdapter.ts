@@ -39,8 +39,6 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		const walletAddress = await this.getCurrentWalletAddress();
 		const params = getTokenUrlParams(null, false);
 
-		console.log("PARAMS: ", params);
-
 		for (const initToken of initialTokenDetails){
 
 			try {
