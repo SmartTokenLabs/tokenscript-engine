@@ -31,6 +31,7 @@ export enum ChainID {
 	MINT_SEPOLIA = 1687,
 	CELO = 42220,
 	CELO_ALFAJORES = 44787,
+	RISE_SEPOLIA = 11155931,
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -58,6 +59,7 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.MINT_SEPOLIA]: 'mint-sepolia',
 	[ChainID.CELO]: 'celo',
 	[ChainID.CELO_ALFAJORES]: 'celo-alfajores',
+	[ChainID.RISE_SEPOLIA]: 'rise-sepolia',
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -84,6 +86,7 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.MINT_SEPOLIA]: 'Mint (Sepolia Testnet)',
 	[ChainID.CELO]: 'Celo',
 	[ChainID.CELO_ALFAJORES]: 'Celo (Alfajores Testnet)',
+	[ChainID.RISE_SEPOLIA]: 'Rise (Sepolia Testnet)',
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -210,6 +213,10 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.CELO_ALFAJORES]: {
 		rpc: `https://celo-alfajores.infura.io/v3/${INFURA_API_KEY}`,
 		explorer: 'https://explorer.celo.org/alfajores/tx/',
+	},
+	[ChainID.RISE_SEPOLIA]: {
+		rpc: 'https://testnet.riselabs.xyz',
+		explorer: 'https://testnet-explorer.riselabs.xyz/tx/',
 	},
 }
 
