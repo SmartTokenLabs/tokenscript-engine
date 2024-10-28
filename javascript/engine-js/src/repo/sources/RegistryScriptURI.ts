@@ -148,7 +148,7 @@ export class RegistryScriptURI implements SourceInterface {
 			));
 		} catch (e) {
 			console.error(e);
-			scriptSourceData = null;
+			scriptSourceData = [];
 		}
 
 		let sourceElements: ScriptInfo[] = [];

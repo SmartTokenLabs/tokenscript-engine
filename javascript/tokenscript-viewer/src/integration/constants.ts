@@ -100,11 +100,19 @@ export const CHAIN_EAS_SCHEMA_REGI_MAP: ChainMapInterface = {
 
 export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
-		rpc: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
+		rpc: [
+			`https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
+			"https://1rpc.io/eth",
+			"https://eth.llamarpc.com"
+		],
 		explorer: 'https://etherscan.com/tx/'
 	},
 	[ChainID.SEPOLIA]: {
-		rpc: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+		rpc: [
+			`https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+			"https://eth-sepolia.api.onfinality.io/public",
+			"https://rpc.sepolia.org"
+		],
 		explorer: 'https://sepolia.etherscan.io/tx/'
 	},
 	[ChainID.HOLESKY]: {
@@ -179,11 +187,19 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://explorer.sepolia.mantle.xyz/tx/'
 	},
 	[ChainID.BASE]: {
-		rpc: `https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+		rpc: [
+			`https://base-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+			"https://base.llamarpc.com",
+			"https://base.drpc.org"
+		],
 		explorer: 'https://basescan.org/tx/'
 	},
 	[ChainID.BASE_SEPOLIA]: {
-		rpc: `https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+		rpc: [
+			`https://base-sepolia.infura.io/v3/${INFURA_API_KEY}`,
+			"https://sepolia.base.org",
+			"https://base-sepolia-rpc.publicnode.com"
+		],
 		explorer: 'https://sepolia.basescan.org/tx/'
 	},
 	[ChainID.BLAST]: {

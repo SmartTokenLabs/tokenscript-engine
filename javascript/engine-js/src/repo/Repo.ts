@@ -70,7 +70,7 @@ export class Repo {
 			try {
 				scripts.push(...await (new resolver(this.context)).resolveAllScripts(tsPath));
 			} catch (e) {
-				console.log("Failed to resolve tokenscripts using resolver: " + resolver.name, e.message);
+				console.error("Failed to resolve tokenscripts using resolver: " + resolver.name, e);
 			}
 		}
 
