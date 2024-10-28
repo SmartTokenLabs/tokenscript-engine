@@ -4,7 +4,7 @@ export function getTokenUrlParams(query?: URLSearchParams, mustHaveChainAndContr
 	if (!query) {
 		const queryStr = document.location.search.substring(1);
 
-		if (!queryStr)
+		if (!queryStr && mustHaveChainAndContract)
 			throw new Error("Cannot load: No URL parameters supplied");
 
 		query = new URLSearchParams(queryStr);
