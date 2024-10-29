@@ -35,8 +35,11 @@ export class Contract {
 		if (abiXml.length){
 			try {
 				this.abi = JSON.parse(abiXml[0].innerHTML);
+				if (!Array.isArray(this.abi))
+					throw new Error("ABI is not a valid ABI");
 			} catch (e){
 				console.warn("Failed to parse contract ABI", e);
+				this.abi = [];
 			}
 		}
 	}
