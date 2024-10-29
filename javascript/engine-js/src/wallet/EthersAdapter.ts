@@ -102,11 +102,19 @@ export class EthersAdapter implements IWalletAdapter {
 			if (EthersAdapter.isTransactionRejection(e))
 				return false;
 
-			const errDecoder = ErrorDecoder.create(errorAbi)
-			const decodedError = await errDecoder.decode(e);
 			console.error(e);
-			console.log("Decoded error: ", decodedError);
-			if (decodedError.type != ErrorType.EmptyError && decodedError.type != ErrorType.UnknownError) {
+
+			let decodedError;
+
+			try {
+				const errDecoder = ErrorDecoder.create(errorAbi)
+				decodedError = await errDecoder.decode(e);
+				console.log("Decoded error: ", decodedError);
+			} catch (e: any){
+				console.error("Failed to decode error: ", e);
+			}
+
+			if (decodedError && decodedError.type != ErrorType.EmptyError && decodedError.type != ErrorType.UnknownError) {
 
 				let decodedMessage;
 

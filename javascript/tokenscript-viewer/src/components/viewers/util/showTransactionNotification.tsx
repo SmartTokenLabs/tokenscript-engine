@@ -40,7 +40,7 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 
 	console.error(e);
 
-	let message = e.message;
+	let message = e.shortMessage ?? e.message;
 
 	const revertMatch = message.match(/reverted with reason string '(.*)'/);
 
@@ -81,8 +81,8 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 							borderRadius: "5px",
 							fontWeight: "500"
 						}}
-				        onClick={() => navigator.clipboard.writeText(e.message)}>
-					<copy-icon style={{paddingLeft: "0 !important"}} height={"20px"} copyText={e.message}/>
+				        onClick={() => navigator.clipboard.writeText(JSON.stringify(e))}>
+					<copy-icon style={{paddingLeft: "0 !important"}} height={"20px"} copyText={JSON.stringify(e)}/>
 					Copy Error
 				</button>
 			</div>
