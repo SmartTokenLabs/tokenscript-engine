@@ -102,7 +102,7 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 			if (new URLSearchParams(document.location.search).has("___b64url")){
 				const blob = new Blob([html], {type: "text/html"});
-				iframe.src = URL.createObjectURL(blob) + (card.urlFragment ? "#" + card.urlFragment : "");
+				iframe.src = URL.createObjectURL(blob) + ("#" + viewController.tokenViewData.getCardUrlParameters());
 			} else {
 				iframe.srcdoc = html;
 			}
