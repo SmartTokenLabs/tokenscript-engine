@@ -6,7 +6,7 @@ import {
     ITokenData,
     ITokenScriptSDK,
     ITransactionListener,
-    ITransactionStatus,
+    ITransactionStatus, TLinkRequest,
     TokenScriptEvents,
     TXOptions
 } from "./types";
@@ -204,6 +204,17 @@ class TokenScriptSDK  implements ITokenScriptSDK {
                 writable ? new BrowserProvider(window.ethereum, Network.from(addressInfo.chain)) : this.eth.getRpcProvider(addressInfo.chain)
             );
         },
+    }
+
+    public readonly tlink = {
+        request: async (request: TLinkRequest) => {
+            try {
+                const res = await this.engineAdapter.request<any>(RequestFromView.TLINK_REQUEST, request, true) as any;
+                return res.result;
+            } catch (e) {
+                throw e;
+            }
+        }
     }
 
     /**

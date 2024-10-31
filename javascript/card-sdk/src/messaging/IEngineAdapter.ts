@@ -20,7 +20,8 @@ export enum RequestFromView {
 	EXEC_TRANSACTION = "execTransaction",
 	REFRESH_TOKENS = "refreshTokens",
 	SHOW_TX_TOAST = "showTransactionToast",
-	SHOW_TOAST = "showToast"
+	SHOW_TOAST = "showToast",
+	TLINK_REQUEST = "tlinkRequest"
 }
 
 export interface IEngineAdapter {

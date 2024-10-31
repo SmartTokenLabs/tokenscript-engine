@@ -9,6 +9,7 @@ import {AttestationDefinition} from "./tokenScript/attestation/AttestationDefini
 import {ILocalStorageAdapter} from "./view/data/ILocalStorageAdapter";
 import {IViewBinding} from "./view/IViewBinding";
 import {IWalletAdapter} from "./wallet/IWalletAdapter";
+import {ITlinkAdapter} from "./tlink/ITlinkAdapter";
 
 /**
  * Engine.ts is the top level component for the TokenScript engine, it can be used to create a new TokenScript instance

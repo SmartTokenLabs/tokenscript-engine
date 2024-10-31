@@ -5,6 +5,8 @@ import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
 import {LocalStorageProxy, LocalStorageRequest} from "./data/LocalStorageProxy";
 import {IViewBinding} from "./IViewBinding";
 import {TokenViewData} from "./TokenViewData";
+import {TLinkRequest} from "../tlink/ITlinkAdapter";
+import {TokenScriptEngine} from "../Engine";
 
 export enum ViewEvent {
 	TOKENS_UPDATED = "tokensUpdated",
@@ -27,7 +29,8 @@ export enum RequestFromView {
 	EXEC_TRANSACTION = "execTransaction",
 	REFRESH_TOKENS = "refreshTokens",
 	SHOW_TX_TOAST = "showTransactionToast",
-	SHOW_TOAST = "showToast"
+	SHOW_TOAST = "showToast",
+	TLINK_REQUEST = "tlinkRequest"
 }
 
 export type TXTrigger = "refreshTokens"|"invalidateAttributes";
@@ -314,6 +317,10 @@ export class ViewController {
 				await this.updateCardData(params.id);
 				break;
 
+			case RequestFromView.TLINK_REQUEST:
+				await this.tlinkRequest({method: params.method, payload: params.payload, uid: params.id});
+				break;
+
 			default:
 				throw new Error("TokenScript view API method: " + method + " is not implemented.");
 		}
@@ -338,6 +345,21 @@ export class ViewController {
 		}
 
 		this.viewAdapter.showLoader(false);
+	}
+
+	private async tlinkRequest(request: TLinkRequest){
+		try {
+			if (!this.tokenScript.getEngine().config.tlinkRequestAdapter)
+				throw new Error("TLink adapter not available");
+
+			const res = await this.tokenScript.getEngine().config.tlinkRequestAdapter(request);
+
+			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: null, result: res.response}, request.uid);
+
+		} catch (e){
+			console.error(e);
+			this.dispatchViewEvent(ViewEvent.EXECUTE_CALLBACK, {error: e.message, result: null}, request.uid);
+		}
 	}
 
 	/**

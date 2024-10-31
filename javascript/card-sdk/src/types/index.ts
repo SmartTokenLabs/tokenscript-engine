@@ -38,6 +38,11 @@ export interface TokenScriptEvents {
 	TRANSACTION_EVENT: ITransactionStatus
 }
 
+export interface TLinkRequest {
+	method: string,
+	payload: Object
+}
+
 export interface ITokenScriptSDK {
 	engineAdapter: IEngineAdapter;
 	instanceData: IInstanceData;
@@ -65,6 +70,9 @@ export interface ITokenScriptSDK {
 		getRpcProvider: (chain: number) => AbstractProvider
 		getContractInfo: (name: string, chain?: number) => {chain: number, address: string, abi: any}
 		getContractInstance: (name: string, chain?: number) => Contract
+	}
+	tlink: {
+		request: (request: TLinkRequest) => void
 	}
 	env: {[key: string]: string}
 	emitEvent: <

@@ -7,6 +7,7 @@ import { ITokenDiscoveryAdapter } from './tokens/ITokenDiscoveryAdapter';
 import { ITokenScript } from './ITokenScript';
 import { ILocalStorageAdapter } from './view/data/ILocalStorageAdapter';
 import { IWalletAdapter } from './wallet/IWalletAdapter';
+import {ITlinkAdapter} from "./tlink/ITlinkAdapter";
 
 export interface IEngineConfig {
   ipfsGateway?: string;
@@ -14,6 +15,7 @@ export interface IEngineConfig {
   trustedKeys?: TrustedKey[]; // Define signing keys which are always valid
   txValidationCallback?: (txInfo: ITxValidationInfo) => boolean | Promise<boolean>;
   viewerOrigin?: string;
+  tlinkRequestAdapter?: ITlinkAdapter;
 }
 
 export enum ScriptSourceType {

@@ -15,6 +15,7 @@ import {dbProvider} from "../../providers/databaseProvider";
 import {showToastNotification} from "../viewers/util/showToast";
 import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 import {StaticProviders} from "../wallet/Web3WalletProvider";
+import {TLinkRequest} from "../../../../engine-js/src/tlink/ITlinkAdapter";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -135,7 +136,38 @@ export class AppRoot {
 					return true;
 					//return this.confirmTxPopover.confirmTransaction(txInfo);
 				},
-				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin
+				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin,
+				tlinkRequestAdapter: (data: TLinkRequest) => {
+
+					if (this.viewerType.indexOf("tlink") === -1)
+						throw new Error("Tlink adapter is not available in this context");
+
+					console.log("TLink request: ", data);
+
+					return new Promise((resolve, reject) => {
+						const messageHandler = (event) => {
+							const response = event.data
+							if (
+								response.type === 'TLINK_API_RESPONSE' &&
+								response.data?.method === data.method &&
+								response.data?.uid === data.uid
+							) {
+								window.removeEventListener('message', messageHandler)
+								console.log("response from TLink adapter: ", response);
+								resolve(response.data)
+							}
+						}
+
+						window.addEventListener('message', messageHandler)
+
+						window.parent.postMessage({ type: 'TLINK_API_REQUEST', data }, '*')
+
+						setTimeout(() => {
+							window.removeEventListener('message', messageHandler)
+							reject(new Error('Message timeout'))
+						}, 5000)
+					})
+				}
 			}
 		);
 
