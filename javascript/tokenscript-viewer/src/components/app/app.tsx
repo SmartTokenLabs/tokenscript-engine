@@ -142,8 +142,6 @@ export class AppRoot {
 					if (this.viewerType.indexOf("tlink") === -1)
 						throw new Error("Tlink adapter is not available in this context");
 
-					console.log("TLink request: ", data);
-
 					return new Promise((resolve, reject) => {
 						const messageHandler = (event) => {
 							const response = event.data
@@ -153,7 +151,6 @@ export class AppRoot {
 								response.data?.uid === data.uid
 							) {
 								window.removeEventListener('message', messageHandler)
-								console.log("response from TLink adapter: ", response);
 								resolve(response.data)
 							}
 						}
