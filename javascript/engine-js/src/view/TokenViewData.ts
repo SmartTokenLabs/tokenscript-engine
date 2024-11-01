@@ -99,6 +99,14 @@ export class TokenViewData {
 			const browserHashParams = new URLSearchParams(document.location.hash.substring(1));
 			browserHashParams.set("card", this.card.name);
 			browserHashParams.set("tsViewerType", (new URLSearchParams(document.location.search)).get("viewType") ?? "default");
+
+			const params = new URLSearchParams(document.location.search)
+			params.forEach((value, key) => {
+				if (key.indexOf("ext_")===0 && value.length){
+					browserHashParams.set(key, value);
+				}
+			});
+
 			urlParams = browserHashParams.toString();
 		}
 
