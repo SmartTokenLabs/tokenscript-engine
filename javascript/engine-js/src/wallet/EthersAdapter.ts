@@ -134,6 +134,7 @@ export class EthersAdapter implements IWalletAdapter {
 				} else {
 					e.message = decodedMessage;
 				}
+				e.decodedError = decodedError;
 			}
 			throw e;
 		}

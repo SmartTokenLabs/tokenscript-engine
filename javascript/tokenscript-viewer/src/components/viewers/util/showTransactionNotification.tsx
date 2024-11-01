@@ -40,31 +40,7 @@ export const handleTransactionError = (e: any, showToast: EventEmitter<ShowToast
 
 	console.error(e);
 
-	let message = e.shortMessage ?? e.message;
-
-	const revertMatch = message.match(/reverted with reason string '(.*)'/);
-
-	if (revertMatch){
-		message = revertMatch[1];
-	} else {
-		const revertMatch = message.match(/Details: (.*)\\n/);
-
-		if (revertMatch){
-			message = revertMatch[1];
-		} else {
-			const regex = /"message": "(.*)"/g;
-			let match;
-			const detailedMessages = [];
-
-			while (match = regex.exec(message)){
-				if (detailedMessages.indexOf(match[1]) === -1)
-					detailedMessages.push(match[1]);
-			}
-
-			if (detailedMessages.length)
-				message = detailedMessages.join("\n");
-		}
-	}
+	let message = e.message;
 
 	showToast.emit({
 		type: 'error',
