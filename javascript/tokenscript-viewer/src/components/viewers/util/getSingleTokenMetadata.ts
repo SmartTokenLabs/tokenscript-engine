@@ -25,6 +25,9 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 		name: meta.title
 	};
 
+	if (meta.contractType)
+		selectedOrigin.tokenType = meta.contractType.toLowerCase();
+
 	if (selectedOrigin.tokenType !== "erc20") {
 
 		selectedOrigin = await discoveryAdapter.getTokenById(selectedOrigin, tokenId);

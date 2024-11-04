@@ -374,7 +374,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
         initialTokenDetails.push({
           originId: i, // TODO: ensure that this is unique
           blockChain: 'eth',
-          tokenType: contract.getInterface(),
+          tokenType: contract.getInterface() ?? "erc721",
           chainId: addresses[key].chain,
           contractAddress: addresses[key].address,
         });

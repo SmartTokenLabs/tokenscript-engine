@@ -30,7 +30,6 @@ export interface ITokenScriptEngine {
   readonly config?: IEngineConfig;
 
   processIpfsUrl(uri: string): string;
-  getScriptUris(chain: string | number, contractAddr: string): Promise<string[] | null>;
   getTokenScriptFromUrl(url: string): Promise<ITokenScript>;
   loadTokenScript(xml: string): Promise<ITokenScript>;
 

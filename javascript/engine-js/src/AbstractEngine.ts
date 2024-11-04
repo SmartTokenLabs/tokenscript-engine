@@ -69,42 +69,6 @@ export abstract class AbstractTokenScriptEngine implements ITokenScriptEngine {
     return uri;
   }
 
-  public async getScriptUris(chain: string | number, contractAddr: string) {
-    // Direct RPC gets too hammered by opensea view (that doesn't allow localStorage to cache XML)
-    /*const provider = await this.getWalletAdapter();
-		let uri: string|string[]|null;
-
-		try {
-			uri = Array.from(await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string[]"])) as string[];
-		} catch (e) {
-			uri = await provider.call(parseInt(chain), contractAddr, "scriptURI", [], ["string"]);
-		}
-
-		if (uri && Array.isArray(uri))
-			uri = uri.length ? uri[0] : null
-
-		return <string>uri;*/
-
-    // TODO: Add support for selecting a specific index or URL?
-    // const res = await fetch(`https://api.token-discovery.tokenscript.org/script-uri?chain=${chain}&contract=${contractAddr}`);
-    // const scriptUris = await res.json();
-    //return <string>scriptUris[0];
-
-    // i.e. https://store-backend.smartlayer.network/tokenscript/0xD5cA946AC1c1F24Eb26dae9e1A53ba6a02bd97Fe/chain/137/script-uri
-    const res = await fetch(`https://store-backend.smartlayer.network/tokenscript/${contractAddr.toLowerCase()}/chain/${chain}/script-uri`);
-    const data = await res.json();
-
-    if (!data.scriptURI) return null;
-
-    let uris: string[] = [];
-
-    if (data.scriptURI.erc5169?.length) uris.push(...data.scriptURI.erc5169);
-
-    if (data.scriptURI.offchain?.length) uris.push(...data.scriptURI.offchain);
-
-    return uris.length ? uris : null;
-  }
-
   public abstract getTokenScriptFromUrl(url: string): Promise<ITokenScript>;
   public abstract loadTokenScript(xml: string): Promise<ITokenScript>;
   public abstract getTokenDiscoveryAdapter?: () => Promise<any>;

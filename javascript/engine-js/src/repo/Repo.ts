@@ -3,6 +3,7 @@ import {RegistryScriptURI} from "./sources/RegistryScriptURI";
 import {ScriptURI} from "./sources/ScriptURI";
 import {ResolvedScriptData, ScriptInfo, SourceInterfaceConstructor} from "./sources/SourceInterface";
 import {TokenScriptRepo} from "./sources/TokenScriptRepo";
+import {LaunchpadAPI} from "./sources/LaunchpadAPI";
 
 type ScriptLookupCache = {[chainAndContract: string]: {scripts: ScriptInfo[], timestamp: number}};
 
@@ -13,11 +14,11 @@ export class Repo {
 
 	/**
 	 * Any number of sources can be defined and their order changed.
-	 * The first source should be the most reliable to avoid fallback lookups.
 	 */
 	static REPO_SOURCES: SourceInterfaceConstructor[] = [
-		ScriptURI,
-		RegistryScriptURI,
+		//ScriptURI,
+		//RegistryScriptURI,
+		LaunchpadAPI,
 		TokenScriptRepo
 	];
 
@@ -70,7 +71,7 @@ export class Repo {
 			try {
 				scripts.push(...await (new resolver(this.context)).resolveAllScripts(tsPath));
 			} catch (e) {
-				console.error("Failed to resolve tokenscripts using resolver: " + resolver.name, e);
+				console.warn("Failed to resolve tokenscripts using resolver: " + resolver.name, e);
 			}
 		}
 

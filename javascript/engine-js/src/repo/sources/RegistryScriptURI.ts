@@ -2,33 +2,12 @@ import {ITokenScriptEngine, ScriptSourceType} from "../../IEngine";
 import {ScriptInfo, SourceInterface} from "./SourceInterface";
 
 const REGISTRY_7738 = "0x0077380bCDb2717C9640e892B9d5Ee02Bb5e0682";
-const HOLESKY_ID = 17000; // TODO: Source this from engine
-const cacheTimeout = 60 * 1000; // 1 minute cache validity
-
-//cache entries
-export interface ScriptEntry {
-	scriptURIs: string[];
-	timeStamp: number;
-}
-
-export interface RegistryMetaData {
-	scriptData: ScriptInfo[];
-	timeStamp: number;
-}
-
-const cachedResults = new Map<string, ScriptEntry>();
-const cachedMetaDataResults = new Map<string, RegistryMetaData>();
 
 /**
  * The ScriptURI source implement ethereum EIP-5169
  * https://github.com/ethereum/EIPs/blob/master/EIPS/eip-5169.md
  */
 export class RegistryScriptURI implements SourceInterface {
-
-	// Development deployment of 7738 on Holesky only
-	// TODO: Replace with multichain address once available
-
-
 
 	constructor(private context: ITokenScriptEngine) {
 	}
@@ -51,55 +30,9 @@ export class RegistryScriptURI implements SourceInterface {
 		return registryScripts;
 	}
 
-	// This returns all entries but the 7738 calling function currently selects the first entry
-	// TODO: Create selector that displays icon and name for each entry, in order returned
-	// TODO: Use global deployed address for 7738
-	public async get7738Entry(chain: string, contractAddr: string): Promise<string[]> {
-
-		// use 1 minute persistence fetch cache
-		let cachedResult = this.checkCachedResult(chain, contractAddr);
-
-		if (cachedResult.length > 0) {
-			return cachedResult;
-		}
-
-		const chainId: number = parseInt(chain);
-
-		const provider = await this.context.getWalletAdapter();
-		let uri: string|string[]|null;
-
-		try {
-			uri = Array.from(await provider.call(
-				chainId, REGISTRY_7738, "scriptURI", [
-					{
-						internalType: "address",
-						name: "",
-						type: "address",
-						value: contractAddr
-					}], ["string[]"]
-			)) as string[];
-		} catch (e) {
-			uri = "";
-		}
-
-		if (uri && Array.isArray(uri) && uri.length > 0) {
-			this.storeResult(chain, contractAddr, uri);
-			return uri;
-		} else {
-			return [];
-		}
-	}
-
 	public async get7738Metadata(chain: string, contractAddr: string): Promise<ScriptInfo[]> {
 
 		const chainId: number = parseInt(chain);
-
-		// use 1 minute persistence fetch cache
-		let cachedResult = this.checkCachedMetaData(chain, contractAddr);
-
-		if (cachedResult.length > 0) {
-			return cachedResult;
-		}
 
 		const provider = await this.context.getWalletAdapter();
 		let scriptSourceData: any;
@@ -175,86 +108,5 @@ export class RegistryScriptURI implements SourceInterface {
 
 		return sourceElements;
 	}
-
-	private storeResult(chain: string, contractAddr: string, uris: string[]) {
-		// remove out of date entries
-		cachedResults.forEach((value, key) => {
-			if (value.timeStamp < (Date.now() - cacheTimeout)) {
-				cachedResults.delete(key);
-			}
-		});
-
-		cachedResults.set(chain + "-" + contractAddr, {
-			scriptURIs: uris,
-			timeStamp: Date.now()
-		});
-	}
-
-	private checkCachedResult(chain: string, contractAddress: string): string[] {
-		const key = chain + "-" + contractAddress;
-		const mapping = cachedResults.get(key);
-		if (mapping) {
-			if (mapping.timeStamp < (Date.now() - cacheTimeout)) {
-				//out of date result, remove key
-				cachedResults.delete(key);
-				return []
-			} else {
-				//consoleLog("Can use cache");
-				return mapping.scriptURIs;
-			}
-		} else {
-			return [];
-		}
-	}
-
-	private checkCachedMetaData(chain: string, contractAddress: string): ScriptInfo[] {
-		const key = chain + "-" + contractAddress;
-		this.removeOutOfDateEntries();
-		const mapping = cachedMetaDataResults.get(key);
-		if (mapping) {
-			return mapping.scriptData;
-		} else {
-			return [];
-		}
-	}
-
-	//ensure memory usage is kept to a minimum
-	private removeOutOfDateEntries() {
-		const currentTime = Date.now();
-		for (const [key, value] of cachedMetaDataResults) {
-			if (currentTime - value.timeStamp > cacheTimeout) {
-				cachedMetaDataResults.delete(key);
-			}
-		}
-	}
-
-	/*public async getAuthenticationStatus(contractAddress: string, order: number) {
-		const wallet = await this.engine.getWalletAdapter();
-		const chain = this.context.getCurrentTokenContext()?.chainId ?? await wallet.getChain();
-
-		let isAuthorised: boolean = false;
-
-		try {
-			isAuthorised = await wallet.call(
-				chain, HOLESKY_DEV_7738, "isAuthenticated", [
-					{
-						internalType: "address",
-						name: "",
-						type: "address",
-						value: contractAddress
-					},
-					{
-						internalType: "uint256",
-						name: "",
-						type: "uint256",
-						value: order
-					}], ["bool"]
-			);
-		} catch (e) {
-
-		}
-
-		return isAuthorised;
-	}*/
 
 }

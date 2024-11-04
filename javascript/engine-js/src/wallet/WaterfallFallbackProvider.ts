@@ -12,13 +12,22 @@ export class WaterfallFallbackProvider extends AbstractProvider {
 
 	async _perform<T = any>(req: PerformActionRequest): Promise<T> {
 
+		let errors = []
+
 		for (const provider of this.providers){
 			try {
 				return await provider._perform(req);
 			} catch (e) {
-				console.error("Provider error, falling back to next provider ", e);
+				// For non connection errors we can throw
+				if (e?.code === "CALL_EXCEPTION"){
+					throw e;
+				}
+				errors.push(e)
+				console.error("Provider error, falling back to next provider ", e)
 			}
 		}
+
+		throw errors[0];
 	}
 
 	async destroy(): Promise<void> {
