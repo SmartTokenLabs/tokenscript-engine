@@ -16,8 +16,8 @@ export class Repo {
 	 * Any number of sources can be defined and their order changed.
 	 */
 	static REPO_SOURCES: SourceInterfaceConstructor[] = [
-		//ScriptURI,
-		//RegistryScriptURI,
+		ScriptURI,
+		RegistryScriptURI,
 		LaunchpadAPI,
 		TokenScriptRepo
 	];
