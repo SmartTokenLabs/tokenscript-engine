@@ -61,12 +61,7 @@ export class NewViewer {
 					continue;
 
 				this.myTokenScripts[id].tokenScript.getAttributes().invalidate(["walletAddress"]);
-
-				if (walletConnection){
-					this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
-				} else {
-					this.myTokenScripts[id].tokenScript.setTokenMetadata([]);
-				}
+				this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
 			}
 		})
 		this.processUrlLoad().then(() => this.init());
