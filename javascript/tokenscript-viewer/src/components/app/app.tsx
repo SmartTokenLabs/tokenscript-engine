@@ -197,8 +197,17 @@ export class AppRoot {
 				return (await WalletProvider.getWallet(true)).provider;
 			}
 		} else {
-			providerFactory = async () => {
-				return (await (await import("../wallet/Web3WalletProvider")).Web3WalletProvider.getWallet(true)).provider;
+			providerFactory = async (requireConnection = true) => {
+
+				const walletProvider = (await import("../wallet/Web3WalletProvider")).Web3WalletProvider;
+
+				if (!walletProvider.isWalletConnected()){
+					if (!requireConnection){
+						throw new Error("Wallet not connected");
+					}
+				}
+
+				return (await walletProvider.getWallet(true)).provider;
 			}
 		}
 

@@ -27,15 +27,15 @@ export class EthersAdapter implements IWalletAdapter {
 	private rpcProviders: {[chainId: number]: ethers.JsonRpcProvider|ethers.FallbackProvider|WaterfallFallbackProvider} = {};
 
 	constructor(
-		public getWalletEthersProvider: () => Promise<ethers.BrowserProvider>,
+		public getWalletEthersProvider: (requireConnection?: boolean) => Promise<ethers.BrowserProvider>,
 		public readonly chainConfig: {[key: number]: IChainConfig}
 	) {
 
 	}
 
-	private async getEthersProvider(){
+	private async getEthersProvider(requireConnection: boolean = true){
 
-		this.ethersProvider = await this.getWalletEthersProvider();
+		this.ethersProvider = await this.getWalletEthersProvider(requireConnection);
 
 		return this.ethersProvider;
 	}
@@ -308,7 +308,7 @@ export class EthersAdapter implements IWalletAdapter {
 	async getCurrentWalletAddress() {
 
 		try {
-			const ethersProvider = await this.getEthersProvider();
+			const ethersProvider = await this.getEthersProvider(false);
 
 			const accounts = await ethersProvider.listAccounts();
 

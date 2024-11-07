@@ -120,7 +120,7 @@ export class TokensGrid {
 
 	private async invokeUrlAction(){
 
-		if (this.urlActionInvoked || !Web3WalletProvider.isWalletConnected())
+		if (this.urlActionInvoked)
 			return;
 
 		const params = new URLSearchParams(document.location.hash.substring(1));

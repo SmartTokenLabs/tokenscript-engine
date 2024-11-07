@@ -71,8 +71,6 @@ export class ViewerPopover {
 		this.tokenScript = tokenScript;
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
-			if (!Web3WalletProvider.isWalletConnected())
-				return;
 			this.tokenScript.getAttributes().invalidate(["walletAddress"])
 			await this.loadOnboardingCards();
 		}, "onboarding");
