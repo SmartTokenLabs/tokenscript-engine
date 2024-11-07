@@ -31,11 +31,6 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 
 		const resultTokens: ITokenCollection[] = [];
 
-		if (!this.engine && !Web3WalletProvider.isWalletConnected()){
-			//Web3WalletProvider.getWallet(true);
-			return [];
-		}
-
 		const walletAddress = await this.getCurrentWalletAddress();
 		const params = getTokenUrlParams(null, false);
 
@@ -307,6 +302,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 	}
 
 	private async fetchOwnerTokens(token: ITokenCollection, chain: string, ownerAddress: string){
+
+		if (ownerAddress === ZeroAddress)
+			return [];
 
 		const url = token.tokenType === "erc20" ?
 			`/get-owner-fungible-tokens?collectionAddress=${token.contractAddress}&owner=${ownerAddress}&chain=${chain}&blockchain=evm` :
