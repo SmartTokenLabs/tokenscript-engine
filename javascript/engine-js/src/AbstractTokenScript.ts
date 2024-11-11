@@ -289,7 +289,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
 
 			const balance = tokenContext.balance ? tokenContext.balance.toString() : "0"; // bigint can't be json serialized, so it must always be string
 
-			const image = this.getMetadata().imageUrl ?? tokenDetails?.image ?? this.getMetadata().iconUrl;
+			const image = this.getMetadata().imageUrl ?? tokenDetails?.image ?? tokenContext.image ?? this.getMetadata().iconUrl;
 
 			data = {
 				name: tokenDetails?.name ?? tokenContext.name,
@@ -304,6 +304,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
 				tokenId: tokenContext.selectedTokenId,
 				ownerAddress: tokenContext.tokenType === "erc20" ? await this.getCurrentWalletAddress() : ZeroAddress,
 				image_preview_url: image,
+				image
 			};
 
 			if (tokenDetails) {

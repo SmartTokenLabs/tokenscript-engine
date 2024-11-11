@@ -69,11 +69,10 @@ export class TokensGrid {
 
 			if (walletConnection){
 				this.currentWalletAddress = walletConnection.address.toLowerCase();
-				this.tokenScript.getTokenMetadata(true);
 			} else {
 				this.currentWalletAddress = ZeroAddress;
-				this.tokenScript.setTokenMetadata([]);
 			}
+			await this.tokenScript.getTokenMetadata(true);
 		});
 
 		if (Web3WalletProvider.isWalletConnected())
