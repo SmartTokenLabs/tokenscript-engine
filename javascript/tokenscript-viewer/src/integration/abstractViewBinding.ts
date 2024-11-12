@@ -181,7 +181,6 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 				this.postMessageToView(event, {oldTokens: tokens, updatedTokens: tokens, cardId: id, id});
 
-				this.hideLoader();
 				return;
 
 			default:
