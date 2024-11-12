@@ -62,6 +62,9 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 					}
 				}
 
+				// Ensure originId from cache isn't used to allow correct sharing of this data across multiple tokenscripts
+				cachedToken.originId = initToken.originId;
+
 				resultTokens.push(cachedToken);
 
 			} catch (e){
