@@ -83,6 +83,9 @@ export abstract class AbstractViewBinding implements IViewBinding {
 
 	protected hideLoader() {
 		this.loader.style.display = "none";
+		// Return focus to iframe
+		if (this.iframe)
+			this.iframe.contentWindow.focus();
 	}
 
 	static async injectContentView(iframe: HTMLIFrameElement, card: Card, viewController: ViewController) {
