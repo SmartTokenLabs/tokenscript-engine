@@ -140,18 +140,13 @@ export class AppRoot {
 				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin,
 				tlinkRequestAdapter: async (data: TLinkRequest) => {
 
-					// Catch & process recaptcha request unless tlink
-
-					if (this.viewerType.indexOf("tlink") === -1) {
-						if (data.method === "getRecaptchaToken"){
-							const recaptchaRequest = data.payload as { siteKey?: string }
-							return {
-								...data,
-								response: await getRecaptchaToken(recaptchaRequest.siteKey)
-							};
-						}
-
-						throw new Error("Tlink adapter is not available in this context");
+					// Recaptcha requests can be processed here
+					if (data.method === "getRecaptchaToken"){
+						const recaptchaRequest = data.payload as { siteKey?: string }
+						return {
+							...data,
+							response: await getRecaptchaToken(recaptchaRequest.siteKey)
+						};
 					}
 
 					return new Promise((resolve, reject) => {
