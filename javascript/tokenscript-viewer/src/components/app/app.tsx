@@ -16,6 +16,7 @@ import {showToastNotification} from "../viewers/util/showToast";
 import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 import {StaticProviders} from "../wallet/Web3WalletProvider";
 import {TLinkRequest} from "../../../../engine-js/src/tlink/ITlinkAdapter";
+import {getRecaptchaToken} from "../../integration/googleRecaptcha";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -137,10 +138,21 @@ export class AppRoot {
 					//return this.confirmTxPopover.confirmTransaction(txInfo);
 				},
 				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin,
-				tlinkRequestAdapter: (data: TLinkRequest) => {
+				tlinkRequestAdapter: async (data: TLinkRequest) => {
 
-					if (this.viewerType.indexOf("tlink") === -1)
+					// Catch & process recaptcha request unless tlink
+
+					if (this.viewerType.indexOf("tlink") === -1) {
+						if (data.method === "getRecaptchaToken"){
+							const recaptchaRequest = data.payload as { siteKey?: string }
+							return {
+								...data,
+								response: await getRecaptchaToken(recaptchaRequest.siteKey)
+							};
+						}
+
 						throw new Error("Tlink adapter is not available in this context");
+					}
 
 					return new Promise((resolve, reject) => {
 						const messageHandler = (event) => {
@@ -349,8 +361,9 @@ export class AppRoot {
 					}
 				</div>
 				{!this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
-						<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
+					<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
+				<script async src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
 			</Host>
 		);
 	}

@@ -101,9 +101,9 @@ export class TokensGrid {
 			console.log("Tokens loading");
 		}, "grid")
 
-		//setTimeout(async () => {
+		setTimeout(async () => {
 			await this.tokenScript.getTokenMetadata(false, false, true);
-		//}, 500);
+		}, 20);
 	}
 
 	async populateTokens(tokens: {[key: string]: ITokenCollection} ){

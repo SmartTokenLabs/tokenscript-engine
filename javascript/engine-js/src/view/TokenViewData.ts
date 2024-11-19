@@ -134,7 +134,11 @@ export class TokenViewData {
 				scriptContent = part.innerHTML;
 			}
 
-			body += '<script ' + (part.getAttribute("type") === "module" ? 'type="module" crossorigin=""' : 'text/javascript') + '>' + scriptContent + '</script>';
+			body += '<script ' +
+				part.getAttributeNames().map((name) => {
+					return `${name}="${part.getAttribute(name)}"`;
+				}).join(" ") +
+				'>' + scriptContent + '</script>';
 
 		} else if (part.localName === "style") {
 			body += '<style>' + part.innerHTML + '</style>';
