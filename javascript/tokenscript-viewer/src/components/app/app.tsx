@@ -358,7 +358,12 @@ export class AppRoot {
 				{!this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 					<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
-				<script async src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
+				<script async src="https://www.google.com/recaptcha/api.js?render=explicit&onload=recaptchaLoaded"></script>
+				{/*<script
+					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+					defer
+					crossorigin="anonymous"
+				></script>*/}
 			</Host>
 		);
 	}
