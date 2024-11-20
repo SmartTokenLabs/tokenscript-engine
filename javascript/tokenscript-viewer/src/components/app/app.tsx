@@ -170,7 +170,11 @@ export class AppRoot {
 								response.data?.uid === data.uid
 							) {
 								window.removeEventListener('message', messageHandler)
-								resolve(response.data)
+								if (response.data?.error){
+									reject(new Error(response.data.error));
+								} else {
+									resolve(response.data);
+								}
 							}
 						}
 

@@ -175,7 +175,7 @@ export class IFrameEthereumProvider implements ethers.Eip1193Provider {
 						   targetOrigin = DEFAULT_TARGET_ORIGIN,
 						   timeoutMilliseconds = DEFAULT_TIMEOUT_MILLISECONDS,
 						   eventSource = window,
-						   eventTarget = window.parent,
+						   eventTarget = window.opener ?? window.parent,
 					   }: IFrameEthereumProviderOptions = {}) {
 		// Call super for `this` to be defined
 		//super();
