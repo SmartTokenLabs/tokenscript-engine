@@ -27,7 +27,7 @@ export interface ShowToastEventArgs {
 	description: string|JSX.Element
 }
 
-export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar"|"tlink"|"tlink-card";
+export type ViewerTypes = "tabbed"|"integration"|"new"|"joyid-token"|"opensea"|"sts-token"|"alphawallet"|"mooar"|"tlink"|"tlink-card"|"tlink-api";
 
 const IFRAME_PROVIDER_VIEWS: ViewerTypes[] = ["joyid-token", "sts-token", "mooar", "tlink", "tlink-card"];
 
@@ -64,6 +64,9 @@ const initViewerType = (params: URLSearchParams): ViewerTypes => {
 			break;
 		case "tlink-card":
 			viewerType = "tlink-card";
+			break;
+		case "tlink-api":
+			viewerType = "tlink-api";
 			break;
 		// Fall-through to default
 		case "new":
@@ -141,8 +144,8 @@ export class AppRoot {
 				viewerOrigin: this.viewerType.indexOf("tlink") === 0 ? "*" : document.location.origin,
 				tlinkRequestAdapter: async (data: TLinkRequest) => {
 
-					// Recaptcha requests can be processed here
-					if (this.viewerType.indexOf("tlink") === -1){
+					// Recaptcha requests can be processed here if it's not a tlink embedded view or tlink is using a window instead of an iframe
+					if (this.viewerType.indexOf("tlink") === -1 && window.opener){
 
 						if (data.method === "getRecaptchaToken"){
 							const recaptchaRequest = data.payload as { siteKey?: string, action?: string }
@@ -361,6 +364,7 @@ export class AppRoot {
 						{this.viewerType === "mooar" ? <mooar-viewer app={this}></mooar-viewer> : ''}
 						{this.viewerType === "tlink" ? <tlink-viewer app={this}></tlink-viewer> : ''}
 						{this.viewerType === "tlink-card" ? <tlink-card-viewer app={this}></tlink-card-viewer> : ''}
+						{this.viewerType === "tlink-api" ? <tlink-api app={this}></tlink-api> : ''}
 					</main>
 
 					<confirm-tx-popover ref={(elem) => this.confirmTxPopover = elem}/>
