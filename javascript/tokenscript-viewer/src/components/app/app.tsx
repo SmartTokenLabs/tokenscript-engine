@@ -378,15 +378,10 @@ export class AppRoot {
 				{!this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 					<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
-				<script>
-					window.Worker = null;
-				</script>
-				<script async
-				        src="https://www.google.com/recaptcha/api.js?render=explicit&onload=recaptchaLoaded"></script>
-				<script
-					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-					defer
-				></script>
+				<script defer async
+				        src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
+				<script defer async
+					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 			</Host>
 		);
 	}

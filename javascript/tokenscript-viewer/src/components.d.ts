@@ -281,10 +281,6 @@ export interface StsViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLStsViewerElement;
 }
-export interface TlinkApiCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLTlinkApiElement;
-}
 export interface TlinkCardViewerCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLTlinkCardViewerElement;
@@ -596,19 +592,7 @@ declare global {
         prototype: HTMLTabbedViewerElement;
         new (): HTMLTabbedViewerElement;
     };
-    interface HTMLTlinkApiElementEventMap {
-        "showLoader": void;
-        "hideLoader": void;
-    }
     interface HTMLTlinkApiElement extends Components.TlinkApi, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLTlinkApiElementEventMap>(type: K, listener: (this: HTMLTlinkApiElement, ev: TlinkApiCustomEvent<HTMLTlinkApiElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLTlinkApiElementEventMap>(type: K, listener: (this: HTMLTlinkApiElement, ev: TlinkApiCustomEvent<HTMLTlinkApiElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLTlinkApiElement: {
         prototype: HTMLTlinkApiElement;
@@ -1015,8 +999,6 @@ declare namespace LocalJSX {
     }
     interface TlinkApi {
         "app"?: AppRoot;
-        "onHideLoader"?: (event: TlinkApiCustomEvent<void>) => void;
-        "onShowLoader"?: (event: TlinkApiCustomEvent<void>) => void;
     }
     interface TlinkCardViewer {
         "app"?: AppRoot;

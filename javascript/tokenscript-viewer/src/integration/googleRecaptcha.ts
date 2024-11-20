@@ -1,5 +1,8 @@
 
 declare global {
+	interface Window {
+		grecaptcha: any;
+	}
 	var grecaptcha: any;
 }
 
@@ -8,6 +11,15 @@ const DEFAULT_SITE_KEY = "6LeXSIIqAAAAAJlp04ct42518YoNJeWiUtUTItTb";
 const widgetIds : {[siteKey: string]: number} = {};
 
 export async function getRecaptchaToken(sitekey?: string, action?: string){
+
+	// Wait for script tag to load
+	if (!window.grecaptcha){
+		for (let i = 0; i<10; i++){
+			await new Promise((resolve) => setTimeout(resolve, 500));
+			if (window.grecaptcha)
+				break;
+		}
+	}
 
 	return new Promise((resolve, reject) => {
 

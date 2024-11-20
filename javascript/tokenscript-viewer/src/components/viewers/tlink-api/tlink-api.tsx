@@ -27,20 +27,6 @@ export class TlinkApi {
 	@Prop()
 	app: AppRoot;
 
-	@Event({
-		eventName: 'showLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) showLoader: EventEmitter<void>;
-
-	@Event({
-		eventName: 'hideLoader',
-		composed: true,
-		cancelable: true,
-		bubbles: true,
-	}) hideLoader: EventEmitter<void>;
-
 	async componentDidLoad(){
 
 		const urlParams = new URLSearchParams(document.location.search);
@@ -90,8 +76,8 @@ export class TlinkApi {
 							<span class="text">Tapp Viewer</span>
 						</a>
 					</div>
-					<div>
-
+					<div class="request-message">
+						<h4>Please wait...</h4>
 					</div>
 				</div>
 			</Host>

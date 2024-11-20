@@ -1,11 +1,23 @@
 
 declare global {
+	interface Window {
+		turnstile: any;
+	}
 	var turnstile: any;
 }
 
 const DEFAULT_SITE_KEY = "0x4AAAAAAA0Rmw6kZyekmiSB";
 
 export async function getTurnstileToken(sitekey?: string){
+
+	// Wait for script tag to load
+	if (!window.turnstile){
+		for (let i = 0; i<10; i++){
+			await new Promise((resolve) => setTimeout(resolve, 500));
+			if (window.turnstile)
+				break;
+		}
+	}
 
 	return new Promise((resolve, reject) => {
 
