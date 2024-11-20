@@ -17,6 +17,7 @@ import {LocalStorageAdapter} from "../../integration/localStorageAdapter";
 import {StaticProviders} from "../wallet/Web3WalletProvider";
 import {TLinkRequest} from "../../../../engine-js/src/tlink/ITlinkAdapter";
 import {getRecaptchaToken} from "../../integration/googleRecaptcha";
+import {getTurnstileToken} from "../../integration/turnstileCaptcha";
 
 export type TokenScriptSource = "resolve" | "file" | "url";
 
@@ -141,12 +142,23 @@ export class AppRoot {
 				tlinkRequestAdapter: async (data: TLinkRequest) => {
 
 					// Recaptcha requests can be processed here
-					if (data.method === "getRecaptchaToken"){
-						const recaptchaRequest = data.payload as { siteKey?: string }
-						return {
-							...data,
-							response: await getRecaptchaToken(recaptchaRequest.siteKey)
-						};
+					if (this.viewerType.indexOf("tlink") === -1){
+
+						/*if (data.method === "getRecaptchaToken"){
+							const recaptchaRequest = data.payload as { siteKey?: string, action?: string }
+							return {
+								...data,
+								response: await getRecaptchaToken(recaptchaRequest.siteKey, recaptchaRequest.action)
+							};
+						}*/
+
+						if (data.method === "getTurnstileToken"){
+							const turnstileRequest = data.payload as { siteKey?: string }
+							return {
+								...data,
+								response: await getTurnstileToken(turnstileRequest.siteKey)
+							};
+						}
 					}
 
 					return new Promise((resolve, reject) => {
@@ -169,7 +181,7 @@ export class AppRoot {
 						setTimeout(() => {
 							window.removeEventListener('message', messageHandler)
 							reject(new Error('Message timeout'))
-						}, 5000)
+						}, 80000)
 					})
 				}
 			}
@@ -358,12 +370,15 @@ export class AppRoot {
 				{!this.shouldUseIframeProvider() && this.viewerType !== "opensea" ?
 					<wallet-selector ref={(el) => this.walletSelector = el}></wallet-selector> : ''
 				}
-				<script async src="https://www.google.com/recaptcha/api.js?render=explicit&onload=recaptchaLoaded"></script>
-				{/*<script
+				<script>
+					window.Worker = null;
+				</script>
+				<script async
+				        src="https://www.google.com/recaptcha/api.js?render=explicit&onload=recaptchaLoaded"></script>
+				<script
 					src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
 					defer
-					crossorigin="anonymous"
-				></script>*/}
+				></script>
 			</Host>
 		);
 	}

@@ -35,12 +35,11 @@ export async function getRecaptchaToken(sitekey?: string, action?: string){
 			grecaptcha.execute(widgetId, {action: action ?? "recaptcha"}).then(function(token) {
 				resolve(token);
 				setTimeout(() => {
-					(document.getElementById(elemId).getElementsByClassName("grecaptcha-badge")[0] as HTMLDivElement).style.visibility = "hidden";
+					const elem = document.getElementById(elemId).getElementsByClassName("grecaptcha-badge")[0] as HTMLDivElement;
+					if (elem) elem.style.visibility = "hidden";
 				}, 5000);
-				//window.Worker = Worker
 			}).catch(e => {
 				reject(e);
-				//window.Worker = Worker
 			});
 		});
 	})
