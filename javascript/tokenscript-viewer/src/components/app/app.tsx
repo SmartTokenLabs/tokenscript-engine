@@ -144,13 +144,13 @@ export class AppRoot {
 					// Recaptcha requests can be processed here
 					if (this.viewerType.indexOf("tlink") === -1){
 
-						/*if (data.method === "getRecaptchaToken"){
+						if (data.method === "getRecaptchaToken"){
 							const recaptchaRequest = data.payload as { siteKey?: string, action?: string }
 							return {
 								...data,
 								response: await getRecaptchaToken(recaptchaRequest.siteKey, recaptchaRequest.action)
 							};
-						}*/
+						}
 
 						if (data.method === "getTurnstileToken"){
 							const turnstileRequest = data.payload as { siteKey?: string }
