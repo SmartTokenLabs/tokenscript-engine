@@ -145,7 +145,7 @@ export class AppRoot {
 				tlinkRequestAdapter: async (data: TLinkRequest) => {
 
 					// Recaptcha requests can be processed here if it's not a tlink embedded view or tlink is using a window instead of an iframe
-					if (this.viewerType.indexOf("tlink") === -1 && window.opener){
+					if (this.viewerType.indexOf("tlink") === -1 || window.opener){
 
 						if (data.method === "getRecaptchaToken"){
 							const recaptchaRequest = data.payload as { siteKey?: string, action?: string }
