@@ -162,6 +162,9 @@ export class AppRoot {
 								response: await getTurnstileToken(turnstileRequest.siteKey)
 							};
 						}
+
+						if (this.viewerType.indexOf("tlink"))
+							throw new Error("This TLink API is not available in this context.");
 					}
 
 					return new Promise((resolve, reject) => {
@@ -181,9 +184,9 @@ export class AppRoot {
 							}
 						}
 
-						window.addEventListener('message', messageHandler)
+						window.addEventListener('message', messageHandler);
 
-						window.parent.postMessage({ type: 'TLINK_API_REQUEST', data }, '*')
+						(window.opener ?? window.parent).postMessage({ type: 'TLINK_API_REQUEST', data }, '*')
 
 						setTimeout(() => {
 							window.removeEventListener('message', messageHandler)
