@@ -39,7 +39,6 @@ export async function getTurnstileToken(sitekey?: string){
 			widgetId = turnstile.render("#" + elemId, {
 				sitekey,
 				callback: function (token) {
-					console.log(`Challenge Success ${token}`);
 					resolve(token);
 					turnstile.remove(widgetId);
 					elem.remove();
