@@ -39,6 +39,8 @@ export class PostMessageAdapter implements IEngineAdapter {
 
 		switch (event.data?.method) {
 			case ViewEvent.TOKENS_UPDATED:
+				params.oldTokens = this.sdk.tokens.data.currentInstance;
+				this.sdk.tokens.data.currentInstance = params.updatedTokens.currentInstance;
 				this.sdk.tokens.dataChanged(params.oldTokens, params.updatedTokens, params.cardId);
 				//this.sdk.emitEvent("DATA_CHANGED", params);
 				break;
