@@ -1,4 +1,4 @@
-import {ITransactionListener, ITransactionStatus} from "../ITokenScript";
+import {ITransactionListener, ITransactionStatus, TokenMetadataMap} from "../ITokenScript";
 import {TokenScript} from "../TokenScript";
 import {Card} from "../tokenScript/Card";
 import {RpcRequest, RpcResponse} from "../wallet/IWalletAdapter";
@@ -136,7 +136,7 @@ export class ViewController {
 
 		if (txOptions.triggers?.length) {
 
-			let tokens;
+			let tokens: TokenMetadataMap;
 			if (txOptions.triggers.indexOf("refreshTokens") > -1) {
 				// Pause to let token discovery service update
 				await new Promise(resolve => setTimeout(resolve, 3000));
@@ -151,7 +151,15 @@ export class ViewController {
 				// The card is reloaded based on the following criteria
 				// - The card is still available based on isEnabledOrReason
 				// - Tokens have not been reloaded OR the card is an onboarding card OR the token still exists (not burnt or transferred)
-				if (reloadCard && (!context || !tokens || tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex])){
+				if (
+					reloadCard &&
+					(
+						!context ||
+						!tokens ||
+						tokens[context.originId]?.tokenType === "erc20" ||
+						tokens[context.originId]?.tokenDetails?.[context.selectedTokenIndex]
+					)
+				){
 					await this.updateCardData();
 				} else {
 					await this.unloadTokenCard();
