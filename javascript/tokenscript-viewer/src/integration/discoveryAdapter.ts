@@ -321,7 +321,7 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 		const contract = this.getEthersContractInstance(token.contractAddress, token.chainId, token.tokenType);
 
 
-		let name, symbol, contractUri, description, image;
+		let name, symbol, contractUri, description, image, decimals = 1;
 
 		try {
 			name = await contract.name();
@@ -363,11 +363,20 @@ export class DiscoveryAdapter implements ITokenDiscoveryAdapter {
 			}
 		}
 
+		if (token.tokenType === "erc20"){
+			try {
+				decimals = Number((await contract.decimals()).toString());
+			} catch (e){
+				console.log(e);
+			}
+		}
+
 		return <ITokenCollection>{
 			name: name ?? "Test collection",
 			symbol: symbol,
 			description: description ?? "",
 			image,
+			decimals
 		}
 	}
 
