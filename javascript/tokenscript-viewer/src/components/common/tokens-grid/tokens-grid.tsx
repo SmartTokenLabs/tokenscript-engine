@@ -175,7 +175,7 @@ export class TokensGrid {
 			}
 
 			if (
-				(!tokenIdParam || tokenIdParam === tokenId.toString()) &&
+				(!tokenIdParam || tokenIdParam === tokenId) &&
 				cardRes.card.isAvailableForOrigin(token.originId) &&
 				await cardRes.card.isEnabledOrReason(context) === true
 			) {
