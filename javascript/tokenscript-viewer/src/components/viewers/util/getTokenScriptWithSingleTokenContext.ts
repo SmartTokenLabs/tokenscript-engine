@@ -31,7 +31,7 @@ export async function getTokenScriptWithSingleTokenContext(
 		// If token ID is specified we only show that token
 		if (tokenId != null){
 			// Try to load single token
-			const singleTokenData = await getSingleTokenMetadata(chain, contract, tokenId, tokenScript.getEngine());
+			const singleTokenData = await getSingleTokenMetadata(selectedOrigin.chainId, selectedOrigin.contractAddress, tokenId, tokenScript.getEngine());
 
 			selectedOrigin = {...singleTokenData.collection, ...selectedOrigin}
 			if (singleTokenData.detail)
