@@ -377,7 +377,7 @@ export abstract class AbstractTokenScript implements ITokenScript {
           blockChain: 'eth',
           tokenType: contract.getInterface() ?? "erc721",
           chainId: addresses[key].chain,
-          contractAddress: addresses[key].address,
+          contractAddress: addresses[key].address
         });
       }
     }

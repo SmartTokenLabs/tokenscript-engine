@@ -22,7 +22,7 @@ export const getSingleTokenMetadata = async (chain: number, contract: string, to
 	selectedOrigin = {
 		...selectedOrigin,
 		...meta,
-		name: meta.title
+		name: meta?.title
 	};
 
 	if (meta.contractType)
