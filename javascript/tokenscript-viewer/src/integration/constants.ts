@@ -32,6 +32,8 @@ export enum ChainID {
 	CELO = 42220,
 	CELO_ALFAJORES = 44787,
 	RISE_SEPOLIA = 11155931,
+	OP_BNB = 204,
+	OP_BNB_TESTNET = 5611,
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -43,6 +45,7 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.HOLESKY]: 'holesky',
 	//[ChainID.KOVAN]: "kovan",
 	[ChainID.BSC]: "bsc",
+	[ChainID.BSC_TESTNET]: "bsct",
 	[ChainID.AMOY]: "amoy",
 	[ChainID.AVALANCH]: "avalanche",
 	[ChainID.FANTOM]: "fantom",
@@ -60,6 +63,8 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.CELO]: 'celo',
 	[ChainID.CELO_ALFAJORES]: 'celo-alfajores',
 	[ChainID.RISE_SEPOLIA]: 'rise-sepolia',
+	[ChainID.OP_BNB]: "obnb",
+	[ChainID.OP_BNB_TESTNET]: "obnbt",
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -71,6 +76,7 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.ARBITRUM]: "Arbitrum",
 	[ChainID.OPTIMISM]: "Optimism",
 	[ChainID.BSC]: "Binance Smart Chain",
+	[ChainID.BSC_TESTNET]: "Binance Smart Chain Testnet",
 	[ChainID.AVALANCH]: "Avalanche",
 	[ChainID.FANTOM]: "Fantom",
 	[ChainID.KAIA]: "Kaia",
@@ -87,6 +93,8 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.CELO]: 'Celo',
 	[ChainID.CELO_ALFAJORES]: 'Celo (Alfajores Testnet)',
 	[ChainID.RISE_SEPOLIA]: 'Rise (Sepolia Testnet)',
+	[ChainID.OP_BNB]: "opBNB Mainnet",
+	[ChainID.OP_BNB_TESTNET]: "opBNB Testnet",
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -233,6 +241,14 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.RISE_SEPOLIA]: {
 		rpc: 'https://testnet.riselabs.xyz',
 		explorer: 'https://testnet-explorer.riselabs.xyz/tx/',
+	},
+	[ChainID.OP_BNB]: {
+		rpc: 'https://opbnb-mainnet-rpc.bnbchain.org',
+		explorer: 'https://opbnb.bscscan.com/tx/'
+	},
+	[ChainID.OP_BNB_TESTNET]: {
+		rpc: 'https://opbnb-testnet-rpc.bnbchain.org',
+		explorer: 'https://opbnb-testnet.bscscan.com/tx/'
 	},
 }
 
