@@ -34,6 +34,10 @@ export enum ChainID {
 	RISE_SEPOLIA = 11155931,
 	OP_BNB = 204,
 	OP_BNB_TESTNET = 5611,
+	LINEA = 59144,
+	POLYGON_ZKEVM = 1101,
+	ZKSYNC = 324,
+	SCROLL = 534352,
 }
 
 export const CHAIN_MAP: ChainMapInterface = {
@@ -65,6 +69,10 @@ export const CHAIN_MAP: ChainMapInterface = {
 	[ChainID.RISE_SEPOLIA]: 'rise-sepolia',
 	[ChainID.OP_BNB]: "obnb",
 	[ChainID.OP_BNB_TESTNET]: "obnbt",
+	[ChainID.LINEA]: "linea",
+	[ChainID.POLYGON_ZKEVM]: "zkevm",
+	[ChainID.ZKSYNC]: "zksync",
+	[ChainID.SCROLL]: "scr",
 };
 
 export const CHAIN_NAME_MAP: ChainMapInterface = {
@@ -93,8 +101,12 @@ export const CHAIN_NAME_MAP: ChainMapInterface = {
 	[ChainID.CELO]: 'Celo',
 	[ChainID.CELO_ALFAJORES]: 'Celo (Alfajores Testnet)',
 	[ChainID.RISE_SEPOLIA]: 'Rise (Sepolia Testnet)',
-	[ChainID.OP_BNB]: "opBNB Mainnet",
+	[ChainID.OP_BNB]: "opBNB",
 	[ChainID.OP_BNB_TESTNET]: "opBNB Testnet",
+	[ChainID.LINEA]: "Linea",
+	[ChainID.POLYGON_ZKEVM]: "Polygon zkEVM",
+	[ChainID.ZKSYNC]: "zkSync",
+	[ChainID.SCROLL]: "Scroll",
 };
 
 const INFURA_API_KEY = Env.INFURA_API_KEY ?? "9f79b2f9274344af90b8d4e244b580ef"
@@ -110,8 +122,20 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	[ChainID.ETHEREUM]: {
 		rpc: [
 			`https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
-			"https://1rpc.io/eth",
-			"https://eth.llamarpc.com"
+			'https://1rpc.io/eth',
+			'https://eth.llamarpc.com',
+			'https://api.mycryptoapi.com/eth',
+			'https://cloudflare-eth.com',
+			'https://ethereum-rpc.publicnode.com',
+			'https://mainnet.gateway.tenderly.co',
+			'https://rpc.blocknative.com/boost',
+			'https://rpc.flashbots.net',
+			'https://rpc.flashbots.net/fast',
+			'https://rpc.mevblocker.io',
+			'https://rpc.mevblocker.io/fast',
+			'https://rpc.mevblocker.io/noreverts',
+			'https://rpc.mevblocker.io/fullprivacy',
+			'https://eth.drpc.org',
 		],
 		explorer: 'https://etherscan.com/tx/'
 	},
@@ -142,7 +166,22 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://amoy.polygonscan.com/tx/'
 	},
 	[ChainID.BSC]: {
-		rpc: 'https://bsc-dataseed.binance.org/',
+		rpc: [
+			'https://bsc-dataseed.binance.org/',
+			'https://bsc-dataseed1.bnbchain.org',
+			'https://bsc-dataseed2.bnbchain.org',
+			'https://bsc-dataseed3.bnbchain.org',
+			'https://bsc-dataseed4.bnbchain.org',
+			'https://bsc-dataseed1.defibit.io',
+			'https://bsc-dataseed2.defibit.io',
+			'https://bsc-dataseed3.defibit.io',
+			'https://bsc-dataseed4.defibit.io',
+			'https://bsc-dataseed1.ninicoin.io',
+			'https://bsc-dataseed2.ninicoin.io',
+			'https://bsc-dataseed3.ninicoin.io',
+			'https://bsc-dataseed4.ninicoin.io',
+			'https://bsc-rpc.publicnode.com',
+		],
 		explorer: 'https://bscscan.com/tx/'
 	},
 	[ChainID.BSC_TESTNET]: {
@@ -158,11 +197,20 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://ftmscan.com/tx/'
 	},
 	[ChainID.ARBITRUM]: {
-		rpc: 'https://arb1.arbitrum.io/rpc',
+		rpc: [
+			'https://arb1.arbitrum.io/rpc',
+			`https://arbitrum-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+			`https://arbitrum-one.publicnode.com`,
+		],
 		explorer: 'https://arbiscan.io/tx/'
 	},
 	[ChainID.OPTIMISM]: {
-		rpc: 'https://mainnet.optimism.io',
+		rpc: [
+			'https://mainnet.optimism.io',
+			"https://optimism-rpc.publicnode.com",
+			"https://optimism.gateway.tenderly.co",
+			"https://optimism.drpc.org",
+		],
 		explorer: 'https://optimistic.etherscan.io/tx/'
 	},
 	[ChainID.KAIA]: {
@@ -243,12 +291,54 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://testnet-explorer.riselabs.xyz/tx/',
 	},
 	[ChainID.OP_BNB]: {
-		rpc: 'https://opbnb-mainnet-rpc.bnbchain.org',
+		rpc: [
+			'https://opbnb-mainnet-rpc.bnbchain.org',
+			'https://opbnb-mainnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3',
+			'https://opbnb-mainnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+			'https://opbnb-rpc.publicnode.com',
+			'https://opbnb.drpc.org',
+			],
 		explorer: 'https://opbnb.bscscan.com/tx/'
 	},
 	[ChainID.OP_BNB_TESTNET]: {
-		rpc: 'https://opbnb-testnet-rpc.bnbchain.org',
+		rpc: [
+			'https://opbnb-testnet-rpc.bnbchain.org',
+			'https://opbnb-testnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3',
+			'https://opbnb-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+			'https://opbnb-testnet-rpc.publicnode.com',
+		],
 		explorer: 'https://opbnb-testnet.bscscan.com/tx/'
+	},
+	[ChainID.LINEA]: {
+		rpc: [
+			'https://rpc.linea.build',
+			`https://linea-mainnet.infura.io/v3/${INFURA_API_KEY}`,
+			'https://linea-rpc.publicnode.com',
+		],
+		explorer: 'https://lineascan.build/tx/'
+	},
+	[ChainID.POLYGON_ZKEVM]: {
+		rpc: [
+			'https://zkevm-rpc.com',
+      		'https://polygon-zkevm.drpc.org'
+		],
+		explorer: 'https://zkevm.polygonscan.com/tx/'
+	},
+	[ChainID.ZKSYNC]: {
+		rpc: [
+			'https://mainnet.era.zksync.io',
+      		'https://zksync.drpc.org'
+		],
+		explorer: 'https://explorer.zksync.io/tx/'
+	},
+	[ChainID.SCROLL]: {
+		rpc: [
+			'https://rpc.scroll.io',
+			'https://rpc.ankr.com/scroll',
+			'https://scroll-mainnet.chainstacklabs.com',
+			'https://scroll-rpc.publicnode.com'
+		],
+		explorer: 'https://scrollscan.com/tx/'
 	},
 }
 
