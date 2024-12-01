@@ -71,7 +71,6 @@ export class ViewerPopover {
 		this.tokenScript = tokenScript;
 
 		this.tokenScript.on("TOKENS_UPDATED", async (data) => {
-			this.tokenScript.getAttributes().invalidate(["walletAddress"])
 			await this.loadOnboardingCards();
 		}, "onboarding");
 

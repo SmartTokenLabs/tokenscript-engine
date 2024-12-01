@@ -60,7 +60,11 @@ export class NewViewer {
 				if (!this.myTokenScripts[id].tokenScript)
 					continue;
 
-				this.myTokenScripts[id].tokenScript.getAttributes().invalidate(["walletAddress"]);
+				this.myTokenScripts[id].tokenScript.getAttributes().invalidate(["walletAddress", "ownerAddress"]);
+				this.myTokenScripts[id].tokenScript.getCards().getAllCards().forEach((card) => {
+					card.getAttributes().invalidate(["walletAddress", "ownerAddress"]);
+				})
+
 				this.myTokenScripts[id].tokenScript.getTokenMetadata(true);
 			}
 		})
