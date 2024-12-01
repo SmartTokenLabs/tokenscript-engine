@@ -215,18 +215,25 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 	},
 	[ChainID.KAIA]: {
 		rpc: [
-			'https://public-en.node.kaia.io',
+			'https://alpha-hardworking-orb.kaia-mainnet.quiknode.pro/',
+			'https://kaia.blockpi.network/v1/rpc/public',
+			// 'http://freely-inspired-ram.n0des.xyz', // archive
+			'https://klaytn.api.onfinality.io/public',
+			'https://kaia-mainnet.rpc.grove.city/v1/803ceedf',
+			'https://go.getblock.io/d7094dbd80ab474ba7042603fe912332	',
 			'https://rpc.ankr.com/klaytn',
 			'https://klaytn-pokt.nodies.app',
 			'https://1rpc.io/klay',
+			'https://public-en.node.kaia.io',
 		],
 		explorer: 'https://kaiascope.com/tx/',
 	},
 	[ChainID.KAIA_KAIROS]: {
 		rpc: [
-			'https://public-en.kairos.node.kaia.io',
+			'https://responsive-green-emerald.kaia-kairos.quiknode.pro/',
 			'https://rpc.ankr.com/klaytn_testnet',
 			'https://kaia-kairos.blockpi.network/v1/rpc/public',
+			'https://public-en.kairos.node.kaia.io',
 		],
 		explorer: 'https://kairos.kaiascope.com/tx/',
 	},
