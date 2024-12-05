@@ -169,12 +169,6 @@ export class NewViewer {
 			if (tsMeta.loadType == "url" && new URL(tsMeta.tokenScriptId).hostname === "localhost")
 				return;
 
-			this.showToast.emit({
-				type: "error",
-				title: "Failed to load TokenScript",
-				description: e.message
-			});
-
 			this.myTokenScripts = {...this.myTokenScripts, [tsMeta.tokenScriptId]: tsMeta};
 		}
 	}
