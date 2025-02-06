@@ -148,7 +148,11 @@ export const CHAIN_CONFIG: {[chain: number]: IChainConfig} = {
 		explorer: 'https://sepolia.etherscan.io/tx/'
 	},
 	[ChainID.HOLESKY]: {
-		rpc: `https://holesky.infura.io/v3/${INFURA_API_KEY}`,
+		rpc: [
+			`https://holesky.infura.io/v3/${INFURA_API_KEY}`,
+			'https://holesky.gateway.tenderly.co',
+			'https://1rpc.io/holesky'
+		],
 		explorer: 'https://holesky.etherscan.io/tx/'
 	},
 	[ChainID.POLYGON]: {
